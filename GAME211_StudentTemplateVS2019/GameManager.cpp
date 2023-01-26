@@ -198,8 +198,5 @@ bool GameManager::ValidateCurrentScene()
         return false;
     }
     return true; 
-    //committed by Phung
+   
 }
-
-
-//Commit by ahmed
