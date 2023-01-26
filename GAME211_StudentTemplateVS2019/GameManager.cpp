@@ -198,5 +198,5 @@ bool GameManager::ValidateCurrentScene()
         return false;
     }
     return true; 
-   
+    //committed by Phung 1
 }
