@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32901.82
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GAME211_StudentTemplateVS2019", "GAME211_StudentTemplateVS2019\GAME211_StudentTemplateVS2019.vcxproj", "{E9EB2700-DB65-4E4A-A92B-14BE49936D50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C59A66BB-F3F3-4B0F-B67C-9BD5A40BCFF8}"
+	ProjectSection(SolutionItems) = preProject
+		GAME211_StudentTemplateVS2019\Scene2.cpp = GAME211_StudentTemplateVS2019\Scene2.cpp
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
