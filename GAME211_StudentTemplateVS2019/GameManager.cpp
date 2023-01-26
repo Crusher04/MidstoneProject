@@ -200,3 +200,6 @@ bool GameManager::ValidateCurrentScene()
     return true; 
     //committed by Phung 2
 }
+
+// Test commit to AlphaTest branch
+
