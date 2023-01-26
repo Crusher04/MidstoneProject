@@ -197,5 +197,6 @@ bool GameManager::ValidateCurrentScene()
     if (currentScene->OnCreate() == false) {
         return false;
     }
-    return true;
+    return true; 
+    //committed by Phung
 }

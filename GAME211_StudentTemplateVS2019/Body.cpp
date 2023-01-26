@@ -70,5 +70,5 @@ void Body::HandleEvents( const SDL_Event& event )
 
 void Body::setPos( Vec3 pos_ )
 {
-    pos = pos_;
+    pos = pos_; 
 }
