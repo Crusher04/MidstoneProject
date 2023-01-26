@@ -197,7 +197,9 @@ bool GameManager::ValidateCurrentScene()
     if (currentScene->OnCreate() == false) {
         return false;
     }
-    return true;
+    return true; 
+    //committed by Phung 2
 }
 
 // Test commit to AlphaTest branch
+
