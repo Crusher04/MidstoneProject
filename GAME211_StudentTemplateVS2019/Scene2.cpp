@@ -25,6 +25,8 @@ bool Scene2::OnCreate() {
 	/// Turn on the SDL imaging subsystem
 	IMG_Init(IMG_INIT_PNG);
 
+
+
 	// Set player image to PacMan
 
 	SDL_Surface* image;
@@ -35,7 +37,10 @@ bool Scene2::OnCreate() {
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
 
+	// Set Player Default Position
+	game->getPlayer()->playerPos = Vec3(12,8,0);
 	return true;
+
 }
 
 void Scene2::OnDestroy() {}
@@ -43,7 +48,8 @@ void Scene2::OnDestroy() {}
 void Scene2::Update(const float deltaTime) {
 
 	// Update player
-	game->getPlayer()->Update(deltaTime);
+
+	game->getPlayer()->setPos(game->getPlayer()->playerPos);
 }
 
 void Scene2::Render() {
@@ -60,4 +66,6 @@ void Scene2::HandleEvents(const SDL_Event& event)
 {
 	// send events to player as needed
 	game->getPlayer()->HandleEvents(event);
+
+	
 }

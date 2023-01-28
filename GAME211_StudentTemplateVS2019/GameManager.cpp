@@ -126,6 +126,23 @@ void GameManager::handleEvents()
             case SDL_SCANCODE_1:
                 LoadScene(2);
                 break;
+
+
+            // Player Movement
+            case SDL_SCANCODE_W:
+                player->playerPos.y += 0.3;
+                break;
+            case SDL_SCANCODE_S:
+                player->playerPos.y += -0.3;
+                break;
+            case SDL_SCANCODE_D:
+                player->playerPos.x += 0.3;
+                break;
+            case SDL_SCANCODE_A:
+                player->playerPos.x += -0.3;
+                break;
+
+
             default:
                 break;
             }
