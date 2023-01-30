@@ -35,6 +35,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
+    w = false;
     // select scene for specific assignment
     //THIS CHANGES THE DEFAULT LOADED SCENE
     currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
@@ -95,7 +96,9 @@ void GameManager::Run() {
 
 void GameManager::handleEvents() 
 {
+
     SDL_Event event;
+    const Uint8* state = SDL_GetKeyboardState(nullptr);
 
     // Let's add mouse movement and position
     // https://wiki.libsdl.org/SDL_GetMouseState
@@ -127,26 +130,51 @@ void GameManager::handleEvents()
                 LoadScene(2);
                 break;
 
+            
+            //// Player Movement
+            //case SDL_SCANCODE_W:
+            //    
+            //    w = true;
+            //    break;
 
-            // Player Movement
-            case SDL_SCANCODE_W:
+            //case SDL_SCANCODE_S:
+            //    player->playerPos.y += -0.3;
+            //    break;
+            //case SDL_SCANCODE_D:
+            //    player->playerPos.x += 0.3;
+            //    break;
+            //case SDL_SCANCODE_A:
+            //    player->playerPos.x += -0.3;
+            //    break;
+
+
+            //default:
+            //    break;
+            }
+            if (isRunning == true)
+            {
+
+            }
+            
+            if (state[SDL_SCANCODE_W])
+            {
                 player->playerPos.y += 0.3;
-                break;
-            case SDL_SCANCODE_S:
-                player->playerPos.y += -0.3;
-                break;
-            case SDL_SCANCODE_D:
-                player->playerPos.x += 0.3;
-                break;
-            case SDL_SCANCODE_A:
+                
+            }
+            if (state[SDL_SCANCODE_A])
+            {
                 player->playerPos.x += -0.3;
-                break;
-
-
-            default:
-                break;
+            }
+            if (state[SDL_SCANCODE_S])
+            {
+                player->playerPos.y += -0.3;
+            }
+            if (state[SDL_SCANCODE_D])
+            {
+                player->playerPos.x += 0.3;
             }
         }
+       
         currentScene->HandleEvents(event);
     }
 }

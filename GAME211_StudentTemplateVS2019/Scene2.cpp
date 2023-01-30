@@ -49,6 +49,13 @@ void Scene2::Update(const float deltaTime) {
 
 	// Update player
 
+	if (game->w == true)
+	{
+		game->getPlayer()->playerPos.y += 2;
+		
+		
+	}
+	game->w == false;*/
 	game->getPlayer()->setPos(game->getPlayer()->playerPos);
 }
 

@@ -41,7 +41,7 @@ public:
     PlayerBody* getPlayer(){ return player; }
 	void RenderPlayer(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
-
+	bool w;
 	void Run();
 	void handleEvents();
 	void LoadScene( int i );
