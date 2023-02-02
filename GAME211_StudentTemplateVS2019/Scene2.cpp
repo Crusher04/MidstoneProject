@@ -32,13 +32,25 @@ bool Scene2::OnCreate() {
 	SDL_Surface* image;
 	SDL_Texture* texture;
 
-	image = IMG_Load("Clyde.png");
+	image = IMG_Load("Player.png");
 	texture = SDL_CreateTextureFromSurface(renderer, image);
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
 
 	// Set Player Default Position
-	game->getPlayer()->playerPos = Vec3(12,8,0);
+	game->getPlayer()->playerPos = Vec3(12, 8, 0);
+	
+
+	/// Enemy Work In Progress
+
+	//SDL_Surface* enemyImage;
+	//SDL_Texture* enemyTexture;
+	//enemyImage = IMG_Load("Pacman.png");
+	//enemyTexture = SDL_CreateTextureFromSurface(renderer, enemyImage);
+	//
+	//game->getEnemy()->setImage(enemyImage);
+	//game->getEnemy()->setTexture(enemyTexture);
+
 	return true;
 
 }
@@ -49,13 +61,7 @@ void Scene2::Update(const float deltaTime) {
 
 	// Update player
 
-	if (game->w == true)
-	{
-		game->getPlayer()->playerPos.y += 2;
-		
-		
-	}
-	game->w == false;*/
+	
 	game->getPlayer()->setPos(game->getPlayer()->playerPos);
 }
 
@@ -64,7 +70,7 @@ void Scene2::Render() {
 	SDL_RenderClear(renderer);
 
 	// render the player
-	game->RenderPlayer(0.10f);
+	game->RenderPlayer(2.10f);
 
 	SDL_RenderPresent(renderer);
 }

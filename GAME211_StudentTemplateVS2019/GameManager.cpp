@@ -8,6 +8,7 @@ GameManager::GameManager() {
 	isRunning = true;
 	currentScene = nullptr;
     player = nullptr;
+    enemy = nullptr;
 }
 
 bool GameManager::OnCreate() {
@@ -129,50 +130,27 @@ void GameManager::handleEvents()
             case SDL_SCANCODE_1:
                 LoadScene(2);
                 break;
-
-            
-            //// Player Movement
-            //case SDL_SCANCODE_W:
-            //    
-            //    w = true;
-            //    break;
-
-            //case SDL_SCANCODE_S:
-            //    player->playerPos.y += -0.3;
-            //    break;
-            //case SDL_SCANCODE_D:
-            //    player->playerPos.x += 0.3;
-            //    break;
-            //case SDL_SCANCODE_A:
-            //    player->playerPos.x += -0.3;
-            //    break;
-
-
-            //default:
-            //    break;
-            }
-            if (isRunning == true)
-            {
-
             }
             
+            // Player Movement
             if (state[SDL_SCANCODE_W])
             {
-                player->playerPos.y += 0.3;
+                player->playerPos.y += 0.5;
                 
             }
             if (state[SDL_SCANCODE_A])
             {
-                player->playerPos.x += -0.3;
+                player->playerPos.x += -0.5;
             }
             if (state[SDL_SCANCODE_S])
             {
-                player->playerPos.y += -0.3;
+                player->playerPos.y += -0.5;
             }
             if (state[SDL_SCANCODE_D])
             {
-                player->playerPos.x += 0.3;
+                player->playerPos.x += 0.5;
             }
+        
         }
        
         currentScene->HandleEvents(event);
@@ -210,6 +188,11 @@ SDL_Renderer* GameManager::getRenderer()
 void GameManager::RenderPlayer(float scale)
 {
     player->Render(scale);
+}
+
+void GameManager::RenderEnemy(float scale)
+{
+    enemy->Render(scale);
 }
 
 void GameManager::LoadScene( int i )
