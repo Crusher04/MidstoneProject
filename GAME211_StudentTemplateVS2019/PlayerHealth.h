@@ -9,10 +9,12 @@
 class PlayerHealth
 {
 private: 
-	//Health Variable
-	int health; 
+	int health;
 
 public:
+
+	//Constructors
+	PlayerHealth();
 
 	/// <summary>
 	/// This method will set the default amount of players health. 
@@ -30,7 +32,7 @@ public:
 	/// This method will heal the player for a passed through amount 
 	/// </summary>
 	/// <param name="healAmount"></param>
-	void healPlayer(int healAmount);
+	void healPlayer(int healthAmount);
 
 	/// <summary>
 	/// Return Health Amount

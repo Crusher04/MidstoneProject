@@ -1,6 +1,9 @@
 #include "GameManager.h"
 #include "Scene1.h"
 #include "Scene2.h"
+#include "PlayerHealth.h"
+
+PlayerHealth phealth;
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -16,8 +19,8 @@ bool GameManager::OnCreate() {
     //const int SCREEN_HEIGHT = 860;
 
     // Use 1000x600 for less than full screen
-    const int SCREEN_WIDTH = 1000;
-    const int SCREEN_HEIGHT = 600;
+    const int SCREEN_WIDTH = 1920;
+    const int SCREEN_HEIGHT = 1080;
 
     windowPtr = new Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (windowPtr == nullptr) {
@@ -71,7 +74,7 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-           
+
 	return true;
 }
 
@@ -124,7 +127,21 @@ void GameManager::handleEvents()
                 isRunning = false;
                 break;
             case SDL_SCANCODE_1:
-                LoadScene(2);
+               // LoadScene(2);
+                std::cout << "\nPlayer Health is " << phealth.getHealth();
+                break;
+            case SDL_SCANCODE_2:        
+                std::cout << "\nNew health to be applied is " << 50;
+                phealth.setHealth(50);
+                break;
+            case SDL_SCANCODE_3:
+                std::cout << "\nDamage to be applied is " << 50;
+                phealth.takeDamage(50);
+                break;
+            case SDL_SCANCODE_4:
+                std::cout << "\nHealing to be applied is " << 25;
+                phealth.healPlayer(25);
+
                 break;
             default:
                 break;

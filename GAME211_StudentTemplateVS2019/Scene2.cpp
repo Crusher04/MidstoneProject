@@ -1,6 +1,8 @@
 #include "Scene2.h"
 #include "VMath.h"
+#include "PlayerHealth.h"
 
+int health = 10;
 
 // See notes about this constructor in Scene1.h.
 Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
@@ -44,6 +46,7 @@ void Scene2::Update(const float deltaTime) {
 
 	// Update player
 	game->getPlayer()->Update(deltaTime);
+	
 }
 
 void Scene2::Render() {

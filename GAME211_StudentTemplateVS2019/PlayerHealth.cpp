@@ -7,6 +7,12 @@
 
 #include "PlayerHealth.h"
 
+//Constructor
+PlayerHealth::PlayerHealth()
+{
+	//Default Health
+	health = 100;
+}
 
 /// <summary>
 /// This method will set the default amount of players health. 
@@ -30,7 +36,7 @@ void PlayerHealth::takeDamage(int damageAmount)
 /// This method will heal the player for a passed through amount 
 /// </summary>
 /// <param name="healAmount"></param>
-void PlayerHealth::healPlayer(int healAmount)
+void PlayerHealth::healPlayer( int healAmount)
 {
 	health += healAmount;
 }
