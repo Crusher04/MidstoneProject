@@ -3,7 +3,8 @@
 #include "Scene2.h"
 #include "PlayerHealth.h"
 
-PlayerHealth phealth;
+//Create/Initialize Player Health
+PlayerHealth playerHealth;
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -128,20 +129,11 @@ void GameManager::handleEvents()
                 break;
             case SDL_SCANCODE_1:
                // LoadScene(2);
-                std::cout << "\nPlayer Health is " << phealth.getHealth();
+                std::cout << "\nPlayer Health is " << playerHealth.getHealth();
                 break;
             case SDL_SCANCODE_2:        
-                std::cout << "\nNew health to be applied is " << 50;
-                phealth.setHealth(50);
-                break;
-            case SDL_SCANCODE_3:
-                std::cout << "\nDamage to be applied is " << 50;
-                phealth.takeDamage(50);
-                break;
-            case SDL_SCANCODE_4:
-                std::cout << "\nHealing to be applied is " << 25;
-                phealth.healPlayer(25);
-
+                std::cout << "\nResetting Health at 100";
+                playerHealth.setHealth(100);
                 break;
             default:
                 break;

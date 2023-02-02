@@ -39,6 +39,11 @@ public:
 	/// </summary>
 	int getHealth();
 
+	/// <summary>
+	/// Prints health amount to console
+	/// </summary>
+	void printHealth();
+
 
 };
 

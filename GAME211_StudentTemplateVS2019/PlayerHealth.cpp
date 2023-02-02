@@ -6,6 +6,7 @@
 */
 
 #include "PlayerHealth.h"
+#include <iostream>
 
 //Constructor
 PlayerHealth::PlayerHealth()
@@ -47,4 +48,12 @@ void PlayerHealth::healPlayer( int healAmount)
 int PlayerHealth::getHealth()
 {
 	return health;
+}
+
+/// <summary>
+/// Prints health amount to console
+/// </summary>
+void PlayerHealth::printHealth()
+{
+	std::cout << "\nHealth is " << health;
 }
