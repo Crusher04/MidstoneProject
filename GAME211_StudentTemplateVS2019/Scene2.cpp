@@ -25,17 +25,34 @@ bool Scene2::OnCreate() {
 	/// Turn on the SDL imaging subsystem
 	IMG_Init(IMG_INIT_PNG);
 
+
+
 	// Set player image to PacMan
 
 	SDL_Surface* image;
 	SDL_Texture* texture;
 
-	image = IMG_Load("Clyde.png");
+	image = IMG_Load("Player.png");
 	texture = SDL_CreateTextureFromSurface(renderer, image);
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
 
+	// Set Player Default Position
+	game->getPlayer()->playerPos = Vec3(12, 8, 0);
+	
+
+	/// Enemy Work In Progress
+
+	//SDL_Surface* enemyImage;
+	//SDL_Texture* enemyTexture;
+	//enemyImage = IMG_Load("Pacman.png");
+	//enemyTexture = SDL_CreateTextureFromSurface(renderer, enemyImage);
+	//
+	//game->getEnemy()->setImage(enemyImage);
+	//game->getEnemy()->setTexture(enemyTexture);
+
 	return true;
+
 }
 
 void Scene2::OnDestroy() {}
@@ -43,7 +60,9 @@ void Scene2::OnDestroy() {}
 void Scene2::Update(const float deltaTime) {
 
 	// Update player
-	game->getPlayer()->Update(deltaTime);
+
+	
+	game->getPlayer()->setPos(game->getPlayer()->playerPos);
 }
 
 void Scene2::Render() {
@@ -51,7 +70,7 @@ void Scene2::Render() {
 	SDL_RenderClear(renderer);
 
 	// render the player
-	game->RenderPlayer(0.10f);
+	game->RenderPlayer(2.10f);
 
 	SDL_RenderPresent(renderer);
 }
@@ -60,4 +79,6 @@ void Scene2::HandleEvents(const SDL_Event& event)
 {
 	// send events to player as needed
 	game->getPlayer()->HandleEvents(event);
+
+	
 }

@@ -8,6 +8,7 @@ GameManager::GameManager() {
 	isRunning = true;
 	currentScene = nullptr;
     player = nullptr;
+    enemy = nullptr;
 }
 
 bool GameManager::OnCreate() {
@@ -35,6 +36,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
+    w = false;
     // select scene for specific assignment
     //THIS CHANGES THE DEFAULT LOADED SCENE
     currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
@@ -95,7 +97,9 @@ void GameManager::Run() {
 
 void GameManager::handleEvents() 
 {
+
     SDL_Event event;
+    const Uint8* state = SDL_GetKeyboardState(nullptr);
 
     // Let's add mouse movement and position
     // https://wiki.libsdl.org/SDL_GetMouseState
@@ -126,10 +130,29 @@ void GameManager::handleEvents()
             case SDL_SCANCODE_1:
                 LoadScene(2);
                 break;
-            default:
-                break;
             }
+            
+            // Player Movement
+            if (state[SDL_SCANCODE_W])
+            {
+                player->playerPos.y += 0.5;
+                
+            }
+            if (state[SDL_SCANCODE_A])
+            {
+                player->playerPos.x += -0.5;
+            }
+            if (state[SDL_SCANCODE_S])
+            {
+                player->playerPos.y += -0.5;
+            }
+            if (state[SDL_SCANCODE_D])
+            {
+                player->playerPos.x += 0.5;
+            }
+        
         }
+       
         currentScene->HandleEvents(event);
     }
 }
@@ -165,6 +188,11 @@ SDL_Renderer* GameManager::getRenderer()
 void GameManager::RenderPlayer(float scale)
 {
     player->Render(scale);
+}
+
+void GameManager::RenderEnemy(float scale)
+{
+    enemy->Render(scale);
 }
 
 void GameManager::LoadScene( int i )

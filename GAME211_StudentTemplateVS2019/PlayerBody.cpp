@@ -46,11 +46,43 @@ void PlayerBody::Render( float scale )
     square.w = static_cast<int>(w);
     square.h = static_cast<int>(h);
 
+
+
     // Convert character orientation from radians to degrees.
     float orientationDegrees = orientation * 180.0f / M_PI ;
 
+
+    // Calculate Angle Variable
+    int Delta_x; int Delta_y;
+    int mouse_x, mouse_y;
+    float angle;
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+    Delta_x = pos.x - mouse_x;
+    Delta_y = pos.y - mouse_y;
+
+    angle = -90 + (atan2(-Delta_x, -Delta_y) * 180.0000) / M_PI;
+    
+
+    // Flip the Sprite
+    SDL_RendererFlip a = SDL_FLIP_NONE;
+
+
+    if (square.x <= mouse_x)
+    {
+        a = SDL_FLIP_HORIZONTAL;
+
+    }
+    if (square.y <= mouse_y)
+    {
+        a = SDL_FLIP_VERTICAL;
+
+    }
+
+    // Render the Sprite
     SDL_RenderCopyEx( renderer, texture, nullptr, &square,
-        orientationDegrees, nullptr, SDL_FLIP_NONE );
+        angle - orientationDegrees, nullptr, a );
+
+
 }
 
 void PlayerBody::HandleEvents( const SDL_Event& event )
