@@ -12,7 +12,6 @@ GameManager::GameManager() {
 	isRunning = true;
 	currentScene = nullptr;
     player = nullptr;
-    enemy = nullptr;
 }
 
 bool GameManager::OnCreate() {
@@ -199,11 +198,6 @@ void GameManager::RenderPlayer(float scale)
     player->Render(scale);
 }
 
-void GameManager::RenderEnemy(float scale)
-{
-    enemy->Render(scale);
-}
-
 void GameManager::LoadScene( int i )
 {
     // cleanup of current scene before loading another one
@@ -239,8 +233,5 @@ bool GameManager::ValidateCurrentScene()
         return false;
     }
     return true; 
-    //committed by Phung 2
 }
-
-// Test commit to AlphaTest branch
 
