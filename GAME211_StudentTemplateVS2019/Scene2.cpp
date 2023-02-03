@@ -4,7 +4,7 @@
 
 Collider playerColl(1000, 8, 0, 0);
 // Define the rectangle
-SDL_Rect rect = { playerColl.x, playerColl.y, 100, 100 };
+SDL_Rect rect = { playerColl.x, playerColl.y, 50, 50 };
 
 // See notes about this constructor in Scene1.h.
 Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
@@ -80,15 +80,7 @@ void Scene2::Update(const float deltaTime) {
 void Scene2::Render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 	SDL_RenderClear(renderer);
-	
 
-	SDL_Rect rect = { game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, 100, 100 };
-
-	// Set the color of the rectangle to red
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-
-	//// Render the rectangle
-	SDL_RenderFillRect(renderer, &rect);
 
 
 	// render the player
