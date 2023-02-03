@@ -41,6 +41,8 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
+
+    speed = 15;
     w = false;
 
     // select scene for specific assignment
@@ -112,7 +114,7 @@ void GameManager::Run() {
 		timer->UpdateFrameTicks();
         currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
-
+    
 		/// Keep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
 	}
@@ -159,24 +161,28 @@ void GameManager::handleEvents()
                 playerHealth.setHealth(100);
                 break;
             }
-            
+           
             // Player Movement
             if (state[SDL_SCANCODE_W])
             {
-               player->playerPos.y += 0.5;
+
+                player->playerPos.y += speed * timer->GetDeltaTime();
+
                 
             }
             if (state[SDL_SCANCODE_A])
             {
-                player->playerPos.x += -0.5;
+                player->playerPos.x += -speed * timer->GetDeltaTime();
             }
             if (state[SDL_SCANCODE_S])
             {
-               player->playerPos.y += -0.5;
+
+                player->playerPos.y += -speed * timer->GetDeltaTime();
+
             }
             if (state[SDL_SCANCODE_D])
             {
-                player->playerPos.x += 0.5;
+                player->playerPos.x += speed * timer->GetDeltaTime();
             }
         
         }

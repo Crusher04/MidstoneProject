@@ -58,32 +58,34 @@ void PlayerBody::Render( float scale )
     // Calculate Angle Variable
     int Delta_x; int Delta_y;
     int mouse_x, mouse_y;
-    float angle;
+    double angle;
     SDL_GetMouseState(&mouse_x, &mouse_y);
     Delta_x = pos.x - mouse_x;
     Delta_y = pos.y - mouse_y;
 
-    angle = -90 + (atan2(-Delta_x, -Delta_y) * 180.0000) / M_PI;
+    angle = (atan2(mouse_y - pos.y, mouse_x - pos.x) * 180.0000) / 0.25;
     
 
     // Flip the Sprite
     SDL_RendererFlip a = SDL_FLIP_NONE;
 
 
-    if (square.x <= mouse_x)
+    if (square.x >= mouse_x)
     {
-        a = SDL_FLIP_HORIZONTAL;
+       a = SDL_FLIP_HORIZONTAL;
 
     }
-    if (square.y <= mouse_y)
+    if (square.y >= mouse_y)
     {
         a = SDL_FLIP_VERTICAL;
 
     }
 
+    SDL_Point c { 3, 40 };
+
     // Render the Sprite
     SDL_RenderCopyEx( renderer, texture, nullptr, &square,
-        angle - orientationDegrees, nullptr, a );
+        angle - orientationDegrees, &c, a );
 
   
 }
