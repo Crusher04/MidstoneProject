@@ -46,6 +46,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBody.cpp">
+    <ClCompile Include="PlayerHealth.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -90,6 +91,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EnemyBody.h">
+    <ClInclude Include="PlayerHealth.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

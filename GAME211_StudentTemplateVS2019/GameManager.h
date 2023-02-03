@@ -6,7 +6,6 @@
 #include "Timer.h"
 #include "Scene.h"
 #include "PlayerBody.h"
-#include "EnemyBody.h"
 
 class GameManager {
 private:
@@ -40,9 +39,7 @@ public:
 	float getSceneWidth();
 	Matrix4 getProjectionMatrix();
     PlayerBody* getPlayer(){ return player; }
-	//EnemyBody* getEnemy() { return enemy; }
 	void RenderPlayer(float scale = 1.0f);
-	//void RenderEnemy(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
 	bool w;
 	void Run();

@@ -1,6 +1,10 @@
 #include "GameManager.h"
 #include "Scene1.h"
 #include "Scene2.h"
+#include "PlayerHealth.h"
+
+//Create/Initialize Player Health
+PlayerHealth playerHealth;
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -8,7 +12,6 @@ GameManager::GameManager() {
 	isRunning = true;
 	currentScene = nullptr;
     player = nullptr;
-    enemy = nullptr;
 }
 
 bool GameManager::OnCreate() {
@@ -17,8 +20,8 @@ bool GameManager::OnCreate() {
     //const int SCREEN_HEIGHT = 860;
 
     // Use 1000x600 for less than full screen
-    const int SCREEN_WIDTH = 1000;
-    const int SCREEN_HEIGHT = 600;
+    const int SCREEN_WIDTH = 1920;
+    const int SCREEN_HEIGHT = 1080;
 
     windowPtr = new Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (windowPtr == nullptr) {
@@ -73,7 +76,7 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-           
+
 	return true;
 }
 
@@ -128,7 +131,12 @@ void GameManager::handleEvents()
                 isRunning = false;
                 break;
             case SDL_SCANCODE_1:
-                LoadScene(2);
+               // LoadScene(2);
+                std::cout << "\nPlayer Health is " << playerHealth.getHealth();
+                break;
+            case SDL_SCANCODE_2:        
+                std::cout << "\nResetting Health at 100";
+                playerHealth.setHealth(100);
                 break;
             }
             
@@ -190,11 +198,6 @@ void GameManager::RenderPlayer(float scale)
     player->Render(scale);
 }
 
-void GameManager::RenderEnemy(float scale)
-{
-    enemy->Render(scale);
-}
-
 void GameManager::LoadScene( int i )
 {
     // cleanup of current scene before loading another one
@@ -230,8 +233,5 @@ bool GameManager::ValidateCurrentScene()
         return false;
     }
     return true; 
-    //committed by Phung 2
 }
-
-// Test commit to AlphaTest branch
 
