@@ -49,6 +49,7 @@ public:
     
     // use the base class versions of getters
     Vec3 playerPos;
+    Vec3 enemyPos;
     bool OnCreate();
     void Render( float scale = 1.0f );
     void HandleEvents( const SDL_Event& event );

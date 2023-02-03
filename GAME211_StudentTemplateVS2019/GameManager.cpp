@@ -1,10 +1,11 @@
 #include "GameManager.h"
 #include "Scene1.h"
 #include "Scene2.h"
-#include "PlayerHealth.h"
+#include "EntityHealth.h"
+#include "EnemyBody.h"
 
 //Create/Initialize Player Health
-PlayerHealth playerHealth;
+EntityHealth playerHealth;
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -12,6 +13,7 @@ GameManager::GameManager() {
 	isRunning = true;
 	currentScene = nullptr;
     player = nullptr;
+    enemy = nullptr;
 }
 
 bool GameManager::OnCreate() {
@@ -40,6 +42,7 @@ bool GameManager::OnCreate() {
 	}
 
     w = false;
+
     // select scene for specific assignment
     //THIS CHANGES THE DEFAULT LOADED SCENE
     currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
@@ -71,12 +74,29 @@ bool GameManager::OnCreate() {
         return false;
     }
 
+    enemy = new EnemyBody
+    (
+        position,
+        velocity,
+        acceleration,
+        mass,
+        radius,
+        orientation,
+        rotation,
+        angular,
+        this
+    );
+
+    if (enemy->OnCreate() == false) {
+        OnDestroy();
+        return false;
+    }
+
     // need to create Player before validating scene
     if (!ValidateCurrentScene()) {
         OnDestroy();
         return false;
     }
-
 	return true;
 }
 
@@ -143,7 +163,7 @@ void GameManager::handleEvents()
             // Player Movement
             if (state[SDL_SCANCODE_W])
             {
-                player->playerPos.y += 0.5;
+               player->playerPos.y += 0.5;
                 
             }
             if (state[SDL_SCANCODE_A])
@@ -152,7 +172,7 @@ void GameManager::handleEvents()
             }
             if (state[SDL_SCANCODE_S])
             {
-                player->playerPos.y += -0.5;
+               player->playerPos.y += -0.5;
             }
             if (state[SDL_SCANCODE_D])
             {
@@ -195,7 +215,9 @@ SDL_Renderer* GameManager::getRenderer()
 // This might be unfamiliar
 void GameManager::RenderPlayer(float scale)
 {
+    enemy->Render(.2f);
     player->Render(scale);
+    
 }
 
 void GameManager::LoadScene( int i )

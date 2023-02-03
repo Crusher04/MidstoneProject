@@ -7,6 +7,7 @@
 
 #include "PlayerBody.h"
 
+
 bool PlayerBody::OnCreate()
 {
     image = IMG_Load( "Pacman.png" );
@@ -17,6 +18,8 @@ bool PlayerBody::OnCreate()
         return false;
     }
     return true;
+
+   
 }
 
 void PlayerBody::Render( float scale )
@@ -82,7 +85,7 @@ void PlayerBody::Render( float scale )
     SDL_RenderCopyEx( renderer, texture, nullptr, &square,
         angle - orientationDegrees, nullptr, a );
 
-
+  
 }
 
 void PlayerBody::HandleEvents( const SDL_Event& event )

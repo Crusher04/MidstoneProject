@@ -43,7 +43,10 @@ void EnemyBody::Render(float scale)
 
     // Convert character orientation from radians to degrees.
     float orientationDegrees = orientation * 180.0f / M_PI;
-
+    
+    // Render the Sprite
+    SDL_RenderCopyEx(renderer, texture, nullptr, &square,
+        orientationDegrees, nullptr, SDL_FLIP_NONE);
 }
 
 void EnemyBody::HandleEvents(const SDL_Event& event)
