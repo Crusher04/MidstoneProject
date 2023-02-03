@@ -2,7 +2,9 @@
 #include "VMath.h"
 #include "Collider.h"
 
-Collider playerColl(1000, 8, 0, 0);
+Collider playerColl(1000, 8, 2, 2);
+Collider enemyColl(12, 8, 2, 2);
+
 // Define the rectangle
 SDL_Rect rect = { playerColl.x, playerColl.y, 50, 50 };
 
@@ -54,7 +56,7 @@ bool Scene2::OnCreate() {
 	game->getEnemy()->setImage(enemyImage);
 	game->getEnemy()->setTexture(enemyTexture);
 
-	playerColl.setRenderColliderBounds(true);
+	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 
 	return true;
 
@@ -70,11 +72,11 @@ void Scene2::Update(const float deltaTime) {
 	game->getPlayer()->setPos(game->getPlayer()->playerPos);
 	game->getEnemy()->setPos(game->getEnemy()->enemyPos);
 
-	rect.x = (game->getPlayer()->getPos().x) +100000;
-	rect.y = game->getPlayer()->getPos().y;
 
 	game->getPlayer()->Update(deltaTime);
 	
+	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
+	playerColl.checkCollBox(playerColl, enemyColl);
 }
 
 void Scene2::Render() {
