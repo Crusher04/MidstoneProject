@@ -42,6 +42,8 @@ public:
 	void RenderPlayer(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
 	bool w;
+	float speed;
+
 	void Run();
 	void handleEvents();
 	void LoadScene( int i );
