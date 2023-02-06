@@ -2,6 +2,10 @@
 #include "VMath.h"
 #include "Collider.h"
 
+///////////////////////////////////////////
+// TESTING SCENE - THIS IS OUR PLAYGROUND
+///////////////////////////////////////////
+
 Collider playerColl(1000, 8, 1, 1);
 Collider enemyColl(12, 8, 1, 1);
 
