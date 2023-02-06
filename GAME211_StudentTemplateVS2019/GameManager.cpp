@@ -40,7 +40,7 @@ bool GameManager::OnCreate() {
 	}
 
 
-    speed = 15;
+    speed = 85;
     w = false;
 
     /////////////////////////////////
@@ -173,47 +173,56 @@ void GameManager::handleEvents()
             isRunning = false;
             break;
         case SDL_KEYDOWN:
-
+           
             if (event.key.keysym.sym == SDLK_ESCAPE)
                 isRunning = false;
+
+
+            player->setDrag(.8);
 
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
-                player->ApplyForce(Vec3(0, 10, 0));
+                player->ApplyForceY(speed);
+                
             }
-             if (event.key.keysym.sym == SDLK_s)
+            if (event.key.keysym.sym == SDLK_s)
             {
-                player->ApplyForce(Vec3(0, -10, 0));
-            }
-             if (event.key.keysym.sym == SDLK_a)
-            {
-                player->ApplyForce(Vec3(-10, 0, 0));
-            }
+                 player->ApplyForceY(-speed);
+            }         
             if (event.key.keysym.sym == SDLK_d)
             {
-                player->ApplyForce(Vec3(10, 0, 0));
+
+                player->ApplyForceX(speed);
+            }   
+            if (event.key.keysym.sym == SDLK_a)
+            {
+                player->ApplyForceX(-speed);
             }
 
             break;
 
         case SDL_KEYUP:
+            
             if (event.key.keysym.sym == SDLK_w)
             {
-                // Stop moving player
-                player->stopPlayerMovement(1);
+                // Start moving player up
+                player->ApplyForceY(0);
+
             }
-            else if (event.key.keysym.sym == SDLK_s)
+            if (event.key.keysym.sym == SDLK_s)
             {
-                player->stopPlayerMovement(2);
+                player->ApplyForceY(0);
+            }          
+            if (event.key.keysym.sym == SDLK_d)
+            {
+
+                player->ApplyForceX(0);
             }
-            else if (event.key.keysym.sym == SDLK_d)
+            if (event.key.keysym.sym == SDLK_a)
             {
-                player->stopPlayerMovement(4);
-            }
-            else if (event.key.keysym.sym == SDLK_a)
-            {
-                player->stopPlayerMovement(3);
+
+                player->ApplyForceX(0);
             }
 
             break;

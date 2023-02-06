@@ -19,6 +19,7 @@ protected:
     float rotation;			// rotating at this speed (radians per second?)
     float angular;          // angular acceleration
     float radius;           // for getting near walls
+    float drag = 1;
 
 	Vec3 imageSizeWorldCoords;
     SDL_Surface* image;
@@ -61,9 +62,10 @@ public:
 	// Added this as public to deal with my demo 
 	// so that mouse position can be copied into a Body.
     virtual void setPos( Vec3 pos );
-    
-    //NEED TO CONTROL THE VELOCITY, NO DRAG CODED?
-    virtual void stopPlayerMovement(int direction);
+
+    virtual void setDrag(float drag_);
+    virtual void ApplyForceY(float y);
+    virtual void ApplyForceX(float x);
 };
 
 #endif /* BODY_H */

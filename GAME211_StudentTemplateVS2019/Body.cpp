@@ -1,5 +1,5 @@
 #include "Body.h"
-
+#include <stdio.h>
 Body::Body()
 {
     pos = Vec3();
@@ -45,15 +45,20 @@ void Body::ApplyForce( Vec3 force_ ) {
 
 void Body::Update( float deltaTime ){
     
-    if (vel.x < 10 || vel.y < 10)
-    {
-        pos = pos + vel * deltaTime + accel * (0.5f * deltaTime * deltaTime);
-        vel = vel + accel * deltaTime;
-    }
+    std::cout << "\nVEL = " << vel.x <<", " << vel.y;
+    std::cout << "\nAccel = " << accel.x << ", " << accel.y;
+
+    pos = (pos + vel * deltaTime) + (0.5 * (accel * deltaTime * deltaTime));
+    vel = (vel + accel * deltaTime);
 
     // Update orientation
     orientation += rotation * deltaTime;
     rotation += angular * deltaTime;
+
+    vel *= drag;
+
+    
+
 
 }
 
@@ -76,22 +81,21 @@ void Body::HandleEvents( const SDL_Event& event )
 void Body::setPos( Vec3 pos_ )
 {
     pos = pos_; 
-} //commit by trien
+} 
 
-void Body::stopPlayerMovement(int direction)
+
+void Body::setDrag(float drag_)
 {
-    //1 = up, 2 = down, 3 = left, 4 = right
-
-    if (direction == 1 || direction == 2)
-    {
-        accel.y = 0;
-        vel.y = 0;
-    }
-    if (direction == 3 || direction == 4)
-    {
-        
-        accel.x = 0;
-        vel.x = 0;
-    }
-
+    drag = drag_;
 }
+
+void Body::ApplyForceY(float y)
+{
+    accel.y = y / mass;
+}
+
+void Body::ApplyForceX(float x)
+{
+    accel.x = x / mass;
+}
+
