@@ -15,10 +15,10 @@ class Collider : public Body
 protected:
 public:
 	//Variables to collect the bounds of the box + position of object needing the collider
-	int x, y, w, h;
+	float x, y, w, h;
 
 	//Constructor
-	Collider(int x_, int y_, int w_, int h_);
+	Collider(float x_, float y_, float w_, float h_);
 
 	/// <summary>
 	/// Resets the collider to a different position/box size
@@ -27,21 +27,21 @@ public:
 	/// <param name="y"></param>
 	/// <param name="w"></param>
 	/// <param name="h"></param>
-	void resetCollider(int x_, int y_, int w_, int h_);
+	void resetCollider(float x_, float y_, float w_, float h_);
 
 	/// <summary>
 	/// Sets the colliders position
 	/// </summary>
 	/// <param name="x_"></param>
 	/// <param name="y_"></param>
-	void setCollPosition(int x_, int y_);
+	void setCollPosition(float x_, float y_);
 
 	/// <summary>
 	/// Sets the bounds (box) of the collider
 	/// </summary>
 	/// <param name="w_"></param>
 	/// <param name="h_"></param>
-	void setCollBounds(int w_, int h_);
+	void setCollBounds(float w_, float h_);
 
 	/// <summary>
 	/// Checks of two Collider Boxs intersect. 

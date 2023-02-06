@@ -55,37 +55,37 @@ void PlayerBody::Render( float scale )
     float orientationDegrees = orientation * 180.0f / M_PI ;
 
 
-    // Calculate Angle Variable
-    int Delta_x; int Delta_y;
-    int mouse_x, mouse_y;
-    double angle;
-    SDL_GetMouseState(&mouse_x, &mouse_y);
-    Delta_x = pos.x - mouse_x;
-    Delta_y = pos.y - mouse_y;
+   // // Calculate Angle Variable
+   // int Delta_x; int Delta_y;
+   // int mouse_x, mouse_y;
+   // double angle;
+   // SDL_GetMouseState(&mouse_x, &mouse_y);
+   // Delta_x = pos.x - mouse_x;
+   // Delta_y = pos.y - mouse_y;
 
-    angle = (atan2(mouse_y - pos.y, mouse_x - pos.x) * 180.0000) / 0.25;
-    
+   //// angle = (atan2(mouse_y - pos.y, mouse_x - pos.x) * 180.0000) / 0.25;
+   // angle = 0;
 
-    // Flip the Sprite
-    SDL_RendererFlip a = SDL_FLIP_NONE;
+   // // Flip the Sprite
+   // SDL_RendererFlip a = SDL_FLIP_NONE;
 
 
-    if (square.x >= mouse_x)
-    {
-       a = SDL_FLIP_HORIZONTAL;
+   // if (square.x >= mouse_x)
+   // {
+   //    a = SDL_FLIP_HORIZONTAL;
 
-    }
-    if (square.y >= mouse_y)
-    {
-        a = SDL_FLIP_VERTICAL;
+   // }
+   // if (square.y >= mouse_y)
+   // {
+   //     a = SDL_FLIP_VERTICAL;
 
-    }
+   // }
 
     SDL_Point c { 3, 40 };
 
     // Render the Sprite
     SDL_RenderCopyEx( renderer, texture, nullptr, &square,
-        angle - orientationDegrees, &c, a );
+        orientationDegrees, nullptr, SDL_FLIP_NONE );
 
   
 }

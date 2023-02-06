@@ -7,7 +7,7 @@
 
 #include "Collider.h"
 
-Collider::Collider(int x_, int y_, int w_, int h_)
+Collider::Collider(float x_, float y_, float w_, float h_)
 {
 	x = x_;
 	y = y_;
@@ -16,7 +16,7 @@ Collider::Collider(int x_, int y_, int w_, int h_)
 }
 
 
-void Collider::resetCollider(int x_, int y_, int w_, int h_)
+void Collider::resetCollider(float x_, float y_, float w_, float h_)
 {
 	x = x_;
 	y = y_;
@@ -24,13 +24,13 @@ void Collider::resetCollider(int x_, int y_, int w_, int h_)
 	h = h_;
 }
 
-void Collider::setCollPosition(int x_, int y_)
+void Collider::setCollPosition(float x_, float y_)
 {
 	x = x_;
 	y = y_;
 }
 
-void Collider::setCollBounds(int w_, int h_)
+void Collider::setCollBounds(float w_, float h_)
 {
 	w = w_;
 	h = h_;
@@ -42,10 +42,10 @@ bool Collider::checkCollBox(Collider objectOne, Collider objectTwo)
 	std::cout << "\nPlayer Position " << objectOne.x << ", " << objectOne.y;
 	std::cout << "\nEnemy Position " << objectTwo.x << ", " << objectTwo.y;
 	
-	int leftA, leftB;
-	int rightA, rightB;
-	int topA, topB;
-	int bottomA, bottomB;
+	float leftA, leftB;
+	float rightA, rightB;
+	float topA, topB;
+	float bottomA, bottomB;
 
 	// Calculate the sides of rect A
 	leftA = objectOne.x;

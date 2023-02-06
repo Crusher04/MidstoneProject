@@ -61,6 +61,9 @@ public:
 	// Added this as public to deal with my demo 
 	// so that mouse position can be copied into a Body.
     virtual void setPos( Vec3 pos );
+    
+    //NEED TO CONTROL THE VELOCITY, NO DRAG CODED?
+    virtual void stopPlayerMovement(int direction);
 };
 
 #endif /* BODY_H */

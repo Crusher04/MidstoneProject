@@ -2,11 +2,8 @@
 #include "VMath.h"
 #include "Collider.h"
 
-Collider playerColl(1000, 8, 2, 2);
-Collider enemyColl(12, 8, 2, 2);
-
-// Define the rectangle
-SDL_Rect rect = { playerColl.x, playerColl.y, 50, 50 };
+Collider playerColl(1000, 8, 1, 1);
+Collider enemyColl(12, 8, 1, 1);
 
 // See notes about this constructor in Scene1.h.
 Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
@@ -33,7 +30,9 @@ bool Scene2::OnCreate() {
 
 
 
-	// Set player image to PacMan
+	/////////////////////////////////
+	//Player Sprite
+	/////////////////////////////////
 
 	SDL_Surface* image;
 	SDL_Texture* texture;
@@ -43,19 +42,26 @@ bool Scene2::OnCreate() {
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
 
-	// Set Player Default Position
-	game->getPlayer()->playerPos = Vec3(8, 8, 0);
-	game->getEnemy()->enemyPos = Vec3(12, 8, 0);
 
-	/// Enemy Work In Progress
+	/////////////////////////////////
+	//Enemy Sprite
+	/////////////////////////////////
 	SDL_Surface* enemyImage;
 	SDL_Texture* enemyTexture;
 	enemyImage = IMG_Load("Pacman.png");
 	enemyTexture = SDL_CreateTextureFromSurface(renderer, enemyImage);
-
 	game->getEnemy()->setImage(enemyImage);
 	game->getEnemy()->setTexture(enemyTexture);
 
+	/////////////////////////////////
+	//Default Positions
+	/////////////////////////////////
+	game->getPlayer()->playerPos = Vec3(8, 8, 0);
+	game->getEnemy()->enemyPos = Vec3(12, 8, 0);
+
+	/////////////////////////////////
+	//Set Player Collider
+	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 
 	return true;
@@ -67,9 +73,7 @@ void Scene2::OnDestroy() {}
 void Scene2::Update(const float deltaTime) {
 
 	// Update player
-
-	
-	game->getPlayer()->setPos(game->getPlayer()->playerPos);
+	//game->getPlayer()->setPos(game->getPlayer()->playerPos);
 	game->getEnemy()->setPos(game->getEnemy()->enemyPos);
 
 

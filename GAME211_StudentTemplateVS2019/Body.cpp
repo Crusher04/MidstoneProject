@@ -44,8 +44,13 @@ void Body::ApplyForce( Vec3 force_ ) {
 }
 
 void Body::Update( float deltaTime ){
-    pos = pos + vel * deltaTime + accel * (0.5f * deltaTime * deltaTime);
-    vel = vel + accel * deltaTime;
+    
+    if (vel.x < 10 || vel.y < 10)
+    {
+        pos = pos + vel * deltaTime + accel * (0.5f * deltaTime * deltaTime);
+        vel = vel + accel * deltaTime;
+    }
+
     // Update orientation
     orientation += rotation * deltaTime;
     rotation += angular * deltaTime;
@@ -72,3 +77,21 @@ void Body::setPos( Vec3 pos_ )
 {
     pos = pos_; 
 } //commit by trien
+
+void Body::stopPlayerMovement(int direction)
+{
+    //1 = up, 2 = down, 3 = left, 4 = right
+
+    if (direction == 1 || direction == 2)
+    {
+        accel.y = 0;
+        vel.y = 0;
+    }
+    if (direction == 3 || direction == 4)
+    {
+        
+        accel.x = 0;
+        vel.x = 0;
+    }
+
+}
