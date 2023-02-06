@@ -4,8 +4,6 @@
 #include "EntityHealth.h"
 #include "EnemyBody.h"
 
-//Create/Initialize Player Health
-EntityHealth playerHealth;
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -42,14 +40,17 @@ bool GameManager::OnCreate() {
 	}
 
 
-    speed = 15;
+    speed = 85;
     w = false;
 
-    // select scene for specific assignment
-    //THIS CHANGES THE DEFAULT LOADED SCENE
+    /////////////////////////////////
+    //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
+    /////////////////////////////////
     currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
     
-    // create player
+    /////////////////////////////////
+    //CREATE THE PLAYER ATTRIBUTES
+    /////////////////////////////////
     float mass = 1.0f;
     float radius = 0.5f;
     float orientation = 0.0f;
@@ -71,6 +72,7 @@ bool GameManager::OnCreate() {
         angular,
         this
     );
+
     if ( player->OnCreate() == false ) {
         OnDestroy();
         return false;
@@ -135,7 +137,7 @@ void GameManager::handleEvents()
 
     while (SDL_PollEvent(&event))
     {
-        if (event.type == SDL_QUIT)
+        /*if (event.type == SDL_QUIT)
         {
             isRunning = false;
         }
@@ -153,39 +155,79 @@ void GameManager::handleEvents()
                 isRunning = false;
                 break;
             case SDL_SCANCODE_1:
-               // LoadScene(2);
-                std::cout << "\nPlayer Health is " << playerHealth.getHealth();
                 break;
             case SDL_SCANCODE_2:        
-                std::cout << "\nResetting Health at 100";
-                playerHealth.setHealth(100);
                 break;
-            }
+            case SDL_SCANCODE_W:
+                player->ApplyForce(Vec3(0, 1, 0));
+                break;
+            case SDL_SCANCODE_S:
+                player->setAccel(Vec3(0, 0, 0));
+                break;
+            }        
+        }*/
+
+        switch (event.type)
+        {
+        case SDL_QUIT:
+            isRunning = false;
+            break;
+        case SDL_KEYDOWN:
            
-            // Player Movement
-            if (state[SDL_SCANCODE_W])
+            if (event.key.keysym.sym == SDLK_ESCAPE)
+                isRunning = false;
+
+
+            player->setDrag(.8);
+
+            if (event.key.keysym.sym == SDLK_w)
             {
-
-                player->playerPos.y += speed * timer->GetDeltaTime();
-
+                // Start moving player up
+                player->ApplyForceY(speed);
                 
             }
-            if (state[SDL_SCANCODE_A])
+            if (event.key.keysym.sym == SDLK_s)
             {
-                player->playerPos.x += -speed * timer->GetDeltaTime();
-            }
-            if (state[SDL_SCANCODE_S])
+                 player->ApplyForceY(-speed);
+            }         
+            if (event.key.keysym.sym == SDLK_d)
             {
 
-                player->playerPos.y += -speed * timer->GetDeltaTime();
+                player->ApplyForceX(speed);
+            }   
+            if (event.key.keysym.sym == SDLK_a)
+            {
+                player->ApplyForceX(-speed);
+            }
+
+            break;
+
+        case SDL_KEYUP:
+            
+            if (event.key.keysym.sym == SDLK_w)
+            {
+                // Start moving player up
+                player->ApplyForceY(0);
 
             }
-            if (state[SDL_SCANCODE_D])
+            if (event.key.keysym.sym == SDLK_s)
             {
-                player->playerPos.x += speed * timer->GetDeltaTime();
+                player->ApplyForceY(0);
+            }          
+            if (event.key.keysym.sym == SDLK_d)
+            {
+
+                player->ApplyForceX(0);
             }
-        
+            if (event.key.keysym.sym == SDLK_a)
+            {
+
+                player->ApplyForceX(0);
+            }
+
+            break;
         }
+
        
         currentScene->HandleEvents(event);
     }
