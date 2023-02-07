@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "Scene1.h"
 #include "Scene2.h"
+#include "Scene8.h"
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -124,7 +125,7 @@ void GameManager::handleEvents()
                 isRunning = false;
                 break;
             case SDL_SCANCODE_1:
-                LoadScene(2);
+                LoadScene(8);
                 break;
             default:
                 break;
@@ -180,6 +181,9 @@ void GameManager::LoadScene( int i )
             break;
         case 2:
             currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+            break;
+        case 8:
+            currentScene = new Scene8(windowPtr->GetSDL_Window(), this);
             break;
         default:
             currentScene = new Scene1( windowPtr->GetSDL_Window(), this );
