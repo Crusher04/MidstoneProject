@@ -3,6 +3,7 @@
 
 #include "MMath.h"
 #include "Scene.h"
+#include "SoundEffect.h"
 
 using namespace MATH;
 class Scene8 : public Scene {
@@ -13,7 +14,7 @@ private:
 	SDL_Renderer* renderer;	// the renderer associated with SDL window 
 	Matrix4 projectionMatrix;	// set in OnCreate()
     Matrix4     inverseProjection;	// set in OnCreate()
-
+	SoundEffect se;
 public:
 	// This constructor may be different from what you've seen before
 	// Notice the second parameter, and look in GameManager.cpp

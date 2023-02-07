@@ -5,15 +5,16 @@ SoundEffect::SoundEffect()
 	// init sound
 	SDL_Init(SDL_INIT_AUDIO);
 
-	int audio_rate = 22050;
+	int audio_rate = 44100;
 	Uint16 audio_format = AUDIO_S16SYS;
 	int audio_channels = 2;
-	int audio_buffers = 4096;
+	int audio_buffers = 2048;
 
-	if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0){
+	if (Mix_OpenAudio(audio_rate, MIX_DEFAULT_FORMAT, audio_channels, audio_buffers) != 0){
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't init audio %s", Mix_GetError());
 		exit(-1);
 	}
+	loadSoundEffect();
 }
 
 SoundEffect::~SoundEffect()
@@ -23,7 +24,8 @@ SoundEffect::~SoundEffect()
 
 void SoundEffect::loadSoundEffect()
 {
-	
+	addSoundEffect("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3");
+	addSoundEffect("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3");
 }
 
 void SoundEffect::addSoundEffect(const char* path)
