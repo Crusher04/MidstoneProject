@@ -4,6 +4,7 @@
 #include "MMath.h"
 #include "Scene.h"
 #include "SoundEffect.h"
+#include "Music.h"
 
 using namespace MATH;
 class Scene8 : public Scene {
@@ -15,6 +16,7 @@ private:
 	Matrix4 projectionMatrix;	// set in OnCreate()
     Matrix4     inverseProjection;	// set in OnCreate()
 	SoundEffect se;
+	Music mu;
 public:
 	// This constructor may be different from what you've seen before
 	// Notice the second parameter, and look in GameManager.cpp

@@ -1,0 +1,76 @@
+#include "Music.h"
+
+Music::Music()
+{
+	SDL_Init(SDL_INIT_AUDIO);
+
+	int audio_rate = 44100;
+	Uint16 audio_format = AUDIO_S16SYS;
+	int audio_channels = 2;
+	int audio_buffers = 2048;
+
+	if (Mix_OpenAudio(audio_rate, MIX_DEFAULT_FORMAT, audio_channels, audio_buffers) != 0) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't init audio %s", Mix_GetError());
+		exit(-1);
+	}
+	loadMusic();
+}
+
+Music::~Music()
+{
+	SDL_Quit();
+}
+
+void Music::addMusic(const char* path)
+{
+	Mix_Music* tmpMusic = Mix_LoadMUS(path);
+
+	if (tmpMusic != nullptr) {
+		mMusicBank.push_back(tmpMusic);
+		std::cout << (mMusicBank.size() - 1) << ", sound loaded, path: " << path << std::endl;
+	}
+	else {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't init audio %s", Mix_GetError());
+	}
+}
+
+void Music::playMusic(const int which, int volume)
+{
+	if (which > mMusicBank.size() - 1) {
+		std::cout << "Music out of range. \n";
+		return;
+	}
+	Mix_VolumeMusic(setMusicVolume(volume));
+	Mix_PlayMusic(mMusicBank[which], -1);
+	m_Playing = true;
+	std::cout << "Played Sound: " << which << std::endl;
+}
+
+void Music::Play_Pause()
+{
+	if (m_Playing && !m_Paused) {
+		Mix_PausedMusic();
+		m_Paused = true;
+	}
+	else if (m_Playing && m_Paused) {
+		Mix_ResumeMusic();
+		m_Paused = false;
+	}
+	else {
+		return;
+	}
+
+}
+
+int Music::setMusicVolume(int v)
+{
+	int volume;
+	volume = (MIX_MAX_VOLUME * v) / 100;
+	std::cout << "Volume of music " << volume << std::endl;
+	return volume;
+}
+
+void Music::loadMusic()
+{
+	addMusic("Audio/BackGround Music/Menu music/awaken-136824.mp3");
+}

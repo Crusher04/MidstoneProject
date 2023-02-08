@@ -33,7 +33,8 @@ bool Scene8::OnCreate() {
 	texture = SDL_CreateTextureFromSurface(renderer, image);
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
-	se.playSoundEffect(1);
+	mu.playMusic(0, 100);
+	se.playSoundEffect(0);
 	return true;
 }
 

@@ -24,7 +24,7 @@ SoundEffect::~SoundEffect()
 
 void SoundEffect::loadSoundEffect()
 {
-	addSoundEffect("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3");
+	addSoundEffect("Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3");
 	addSoundEffect("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3");
 }
 
