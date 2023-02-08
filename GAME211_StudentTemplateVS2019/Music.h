@@ -3,23 +3,21 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <vector>
-#include <functional>
-class Music
+#include "Audio.h"
+class Music : public Audio
 {
 public:
-	Music();
-	~Music();
+	Music() : Audio() { loadAudio(); }
 
+	void addAudio(const char* path);
 
-	void addMusic(const char* path);
-
-	void playMusic(const int which, int volume);
+	void playAudio(const int which, int volume);
 
 	void Play_Pause();
 
 	int setMusicVolume(int v);
 private:
-	void loadMusic();
+	void loadAudio();
 	std::vector<Mix_Music*> mMusicBank;
 	bool m_Paused = false;
 	bool m_Playing = false;

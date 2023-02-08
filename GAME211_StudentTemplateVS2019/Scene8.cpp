@@ -28,13 +28,13 @@ bool Scene8::OnCreate() {
 
 	SDL_Surface* image;
 	SDL_Texture* texture;
-
+	
 	image = IMG_Load("Inky.png");
 	texture = SDL_CreateTextureFromSurface(renderer, image);
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
-	mu.playMusic(0, 100);
-	se.playSoundEffect(0);
+	mu.playAudio(0, 100);
+	se.playAudio(0);
 	return true;
 }
 

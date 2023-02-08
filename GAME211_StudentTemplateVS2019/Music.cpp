@@ -1,27 +1,8 @@
 #include "Music.h"
 
-Music::Music()
-{
-	SDL_Init(SDL_INIT_AUDIO);
 
-	int audio_rate = 44100;
-	Uint16 audio_format = AUDIO_S16SYS;
-	int audio_channels = 2;
-	int audio_buffers = 2048;
 
-	if (Mix_OpenAudio(audio_rate, MIX_DEFAULT_FORMAT, audio_channels, audio_buffers) != 0) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't init audio %s", Mix_GetError());
-		exit(-1);
-	}
-	loadMusic();
-}
-
-Music::~Music()
-{
-	SDL_Quit();
-}
-
-void Music::addMusic(const char* path)
+void Music::addAudio(const char* path)
 {
 	Mix_Music* tmpMusic = Mix_LoadMUS(path);
 
@@ -34,7 +15,7 @@ void Music::addMusic(const char* path)
 	}
 }
 
-void Music::playMusic(const int which, int volume)
+void Music::playAudio(const int which, int volume)
 {
 	if (which > mMusicBank.size() - 1) {
 		std::cout << "Music out of range. \n";
@@ -70,7 +51,7 @@ int Music::setMusicVolume(int v)
 	return volume;
 }
 
-void Music::loadMusic()
+void Music::loadAudio()
 {
-	addMusic("Audio/BackGround Music/Menu music/awaken-136824.mp3");
+	addAudio("Audio/BackGround Music/Menu music/awaken-136824.mp3");
 }

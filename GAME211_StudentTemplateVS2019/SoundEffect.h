@@ -3,19 +3,17 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <vector>
-class SoundEffect
+#include "Audio.h"
+class SoundEffect : public Audio
 {
 public:
-	SoundEffect();
-	~SoundEffect();
-	
+	SoundEffect() : Audio() { loadAudio(); }
+	void addAudio(const char* path);
 
-	void addSoundEffect(const char* path);
-
-	void playSoundEffect(const int which) const;
+	void playAudio(const int which) const;
 
 private:
-	void loadSoundEffect();
+	void loadAudio();
 	std::vector<Mix_Chunk*> mSoundEffectBank;
 };
 
