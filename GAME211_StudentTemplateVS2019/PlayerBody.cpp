@@ -48,7 +48,7 @@ void PlayerBody::Render( float scale )
     square.y = static_cast<int>(screenCoords.y - 0.5f * h);
     square.w = static_cast<int>(w) * 5;
     square.h = static_cast<int>(h) * 25;
-
+    
 
 
     SDL_Rect d;
