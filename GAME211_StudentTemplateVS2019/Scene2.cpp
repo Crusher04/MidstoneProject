@@ -71,7 +71,7 @@ bool Scene2::OnCreate() {
 	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
-
+	enemyColl.passthrough = true;
 	return true;
 
 }
@@ -90,21 +90,31 @@ void Scene2::Update(const float deltaTime) {
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 
-	//Check for collision
+
+	//Did player recently take damage?
 	if (!damageTaken)
 	{
-		if (playerColl.checkCollBox(playerColl, enemyColl))
+		if (enemyColl.passthrough == false)
+		{
+			if (playerColl.checkCollBox(playerColl, enemyColl))
+			{
+				playerColl.setCollPosition(playerColl.previousPos.x, playerColl.previousPos.y);
+				game->getPlayer()->setPos(playerColl.previousPos);
+			}
+			
+		}
+		//Check for collision
+		else if (playerColl.checkCollBox(playerColl, enemyColl))
 		{
 			std::cout << "\nDamage Taken!";
 			game->getPlayer()->health.takeDamage(10);
-			damageTaken = true;
+			damageTaken = true; //stops the player from taking damage per tick
 			std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
-			timeOfDamage = SDL_GetTicks() + damageDelay;
+			timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay
 		}			
 	}
 
-	//std::cout << "DelaTime: " << SDL_GetTicks() << " --- " << "timeOfDamage: " << timeOfDamage << "\n";
-
+	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)
 	{
 		damageTaken = false;

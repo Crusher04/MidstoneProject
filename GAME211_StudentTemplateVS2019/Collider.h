@@ -16,7 +16,8 @@ protected:
 public:
 	//Variables to collect the bounds of the box + position of object needing the collider
 	float x, y, w, h;
-
+	bool passthrough;
+	Vec3 previousPos;
 	//Constructor
 	Collider(float x_, float y_, float w_, float h_);
 

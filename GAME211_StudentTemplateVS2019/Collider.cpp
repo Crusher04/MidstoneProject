@@ -6,7 +6,7 @@
 */
 
 #include "Collider.h"
-
+#include <stdio.h>
 Collider::Collider(float x_, float y_, float w_, float h_)
 {
 	x = x_;
@@ -61,15 +61,27 @@ bool Collider::checkCollBox(Collider objectOne, Collider objectTwo)
 
 	// If any of the sides from A are outside of B
 	if (bottomA <= topB) {
+		//std::cout << "BottomA<=TopB\n";
+		previousPos.x = objectOne.x;
+		previousPos.y = objectOne.y;
 		return false;
 	}
 	else if (topA >= bottomB) {
+		//std::cout << "topA >= bottomB\n";
+		previousPos.x = objectOne.x;
+		previousPos.y = objectOne.y;
 		return false;
 	}
 	else if (rightA <= leftB) {
+		//std::cout << "rightA <= leftB\n";
+		previousPos.x = objectOne.x;
+		previousPos.y = objectOne.y;
 		return false;
 	}
 	else if (leftA >= rightB) {
+		//std::cout << "leftA >= rightB\n";
+		previousPos.x = objectOne.x;
+		previousPos.y = objectOne.y;
 		return false;
 	}
 	else
