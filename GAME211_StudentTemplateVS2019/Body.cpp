@@ -45,8 +45,8 @@ void Body::ApplyForce( Vec3 force_ ) {
 
 void Body::Update( float deltaTime ){
     
-    std::cout << "\nVEL = " << vel.x <<", " << vel.y;
-    std::cout << "\nAccel = " << accel.x << ", " << accel.y;
+    //std::cout << "\nVEL = " << vel.x <<", " << vel.y;
+    //std::cout << "\nAccel = " << accel.x << ", " << accel.y;
 
     pos = (pos + vel * deltaTime) + (0.5 * (accel * deltaTime * deltaTime));
     vel = (vel + accel * deltaTime);

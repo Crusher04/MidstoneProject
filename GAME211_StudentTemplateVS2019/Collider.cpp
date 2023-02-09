@@ -39,8 +39,8 @@ void Collider::setCollBounds(float w_, float h_)
 
 bool Collider::checkCollBox(Collider objectOne, Collider objectTwo)
 {
-	std::cout << "\nPlayer Position " << objectOne.x << ", " << objectOne.y;
-	std::cout << "\nEnemy Position " << objectTwo.x << ", " << objectTwo.y;
+	//std::cout << "\nPlayer Position " << objectOne.x << ", " << objectOne.y;
+	//std::cout << "\nEnemy Position " << objectTwo.x << ", " << objectTwo.y;
 	
 	float leftA, leftB;
 	float rightA, rightB;
@@ -74,7 +74,7 @@ bool Collider::checkCollBox(Collider objectOne, Collider objectTwo)
 	}
 	else
 	{
-		std::cout << "\nPlayer Collided";
+		//std::cout << "\nPlayer Collided";
 
 		return true;
 	}

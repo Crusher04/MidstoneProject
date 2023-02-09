@@ -9,6 +9,9 @@
 Collider playerColl(1000, 8, 1, 1);
 Collider enemyColl(12, 8, 1, 1);
 
+int damageDelay = 1000;
+float timeOfDamage = 0;
+bool damageTaken = false;
 // See notes about this constructor in Scene1.h.
 Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
 	window = sdlWindow_;
@@ -61,12 +64,13 @@ bool Scene2::OnCreate() {
 	//Default Positions
 	/////////////////////////////////
 	game->getPlayer()->playerPos = Vec3(8, 8, 0);
-	game->getEnemy()->enemyPos = Vec3(12, 8, 0);
+	game->getEnemy()->enemyPos = Vec3(20, 8, 0);
 
 	/////////////////////////////////
 	//Set Player Collider
 	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
+	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 
 	return true;
 
@@ -76,15 +80,37 @@ void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
 
-	// Update player
-	//game->getPlayer()->setPos(game->getPlayer()->playerPos);
+	//Set Enemy Position
 	game->getEnemy()->setPos(game->getEnemy()->enemyPos);
 
-
+	//Update Player
 	game->getPlayer()->Update(deltaTime);
 	
+	//Set Collider locations
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
-	playerColl.checkCollBox(playerColl, enemyColl);
+	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
+
+	//Check for collision
+	if (!damageTaken)
+	{
+		if (playerColl.checkCollBox(playerColl, enemyColl))
+		{
+			std::cout << "\nDamage Taken!";
+			game->getPlayer()->health.takeDamage(10);
+			damageTaken = true;
+			std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
+			timeOfDamage = SDL_GetTicks() + damageDelay;
+		}			
+	}
+
+	//std::cout << "DelaTime: " << SDL_GetTicks() << " --- " << "timeOfDamage: " << timeOfDamage << "\n";
+
+	if (SDL_GetTicks() > timeOfDamage)
+	{
+		damageTaken = false;
+	}
+
+
 }
 
 void Scene2::Render() {

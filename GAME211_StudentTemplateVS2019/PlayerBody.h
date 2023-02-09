@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "Body.h"
 #include "GameManager.h"
+#include "EntityHealth.h"
 
 class PlayerBody : public Body
 {
@@ -50,11 +51,13 @@ public:
     // use the base class versions of getters
     Vec3 playerPos;
     Vec3 enemyPos;
+    EntityHealth health;
     bool OnCreate();
     void Render( float scale = 1.0f );
     void HandleEvents( const SDL_Event& event );
     void Update( float deltaTime );
     void setTexture( SDL_Texture* texture_ ) { texture = texture_; }
+    
     
 };
 

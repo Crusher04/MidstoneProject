@@ -3,7 +3,6 @@
 #include "Scene2.h"
 #include "EntityHealth.h"
 #include "EnemyBody.h"
-
 #include "Scene8.h"
 
 GameManager::GameManager() {
@@ -47,10 +46,8 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
-    //currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
-    // select scene for specific assignment
     //THIS CHANGES THE DEFAULT LOADED SCENE
-    currentScene = new Scene8(windowPtr->GetSDL_Window(), this);
+    currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
     
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
@@ -141,37 +138,6 @@ void GameManager::handleEvents()
 
     while (SDL_PollEvent(&event))
     {
-        /*if (event.type == SDL_QUIT)
-        {
-            isRunning = false;
-        }
-        else if (event.type == SDL_KEYDOWN)
-        {
-            switch (event.key.keysym.scancode)
-            {
-            case SDL_SCANCODE_ESCAPE:
-                isRunning = false;
-                break;
-            case SDL_SCANCODE_Q:
-                isRunning = false;
-                break;
-            case SDL_SCANCODE_DELETE:
-                isRunning = false;
-                break;
-            case SDL_SCANCODE_1:
-                LoadScene(8);
-                break;
-            case SDL_SCANCODE_2:        
-                break;
-            case SDL_SCANCODE_W:
-                player->ApplyForce(Vec3(0, 1, 0));
-                break;
-            case SDL_SCANCODE_S:
-                player->setAccel(Vec3(0, 0, 0));
-                break;
-            }        
-        }*/
-
         switch (event.type)
         {
         case SDL_QUIT:
