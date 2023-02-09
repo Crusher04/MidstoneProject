@@ -44,12 +44,16 @@ void PlayerBody::Render( float scale )
     // where SDL will draw the .png image.
     // The 0.5f * w/h offset is to place the .png so that pos represents the center
     // (Note the y axis for screen coords points downward, hence subtraction!!!!)
-    square.x = static_cast<int>(screenCoords.x - 0.5f * w);
+   /* square.x = static_cast<int>(screenCoords.x - 0.5f * w);
     square.y = static_cast<int>(screenCoords.y - 0.5f * h);
     square.w = static_cast<int>(w);
-    square.h = static_cast<int>(h);
+    square.h = static_cast<int>(h);*/
 
-
+    square.x = game->getPlayer()->getPos().x;
+    square.y = game->getPlayer()->getPos().y;
+    SDL_QueryTexture(game->getPlayer()->getTexture(), NULL, NULL, &square.w, &square.h);
+    square.x -= (square.w / 2);
+    square.y -= (square.h / 2);
 
     // Convert character orientation from radians to degrees.
     float orientationDegrees = orientation * 180.0f / M_PI ;
@@ -59,16 +63,16 @@ void PlayerBody::Render( float scale )
     int mouse_x, mouse_y;
     double Result;
     SDL_GetMouseState(&mouse_x, &mouse_y);
-    Delta_x = game->getPlayer()->getPos().x - mouse_x;
-    Delta_y = game->getPlayer()->getPos().y - mouse_y;
+    Delta_x = mouse_x - game->getPlayer()->getPos().x;
+    Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
-    float angle = (atan2(Delta_x, Delta_y) * 180.0000) / 3.14159265;
+    float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
 
-    SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), NULL, NULL, angle, NULL, SDL_FLIP_NONE);
+    //SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), NULL, NULL, angle, NULL, SDL_FLIP_NONE);
 
     // Render the Sprite
-   /* SDL_RenderCopyEx( renderer, texture, nullptr, &square,
-        orientationDegrees, nullptr, SDL_FLIP_NONE );*/
+    SDL_RenderCopyEx( renderer, texture, nullptr, &square,
+        angle, nullptr, SDL_FLIP_NONE );
 
   
 }
