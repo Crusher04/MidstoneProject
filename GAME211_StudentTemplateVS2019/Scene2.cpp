@@ -80,6 +80,8 @@ void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
 
+
+
 	//Set Enemy Position
 	game->getEnemy()->setPos(game->getEnemy()->enemyPos);
 
