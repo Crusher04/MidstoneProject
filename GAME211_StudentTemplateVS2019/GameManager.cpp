@@ -4,6 +4,9 @@
 #include "EntityHealth.h"
 #include "EnemyBody.h"
 #include "Scene8.h"
+#include "Spawner.h"
+
+Spawner enemySpawner;
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -12,6 +15,8 @@ GameManager::GameManager() {
 	currentScene = nullptr;
     player = nullptr;
     enemy = nullptr;
+    enemy2 = nullptr;
+    enemy3 = nullptr;
 }
 
 bool GameManager::OnCreate() {
@@ -91,8 +96,41 @@ bool GameManager::OnCreate() {
         angular,
         this
     );
-
     if (enemy->OnCreate() == false) {
+        OnDestroy();
+        return false;
+    }
+    enemy2 = new EnemyBody
+    (
+        position,
+        velocity,
+        acceleration,
+        mass,
+        radius,
+        orientation,
+        rotation,
+        angular,
+        this
+    );
+
+    if (enemy2->OnCreate() == false) {
+        OnDestroy();
+        return false;
+    }
+    enemy3 = new EnemyBody
+    (
+        position,
+        velocity,
+        acceleration,
+        mass,
+        radius,
+        orientation,
+        rotation,
+        angular,
+        this
+    );
+
+    if (enemy3->OnCreate() == false) {
         OnDestroy();
         return false;
     }
@@ -148,7 +186,10 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_ESCAPE)
                 isRunning = false;
 
-
+            if (event.key.keysym.sym == SDLK_r)
+            {
+                enemySpawner.EnemySpawn(1);
+            }
             player->setDrag(.8);
 
             if (event.key.keysym.sym == SDLK_w)
@@ -234,9 +275,18 @@ SDL_Renderer* GameManager::getRenderer()
 // This might be unfamiliar
 void GameManager::RenderPlayer(float scale)
 {
-    enemy->Render(.2f);
+
     player->Render(scale);
     
+}
+void GameManager::RenderEnemy(float scale)
+{
+    if (enemySpawner.enemy == true)
+    {
+        enemy2->Render(.05f);
+        enemy3->Render(.05f);
+        enemy->Render(.05f);
+    }
 }
 
 void GameManager::LoadScene( int i )

@@ -28,7 +28,8 @@ private:
     class PlayerBody *player;
 	//class EnemyBody *enemy;
 	class EnemyBody *enemy;
-
+	class EnemyBody* enemy2;
+	class EnemyBody* enemy3;
 public:
 	GameManager();
 	~GameManager();
@@ -42,16 +43,19 @@ public:
 	Matrix4 getProjectionMatrix();
     PlayerBody* getPlayer(){ return player; }
 	EnemyBody* getEnemy() { return enemy; }
+	EnemyBody* getEnemy2() { return enemy2; }
+	EnemyBody* getEnemy3() { return enemy3; }
 	void RenderPlayer(float scale = 1.0f);
+	void RenderEnemy(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
 	bool w;
 	float speed;
-
+	bool e;
 	void Run();
 	void handleEvents();
 	void LoadScene( int i );
     bool ValidateCurrentScene();
-    
+	bool isMoving;
 };
 #endif
 
