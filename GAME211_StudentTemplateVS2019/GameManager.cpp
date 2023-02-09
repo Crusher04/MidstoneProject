@@ -4,6 +4,7 @@
 #include "EntityHealth.h"
 #include "EnemyBody.h"
 
+#include "Scene8.h"
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -46,7 +47,10 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
-    currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+    //currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+    // select scene for specific assignment
+    //THIS CHANGES THE DEFAULT LOADED SCENE
+    currentScene = new Scene8(windowPtr->GetSDL_Window(), this);
     
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
@@ -155,6 +159,7 @@ void GameManager::handleEvents()
                 isRunning = false;
                 break;
             case SDL_SCANCODE_1:
+                LoadScene(8);
                 break;
             case SDL_SCANCODE_2:        
                 break;
@@ -281,6 +286,9 @@ void GameManager::LoadScene( int i )
             break;
         case 2:
             currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+            break;
+        case 8:
+            currentScene = new Scene8(windowPtr->GetSDL_Window(), this);
             break;
         default:
             currentScene = new Scene1( windowPtr->GetSDL_Window(), this );
