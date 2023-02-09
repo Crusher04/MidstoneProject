@@ -54,11 +54,11 @@ void PlayerBody::Render( float scale )
 
 
     SDL_Rect d;
-    d.x = 1670;
+    d.x = 4670;
     d.y = 0;
     d.w = 1995;
     d.h = 413;
-
+    
 
 
     Uint32 ticks = SDL_GetTicks();
@@ -85,7 +85,7 @@ void PlayerBody::Render( float scale )
 
     square.x = game->getPlayer()->getPos().x;
     square.y = game->getPlayer()->getPos().y;
-    SDL_QueryTexture(game->getPlayer()->getTexture(), NULL, NULL, &square.w, &square.h);
+    SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
     square.x -= (square.w / 2);
     square.y -= (square.h / 2);
 
@@ -95,7 +95,6 @@ void PlayerBody::Render( float scale )
     //// Calculate Angle Variable
     int Delta_x; int Delta_y;
     int mouse_x, mouse_y;
-    double angle;
     SDL_GetMouseState(&mouse_x, &mouse_y);
 
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
