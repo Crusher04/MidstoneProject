@@ -2,7 +2,7 @@
 
 bool EnemyBody::OnCreate()
 {
-    image = IMG_Load("Pacman.png");
+    image = IMG_Load("Steve_atk.png");
     SDL_Renderer* renderer = game->getRenderer();
     texture = SDL_CreateTextureFromSurface(renderer, image);
     if (image == nullptr) {
@@ -36,9 +36,16 @@ void EnemyBody::Render(float scale)
     // (Note the y axis for screen coords points downward, hence subtraction!!!!)
     square.x = static_cast<int>(screenCoords.x - 0.5f * w);
     square.y = static_cast<int>(screenCoords.y - 0.5f * h);
-    square.w = static_cast<int>(w);
-    square.h = static_cast<int>(h);
+    square.w = static_cast<int>(w) / 2.0;
+    square.h = static_cast<int>(h) * 5;
 
+
+
+    SDL_Rect d;
+    d.x = 6510;
+    d.y = 0;
+    d.w = 7182;
+    d.h = 589;
 
 
     // Convert character orientation from radians to degrees.

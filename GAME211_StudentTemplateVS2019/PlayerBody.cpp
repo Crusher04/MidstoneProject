@@ -46,25 +46,58 @@ void PlayerBody::Render( float scale )
     // (Note the y axis for screen coords points downward, hence subtraction!!!!)
     square.x = static_cast<int>(screenCoords.x - 0.5f * w);
     square.y = static_cast<int>(screenCoords.y - 0.5f * h);
-    square.w = static_cast<int>(w);
-    square.h = static_cast<int>(h);
+    square.w = static_cast<int>(w) * 5;
+    square.h = static_cast<int>(h) * 25;
+
+
+
+    SDL_Rect d;
+    d.x = 1670;
+    d.y = 0;
+    d.w = 1995;
+    d.h = 413;
+
+
+
+    Uint32 ticks = SDL_GetTicks();
+    Uint32 speed = ticks / 300;
+    Uint32 sprite = speed % 2;
+
+    if (game->isMoving == true)
+    {
+        d.x *= sprite * 1;
+        d.y = 0;
+        d.w = 335;
+        d.h = 413;
+    }
+    else if (game->isMoving == false)
+    {
+
+        d.x = 1670;
+        d.y = 0;
+        d.w = 1995;
+        d.h = 413;
+
+    }
 
 
 
     // Convert character orientation from radians to degrees.
     float orientationDegrees = orientation * 180.0f / M_PI ;
 
-    SDL_Point Center{ 40,40 };
+    //// Calculate Angle Variable
     int Delta_x; int Delta_y;
     int mouse_x, mouse_y;
-    double Result;
+    double angle;
     SDL_GetMouseState(&mouse_x, &mouse_y);
-    Delta_x = game->getPlayer()->getPos().x - mouse_x;
-    Delta_y = game->getPlayer()->getPos().y - mouse_y;
+    Delta_x = pos.x - mouse_x;
+    Delta_y = pos.y - mouse_y;
 
-    float angle = (atan2(Delta_x, Delta_y) * 180.0000) / 3.14159265;
+    angle = -90 + (atan2(mouse_y - pos.y, mouse_x - pos.x) * 180.0000) / 0.25;
 
-    SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), NULL, NULL, angle, NULL, SDL_FLIP_NONE);
+    SDL_Point c{ 2, 2 };
+
+    SDL_RenderCopyEx(renderer, texture, &d, &square, angle, &c, SDL_FLIP_NONE);
 
     // Render the Sprite
    /* SDL_RenderCopyEx( renderer, texture, nullptr, &square,
