@@ -3,8 +3,10 @@
 
 #include "MMath.h"
 #include "Scene.h"
-
+#include <vector>
+#include <iostream>
 using namespace MATH;
+using namespace std;
 class Scene2 : public Scene {
 private:
 	float xAxis;	// scene width, in game coords, set in constructor
@@ -31,6 +33,8 @@ public:
     Matrix4 getProjectionMatrix() { return projectionMatrix; }
 	Matrix4 getInverseMatrix() { return inverseProjection; }
 	float a;
+	int i;
+	
 };
 
 #endif

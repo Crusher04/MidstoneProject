@@ -45,7 +45,7 @@ bool GameManager::OnCreate() {
 	}
 
 
-    speed = 1000;
+    speed = 200;
     w = false;
 
     /////////////////////////////////
@@ -195,12 +195,12 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
-                player->ApplyForceY(-speed);
+                player->ApplyForceY(speed);
                 
             }
             if (event.key.keysym.sym == SDLK_s)
             {
-                 player->ApplyForceY(speed);
+                 player->ApplyForceY(-speed);
             }         
             if (event.key.keysym.sym == SDLK_d)
             {

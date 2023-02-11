@@ -48,8 +48,7 @@ void PlayerBody::Render( float scale )
     square.y = static_cast<int>(screenCoords.y - 0.5f * h);
     square.w = static_cast<int>(w);
     square.h = static_cast<int>(h);*/
-    square.w = static_cast<int>(w) * 5;
-    square.h = static_cast<int>(h) * 25;
+
     
 
 
@@ -81,13 +80,19 @@ void PlayerBody::Render( float scale )
         d.h = 413;
 
     }
+     square.x = static_cast<int>(screenCoords.x - 0.5f * w);
+     square.y = static_cast<int>(screenCoords.y - 0.5f * h);
+ 
+    square.w = static_cast<int>(w) * 5;
+    square.h = static_cast<int>(h) * 25;
 
+    
 
-    square.x = game->getPlayer()->getPos().x;
-    square.y = game->getPlayer()->getPos().y;
-    SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
-    square.x -= (square.w / 2);
-    square.y -= (square.h / 2);
+    //square.x = game->getPlayer()->getPos().x;
+    //square.y = game->getPlayer()->getPos().y;
+    //SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+    //square.x -= (square.w / 2);
+    //square.y -= (square.h / 2);
 
     // Convert character orientation from radians to degrees.
     float orientationDegrees = orientation * 180.0f / M_PI ;
@@ -106,7 +111,7 @@ void PlayerBody::Render( float scale )
 
 
     // Render the Sprite
-    SDL_RenderCopyEx( renderer, texture, nullptr, &square,
+    SDL_RenderCopyEx( renderer, texture, &d, &square,
         angle, nullptr, SDL_FLIP_NONE );
 
   

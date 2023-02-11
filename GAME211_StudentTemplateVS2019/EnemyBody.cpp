@@ -1,5 +1,10 @@
 #include "EnemyBody.h"
 
+EnemyBody::EnemyBody(Vec3 pos_)
+{
+    pos = pos_;
+}
+
 bool EnemyBody::OnCreate()
 {
     image = IMG_Load("Steve_atk.png");
@@ -42,9 +47,9 @@ void EnemyBody::Render(float scale)
 
 
     SDL_Rect d;
-    d.x = 6510;
+    d.x = 0;
     d.y = 0;
-    d.w = 7182;
+    d.w = 700;
     d.h = 589;
 
 
@@ -52,7 +57,7 @@ void EnemyBody::Render(float scale)
     float orientationDegrees = orientation * 180.0f / M_PI;
     
     // Render the Sprite
-    SDL_RenderCopyEx(renderer, texture, nullptr, &square,
+    SDL_RenderCopyEx(renderer, texture, &d, &square,
         orientationDegrees, nullptr, SDL_FLIP_NONE);
 }
 

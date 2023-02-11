@@ -39,6 +39,7 @@ public:
     }
         , game{ game_ }
     {}
+    EnemyBody(Vec3 pos_);
 
     // use the base class versions of getters
     Vec3 enemyPos;

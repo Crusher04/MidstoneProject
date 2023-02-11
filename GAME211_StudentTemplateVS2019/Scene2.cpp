@@ -2,6 +2,7 @@
 #include "VMath.h"
 #include "Collider.h"
 #include "Spawner.h"
+
 ///////////////////////////////////////////
 // TESTING SCENE - THIS IS OUR PLAYGROUND
 ///////////////////////////////////////////
@@ -14,7 +15,7 @@ Spawner enemySpawn2(Vec3(8.0f, 8.0f, 0.0f));
 Spawner enemySpawn3(Vec3(14.0f, 9.0f, 0.0f));
 Spawner enemySpawn4(Vec3(5.0f, 5.0f, 0.0f));
 
-
+Spawner e[4] = { enemySpawn,enemySpawn2, enemySpawn3, enemySpawn4 };
 int damageDelay = 1000;
 float timeOfDamage = 0;
 bool damageTaken = false;
@@ -43,15 +44,20 @@ bool Scene2::OnCreate() {
 	/// Turn on the SDL imaging subsystem
 	IMG_Init(IMG_INIT_PNG);
 
+	
+	i = 0;
 
-
+	vector<EnemyBody> d;
+	d.push_back(EnemyBody(enemySpawn.pos));
+	d.resize(3);
+	d[0];
 	/////////////////////////////////
 	//Player Sprite
 	/////////////////////////////////
 
 	SDL_Surface* image;
 	SDL_Texture* texture;
-
+	
 	image = IMG_Load("player1_walk_run.png");
 	texture = SDL_CreateTextureFromSurface(renderer, image);
 	game->getPlayer()->setImage(image);
@@ -74,6 +80,7 @@ bool Scene2::OnCreate() {
 		game->getEnemy3()->setTexture(enemySpawn.enemyTexture3);
 	}
 
+	
 	/////////////////////////////////
 	//Default Positions
 	/////////////////////////////////
@@ -94,35 +101,42 @@ void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
 
+	
 
 	enemySpawn.EnemySpawn(1);
 
+	
 	if (enemySpawn.randomize >= 8)
 	{
 
-		game->getEnemy()->setPos(enemySpawn3.pos);
-		game->getEnemy2()->setPos(enemySpawn.pos);
-		game->getEnemy3()->setPos(enemySpawn2.pos);
-
+		game->getEnemy()->setPos(e[2].pos);
+		game->getEnemy2()->setPos(e[i].pos);
+		game->getEnemy3()->setPos(e[1].pos);
+		
 
 	}
-	if (enemySpawn.randomize >= 4 && enemySpawn.randomize <= 8)
+	if (enemySpawn.randomize >= 4 && enemySpawn.randomize <= 7)
 	{
-		game->getEnemy()->setPos(enemySpawn2.pos);
-		game->getEnemy2()->setPos(enemySpawn4.pos);
-		game->getEnemy3()->setPos(enemySpawn.pos);
+		game->getEnemy()->setPos(e[1].pos);
+		game->getEnemy2()->setPos(e[3].pos);
+		game->getEnemy3()->setPos(e[i].pos);
 
 
 	}
 	if (enemySpawn.randomize <= 4)
 	{
-		game->getEnemy()->setPos(enemySpawn4.pos);
-		game->getEnemy2()->setPos(enemySpawn2.pos);
-		game->getEnemy3()->setPos(enemySpawn3.pos);
+		game->getEnemy()->setPos(e[i].pos);
+		game->getEnemy2()->setPos(e[1].pos);
+		game->getEnemy3()->setPos(e[2].pos);
+
+		i++;
+	}
+	if (i = 3)
+	{
+		i = 0;
 
 
 	}
-
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
 	game->getEnemy()->Update(deltaTime);
