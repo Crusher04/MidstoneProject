@@ -17,6 +17,7 @@ GameManager::GameManager() {
     enemy = nullptr;
     enemy2 = nullptr;
     enemy3 = nullptr;
+    bullet = nullptr;
 }
 
 bool GameManager::OnCreate() {
@@ -132,7 +133,24 @@ bool GameManager::OnCreate() {
         this
     );
 
+    
 
+        bullet = new Bullet(position,
+            velocity,
+            acceleration,
+            mass,
+            radius,
+            orientation,
+            rotation,
+            angular,
+            this);
+        bullet->setPos(Vec3(player->square.x,player->square.y,0.0f));
+
+    if (bullet->OnCreate() == false) {
+        OnDestroy();
+        return false;
+    }
+    fired = false;
     if (enemy3->OnCreate() == false) {
         OnDestroy();
         return false;
@@ -214,6 +232,10 @@ void GameManager::handleEvents()
             {
                 player->ApplyForceX(-speed);
             }
+            if (event.key.keysym.sym == SDLK_p)
+            {
+                fired = true;
+            }
 
             break;
 
@@ -290,6 +312,13 @@ void GameManager::RenderEnemy(float scale)
         enemy3->Render(.05f);
         enemy->Render(.05f);
     }
+}
+
+void GameManager::RenderBullet(float scale)
+{
+
+    bullet->Render(scale);
+
 }
 
 void GameManager::LoadScene( int i )

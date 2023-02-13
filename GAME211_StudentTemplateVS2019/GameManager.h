@@ -8,6 +8,7 @@
 #include "PlayerBody.h"
 #include "EnemyBody.h"
 #include <vector.h>
+#include "Bullet.h"
 using namespace std;
 class GameManager {
 private:
@@ -31,7 +32,7 @@ private:
 	class EnemyBody *enemy;
 	class EnemyBody* enemy2;
 	class EnemyBody* enemy3;
-	
+	class Bullet* bullet;
 public:
 	GameManager();
 	~GameManager();
@@ -47,8 +48,10 @@ public:
 	EnemyBody* getEnemy() { return enemy; }
 	EnemyBody* getEnemy2() { return enemy2; }
 	EnemyBody* getEnemy3() { return enemy3; }
+	Bullet* getBullet() { return bullet; }
 	void RenderPlayer(float scale = 1.0f);
 	void RenderEnemy(float scale = 1.0f);
+	void RenderBullet(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
 	bool w;
 	float speed;
@@ -58,6 +61,8 @@ public:
 	void LoadScene( int i );
     bool ValidateCurrentScene();
 	bool isMoving;
+	bool fired;
+
 };
 #endif
 

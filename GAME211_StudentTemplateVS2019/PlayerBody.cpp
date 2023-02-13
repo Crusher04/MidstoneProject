@@ -29,7 +29,7 @@ void PlayerBody::Render( float scale )
     Matrix4 projectionMatrix = game->getProjectionMatrix();
 
     // square represents the position and dimensions for where to draw the image
-    SDL_Rect square;
+   
     Vec3 screenCoords;
     float    w, h;
 
@@ -80,6 +80,9 @@ void PlayerBody::Render( float scale )
         d.h = 413;
 
     }
+
+    square.x = 5;
+    square.h = 5;
      square.x = static_cast<int>(screenCoords.x - 0.5f * w);
      square.y = static_cast<int>(screenCoords.y - 0.5f * h);
  

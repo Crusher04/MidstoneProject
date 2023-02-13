@@ -19,6 +19,7 @@
     <ClCompile Include="Scene8.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Spawner.cpp" />
+    <ClCompile Include="Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="Scene8.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="Spawner.h" />
+    <ClInclude Include="Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GAME211_StudentTemplateVS2019.rc" />

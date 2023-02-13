@@ -63,6 +63,12 @@ bool Scene2::OnCreate() {
 	game->getPlayer()->setTexture(texture);
 
 
+	SDL_Surface* image2;
+	SDL_Texture* texture2;
+	image2 = IMG_Load("Pacman.png");
+	texture2 = SDL_CreateTextureFromSurface(renderer, image2);
+	game->getBullet()->setImage(image2);
+	game->getBullet()->setTexture(texture2);
 	if (enemySpawn.enemy == true)
 	{
 
@@ -197,6 +203,10 @@ void Scene2::Render() {
 
 	game->RenderEnemy(0.01f);
 
+	if (game->fired == true)
+	{
+		game->RenderBullet(0.10f);
+	}
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }
