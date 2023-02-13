@@ -1,5 +1,9 @@
 #pragma once
 #include "EnemyBody.h"
+#include "GameManager.h"
+#include <vector>
+#include <iostream>
+using namespace std;
 
 
 class Spawner
@@ -23,6 +27,9 @@ public:
 	SDL_Texture* enemyTexture3;
 	int randomize;
 	Vec3 pos;
+	
+	
+
 
 
 };

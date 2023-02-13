@@ -34,7 +34,8 @@ public:
 	Matrix4 getInverseMatrix() { return inverseProjection; }
 	float a;
 	int i;
-	
+	EnemyBody* c;
+	vector<EnemyBody> d;
 };
 
 #endif

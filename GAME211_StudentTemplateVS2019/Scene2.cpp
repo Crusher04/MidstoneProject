@@ -47,10 +47,9 @@ bool Scene2::OnCreate() {
 	
 	i = 0;
 
-	vector<EnemyBody> d;
-	d.push_back(EnemyBody(enemySpawn.pos));
-	d.resize(3);
-	d[0];
+	
+	d.resize(5);
+	d.emplace_back(enemySpawn.pos);
 	/////////////////////////////////
 	//Player Sprite
 	/////////////////////////////////
@@ -102,9 +101,6 @@ void Scene2::OnDestroy() {}
 void Scene2::Update(const float deltaTime) {
 
 	
-
-	enemySpawn.EnemySpawn(1);
-
 	
 	if (enemySpawn.randomize >= 8)
 	{
@@ -112,34 +108,42 @@ void Scene2::Update(const float deltaTime) {
 		game->getEnemy()->setPos(e[2].pos);
 		game->getEnemy2()->setPos(e[i].pos);
 		game->getEnemy3()->setPos(e[1].pos);
-		
-
+		i++;
+	
+			
 	}
 	if (enemySpawn.randomize >= 4 && enemySpawn.randomize <= 7)
 	{
 		game->getEnemy()->setPos(e[1].pos);
 		game->getEnemy2()->setPos(e[3].pos);
 		game->getEnemy3()->setPos(e[i].pos);
-
-
+		i++;
+	
+			
 	}
 	if (enemySpawn.randomize <= 4)
 	{
-		game->getEnemy()->setPos(e[i].pos);
+		game->getEnemy()->setPos(e[2].pos);
 		game->getEnemy2()->setPos(e[1].pos);
 		game->getEnemy3()->setPos(e[2].pos);
-
 		i++;
+			
+			
 	}
-	if (i = 3)
+	if (i == 3)
 	{
+		
 		i = 0;
 
-
 	}
+
+
+	
+	game->getEnemy()->Update(deltaTime);
+	
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
-	game->getEnemy()->Update(deltaTime);
+
 	game->getEnemy2()->Update(deltaTime);
 	game->getEnemy3()->Update(deltaTime);
 

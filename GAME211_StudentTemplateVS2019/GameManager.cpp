@@ -83,7 +83,6 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-
     enemy = new EnemyBody
     (
         position,
@@ -97,9 +96,12 @@ bool GameManager::OnCreate() {
         this
     );
     if (enemy->OnCreate() == false) {
-        OnDestroy();
-        return false;
+       OnDestroy();
+       return false;
     }
+
+  
+
     enemy2 = new EnemyBody
     (
         position,
@@ -129,6 +131,7 @@ bool GameManager::OnCreate() {
         angular,
         this
     );
+
 
     if (enemy3->OnCreate() == false) {
         OnDestroy();

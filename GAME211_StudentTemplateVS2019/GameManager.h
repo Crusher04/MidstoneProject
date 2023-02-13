@@ -7,7 +7,8 @@
 #include "Scene.h"
 #include "PlayerBody.h"
 #include "EnemyBody.h"
-
+#include <vector.h>
+using namespace std;
 class GameManager {
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
@@ -30,6 +31,7 @@ private:
 	class EnemyBody *enemy;
 	class EnemyBody* enemy2;
 	class EnemyBody* enemy3;
+	
 public:
 	GameManager();
 	~GameManager();
