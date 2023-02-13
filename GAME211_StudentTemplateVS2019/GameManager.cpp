@@ -314,7 +314,7 @@ void GameManager::RenderEnemy(float scale)
         enemy2->Render(.05f);
         enemy3->Render(.05f);
         enemy->Render(.05f);
-        enemyArray[i]->Render(.05f);
+     
     }
 }
 
