@@ -40,7 +40,7 @@ public:
         , game{ game_ }
     {}
     EnemyBody(Vec3 pos_);
-
+    SDL_Renderer* renderer;
     // use the base class versions of getters
     Vec3 enemyPos;
     bool OnCreate();

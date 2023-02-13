@@ -28,7 +28,7 @@ bool GameManager::OnCreate() {
     // Use 1000x600 for less than full screen
     const int SCREEN_WIDTH = 1920;
     const int SCREEN_HEIGHT = 1080;
-
+    i = 0;
     windowPtr = new Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (windowPtr == nullptr) {
 		OnDestroy();
@@ -100,9 +100,12 @@ bool GameManager::OnCreate() {
        OnDestroy();
        return false;
     }
-
-  
-
+    if (enemySpawner.enemy == true)
+    {
+        
+        enemyArray[i] = enemy;
+        enemyArray[i]->renderer = getRenderer();
+    }
     enemy2 = new EnemyBody
     (
         position,
@@ -311,6 +314,7 @@ void GameManager::RenderEnemy(float scale)
         enemy2->Render(.05f);
         enemy3->Render(.05f);
         enemy->Render(.05f);
+        enemyArray[i]->Render(.05f);
     }
 }
 

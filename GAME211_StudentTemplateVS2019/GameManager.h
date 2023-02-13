@@ -32,6 +32,7 @@ private:
 	class EnemyBody *enemy;
 	class EnemyBody* enemy2;
 	class EnemyBody* enemy3;
+	class EnemyBody* enemyArray[5];
 	class Bullet* bullet;
 public:
 	GameManager();
@@ -39,7 +40,7 @@ public:
 	bool OnCreate();
 	void OnDestroy();
 
-
+	int i;
 	// These might be unfamiliar
 	float getSceneHeight();
 	float getSceneWidth();
@@ -48,6 +49,7 @@ public:
 	EnemyBody* getEnemy() { return enemy; }
 	EnemyBody* getEnemy2() { return enemy2; }
 	EnemyBody* getEnemy3() { return enemy3; }
+	EnemyBody* getEnemyArray() { return enemyArray[i]; }
 	Bullet* getBullet() { return bullet; }
 	void RenderPlayer(float scale = 1.0f);
 	void RenderEnemy(float scale = 1.0f);

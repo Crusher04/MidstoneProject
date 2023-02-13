@@ -83,6 +83,8 @@ bool Scene2::OnCreate() {
 		game->getEnemy2()->setTexture(enemySpawn.enemyTexture2);
 		game->getEnemy3()->setImage(enemySpawn.enemyImage3);
 		game->getEnemy3()->setTexture(enemySpawn.enemyTexture3);
+		game->getEnemyArray()->setImage(enemySpawn.enemyImage);
+		game->getEnemyArray()->setTexture(enemySpawn.enemyTexture);
 	}
 
 	
@@ -115,8 +117,8 @@ void Scene2::Update(const float deltaTime) {
 		game->getEnemy2()->setPos(e[i].pos);
 		game->getEnemy3()->setPos(e[1].pos);
 		i++;
-	
-			
+		
+		game->i++;
 	}
 	if (enemySpawn.randomize >= 4 && enemySpawn.randomize <= 7)
 	{
@@ -125,7 +127,7 @@ void Scene2::Update(const float deltaTime) {
 		game->getEnemy3()->setPos(e[i].pos);
 		i++;
 	
-			
+		game->i++;
 	}
 	if (enemySpawn.randomize <= 4)
 	{
@@ -134,7 +136,7 @@ void Scene2::Update(const float deltaTime) {
 		game->getEnemy3()->setPos(e[2].pos);
 		i++;
 			
-			
+		game->i++;
 	}
 	if (i == 3)
 	{
