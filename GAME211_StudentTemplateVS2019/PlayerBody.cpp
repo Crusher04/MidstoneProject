@@ -108,7 +108,7 @@ void PlayerBody::Render( float scale )
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
     Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
-    float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+    angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
 
     //SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), NULL, NULL, angle, NULL, SDL_FLIP_NONE);
 

@@ -6,7 +6,10 @@
 //
 
 #include "Bullet.h"
-
+#include "GameManager.h"
+#include "PlayerBody.h"
+PlayerBody player;
+GameManager game;
 
 void Bullet::setPosition(Vec3 pos_)
 {
@@ -96,8 +99,11 @@ void Bullet::Update( float deltaTime )
 {
     // Update position, call Update from base class
     // Note that would update velocity too, and rotation motion
-
-    Body::Update( deltaTime );
-
+   
+        Body::Update( deltaTime );
+        vel.x = -2.5;
+        vel.y = -5;
+    
+   
 }
 

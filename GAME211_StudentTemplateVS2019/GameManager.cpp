@@ -147,7 +147,7 @@ bool GameManager::OnCreate() {
             rotation,
             angular,
             this);
-        bullet->setPos(Vec3(player->square.x,player->square.y,0.0f));
+        bullet->setPos(Vec3(5.0f,5.0f,0.0f));
 
     if (bullet->OnCreate() == false) {
         OnDestroy();
@@ -239,6 +239,7 @@ void GameManager::handleEvents()
             {
                 fired = true;
             }
+            
 
             break;
 
@@ -265,6 +266,13 @@ void GameManager::handleEvents()
                 player->ApplyForceX(0);
             }
 
+            break;
+        
+        case SDL_MOUSEBUTTONDOWN:
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                fired = true;
+            }
             break;
         }
 

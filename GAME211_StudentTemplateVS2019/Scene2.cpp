@@ -144,9 +144,11 @@ void Scene2::Update(const float deltaTime) {
 		i = 0;
 
 	}
-
-
 	
+	if (game->fired == false)
+	{
+		game->getBullet()->setPos(Vec3(game->getPlayer()->getPos().x,game->getPlayer()->getPos().y - 1, 0.0f));
+	}
 	game->getEnemy()->Update(deltaTime);
 	
 	//Update Player
@@ -155,7 +157,12 @@ void Scene2::Update(const float deltaTime) {
 	game->getEnemy2()->Update(deltaTime);
 	game->getEnemy3()->Update(deltaTime);
 
-
+	if (game->fired == true)
+	{
+		
+		game->getBullet()->Update(deltaTime);
+		
+	}
 	//Set Collider locations
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
@@ -207,7 +214,7 @@ void Scene2::Render() {
 
 	if (game->fired == true)
 	{
-		game->RenderBullet(0.10f);
+		game->RenderBullet(0.04f);
 	}
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
