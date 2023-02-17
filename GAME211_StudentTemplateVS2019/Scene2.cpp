@@ -52,7 +52,8 @@ bool Scene2::OnCreate() {
 	SDL_Surface* image;
 	SDL_Texture* texture;
 
-	image = IMG_Load("player1_walk_run.png");
+	//image = IMG_Load("Player.png");
+	image = game->getPlayer()->getImage();					//LOAD IMAGE FROM THE PLAYERBODY INSTEAD OF LETTING THE SCENE DECIDE WHAT THE PLAYER LOOKS LIKE
 	texture = SDL_CreateTextureFromSurface(renderer, image);
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
@@ -174,7 +175,7 @@ void Scene2::Render() {
 
 
 	// render the player
-	game->RenderPlayer(0.01f);
+	game->RenderPlayer(1.5f);
 
 
 	game->RenderEnemy(0.01f);

@@ -10,7 +10,7 @@ int mouseX, mouseY;
 
 bool PlayerBody::OnCreate()
 {
-    image = IMG_Load( "Pacman.png" );
+    image = IMG_Load( "Assets/player_flamethrower.png" );
     SDL_Renderer *renderer = game->getRenderer();
     texture = SDL_CreateTextureFromSurface( renderer, image );
     if (image == nullptr) {
@@ -48,12 +48,13 @@ void PlayerBody::Render( float scale )
     square.y = static_cast<int>(screenCoords.y - 0.5f * h);
     square.w = static_cast<int>(w);
     square.h = static_cast<int>(h);*/
+
     square.w = static_cast<int>(w) * 5;
     square.h = static_cast<int>(h) * 25;
 
 
 
-    SDL_Rect d;
+   /* SDL_Rect d;
     d.x = 4670;
     d.y = 0;
     d.w = 1995;
@@ -80,8 +81,12 @@ void PlayerBody::Render( float scale )
         d.w = 1995;
         d.h = 413;
 
-    }
+    }*/
 
+
+    /////////////////////////////////
+    //MOUSE ORIENTATION! 
+    /////////////////////////////////
 
     square.x = game->getPlayer()->getPos().x;
     square.y = game->getPlayer()->getPos().y;
@@ -101,13 +106,17 @@ void PlayerBody::Render( float scale )
     Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
     float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+    
+    /////////////////////////////////
+    //Render Saling
+    /////////////////////////////////
+    square.w *= scale;
+    square.h *= scale;
 
-    //SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), NULL, NULL, angle, NULL, SDL_FLIP_NONE);
-
-
-    // Render the Sprite
-    SDL_RenderCopyEx( renderer, texture, nullptr, &square,
-        angle, nullptr, SDL_FLIP_NONE );
+    /////////////////////////////////
+    //RENDER
+   /////////////////////////////////
+   SDL_RenderCopyEx( renderer, game->getPlayer()->getTexture(), nullptr, &square, angle, nullptr, SDL_FLIP_NONE);
 
   
 }

@@ -51,12 +51,13 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
-    //THIS CHANGES THE DEFAULT LOADED SCENE
+
     currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
     
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
     /////////////////////////////////
+
     float mass = 1.0f;
     float radius = 0.5f;
     float orientation = 0.0f;
@@ -84,6 +85,9 @@ bool GameManager::OnCreate() {
         return false;
     }
 
+    /////////////////////////////////
+    //CREATE THE ENEMY ATTRIBUTES
+    /////////////////////////////////
     enemy = new EnemyBody
     (
         position,
@@ -135,16 +139,20 @@ bool GameManager::OnCreate() {
         return false;
     }
 
-    // need to create Player before validating scene
+    /////////////////////////////////
+    //Validate SCENE
+    /////////////////////////////////
     if (!ValidateCurrentScene()) {
         OnDestroy();
         return false;
     }
+
 	return true;
 }
 
-
-/// Here's the whole game loop
+/////////////////////////////////
+//GAME LOOP
+/////////////////////////////////
 void GameManager::Run() {
     
 	timer->Start();
