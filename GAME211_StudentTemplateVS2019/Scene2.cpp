@@ -2,6 +2,8 @@
 #include "VMath.h"
 #include "Collider.h"
 #include "Spawner.h"
+#include "Round.h"
+
 ///////////////////////////////////////////
 // TESTING SCENE - THIS IS OUR PLAYGROUND
 ///////////////////////////////////////////
@@ -18,7 +20,6 @@ Spawner enemySpawn4(Vec3(5.0f, 5.0f, 0.0f));
 int damageDelay = 1000;
 float timeOfDamage = 0;
 bool damageTaken = false;
-
 
 // See notes about this constructor in Scene1.h.
 Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
@@ -43,7 +44,10 @@ bool Scene2::OnCreate() {
 	/// Turn on the SDL imaging subsystem
 	IMG_Init(IMG_INIT_PNG);
 
-
+	/////////////////////////////////
+	//Round Start
+	/////////////////////////////////
+	std::cout << "Round " << game->getRound()->getRound() << " has started!\n ";
 
 	/////////////////////////////////
 	//Player Sprite
@@ -88,13 +92,12 @@ bool Scene2::OnCreate() {
 	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 	enemyColl.passthrough = true;
 	return true;
-	a = 0;
+	a = 0;  // whats this and why is it after return true? - Ahmed
 }
 
 void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
-
 
 	enemySpawn.EnemySpawn(1);
 

@@ -5,6 +5,7 @@
 #include "EnemyBody.h"
 #include "Scene8.h"
 #include "Spawner.h"
+#include "Round.h"
 
 Spawner enemySpawner;
 
@@ -14,6 +15,7 @@ GameManager::GameManager() {
 	isRunning = true;
 	currentScene = nullptr;
     player = nullptr;
+    round = nullptr;
     enemy = nullptr;
     enemy2 = nullptr;
     enemy3 = nullptr;
@@ -53,7 +55,7 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
 
     currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
-    
+
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
     /////////////////////////////////
@@ -138,6 +140,12 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
+
+    /////////////////////////////////
+    //Round Start
+    /////////////////////////////////
+    round = new Round();
+    round->GameStart();
 
     /////////////////////////////////
     //Validate SCENE
@@ -300,9 +308,11 @@ void GameManager::RenderEnemy(float scale)
 void GameManager::LoadScene( int i )
 {
     // cleanup of current scene before loading another one
+   
+
     currentScene->OnDestroy();
     delete currentScene;
-
+ 
     switch ( i )
     {
         case 1:

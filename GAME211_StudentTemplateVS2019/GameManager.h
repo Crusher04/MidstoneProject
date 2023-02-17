@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "PlayerBody.h"
 #include "EnemyBody.h"
+#include "Round.h"
 
 class GameManager {
 private:
@@ -26,6 +27,7 @@ private:
 
 	// This might be unfamiliar
     class PlayerBody *player;
+	class Round	*round;
 	//class EnemyBody *enemy;
 	class EnemyBody *enemy;
 	class EnemyBody* enemy2;
@@ -42,6 +44,7 @@ public:
 	float getSceneWidth();
 	Matrix4 getProjectionMatrix();
     PlayerBody* getPlayer(){ return player; }
+	Round* getRound() { return round; }
 	EnemyBody* getEnemy() { return enemy; }
 	EnemyBody* getEnemy2() { return enemy2; }
 	EnemyBody* getEnemy3() { return enemy3; }
