@@ -1,0 +1,34 @@
+/*
+* Programmer:	Ahmed Hammoud
+* Date:			February 2023
+*	Description:
+*	This Class controls the round system in our game
+*/
+
+#include "Round.h"
+
+	/// <summary>
+	/// Sets Default values for currentRound and zombieAmount. currentRound is set to 0 to indicate that the constructor is made an will be set to round 1
+	/// when game has started.
+	/// </summary>
+	Round::Round() { currentRound = 0; zombieAmount = 10; }
+
+	/// <summary>
+	/// Starts the Game with Round 1
+	/// </summary>
+	void Round::GameStart() { currentRound = 1; }
+
+	/// <summary>
+	/// sets the amount of starting zombies for round 1
+	/// </summary>
+	void Round::setStartingZombieAmount(int newZombieAmount) { zombieAmount = newZombieAmount; }
+
+	/// <summary>
+	/// Increments the rounds
+	/// </summary>
+	void Round::RoundEnd() { currentRound += 1; }
+
+	/// <summary>
+	/// Returns the round number
+	/// </summary>
+	int Round::getRound() { return currentRound; }
