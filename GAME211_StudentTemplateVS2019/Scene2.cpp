@@ -61,8 +61,9 @@ bool Scene2::OnCreate() {
 	/////////////////////////////////
 	//Default Positions
 	/////////////////////////////////
-	game->getPlayer()->playerPos = Vec3(20, 20, 0);
-	
+	game->getPlayer()->setPos(Vec3(810, 540, 0));
+	std::cout << "Player Pos = (" << game->getPlayer()->getPos().x <<
+		", " << game->getPlayer()->getPos().y << ")\n";
 
 	/////////////////////////////////
 	//Set Player Collider

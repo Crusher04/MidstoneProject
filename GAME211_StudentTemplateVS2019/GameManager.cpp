@@ -152,7 +152,8 @@ void GameManager::handleEvents()
                
             }
 
-            player->setDrag(.8);
+            //Sets the Drag of the player. Lower = slower
+            player->setDrag(.9f);
 
             if (event.key.keysym.sym == SDLK_w)
             {
