@@ -101,9 +101,8 @@ void Bullet::Update( float deltaTime )
     // Note that would update velocity too, and rotation motion
    
         Body::Update( deltaTime );
-        vel.x = -2.5;
-        vel.y = -5;
-    
-   
+        vel.x += cos(player.angle * M_PI / 180.0f) * 5;
+        vel.y += sin(player.angle * M_PI / 180.0f) * 5;
+        
 }
 
