@@ -2,9 +2,8 @@
 * Programmer:	Ahmed Hammoud
 * Date:			February 2023
 *	Description:
-*	This Class controls the round system in our game
+*	This Class controls the round system in our game and zombie amount
 */
-
 
 #pragma once
 class Round
@@ -34,7 +33,7 @@ public:
 	/// <summary>
 	/// Returns the round number
 	/// </summary>
-	int getRound();
+	int getCurrentRound();
 
 	/// <summary>
 	/// Increments the rounds

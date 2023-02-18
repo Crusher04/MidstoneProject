@@ -11,11 +11,6 @@
 Collider playerColl(1000, 8, 1, 1);
 Collider enemyColl(12, 8, 1, 1);
 
-Spawner enemySpawn(Vec3(10.0f, 10.0f, 0.0f));
-Spawner enemySpawn2(Vec3(8.0f, 8.0f, 0.0f));
-Spawner enemySpawn3(Vec3(14.0f, 9.0f, 0.0f));
-Spawner enemySpawn4(Vec3(5.0f, 5.0f, 0.0f));
-
 
 int damageDelay = 1000;
 float timeOfDamage = 0;
@@ -45,9 +40,9 @@ bool Scene2::OnCreate() {
 	IMG_Init(IMG_INIT_PNG);
 
 	/////////////////////////////////
-	//Round Start
+	//Round Start Print
 	/////////////////////////////////
-	std::cout << "Round " << game->getRound()->getRound() << " has started!\n ";
+	std::cout << "Round " << game->getRound()->getCurrentRound() << " has started!\n ";
 
 	/////////////////////////////////
 	//Player Sprite
@@ -63,33 +58,17 @@ bool Scene2::OnCreate() {
 	game->getPlayer()->setTexture(texture);
 
 
-	if (enemySpawn.enemy == true)
-	{
-
-
-		enemySpawn.enemyTexture = SDL_CreateTextureFromSurface(renderer, enemySpawn.enemyImage);
-		enemySpawn.enemyTexture2 = SDL_CreateTextureFromSurface(renderer, enemySpawn.enemyImage2);
-		enemySpawn.enemyTexture3 = SDL_CreateTextureFromSurface(renderer, enemySpawn.enemyImage3);
-
-		game->getEnemy()->setImage(enemySpawn.enemyImage);
-		game->getEnemy()->setTexture(enemySpawn.enemyTexture);
-		game->getEnemy2()->setImage(enemySpawn.enemyImage2);
-		game->getEnemy2()->setTexture(enemySpawn.enemyTexture2);
-		game->getEnemy3()->setImage(enemySpawn.enemyImage3);
-		game->getEnemy3()->setTexture(enemySpawn.enemyTexture3);
-	}
-
 	/////////////////////////////////
 	//Default Positions
 	/////////////////////////////////
-	game->getPlayer()->playerPos = Vec3(8, 8, 0);
+	game->getPlayer()->playerPos = Vec3(20, 20, 0);
 	
 
 	/////////////////////////////////
 	//Set Player Collider
 	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
-	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
+	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 	enemyColl.passthrough = true;
 	return true;
 	a = 0;  // whats this and why is it after return true? - Ahmed
@@ -98,45 +77,14 @@ bool Scene2::OnCreate() {
 void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
-
-	enemySpawn.EnemySpawn(1);
-
-	if (enemySpawn.randomize >= 8)
-	{
-
-		game->getEnemy()->setPos(enemySpawn3.pos);
-		game->getEnemy2()->setPos(enemySpawn.pos);
-		game->getEnemy3()->setPos(enemySpawn2.pos);
-
-
-	}
-	if (enemySpawn.randomize >= 4 && enemySpawn.randomize <= 8)
-	{
-		game->getEnemy()->setPos(enemySpawn2.pos);
-		game->getEnemy2()->setPos(enemySpawn4.pos);
-		game->getEnemy3()->setPos(enemySpawn.pos);
-
-
-	}
-	if (enemySpawn.randomize <= 4)
-	{
-		game->getEnemy()->setPos(enemySpawn4.pos);
-		game->getEnemy2()->setPos(enemySpawn2.pos);
-		game->getEnemy3()->setPos(enemySpawn3.pos);
-
-
-	}
-
+	
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
-	game->getEnemy()->Update(deltaTime);
-	game->getEnemy2()->Update(deltaTime);
-	game->getEnemy3()->Update(deltaTime);
 
 
 	//Set Collider locations
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
-	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
+	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 
 
 	//Did player recently take damage?

@@ -8,6 +8,7 @@
 #include "PlayerBody.h"
 #include "EnemyBody.h"
 #include "Round.h"
+#include <vector>
 
 class GameManager {
 private:
@@ -28,10 +29,7 @@ private:
 	// This might be unfamiliar
     class PlayerBody *player;
 	class Round	*round;
-	//class EnemyBody *enemy;
-	class EnemyBody *enemy;
-	class EnemyBody* enemy2;
-	class EnemyBody* enemy3;
+
 public:
 	GameManager();
 	~GameManager();
@@ -44,10 +42,6 @@ public:
 	float getSceneWidth();
 	Matrix4 getProjectionMatrix();
     PlayerBody* getPlayer(){ return player; }
-	Round* getRound() { return round; }
-	EnemyBody* getEnemy() { return enemy; }
-	EnemyBody* getEnemy2() { return enemy2; }
-	EnemyBody* getEnemy3() { return enemy3; }
 	void RenderPlayer(float scale = 1.0f);
 	void RenderEnemy(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
@@ -59,6 +53,12 @@ public:
 	void LoadScene( int i );
     bool ValidateCurrentScene();
 	bool isMoving;
+
+	//Get Round Class
+	Round* getRound() { return round; }
+
+	//Zombie Spawn Locations
+	std::vector<Vec2> zombieSpawnLocations;
 };
 #endif
 

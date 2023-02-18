@@ -8,7 +8,8 @@
 #include "Round.h"
 
 	/// <summary>
-	/// Sets Default values for currentRound and zombieAmount. currentRound is set to 0 to indicate that the constructor is made an will be set to round 1
+	/// Sets Default values for currentRound and zombieAmount. currentRound is set to 0 to 
+	/// indicate that the constructor is made an will be set to round 1
 	/// when game has started.
 	/// </summary>
 	Round::Round() { currentRound = 0; zombieAmount = 10; }
@@ -31,4 +32,4 @@
 	/// <summary>
 	/// Returns the round number
 	/// </summary>
-	int Round::getRound() { return currentRound; }
+	int Round::getCurrentRound() { return currentRound; }
