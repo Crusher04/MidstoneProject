@@ -59,7 +59,8 @@ public:
     void HandleEvents( const SDL_Event& event );
     void Update( float deltaTime );
     void setTexture( SDL_Texture* texture_ ) { texture = texture_; }
-    
+    float angle;
+    void Shoot();
     
 };
 

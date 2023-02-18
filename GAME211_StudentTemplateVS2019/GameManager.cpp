@@ -45,8 +45,9 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-
-    speed = 200;
+    // Variable Initialization
+    bulletSpeed = 4;
+    speed = 2100;
     w = false;
 
     /////////////////////////////////
@@ -69,7 +70,7 @@ bool GameManager::OnCreate() {
 
     player = new PlayerBody
     (
-        position,
+        Vec3(8.0f, 8.0f, 0.0f),
         velocity,
         acceleration,
         mass,
@@ -147,7 +148,7 @@ bool GameManager::OnCreate() {
             rotation,
             angular,
             this);
-        bullet->setPos(Vec3(5.0f,5.0f,0.0f));
+        bullet->setPos(Vec3(7.5f,7.0f,0.0f));
 
     if (bullet->OnCreate() == false) {
         OnDestroy();
@@ -219,12 +220,12 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
-                player->ApplyForceY(speed);
+                player->ApplyForceY(-speed);
                 
             }
             if (event.key.keysym.sym == SDLK_s)
             {
-                 player->ApplyForceY(-speed);
+                 player->ApplyForceY(speed);
             }         
             if (event.key.keysym.sym == SDLK_d)
             {
@@ -235,11 +236,7 @@ void GameManager::handleEvents()
             {
                 player->ApplyForceX(-speed);
             }
-            if (event.key.keysym.sym == SDLK_p)
-            {
-                fired = true;
-            }
-            
+  
 
             break;
 
@@ -268,6 +265,7 @@ void GameManager::handleEvents()
 
             break;
         
+
         case SDL_MOUSEBUTTONDOWN:
             if (event.button.button == SDL_BUTTON_LEFT)
             {

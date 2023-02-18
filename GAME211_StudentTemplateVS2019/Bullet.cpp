@@ -26,67 +26,47 @@ bool Bullet::OnCreate()
         return false;
     }
     return true;
-
-   
+    
+    angle = 0;
 }
 
 void Bullet::Render( float scale )
 {
     
-        // This is why we need game in the constructor, to get the renderer, etc.
-        SDL_Renderer* renderer = game->getRenderer();
-        Matrix4 projectionMatrix = game->getProjectionMatrix();
+    // This is why we need game in the constructor, to get the renderer, etc.
+    SDL_Renderer* renderer = game->getRenderer();
+    Matrix4 projectionMatrix = game->getProjectionMatrix();
 
-        // square represents the position and dimensions for where to draw the image
-        SDL_Rect square;
-        Vec3 screenCoords;
-        float    w, h;
+    // square represents the position and dimensions for where to draw the image
+    SDL_Rect square;
+    Vec3 screenCoords;
+    float    w, h;
 
-        // convert the position from game coords to screen coords.
-        screenCoords = projectionMatrix * pos;
+    // convert the position from game coords to screen coords.
+    screenCoords = projectionMatrix * pos;
 
-        // Scale the image, in case the .png file is too big or small
-        w = image->w * scale;
-        h = image->h * scale;
+    // Scale the image, in case the .png file is too big or small
+    w = image->w * scale;
+    h = image->h * scale;
 
-        // The square's x and y values represent the top left corner of 
-        // where SDL will draw the .png image.
-        // The 0.5f * w/h offset is to place the .png so that pos represents the center
-        // (Note the y axis for screen coords points downward, hence subtraction!!!!)
-       /* square.x = static_cast<int>(screenCoords.x - 0.5f * w);
-        square.y = static_cast<int>(screenCoords.y - 0.5f * h);
-        square.w = static_cast<int>(w);
-        square.h = static_cast<int>(h);*/
+    // The square's x and y values represent the top left corner of 
+    // where SDL will draw the .png image.
+    // The 0.5f * w/h offset is to place the .png so that pos represents the center
+    // (Note the y axis for screen coords points downward, hence subtraction!!!!)
 
-
-
+    square.x = static_cast<int>(screenCoords.x - 0.5f * w);
+    square.y = static_cast<int>(screenCoords.y - 0.5f * h);
+    square.w = static_cast<int>(w);
+    square.h = static_cast<int>(h);
 
 
-        square.x = static_cast<int>(screenCoords.x - 0.5f * w);
-        square.y = static_cast<int>(screenCoords.y - 0.5f * h);
-
-        square.w = static_cast<int>(w);
-        square.h = static_cast<int>(h);
+    // Convert character orientation from radians to degrees.
+    float orientationDegrees = orientation * 180.0f / M_PI;
 
 
-
-        //square.x = game->getPlayer()->getPos().x;
-        //square.y = game->getPlayer()->getPos().y;
-        //SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
-        //square.x -= (square.w / 2);
-        //square.y -= (square.h / 2);
-
-        // Convert character orientation from radians to degrees.
-        float orientationDegrees = orientation * 180.0f / M_PI;
-
-
-
-        //SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), NULL, NULL, angle, NULL, SDL_FLIP_NONE);
-
-
-        // Render the Sprite
-        SDL_RenderCopyEx(renderer, texture, nullptr, &square,
-            orientationDegrees, nullptr, SDL_FLIP_NONE);
+    // Render the Sprite
+    SDL_RenderCopyEx(renderer, texture, nullptr, &square,
+    orientationDegrees, nullptr, SDL_FLIP_NONE);
 
    
 }
@@ -100,9 +80,26 @@ void Bullet::Update( float deltaTime )
     // Update position, call Update from base class
     // Note that would update velocity too, and rotation motion
    
-        Body::Update( deltaTime );
-        vel.x += cos(player.angle * M_PI / 180.0f) * 5;
-        vel.y += sin(player.angle * M_PI / 180.0f) * 5;
-        
+    Body::Update( deltaTime );
+
+}
+
+
+// Function that updates bullet velocity based on player angle 
+void Bullet::Shoot()
+{
+
+    int Delta_x; int Delta_y;
+    int mouse_X, mouse_Y;
+    SDL_GetMouseState(&mouse_X, &mouse_Y);
+
+    Delta_x = mouse_X - game->getPlayer()->getPos().x;
+    Delta_y = mouse_Y - game->getPlayer()->getPos().y;
+
+    angle = (atan2(-Delta_y, Delta_x) * 180.0000) / M_PI;
+    
+    vel.x += game->bulletSpeed * (cos((angle) * 3.14159 / 180));
+    vel.y += game->bulletSpeed * (sin((angle) * 3.14159 / 180));
+
 }
 

@@ -48,8 +48,7 @@ bool Scene2::OnCreate() {
 	i = 0;
 
 	
-	d.resize(5);
-	d.emplace_back(enemySpawn.pos);
+	
 	/////////////////////////////////
 	//Player Sprite
 	/////////////////////////////////
@@ -57,7 +56,7 @@ bool Scene2::OnCreate() {
 	SDL_Surface* image;
 	SDL_Texture* texture;
 	
-	image = IMG_Load("player1_walk_run.png");
+	image = IMG_Load("Player.png");
 	texture = SDL_CreateTextureFromSurface(renderer, image);
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
@@ -69,6 +68,8 @@ bool Scene2::OnCreate() {
 	texture2 = SDL_CreateTextureFromSurface(renderer, image2);
 	game->getBullet()->setImage(image2);
 	game->getBullet()->setTexture(texture2);
+
+	// Check if enemy spawning is true
 	if (enemySpawn.enemy == true)
 	{
 
@@ -91,7 +92,7 @@ bool Scene2::OnCreate() {
 	/////////////////////////////////
 	//Default Positions
 	/////////////////////////////////
-	game->getPlayer()->playerPos = Vec3(8, 8, 0);
+	game->getPlayer()->setPos(Vec3(8, 8, 0));
 	
 
 	/////////////////////////////////
@@ -145,24 +146,24 @@ void Scene2::Update(const float deltaTime) {
 
 	}
 	
-	if (game->fired == false)
-	{
-		game->getBullet()->setPos(Vec3(game->getPlayer()->getPos().x,game->getPlayer()->getPos().y - 1, 0.0f));
-	}
-	game->getEnemy()->Update(deltaTime);
-	
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
 
+	//Update Enemies
+	game->getEnemy()->Update(deltaTime);
 	game->getEnemy2()->Update(deltaTime);
 	game->getEnemy3()->Update(deltaTime);
 
+
+	// Check to see if bullet is fired and then call these functions.
 	if (game->fired == true)
 	{
 		
+		game->getBullet()->Shoot();
 		game->getBullet()->Update(deltaTime);
 		
 	}
+
 	//Set Collider locations
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
@@ -207,15 +208,18 @@ void Scene2::Render() {
 
 
 	// render the player
-	game->RenderPlayer(0.01f);
+	game->RenderPlayer(2.5f);
 
-
+	// render the enemies
 	game->RenderEnemy(0.01f);
 
+	// render the bullets
 	if (game->fired == true)
 	{
 		game->RenderBullet(0.04f);
 	}
+
+
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }

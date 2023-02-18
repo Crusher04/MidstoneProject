@@ -64,7 +64,7 @@ public:
     bool ValidateCurrentScene();
 	bool isMoving;
 	bool fired;
-
+	float bulletSpeed;
 };
 #endif
 
