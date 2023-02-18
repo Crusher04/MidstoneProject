@@ -8,6 +8,7 @@
 #include "PlayerBody.h"
 #include "EnemyBody.h"
 #include "Round.h"
+
 #include <vector>
 
 class GameManager {
@@ -28,7 +29,10 @@ private:
 
 	// This might be unfamiliar
     class PlayerBody *player;
+
 	class Round	*round;
+	
+	
 
 public:
 	GameManager();
@@ -43,7 +47,6 @@ public:
 	Matrix4 getProjectionMatrix();
     PlayerBody* getPlayer(){ return player; }
 	void RenderPlayer(float scale = 1.0f);
-	void RenderEnemy(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
 	bool w;
 	float speed;
@@ -59,6 +62,7 @@ public:
 
 	//Zombie Spawn Locations
 	std::vector<Vec2> zombieSpawnLocations;
+	
 };
 #endif
 

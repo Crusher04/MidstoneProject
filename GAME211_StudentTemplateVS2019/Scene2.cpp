@@ -3,6 +3,8 @@
 #include "Collider.h"
 #include "Spawner.h"
 #include "Round.h"
+#include "EnemyBody.h"
+#include <vector>
 
 ///////////////////////////////////////////
 // TESTING SCENE - THIS IS OUR PLAYGROUND
@@ -11,10 +13,11 @@
 Collider playerColl(1000, 8, 1, 1);
 Collider enemyColl(12, 8, 1, 1);
 
-
+//Damage Delay variables
 int damageDelay = 1000;
 float timeOfDamage = 0;
 bool damageTaken = false;
+/////////////////////////
 
 // See notes about this constructor in Scene1.h.
 Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
@@ -71,6 +74,10 @@ bool Scene2::OnCreate() {
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 	enemyColl.passthrough = true;
+
+
+	
+
 	return true;
 	a = 0;  // whats this and why is it after return true? - Ahmed
 }
@@ -125,12 +132,8 @@ void Scene2::Render() {
 	SDL_RenderClear(renderer);
 
 
-
 	// render the player
 	game->RenderPlayer(1.5f);
-
-
-	game->RenderEnemy(0.01f);
 
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);

@@ -4,7 +4,6 @@
 #include "GameManager.h"
 
 
-
 class EnemyBody : public Body
 {
 protected:

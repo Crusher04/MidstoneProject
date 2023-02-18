@@ -12,7 +12,16 @@
 	/// indicate that the constructor is made an will be set to round 1
 	/// when game has started.
 	/// </summary>
-	Round::Round() { currentRound = 0; zombieAmount = 10; }
+	Round::Round() 
+	{ 
+		//Initialie the Round.
+		currentRound = 0;
+		
+		//Set default round 1 zombie starting amount
+		zombieStartingAmount = 10; 
+
+		zombiesRemaining = zombieStartingAmount;
+	}
 
 	/// <summary>
 	/// Starts the Game with Round 1
@@ -22,7 +31,7 @@
 	/// <summary>
 	/// sets the amount of starting zombies for round 1
 	/// </summary>
-	void Round::setStartingZombieAmount(int newZombieAmount) { zombieAmount = newZombieAmount; }
+	void Round::setStartingZombieAmount(int newZombieAmount) { zombieStartingAmount = newZombieAmount; }
 
 	/// <summary>
 	/// Increments the rounds
@@ -33,3 +42,8 @@
 	/// Returns the round number
 	/// </summary>
 	int Round::getCurrentRound() { return currentRound; }
+
+	int Round::getZombieAmount()
+	{
+		return zombiesRemaining;
+	}

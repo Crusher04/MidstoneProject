@@ -6,7 +6,7 @@
 #include "Scene8.h"
 #include "Round.h"
 
-
+std::vector<EnemyBody> zombies;
 
 
 GameManager::GameManager() {
@@ -99,6 +99,8 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
+    
+    //ZOMBIES
 
 	return true;
 }
@@ -122,6 +124,9 @@ void GameManager::Run() {
 	}
 }
 
+/////////////////////////////////
+//Handle Events
+/////////////////////////////////
 void GameManager::handleEvents() 
 {
 
@@ -240,10 +245,8 @@ void GameManager::RenderPlayer(float scale)
 {
 
     player->Render(scale);
-    
-}
-void GameManager::RenderEnemy(float scale)
-{
+    //zombies.at(1).Render(scale);
+
     
 }
 

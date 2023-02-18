@@ -10,12 +10,15 @@ class Round
 {
 private:
 	int currentRound;
-	int zombieAmount;
+	int zombieStartingAmount;
+	int zombiesRemaining;
+
 
 public:
 
 	/// <summary>
-	/// Sets Default values for currentRound and zombieAmount. currentRound is set to 0 to indicate that the constructor is made an will be set to round 1
+	/// Sets Default values for currentRound and zombieAmount. 
+	/// currentRound is set to 0 to indicate that the constructor is made an will be set to round 1
 	/// when game has started.
 	/// </summary>
 	Round();
@@ -31,13 +34,20 @@ public:
 	void setStartingZombieAmount(int newZombieAmount);
 
 	/// <summary>
+	/// Increments the rounds
+	/// </summary>
+	void RoundEnd();
+
+	///////////////////
+	//GETTERS
+	//////////////////
+
+	/// <summary>
 	/// Returns the round number
 	/// </summary>
 	int getCurrentRound();
 
-	/// <summary>
-	/// Increments the rounds
-	/// </summary>
-	void RoundEnd();
+
+	int getZombieAmount();
 };
 
