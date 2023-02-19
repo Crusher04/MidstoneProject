@@ -16,6 +16,7 @@ Collider::Collider(float x_, float y_, float w_, float h_)
 }
 
 
+
 void Collider::resetCollider(float x_, float y_, float w_, float h_)
 {
 	x = x_;
