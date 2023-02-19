@@ -36,6 +36,11 @@ Body::Body(
 }
 
 
+Body::Body(Vec3 pos_)
+{
+    pos = pos_;
+}
+
 Body::~Body(){
 }
 
@@ -104,3 +109,10 @@ void Body::ApplyForceX(float x)
     accel.x = x / mass;
 }
 
+Vec3 Body::getPos() {
+    return pos;
+} // phung
+
+const char* Body::GetTextureFile() {
+    return textureFile;
+} // phung
