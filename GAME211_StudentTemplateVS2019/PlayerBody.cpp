@@ -116,7 +116,7 @@ void PlayerBody::Render( float scale )
 
     /////////////////////////////////
     //RENDER
-   /////////////////////////////////
+   //////////////////////////////////.
     SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), nullptr, &square, angle, nullptr, SDL_FLIP_NONE);
 
   

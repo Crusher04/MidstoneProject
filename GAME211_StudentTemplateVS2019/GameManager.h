@@ -6,10 +6,9 @@
 #include "Timer.h"
 #include "Scene.h"
 #include "PlayerBody.h"
-#include "EnemyBody.h"
 #include "Round.h"
-
 #include <vector>
+#include "ZombieSpawner.h"
 
 class GameManager {
 private:
@@ -32,6 +31,7 @@ private:
 
 	class Round	*round;
 	
+	class ZombieSpawner *zombies;
 	
 
 public:
@@ -62,7 +62,9 @@ public:
 
 	//Zombie Spawn Locations
 	std::vector<Vec2> zombieSpawnLocations;
-	
+	void RenderZombie(float scale = 1.0f);
+	ZombieSpawner* getZombie() { return zombies; }
+
 };
 #endif
 

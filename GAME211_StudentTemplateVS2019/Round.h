@@ -13,7 +13,6 @@ private:
 	int zombieStartingAmount;
 	int zombiesRemaining;
 
-
 public:
 
 	/// <summary>

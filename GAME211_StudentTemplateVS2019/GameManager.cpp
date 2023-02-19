@@ -6,7 +6,6 @@
 #include "Scene8.h"
 #include "Round.h"
 
-std::vector<EnemyBody> zombies;
 
 
 GameManager::GameManager() {
@@ -86,6 +85,7 @@ bool GameManager::OnCreate() {
     }
 
 
+
     /////////////////////////////////
     //Round Start
     /////////////////////////////////
@@ -101,6 +101,13 @@ bool GameManager::OnCreate() {
     }
     
     //ZOMBIES
+    zombies = new ZombieSpawner(this);
+    //zombies->setZombieAmount();
+    zombies->OnCreate();
+    zombies->setPos(Vec3(1600, 800, 0));
+    zombies->zombieArrPushBack(*zombies);
+    zombies->setPos(Vec3(200, 800, 0));
+    zombies->zombieArrPushBack(*zombies);
 
 	return true;
 }
@@ -154,7 +161,11 @@ void GameManager::handleEvents()
 
             if (event.key.keysym.sym == SDLK_r)
             {
-               
+                std::cout << "Player Pos = (" << player->getPos().x <<
+                    ", " << player->getPos().y << ")\n";
+
+                std::cout << "ZombieAmount = " << zombies->getZombiesRemaining() << "\n";
+
             }
 
             //Sets the Drag of the player. Lower = slower
@@ -243,11 +254,17 @@ SDL_Renderer* GameManager::getRenderer()
 // This might be unfamiliar
 void GameManager::RenderPlayer(float scale)
 {
-
+   
     player->Render(scale);
-    //zombies.at(1).Render(scale);
 
     
+}
+
+void GameManager::RenderZombie(float scale)
+{
+    //zombies->Render(scale/2);
+    zombies->zombieSpawnerArr.at(0).Render(scale / 2);
+    zombies->zombieSpawnerArr.at(1).Render(scale / 4);
 }
 
 void GameManager::LoadScene( int i )

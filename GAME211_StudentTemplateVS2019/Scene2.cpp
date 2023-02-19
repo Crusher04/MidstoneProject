@@ -134,7 +134,7 @@ void Scene2::Render() {
 
 	// render the player
 	game->RenderPlayer(1.5f);
-
+	game->RenderZombie(1.0f);
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }
