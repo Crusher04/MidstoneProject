@@ -47,8 +47,8 @@ void ZombieSpawner::Render(float scale)
      //MOUSE ORIENTATION! 
      /////////////////////////////////
 
-    square.x = game->getZombie()->getPos().x;
-    square.y = game->getZombie()->getPos().y;
+    square.x = pos.x;
+    square.y = pos.y;
     SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
     square.x -= (square.w / 2);
     square.y -= (square.h / 2);
@@ -76,7 +76,7 @@ void ZombieSpawner::Render(float scale)
     /////////////////////////////////
     //RENDER
    //////////////////////////////////.
-    SDL_RenderCopyEx(renderer, game->getZombie()->getTexture(), nullptr, &square, NULL, nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture, nullptr, &square, NULL, nullptr, SDL_FLIP_NONE);
 
 }
 
@@ -96,8 +96,10 @@ void ZombieSpawner::Update(float deltaTime)
 
 void ZombieSpawner::setZombieAmount()
 {
-    int amount = game->getRound()->getZombieAmount();
-    zombieSpawnerArr.resize(amount);
+    //int amount = game->getRound()->getZombieAmount();
+    //zombieSpawnerArr.resize(amount);
+
+    
 }
 
 int ZombieSpawner::getZombiesRemaining()
@@ -108,4 +110,9 @@ int ZombieSpawner::getZombiesRemaining()
 void ZombieSpawner::zombieArrPushBack(ZombieSpawner zombie_)
 {
     zombieSpawnerArr.push_back(zombie_);
+}
+
+void ZombieSpawner::setZombieGame(GameManager* game_)
+{
+    game = game_;
 }

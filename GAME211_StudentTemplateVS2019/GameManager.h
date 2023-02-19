@@ -32,6 +32,7 @@ private:
 	class Round	*round;
 	
 	class ZombieSpawner *zombies;
+	//class ZombieSpawner zombies2;
 	
 
 public:
@@ -61,10 +62,13 @@ public:
 	Round* getRound() { return round; }
 
 	//Zombie Spawn Locations
-	std::vector<Vec2> zombieSpawnLocations;
-	void RenderZombie(float scale = 1.0f);
-	ZombieSpawner* getZombie() { return zombies; }
+	std::vector<Vec3> zombieSpawnLocations;
+	void compileZombieSpawnLocations();
 
+	void RenderZombie(float scale = 1.0f);
+	ZombieSpawner getZombie();
+
+	std::vector<ZombieSpawner> zombieSpawnerArr2;
 };
 #endif
 

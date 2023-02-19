@@ -6,6 +6,7 @@
 #include "Body.h"
 #include "GameManager.h"
 #include <vector>
+#include "Collider.h"
 
 class ZombieSpawner : public Body
 {
@@ -14,7 +15,10 @@ protected:
 	class GameManager* game;
 	
 public:
+	
+	Collider zombieColl(5,5,0,0);
 	std::vector<ZombieSpawner> zombieSpawnerArr;
+
 	ZombieSpawner() : Body{}
 	{
 		game = nullptr;
@@ -31,6 +35,8 @@ public:
 	void setZombieAmount();
 	int getZombiesRemaining();
 	void zombieArrPushBack(ZombieSpawner zombie_);
+
+	void setZombieGame(GameManager* game_);
 };
 
 #endif

@@ -6,7 +6,7 @@
 #include "Scene8.h"
 #include "Round.h"
 
-
+ZombieSpawner zombies2;
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -101,13 +101,27 @@ bool GameManager::OnCreate() {
     }
     
     //ZOMBIES
-    zombies = new ZombieSpawner(this);
+    compileZombieSpawnLocations();
+    
+    //zombies = new ZombieSpawner(this);
+    zombies2.setZombieGame(this);
+
     //zombies->setZombieAmount();
-    zombies->OnCreate();
-    zombies->setPos(Vec3(1600, 800, 0));
-    zombies->zombieArrPushBack(*zombies);
-    zombies->setPos(Vec3(200, 800, 0));
-    zombies->zombieArrPushBack(*zombies);
+   // zombies->OnCreate();
+    //zombies->setPos(Vec3(250, 800, 0));
+    zombies2.OnCreate();
+    
+    for (int i = 0; i < this->round->getZombieAmount(); i++)
+    {
+        
+        zombies2.setPos(zombieSpawnLocations.at(i));
+        zombies2.zombieArrPushBack(zombies2);
+        zombieSpawnerArr2.push_back(zombies2);
+    }
+    
+ 
+
+
 
 	return true;
 }
@@ -260,11 +274,58 @@ void GameManager::RenderPlayer(float scale)
     
 }
 
+void GameManager::compileZombieSpawnLocations()
+{
+    Vec3 locations(300, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(400, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(500, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(600, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(700, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(800, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(900, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(1000, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(1100, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(1200, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+}
+
 void GameManager::RenderZombie(float scale)
 {
     //zombies->Render(scale/2);
-    zombies->zombieSpawnerArr.at(0).Render(scale / 2);
-    zombies->zombieSpawnerArr.at(1).Render(scale / 4);
+   // zombies->zombieSpawnerArr.at(0).Render(scale / 2);
+    //zombies->zombieSpawnerArr.at(1).Render(scale / 4);
+   // zombies2.zombieSpawnerArr.at(0).Render(scale / 4);
+   // zombies2.zombieSpawnerArr.at(1).Render(scale / 4);
+    for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
+    {
+        //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
+        zombieSpawnerArr2.at(i).Render(scale / 6);
+    }
+
+}
+
+ZombieSpawner GameManager::getZombie()
+{
+    return zombies2;
 }
 
 void GameManager::LoadScene( int i )
