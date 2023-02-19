@@ -7,7 +7,7 @@
 #include "Round.h"
 
 ZombieSpawner zombies2;
-
+Bullet bullet2;
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -15,7 +15,7 @@ GameManager::GameManager() {
 	currentScene = nullptr;
     player = nullptr;
     round = nullptr;
-
+    bullet = nullptr;
 }
 
 bool GameManager::OnCreate() {
@@ -26,7 +26,7 @@ bool GameManager::OnCreate() {
     // Use 1000x600 for less than full screen
     const int SCREEN_WIDTH = 1920;
     const int SCREEN_HEIGHT = 1080;
-
+    fired = false;
     windowPtr = new Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (windowPtr == nullptr) {
 		OnDestroy();
@@ -43,7 +43,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-
+    bulletSpeed = 5;
     speed = 1000;
     w = false;
 
@@ -84,7 +84,9 @@ bool GameManager::OnCreate() {
         return false;
     }
 
+  
 
+   
 
     /////////////////////////////////
     //Round Start
@@ -119,9 +121,24 @@ bool GameManager::OnCreate() {
         zombieSpawnerArr2.push_back(zombies2);
     }
     
- 
+     
+  
+        compileBulletSpawnLocations();
 
+        bullet2.setBulletGame(this);
 
+        bullet2.OnCreate();
+
+        for (int i = 0; i < this->round->getZombieAmount(); i++)
+        {
+
+            bullet2.setPos(bulletSpawnLocations.at(i));
+            bullet2.bulletArrPushBack(bullet2);
+            bullets.push_back(bullet2);
+        }
+        
+
+    
 
 	return true;
 }
@@ -231,6 +248,23 @@ void GameManager::handleEvents()
             }
 
             break;
+
+        case SDL_MOUSEBUTTONDOWN:
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+               
+                for (int i = 0; i < bullet2.bullets.size(); i++)
+                {
+                    bullet2.setPos(bulletSpawnLocations.at(i));
+                    bulletSelection = i;
+                    
+                }
+                
+                RenderBullet();
+                bullets.at(bulletSelection).Update(1);
+                bullets.at(bulletSelection).Shoot();
+            }
+            break;
         }
 
        
@@ -318,6 +352,7 @@ void GameManager::RenderZombie(float scale)
     for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
     {
         //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
+        
         zombieSpawnerArr2.at(i).Render(scale / 6);
     }
 
@@ -326,6 +361,55 @@ void GameManager::RenderZombie(float scale)
 ZombieSpawner GameManager::getZombie()
 {
     return zombies2;
+}
+
+void GameManager::compileBulletSpawnLocations()
+{
+    Vec3 locations(300, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(400, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(500, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(600, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(700, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(800, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(900, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(1000, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(1100, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(1200, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+}
+
+Bullet GameManager::getBullet()
+{
+    return bullet2;
+}
+
+void GameManager::RenderBullet(float scale)
+{
+
+       
+           
+            bullets.at(bulletSelection).Render(scale / 6);
+    
+
+
 }
 
 void GameManager::LoadScene( int i )

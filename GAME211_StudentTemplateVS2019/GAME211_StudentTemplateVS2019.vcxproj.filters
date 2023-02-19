@@ -61,6 +61,9 @@
     <ClCompile Include="ZombieSpawner.cpp">
       <Filter>Class</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h">
@@ -129,7 +132,12 @@
     <ClInclude Include="Spawner.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="ZombieSpawner.h" />
+    <ClInclude Include="Bullet.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ZombieSpawner.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GAME211_StudentTemplateVS2019.rc" />

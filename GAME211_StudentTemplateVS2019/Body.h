@@ -61,8 +61,8 @@ public:
 
 	// Added this as public to deal with my demo 
 	// so that mouse position can be copied into a Body.
-    virtual void setPos( Vec3 pos );
-
+    virtual void setPos( Vec3 pos_);
+    virtual void setVel(Vec3 vel_);
     virtual void setDrag(float drag_);
     virtual void ApplyForceY(float y);
     virtual void ApplyForceX(float x);

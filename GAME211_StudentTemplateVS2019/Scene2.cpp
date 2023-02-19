@@ -61,6 +61,13 @@ bool Scene2::OnCreate() {
 	game->getPlayer()->setTexture(texture);
 
 
+	SDL_Surface* image2;
+	SDL_Texture* texture2;
+	image2 = IMG_Load("Pacman.png");
+	texture2 = SDL_CreateTextureFromSurface(renderer, image2);
+	
+
+
 	/////////////////////////////////
 	//Default Positions
 	/////////////////////////////////
@@ -118,6 +125,20 @@ void Scene2::Update(const float deltaTime) {
 		}			
 	}
 
+	// Check to see if bullet is fired and then call these functions.
+	if (game->fired == true)
+	{
+
+		game->bullets.at(game->bulletSelection).Shoot();
+		game->bullets.at(game->bulletSelection).Update(deltaTime);
+		
+	}
+
+	if (game->fired == true)
+	{
+		game->bullets.at(game->bulletSelection).setPos(Vec3(game->getPlayer()->getPos().x + 325, game->getPlayer()->getPos().y + 275, game->getPlayer()->getPos().z));
+	}
+
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)
 	{
@@ -134,7 +155,15 @@ void Scene2::Render() {
 
 	// render the player
 	game->RenderPlayer(1.5f);
+
+	// render the zombies
 	game->RenderZombie(1.0f);
+
+	// render the bullets
+	
+		game->RenderBullet(0.2f);
+	
+
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }

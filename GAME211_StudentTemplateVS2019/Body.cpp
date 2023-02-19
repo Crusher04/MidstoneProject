@@ -81,7 +81,12 @@ void Body::HandleEvents( const SDL_Event& event )
 void Body::setPos( Vec3 pos_ )
 {
     pos = pos_; 
-} 
+}
+void Body::setVel(Vec3 vel_)
+{
+    vel = vel_;
+}
+
 
 
 void Body::setDrag(float drag_)
