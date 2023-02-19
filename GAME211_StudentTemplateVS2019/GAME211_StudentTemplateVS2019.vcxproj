@@ -33,13 +33,9 @@
     <ClCompile Include="Round.cpp" />
     <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene2.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="Scene8.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Spawner.cpp" />
-=======
-    <ClCompile Include="Scene4.cpp" />
->>>>>>> Phung
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -62,13 +58,9 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene1.h" />
     <ClInclude Include="Scene2.h" />
-<<<<<<< HEAD
     <ClInclude Include="Scene8.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="Spawner.h" />
-=======
-    <ClInclude Include="Scene4.h" />
->>>>>>> Phung
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VMath.h" />
