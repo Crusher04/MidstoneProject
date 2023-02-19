@@ -18,7 +18,7 @@ bool PlayerBody::OnCreate()
         return false;
     }
     return true;
-
+    pos = Vec3(5.0f, 5.0f, 0.0f);
    
 }
 
@@ -113,7 +113,7 @@ void PlayerBody::Render( float scale )
     //SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), NULL, NULL, angle, NULL, SDL_FLIP_NONE);
     square.h *= scale;
     square.w *= scale;
-
+    /*pos = Vec3(775.0f, 500.0f, 0.0f);*/
     // Render the Sprite
     SDL_RenderCopyEx( renderer, game->getPlayer()->getTexture(), nullptr, &square,
         angle, nullptr, SDL_FLIP_NONE );

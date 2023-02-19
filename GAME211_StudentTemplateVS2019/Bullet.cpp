@@ -99,7 +99,7 @@ void Bullet::Shoot()
     angle = (atan2(-Delta_y, Delta_x) * 180.0000) / M_PI;
     
     vel.x += game->bulletSpeed * (cos((angle) * 3.14159 / 180));
-    vel.y += game->bulletSpeed * (sin((angle) * 3.14159 / 180));
+    vel.y += game->bulletSpeed * (sin((angle) * 3.14159 / 180)) * 1.5;
 
 }
 

@@ -94,7 +94,7 @@ bool Scene2::OnCreate() {
 	/////////////////////////////////
 	game->getPlayer()->setPos(Vec3(8, 8, 0));
 	
-
+	/*game->getBullet()->setPos(Vec3(game->getPlayer()->getPos().x + 4, game->getPlayer()->getPos().y - 1, game->getPlayer()->getPos().z));*/
 	/////////////////////////////////
 	//Set Player Collider
 	/////////////////////////////////

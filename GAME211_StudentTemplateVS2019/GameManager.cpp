@@ -237,7 +237,10 @@ void GameManager::handleEvents()
                 player->ApplyForceX(-speed);
             }
   
-
+            if (event.key.keysym.sym == SDLK_p)
+            {
+                Vec3 pos = player->getPos();
+            }
             break;
 
         case SDL_KEYUP:
