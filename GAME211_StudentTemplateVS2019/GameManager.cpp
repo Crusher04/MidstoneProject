@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "Scene1.h"
 #include "Scene2.h"
+#include "Scene4.h"
 #include "EntityHealth.h"
 #include "EnemyBody.h"
 #include "Scene8.h"
@@ -51,7 +52,7 @@ bool GameManager::OnCreate() {
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
 
-    currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+    currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
 
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
@@ -427,6 +428,9 @@ void GameManager::LoadScene( int i )
             break;
         case 2:
             currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+            break;
+        case 4:
+            currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
             break;
         case 8:
             currentScene = new Scene8(windowPtr->GetSDL_Window(), this);

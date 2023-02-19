@@ -64,6 +64,9 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Class</Filter>
     </ClCompile>
+    <ClCompile Include="Scene4.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h">
@@ -136,6 +139,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="ZombieSpawner.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene4.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
