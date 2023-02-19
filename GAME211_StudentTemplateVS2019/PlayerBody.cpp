@@ -10,7 +10,7 @@ int mouseX, mouseY;
 
 bool PlayerBody::OnCreate()
 {
-    image = IMG_Load( "Assets/player_flamethrower.png" );
+    image = IMG_Load( "Player.png" );
     SDL_Renderer *renderer = game->getRenderer();
     texture = SDL_CreateTextureFromSurface( renderer, image );
     if (image == nullptr) {
@@ -46,20 +46,18 @@ void PlayerBody::Render( float scale )
     // (Note the y axis for screen coords points downward, hence subtraction!!!!)
     //square.x = static_cast<int>(screenCoords.x - 0.5f * w);
     //square.y = static_cast<int>(screenCoords.y - 0.5f * h);
-    //square.w = static_cast<int>(w);
-    //square.h = static_cast<int>(h);
+    square.w = static_cast<int>(w);
+    square.h = static_cast<int>(h);
 
-    square.w = static_cast<int>(w) * 5;
-    square.h = static_cast<int>(h) * 25;
-
-
-
-   /* SDL_Rect d;
-    d.x = 4670;
-    d.y = 0;
-    d.w = 1995;
-    d.h = 413;
     
+
+
+    //SDL_Rect d;
+    //d.x = 4670;
+    //d.y = 0;
+    //d.w = 1995;
+    //d.h = 413;
+    //
 
 
     //Uint32 ticks = SDL_GetTicks();
@@ -75,7 +73,6 @@ void PlayerBody::Render( float scale )
     //}
     //else if (game->isMoving == false)
     //{
-    }*/
 
     //    d.x = 1670;
     //    d.y = 0;
@@ -94,10 +91,6 @@ void PlayerBody::Render( float scale )
 
     
 
-    /////////////////////////////////
-    //MOUSE ORIENTATION! 
-    /////////////////////////////////
-
     square.x = game->getPlayer()->getPos().x;
     square.y = game->getPlayer()->getPos().y;
     SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
@@ -115,28 +108,15 @@ void PlayerBody::Render( float scale )
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
     Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
-    // angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+    angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
 
-    // //SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), NULL, NULL, angle, NULL, SDL_FLIP_NONE);
-    // square.h *= scale;
-    // square.w *= scale;
-    // /*pos = Vec3(775.0f, 500.0f, 0.0f);*/
-    // // Render the Sprite
-    // SDL_RenderCopyEx( renderer, game->getPlayer()->getTexture(), nullptr, &square,
-    //     angle, nullptr, SDL_FLIP_NONE );
-    float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
-    
-    /////////////////////////////////
-    //Render Saling
-    /////////////////////////////////
-    square.w *= scale;
+    //SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), NULL, NULL, angle, NULL, SDL_FLIP_NONE);
     square.h *= scale;
-    
-
-    /////////////////////////////////
-    //RENDER
-   //////////////////////////////////.
-    SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), nullptr, &square, angle, nullptr, SDL_FLIP_NONE);
+    square.w *= scale;
+    /*pos = Vec3(775.0f, 500.0f, 0.0f);*/
+    // Render the Sprite
+    SDL_RenderCopyEx( renderer, game->getPlayer()->getTexture(), nullptr, &square,
+        angle, nullptr, SDL_FLIP_NONE );
 
   
 }

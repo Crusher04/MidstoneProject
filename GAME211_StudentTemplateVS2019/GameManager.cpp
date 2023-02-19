@@ -4,9 +4,9 @@
 #include "EntityHealth.h"
 #include "EnemyBody.h"
 #include "Scene8.h"
-#include "Round.h"
+#include "Spawner.h"
 
-ZombieSpawner zombies2;
+Spawner enemySpawner;
 
 GameManager::GameManager() {
 	windowPtr = nullptr;
@@ -18,8 +18,6 @@ GameManager::GameManager() {
     enemy2 = nullptr;
     enemy3 = nullptr;
     bullet = nullptr;
-    round = nullptr;
-
 }
 
 bool GameManager::OnCreate() {
@@ -55,13 +53,12 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
-
+    //THIS CHANGES THE DEFAULT LOADED SCENE
     currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
-
+    
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
     /////////////////////////////////
-
     float mass = 1.0f;
     float radius = 0.5f;
     float orientation = 0.0f;
@@ -118,7 +115,22 @@ bool GameManager::OnCreate() {
         this
     );
 
-
+    if (enemy2->OnCreate() == false) {
+        OnDestroy();
+        return false;
+    }
+    enemy3 = new EnemyBody
+    (
+        position,
+        velocity,
+        acceleration,
+        mass,
+        radius,
+        orientation,
+        rotation,
+        angular,
+        this
+    );
 
     
 
@@ -142,49 +154,17 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-    /////////////////////////////////
-    //Round Start
-    /////////////////////////////////
-    round = new Round();
-    round->GameStart();
 
-    /////////////////////////////////
-    //Validate SCENE
-    /////////////////////////////////
+    // need to create Player before validating scene
     if (!ValidateCurrentScene()) {
         OnDestroy();
         return false;
     }
-    
-    //ZOMBIES
-    compileZombieSpawnLocations();
-    
-    //zombies = new ZombieSpawner(this);
-    zombies2.setZombieGame(this);
-
-    //zombies->setZombieAmount();
-   // zombies->OnCreate();
-    //zombies->setPos(Vec3(250, 800, 0));
-    zombies2.OnCreate();
-    
-    for (int i = 0; i < this->round->getZombieAmount(); i++)
-    {
-        
-        zombies2.setPos(zombieSpawnLocations.at(i));
-        zombies2.zombieArrPushBack(zombies2);
-        zombieSpawnerArr2.push_back(zombies2);
-    }
-    
- 
-
-
-
 	return true;
 }
 
-/////////////////////////////////
-//GAME LOOP
-/////////////////////////////////
+
+/// Here's the whole game loop
 void GameManager::Run() {
     
 	timer->Start();
@@ -201,9 +181,6 @@ void GameManager::Run() {
 	}
 }
 
-/////////////////////////////////
-//Handle Events
-/////////////////////////////////
 void GameManager::handleEvents() 
 {
 
@@ -231,15 +208,9 @@ void GameManager::handleEvents()
 
             if (event.key.keysym.sym == SDLK_r)
             {
-                std::cout << "Player Pos = (" << player->getPos().x <<
-                    ", " << player->getPos().y << ")\n";
-
-                std::cout << "ZombieAmount = " << zombies->getZombiesRemaining() << "\n";
-
+                enemySpawner.EnemySpawn(1);
             }
-
-            //Sets the Drag of the player. Lower = slower
-            player->setDrag(.9f);
+            player->setDrag(.8);
 
             if (event.key.keysym.sym == SDLK_w)
             {
@@ -336,68 +307,19 @@ SDL_Renderer* GameManager::getRenderer()
 // This might be unfamiliar
 void GameManager::RenderPlayer(float scale)
 {
-   
-    player->Render(scale);
 
+    player->Render(scale);
     
 }
-
-void GameManager::compileZombieSpawnLocations()
+void GameManager::RenderEnemy(float scale)
 {
-    Vec3 locations(300, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(400, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(500, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(600, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(700, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(800, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(900, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(1000, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(1100, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(1200, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-}
-
-void GameManager::RenderZombie(float scale)
-{
-    //zombies->Render(scale/2);
-   // zombies->zombieSpawnerArr.at(0).Render(scale / 2);
-    //zombies->zombieSpawnerArr.at(1).Render(scale / 4);
-   // zombies2.zombieSpawnerArr.at(0).Render(scale / 4);
-   // zombies2.zombieSpawnerArr.at(1).Render(scale / 4);
-    for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
+    if (enemySpawner.enemy == true)
     {
         enemy2->Render(.05f);
         enemy3->Render(.05f);
         enemy->Render(.05f);
      
-        //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
-        zombieSpawnerArr2.at(i).Render(scale / 6);
     }
-
-}
-
-ZombieSpawner GameManager::getZombie()
-{
-    return zombies2;
 }
 
 void GameManager::RenderBullet(float scale)
@@ -410,11 +332,9 @@ void GameManager::RenderBullet(float scale)
 void GameManager::LoadScene( int i )
 {
     // cleanup of current scene before loading another one
-   
-
     currentScene->OnDestroy();
     delete currentScene;
- 
+
     switch ( i )
     {
         case 1:

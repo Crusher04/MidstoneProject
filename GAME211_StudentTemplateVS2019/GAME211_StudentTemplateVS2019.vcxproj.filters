@@ -253,12 +253,4 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Header">
-      <UniqueIdentifier>{53fe0192-020e-469c-bd14-53e905e20561}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Class">
-      <UniqueIdentifier>{15164e48-c653-40be-a943-cabb318244cd}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
 </Project>

@@ -30,7 +30,6 @@
     <ClCompile Include="Music.cpp" />
     <ClCompile Include="PlayerBody.cpp" />
     <ClCompile Include="EntityHealth.cpp" />
-    <ClCompile Include="Round.cpp" />
     <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene2.cpp" />
     <ClCompile Include="Scene8.cpp" />
@@ -39,7 +38,6 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="ZombieSpawner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h" />
@@ -54,7 +52,6 @@
     <ClInclude Include="PlayerBody.h" />
     <ClInclude Include="EntityHealth.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Round.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene1.h" />
     <ClInclude Include="Scene2.h" />
@@ -65,7 +62,6 @@
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VMath.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="ZombieSpawner.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GAME211_StudentTemplateVS2019.rc" />
