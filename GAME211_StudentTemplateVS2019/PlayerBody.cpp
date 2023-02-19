@@ -46,8 +46,8 @@ void PlayerBody::Render( float scale )
     // (Note the y axis for screen coords points downward, hence subtraction!!!!)
     //square.x = static_cast<int>(screenCoords.x - 0.5f * w);
     //square.y = static_cast<int>(screenCoords.y - 0.5f * h);
-    square.w = static_cast<int>(w);
-    square.h = static_cast<int>(h);*/
+    //square.w = static_cast<int>(w);
+    //square.h = static_cast<int>(h);
 
     square.w = static_cast<int>(w) * 5;
     square.h = static_cast<int>(h) * 25;

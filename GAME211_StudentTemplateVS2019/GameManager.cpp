@@ -104,12 +104,7 @@ bool GameManager::OnCreate() {
        OnDestroy();
        return false;
     }
-    if (enemySpawner.enemy == true)
-    {
-        
-        enemyArray[i] = enemy;
-        enemyArray[i]->renderer = getRenderer();
-    }
+   
     enemy2 = new EnemyBody
     (
         position,
