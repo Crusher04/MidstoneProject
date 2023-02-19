@@ -19,6 +19,8 @@ protected:
     float rotation;			// rotating at this speed (radians per second?)
     float angular;          // angular acceleration
     float radius;           // for getting near walls
+    
+    const char* textureFile;// Phung
 
 	Vec3 imageSizeWorldCoords;
     SDL_Surface* image;
@@ -34,10 +36,12 @@ public:
         float rotation_,
         float angular_
     );
+
+    Body(Vec3 pos_);
 	virtual ~Body();
     virtual void Update(float deltaTime);
     virtual void ApplyForce(Vec3 force_);
-    virtual Vec3 getPos() { return pos; }
+    //virtual Vec3 getPos() { return pos; }
     virtual Vec3 getVel() { return vel; }
     virtual Vec3 getAccel() { return accel; }
     virtual float getMass() { return mass; }
@@ -61,6 +65,8 @@ public:
 	// Added this as public to deal with my demo 
 	// so that mouse position can be copied into a Body.
     virtual void setPos( Vec3 pos );
+    Vec3 getPos();
+    const char* GetTextureFile(); // Phung
 };
 
 #endif /* BODY_H */

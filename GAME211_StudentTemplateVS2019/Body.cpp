@@ -36,6 +36,11 @@ Body::Body(
 }
 
 
+Body::Body(Vec3 pos_)
+{
+    pos = pos_;
+}
+
 Body::~Body(){
 }
 
@@ -49,7 +54,6 @@ void Body::Update( float deltaTime ){
     // Update orientation
     orientation += rotation * deltaTime;
     rotation += angular * deltaTime;
-
 }
 
 void Body::HandleEvents( const SDL_Event& event )
@@ -72,3 +76,11 @@ void Body::setPos( Vec3 pos_ )
 {
     pos = pos_; 
 } //commit by trien
+
+Vec3 Body::getPos() {
+    return pos;
+} // phung
+
+const char* Body::GetTextureFile() {
+    return textureFile;
+} // phung
