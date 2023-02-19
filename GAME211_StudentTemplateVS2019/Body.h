@@ -20,8 +20,6 @@ protected:
     float angular;          // angular acceleration
     float radius;           // for getting near walls
     float drag = 1;
-    
-    const char* textureFile;// Phung
 
 	Vec3 imageSizeWorldCoords;
     SDL_Surface* image;
@@ -37,12 +35,10 @@ public:
         float rotation_,
         float angular_
     );
-
-    Body(Vec3 pos_);
 	virtual ~Body();
     virtual void Update(float deltaTime);
     virtual void ApplyForce(Vec3 force_);
-    //virtual Vec3 getPos() { return pos; }
+    virtual Vec3 getPos() { return pos; }
     virtual Vec3 getVel() { return vel; }
     virtual Vec3 getAccel() { return accel; }
     virtual float getMass() { return mass; }
@@ -70,9 +66,6 @@ public:
     virtual void setDrag(float drag_);
     virtual void ApplyForceY(float y);
     virtual void ApplyForceX(float x);
-    virtual void setPos( Vec3 pos );
-    Vec3 getPos();
-    const char* GetTextureFile(); // Phung
 };
 
 #endif /* BODY_H */
