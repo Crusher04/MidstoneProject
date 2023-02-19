@@ -2,6 +2,9 @@
 #include "VMath.h"
 #include "Collider.h"
 #include "Spawner.h"
+#include "Round.h"
+#include "EnemyBody.h"
+#include <vector>
 
 ///////////////////////////////////////////
 // TESTING SCENE - THIS IS OUR PLAYGROUND
@@ -16,10 +19,11 @@ Spawner enemySpawn3(Vec3(14.0f, 9.0f, 0.0f));
 Spawner enemySpawn4(Vec3(5.0f, 5.0f, 0.0f));
 
 Spawner e[4] = { enemySpawn,enemySpawn2, enemySpawn3, enemySpawn4 };
+//Damage Delay variables
 int damageDelay = 1000;
 float timeOfDamage = 0;
 bool damageTaken = false;
-
+/////////////////////////
 
 // See notes about this constructor in Scene1.h.
 Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
@@ -50,13 +54,21 @@ bool Scene2::OnCreate() {
 	
 	
 	/////////////////////////////////
+	//Round Start Print
+	/////////////////////////////////
+	std::cout << "Round " << game->getRound()->getCurrentRound() << " has started!\n ";
+
+	/////////////////////////////////
 	//Player Sprite
 	/////////////////////////////////
 
 	SDL_Surface* image;
 	SDL_Texture* texture;
 	
-	image = IMG_Load("Player.png");
+
+
+	//image = IMG_Load("Player.png");
+	image = game->getPlayer()->getImage();					//LOAD IMAGE FROM THE PLAYERBODY INSTEAD OF LETTING THE SCENE DECIDE WHAT THE PLAYER LOOKS LIKE
 	texture = SDL_CreateTextureFromSurface(renderer, image);
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
@@ -89,20 +101,28 @@ bool Scene2::OnCreate() {
 	}
 
 	
+
+	
+	/*game->getBullet()->setPos(Vec3(game->getPlayer()->getPos().x + 4, game->getPlayer()->getPos().y - 1, game->getPlayer()->getPos().z));*/
 	/////////////////////////////////
 	//Default Positions
 	/////////////////////////////////
-	game->getPlayer()->setPos(Vec3(8, 8, 0));
-	
-	/*game->getBullet()->setPos(Vec3(game->getPlayer()->getPos().x + 4, game->getPlayer()->getPos().y - 1, game->getPlayer()->getPos().z));*/
+	game->getPlayer()->setPos(Vec3(810, 540, 0));
+	std::cout << "Player Pos = (" << game->getPlayer()->getPos().x <<
+		", " << game->getPlayer()->getPos().y << ")\n";
+
 	/////////////////////////////////
 	//Set Player Collider
 	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
-	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
+	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 	enemyColl.passthrough = true;
+
+
+	
+
 	return true;
-	a = 0;
+	a = 0;  // whats this and why is it after return true? - Ahmed
 }
 
 void Scene2::OnDestroy() {}
@@ -146,13 +166,15 @@ void Scene2::Update(const float deltaTime) {
 
 	}
 	
-	//Update Player
-	game->getPlayer()->Update(deltaTime);
+	
 
 	//Update Enemies
 	game->getEnemy()->Update(deltaTime);
 	game->getEnemy2()->Update(deltaTime);
 	game->getEnemy3()->Update(deltaTime);
+	
+	//Update Player
+	game->getPlayer()->Update(deltaTime);
 
 
 	// Check to see if bullet is fired and then call these functions.
@@ -166,7 +188,7 @@ void Scene2::Update(const float deltaTime) {
 
 	//Set Collider locations
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
-	enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
+	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 
 
 	//Did player recently take damage?
@@ -206,9 +228,7 @@ void Scene2::Render() {
 	SDL_RenderClear(renderer);
 
 
-
-	// render the player
-	game->RenderPlayer(2.5f);
+	
 
 	// render the enemies
 	game->RenderEnemy(0.01f);
@@ -220,6 +240,8 @@ void Scene2::Render() {
 	}
 
 
+	game->RenderPlayer(1.5f);
+	game->RenderZombie(1.0f);
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }

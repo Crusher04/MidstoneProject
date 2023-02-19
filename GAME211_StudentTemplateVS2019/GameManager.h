@@ -10,6 +10,10 @@
 #include <vector.h>
 #include "Bullet.h"
 using namespace std;
+#include "Round.h"
+#include <vector>
+#include "ZombieSpawner.h"
+
 class GameManager {
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
@@ -34,6 +38,13 @@ private:
 	class EnemyBody* enemy3;
 	class EnemyBody* enemyArray[5];
 	class Bullet* bullet;
+
+	class Round	*round;
+	
+	class ZombieSpawner *zombies;
+	//class ZombieSpawner zombies2;
+	
+
 public:
 	GameManager();
 	~GameManager();
@@ -51,9 +62,10 @@ public:
 	EnemyBody* getEnemy3() { return enemy3; }
 	EnemyBody* getEnemyArray() { return enemyArray[i]; }
 	Bullet* getBullet() { return bullet; }
-	void RenderPlayer(float scale = 1.0f);
+	
 	void RenderEnemy(float scale = 1.0f);
 	void RenderBullet(float scale = 1.0f);
+	void RenderPlayer(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
 	bool w;
 	float speed;
@@ -65,6 +77,18 @@ public:
 	bool isMoving;
 	bool fired;
 	float bulletSpeed;
+
+	//Get Round Class
+	Round* getRound() { return round; }
+
+	//Zombie Spawn Locations
+	std::vector<Vec3> zombieSpawnLocations;
+	void compileZombieSpawnLocations();
+
+	void RenderZombie(float scale = 1.0f);
+	ZombieSpawner getZombie();
+
+	std::vector<ZombieSpawner> zombieSpawnerArr2;
 };
 #endif
 
