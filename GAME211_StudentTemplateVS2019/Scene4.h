@@ -29,6 +29,16 @@ private:
 	SDL_Texture* treeTexture6;
 	SDL_Texture* treeTexture7;
 
+	//tree row 1.1
+	SDL_Texture* treeTexture0_1;
+	SDL_Texture* treeTexture1_1;
+	SDL_Texture* treeTexture2_1;
+	SDL_Texture* treeTexture3_1;
+	SDL_Texture* treeTexture4_1;
+	SDL_Texture* treeTexture5_1;
+	SDL_Texture* treeTexture6_1;
+	SDL_Texture* treeTexture7_1;
+
 	//tree row 2
 	SDL_Texture* treeTexture0_2;
 	SDL_Texture* treeTexture1_2;
@@ -48,6 +58,16 @@ private:
 	SDL_Texture* treeTexture5_3;
 	SDL_Texture* treeTexture6_3;
 	SDL_Texture* treeTexture7_3;
+
+	//tree row 4
+	SDL_Texture* treeTexture0_4;
+	SDL_Texture* treeTexture1_4;
+	SDL_Texture* treeTexture2_4;
+	SDL_Texture* treeTexture3_4;
+	SDL_Texture* treeTexture4_4;
+	SDL_Texture* treeTexture5_4;
+	SDL_Texture* treeTexture6_4;
+	SDL_Texture* treeTexture7_4;
 
 	//other
 	SDL_Texture* stumpTexture;
@@ -71,6 +91,16 @@ private:
 	SDL_Surface* treeImage6;
 	SDL_Surface* treeImage7;
 
+	//tree row 1.1
+	SDL_Surface* treeImage0_1;
+	SDL_Surface* treeImage1_1;
+	SDL_Surface* treeImage2_1;
+	SDL_Surface* treeImage3_1;
+	SDL_Surface* treeImage4_1;
+	SDL_Surface* treeImage5_1;
+	SDL_Surface* treeImage6_1;
+	SDL_Surface* treeImage7_1;
+
 	//tree row 2
 	SDL_Surface* treeImage0_2;
 	SDL_Surface* treeImage1_2;
@@ -90,6 +120,16 @@ private:
 	SDL_Surface* treeImage5_3;
 	SDL_Surface* treeImage6_3;
 	SDL_Surface* treeImage7_3;
+
+	//tree row 4
+	SDL_Surface* treeImage0_4;
+	SDL_Surface* treeImage1_4;
+	SDL_Surface* treeImage2_4;
+	SDL_Surface* treeImage3_4;
+	SDL_Surface* treeImage4_4;
+	SDL_Surface* treeImage5_4;
+	SDL_Surface* treeImage6_4;
+	SDL_Surface* treeImage7_4;
 
 	//block
 	SDL_Surface* blockImage0;

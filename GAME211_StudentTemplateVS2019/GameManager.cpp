@@ -2,13 +2,21 @@
 #include "Scene1.h"
 #include "Scene2.h"
 #include "Scene4.h"
+#include "EntityHealth.h"
+#include "EnemyBody.h"
+#include "Scene8.h"
+#include "Round.h"
 
+ZombieSpawner zombies2;
+Bullet bullet2;
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
 	isRunning = true;
 	currentScene = nullptr;
     player = nullptr;
+    round = nullptr;
+    bullet = nullptr;
 }
 
 bool GameManager::OnCreate() {
@@ -17,9 +25,9 @@ bool GameManager::OnCreate() {
     //const int SCREEN_HEIGHT = 860;
 
     // Use 1000x600 for less than full screen
-    const int SCREEN_WIDTH = 1000;
-    const int SCREEN_HEIGHT = 600;
-
+    const int SCREEN_WIDTH = 1920;
+    const int SCREEN_HEIGHT = 1080;
+    fired = false;
     windowPtr = new Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (windowPtr == nullptr) {
 		OnDestroy();
@@ -36,11 +44,20 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-    // select scene for specific assignment
-    //THIS CHANGES THE DEFAULT LOADED SCENE
+    bulletSpeed = 5;
+    speed = 1000;
+    w = false;
+
+    /////////////////////////////////
+    //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
+    /////////////////////////////////
+
     currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
-    
-    // create player
+
+    /////////////////////////////////
+    //CREATE THE PLAYER ATTRIBUTES
+    /////////////////////////////////
+
     float mass = 1.0f;
     float radius = 0.5f;
     float orientation = 0.0f;
@@ -62,22 +79,74 @@ bool GameManager::OnCreate() {
         angular,
         this
     );
+
     if ( player->OnCreate() == false ) {
         OnDestroy();
         return false;
     }
 
-    // need to create Player before validating scene
+  
+
+   
+
+    /////////////////////////////////
+    //Round Start
+    /////////////////////////////////
+    round = new Round();
+    round->GameStart();
+
+    /////////////////////////////////
+    //Validate SCENE
+    /////////////////////////////////
     if (!ValidateCurrentScene()) {
         OnDestroy();
         return false;
     }
-           
+    
+    //ZOMBIES
+    compileZombieSpawnLocations();
+    
+    //zombies = new ZombieSpawner(this);
+    zombies2.setZombieGame(this);
+
+    //zombies->setZombieAmount();
+   // zombies->OnCreate();
+    //zombies->setPos(Vec3(250, 800, 0));
+    zombies2.OnCreate();
+    
+    for (int i = 0; i < this->round->getZombieAmount(); i++)
+    {
+        
+        zombies2.setPos(zombieSpawnLocations.at(i));
+        zombies2.zombieArrPushBack(zombies2);
+        zombieSpawnerArr2.push_back(zombies2);
+    }
+    
+     
+  
+        compileBulletSpawnLocations();
+
+        bullet2.setBulletGame(this);
+
+        bullet2.OnCreate();
+
+        for (int i = 0; i < this->round->getZombieAmount(); i++)
+        {
+
+            bullet2.setPos(bulletSpawnLocations.at(i));
+            bullet2.bulletArrPushBack(bullet2);
+            bullets.push_back(bullet2);
+        }
+        
+
+    
+
 	return true;
 }
 
-
-/// Here's the whole game loop
+/////////////////////////////////
+//GAME LOOP
+/////////////////////////////////
 void GameManager::Run() {
     
 	timer->Start();
@@ -88,15 +157,20 @@ void GameManager::Run() {
 		timer->UpdateFrameTicks();
         currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
-
+    
 		/// Keep the event loop running at a proper rate
 		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
 	}
 }
 
+/////////////////////////////////
+//Handle Events
+/////////////////////////////////
 void GameManager::handleEvents() 
 {
+
     SDL_Event event;
+    const Uint8* state = SDL_GetKeyboardState(nullptr);
 
     // Let's add mouse movement and position
     // https://wiki.libsdl.org/SDL_GetMouseState
@@ -107,30 +181,94 @@ void GameManager::handleEvents()
 
     while (SDL_PollEvent(&event))
     {
-        if (event.type == SDL_QUIT)
+        switch (event.type)
         {
+        case SDL_QUIT:
             isRunning = false;
-        }
-        else if (event.type == SDL_KEYDOWN)
-        {
-            switch (event.key.keysym.scancode)
+            break;
+        case SDL_KEYDOWN:
+           
+            if (event.key.keysym.sym == SDLK_ESCAPE)
+                isRunning = false;
+
+            if (event.key.keysym.sym == SDLK_r)
             {
-            case SDL_SCANCODE_ESCAPE:
-                isRunning = false;
-                break;
-            case SDL_SCANCODE_Q:
-                isRunning = false;
-                break;
-            case SDL_SCANCODE_DELETE:
-                isRunning = false;
-                break;
-            case SDL_SCANCODE_1:
-                LoadScene(1);
-                break;
-            default:
-                break;
+                std::cout << "Player Pos = (" << player->getPos().x <<
+                    ", " << player->getPos().y << ")\n";
+
+                std::cout << "ZombieAmount = " << zombies->getZombiesRemaining() << "\n";
+
             }
+
+            //Sets the Drag of the player. Lower = slower
+            player->setDrag(.9f);
+
+            if (event.key.keysym.sym == SDLK_w)
+            {
+                // Start moving player up
+                player->ApplyForceY(-speed);
+                
+            }
+            if (event.key.keysym.sym == SDLK_s)
+            {
+                 player->ApplyForceY(speed);
+            }         
+            if (event.key.keysym.sym == SDLK_d)
+            {
+
+                player->ApplyForceX(speed);
+            }   
+            if (event.key.keysym.sym == SDLK_a)
+            {
+                player->ApplyForceX(-speed);
+            }
+
+            break;
+
+        case SDL_KEYUP:
+            
+            if (event.key.keysym.sym == SDLK_w)
+            {
+                // Start moving player up
+                player->ApplyForceY(0);
+
+            }
+            if (event.key.keysym.sym == SDLK_s)
+            {
+                player->ApplyForceY(0);
+            }          
+            if (event.key.keysym.sym == SDLK_d)
+            {
+
+                player->ApplyForceX(0);
+            }
+            if (event.key.keysym.sym == SDLK_a)
+            {
+
+                player->ApplyForceX(0);
+            }
+
+            break;
+
+        case SDL_MOUSEBUTTONDOWN:
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+               
+                for (int i = 0; i < bullet2.bullets.size(); i++)
+                {
+                    bullet2.setPos(bulletSpawnLocations.at(i));
+                    bulletSelection = i;
+                    
+                }
+                
+                RenderBullet();
+                bullets.at(bulletSelection).Update(1);
+                bullets.at(bulletSelection).Shoot();
+            }
+            break;
         }
+
+       
         currentScene->HandleEvents(event);
     }
 }
@@ -165,15 +303,124 @@ SDL_Renderer* GameManager::getRenderer()
 // This might be unfamiliar
 void GameManager::RenderPlayer(float scale)
 {
+   
     player->Render(scale);
+
+    
+}
+
+void GameManager::compileZombieSpawnLocations()
+{
+    Vec3 locations(300, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(400, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(500, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(600, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(700, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(800, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(900, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(1000, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(1100, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+    locations.set(1200, 800, 0);
+    zombieSpawnLocations.push_back(locations);
+
+}
+
+void GameManager::RenderZombie(float scale)
+{
+    //zombies->Render(scale/2);
+   // zombies->zombieSpawnerArr.at(0).Render(scale / 2);
+    //zombies->zombieSpawnerArr.at(1).Render(scale / 4);
+   // zombies2.zombieSpawnerArr.at(0).Render(scale / 4);
+   // zombies2.zombieSpawnerArr.at(1).Render(scale / 4);
+    for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
+    {
+        //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
+        
+        zombieSpawnerArr2.at(i).Render(scale / 6);
+    }
+
+}
+
+ZombieSpawner GameManager::getZombie()
+{
+    return zombies2;
+}
+
+void GameManager::compileBulletSpawnLocations()
+{
+    Vec3 locations(300, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(400, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(500, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(600, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(700, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(800, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(900, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(1000, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(1100, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+
+    locations.set(1200, 600, 0);
+    bulletSpawnLocations.push_back(locations);
+}
+
+Bullet GameManager::getBullet()
+{
+    return bullet2;
+}
+
+void GameManager::RenderBullet(float scale)
+{
+
+       
+           
+            bullets.at(bulletSelection).Render(scale / 6);
+    
+
+
 }
 
 void GameManager::LoadScene( int i )
 {
     // cleanup of current scene before loading another one
+   
+
     currentScene->OnDestroy();
     delete currentScene;
-
+ 
     switch ( i )
     {
         case 1:
@@ -181,6 +428,12 @@ void GameManager::LoadScene( int i )
             break;
         case 2:
             currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+            break;
+        case 4:
+            currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
+            break;
+        case 8:
+            currentScene = new Scene8(windowPtr->GetSDL_Window(), this);
             break;
         default:
             currentScene = new Scene1( windowPtr->GetSDL_Window(), this );
@@ -203,8 +456,5 @@ bool GameManager::ValidateCurrentScene()
         return false;
     }
     return true; 
-    //committed by Phung 2
 }
-
-// Test commit to AlphaTest branch
 
