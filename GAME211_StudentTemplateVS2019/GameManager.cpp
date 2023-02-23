@@ -44,7 +44,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-    bulletSpeed = 5;
+    bulletSpeed = 20;
     speed = 1000;
     w = false;
 
@@ -52,7 +52,7 @@ bool GameManager::OnCreate() {
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
 
-    currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
+    currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
 
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
@@ -84,10 +84,19 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-
+    bullet = new Bullet
+    (
+        this
+    );
+    
+    if (bullet->OnCreate() == false) {
+        OnDestroy();
+        return false;
+    }
   
 
-   
+    i = 0;
+
 
     /////////////////////////////////
     //Round Start
@@ -124,7 +133,7 @@ bool GameManager::OnCreate() {
     
      
   
-        compileBulletSpawnLocations();
+   /*     compileBulletSpawnLocations();
 
         bullet2.setBulletGame(this);
 
@@ -136,7 +145,7 @@ bool GameManager::OnCreate() {
             bullet2.setPos(bulletSpawnLocations.at(i));
             bullet2.bulletArrPushBack(bullet2);
             bullets.push_back(bullet2);
-        }
+        }*/
         
 
     
@@ -253,7 +262,9 @@ void GameManager::handleEvents()
         case SDL_MOUSEBUTTONDOWN:
             if (event.button.button == SDL_BUTTON_LEFT)
             {
-               
+                fired = true;
+                fired2 = true;
+               /*
                 for (int i = 0; i < bullet2.bullets.size(); i++)
                 {
                     bullet2.setPos(bulletSpawnLocations.at(i));
@@ -263,7 +274,33 @@ void GameManager::handleEvents()
                 
                 RenderBullet();
                 bullets.at(bulletSelection).Update(1);
-                bullets.at(bulletSelection).Shoot();
+                bullets.at(bulletSelection).Shoot();*/
+            }
+            break;
+
+        case SDL_MOUSEBUTTONUP:
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+               
+           
+                i++;
+
+
+                    if (i == 3 / 1.5)
+                    {
+                        fired2 = false;
+                    }
+                /*
+                 for (int i = 0; i < bullet2.bullets.size(); i++)
+                 {
+                     bullet2.setPos(bulletSpawnLocations.at(i));
+                     bulletSelection = i;
+
+                 }
+
+                 RenderBullet();
+                 bullets.at(bulletSelection).Update(1);
+                 bullets.at(bulletSelection).Shoot();*/
             }
             break;
         }
@@ -397,17 +434,17 @@ void GameManager::compileBulletSpawnLocations()
     bulletSpawnLocations.push_back(locations);
 }
 
-Bullet GameManager::getBullet()
-{
-    return bullet2;
-}
+
+
+
 
 void GameManager::RenderBullet(float scale)
 {
-
-       
-           
-            bullets.at(bulletSelection).Render(scale / 6);
+    if (fired == true)
+    {
+        bullet->Render(scale);
+    }
+               /*      bullets.at(bulletSelection).Render(scale / 6);*/
     
 
 

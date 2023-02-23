@@ -41,6 +41,7 @@ bool Scene2::OnCreate() {
 	
 	/// Turn on the SDL imaging subsystem
 	IMG_Init(IMG_INIT_PNG);
+	
 
 	/////////////////////////////////
 	//Round Start Print
@@ -66,6 +67,12 @@ bool Scene2::OnCreate() {
 	image2 = IMG_Load("Pacman.png");
 	texture2 = SDL_CreateTextureFromSurface(renderer, image2);
 	
+	game->getBullet()->setImage(image2);
+	game->getBullet()->setTexture(texture2);
+	game->getBullet()->setPos(Vec3(800.0f, 500.0f, 0.0f));
+
+
+
 
 
 	/////////////////////////////////
@@ -83,7 +90,6 @@ bool Scene2::OnCreate() {
 	enemyColl.passthrough = true;
 
 
-	
 
 	return true;
 	a = 0;  // whats this and why is it after return true? - Ahmed
@@ -92,11 +98,12 @@ bool Scene2::OnCreate() {
 void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
-	
+
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
 
-
+	
+	
 	//Set Collider locations
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
@@ -112,7 +119,7 @@ void Scene2::Update(const float deltaTime) {
 				playerColl.setCollPosition(playerColl.previousPos.x, playerColl.previousPos.y);
 				game->getPlayer()->setPos(playerColl.previousPos);
 			}
-			
+
 		}
 		//Check for collision
 		else if (playerColl.checkCollBox(playerColl, enemyColl))
@@ -122,22 +129,90 @@ void Scene2::Update(const float deltaTime) {
 			damageTaken = true; //stops the player from taking damage per tick
 			std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
 			timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay
-		}			
+		}
+	}
+
+	std::cout << game->getPlayer()->angle << std::endl;
+	
+
+	///Possible Way to Set Bullet Position
+	
+	//if (-game->getPlayer()->angle > -10 && -game->getPlayer()->angle < 10)
+	//{
+	//
+	//	if (game->getPlayer()->getPos().x < game->getPlayer()->getPos().x + game->getPlayer()->angle)
+	//	{
+	//		game->getPlayer()->gunLocation.x += game->getBullet()->angle;
+	//	}
+	//}
+
+	//if (-game->getPlayer()->angle > 45 && -game->getPlayer()->angle < 105)
+	//{
+	//	if (game->getPlayer()->getPos().y < game->getPlayer()->getPos().y + -game->getPlayer()->angle)
+	//	{
+	//		game->getPlayer()->gunLocation.x += game->getBullet()->angle - 125;
+	//		game->getPlayer()->gunLocation.y += game->getBullet()->angle - 65;
+	//	}
+	//}
+
+	//if (-game->getPlayer()->angle > 140 - game->getPlayer()->angle <  160)
+	//{	
+	//	if (game->getPlayer()->getPos().x > game->getPlayer()->getPos().x + -game->getPlayer()->angle)
+	//	{
+	//		game->getPlayer()->gunLocation.x += game->getBullet()->angle - 250;
+	//	}
+	//}
+
+	//if (-game->getPlayer()->angle > 45 && -game->getPlayer()->angle < 105)
+	//{
+	//	if (game->getPlayer()->getPos().y > game->getPlayer()->getPos().y + -game->getPlayer()->angle)
+	//	{
+	//		game->getPlayer()->gunLocation.x += game->getBullet()->angle - 125;
+	//		game->getPlayer()->gunLocation.y += game->getBullet()->angle + 65;
+	//	}
+	//}
+	
+	// Current Way to Set Bullet Position
+	if (game->getPlayer()->getPos().x < game->getPlayer()->getPos().x + game->getPlayer()->angle)
+	{
+		game->getPlayer()->gunLocation.x += game->getBullet()->angle;
+	}
+	if (game->getPlayer()->getPos().x > game->getPlayer()->getPos().x + -game->getPlayer()->angle)
+	{
+		game->getPlayer()->gunLocation.x += game->getBullet()->angle - 250;
+	}
+
+	//if (game->getPlayer()->getPos().y < game->getPlayer()->getPos().y + -game->getPlayer()->angle)
+	//{
+	//	game->getPlayer()->gunLocation.x += game->getBullet()->angle - 125;
+	//	game->getPlayer()->gunLocation.y += game->getBullet()->angle - 65;
+	//}
+	//if (game->getPlayer()->getPos().y > game->getPlayer()->getPos().y + -game->getPlayer()->angle)
+	//{
+	//	game->getPlayer()->gunLocation.x += game->getBullet()->angle - 125;
+	//	game->getPlayer()->gunLocation.y += game->getBullet()->angle + 65;
+	//}
+
+	if (game->getBullet()->fired == false)
+	{
+		game->getBullet()->setPos(game->getPlayer()->gunLocation);
 	}
 
 	// Check to see if bullet is fired and then call these functions.
 	if (game->fired == true)
 	{
 
-		game->bullets.at(game->bulletSelection).Shoot();
-		game->bullets.at(game->bulletSelection).Update(deltaTime);
+		//game->bullets.at(game->bulletSelection).Shoot();
+		//game->bullets.at(game->bulletSelection).Update(deltaTime);
+		game->getBullet()->Shoot();
+
 		
 	}
-
-	if (game->fired == true)
-	{
-		game->bullets.at(game->bulletSelection).setPos(Vec3(game->getPlayer()->getPos().x + 325, game->getPlayer()->getPos().y + 275, game->getPlayer()->getPos().z));
-	}
+	game->getBullet()->Update(deltaTime);
+	//if (game->fired == true)
+	//{
+	//	game->bullets.at(game->bulletSelection).setPos(Vec3(game->getPlayer()->getPos().x + 325, game->getPlayer()->getPos().y + 275, game->getPlayer()->getPos().z));
+	//}
 
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)
@@ -160,9 +235,10 @@ void Scene2::Render() {
 	game->RenderZombie(1.0f);
 
 	// render the bullets
-	
-		game->RenderBullet(0.2f);
-	
+	if (game->fired == true)
+	{
+		game->RenderBullet(0.04f);
+	}
 
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);

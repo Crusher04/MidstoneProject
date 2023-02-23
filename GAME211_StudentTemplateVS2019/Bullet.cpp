@@ -79,7 +79,7 @@ void Bullet::Render( float scale )
 
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
     Delta_y = mouse_y - game->getPlayer()->getPos().y;
-    float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+    float angle2 = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
 
 
     square.w *= scale;
@@ -87,7 +87,7 @@ void Bullet::Render( float scale )
 
     // Render the Sprite
     SDL_RenderCopyEx(renderer, texture, nullptr, &square,
-    angle, nullptr, SDL_FLIP_NONE);
+    angle2, nullptr, SDL_FLIP_NONE);
 
    
 }
@@ -117,10 +117,20 @@ void Bullet::Shoot()
     Delta_x = mouse_X - game->getPlayer()->getPos().x;
     Delta_y = mouse_Y - game->getPlayer()->getPos().y;
 
-    angle = (atan2(-Delta_y, Delta_x) * 180.0000) / M_PI;
-    
+    if (game->fired2 == true)
+    {
+        angle = (atan2(-Delta_y, Delta_x) * 180.0000) / M_PI;
+    }
+
+    if (game->fired2 == false)
+    {
+        angle = 0;
+    }
     vel.x += game->bulletSpeed * (cos((angle) * 3.14159 / 180));
-    vel.y += game->bulletSpeed * (sin((angle) * 3.14159 / 180)) * 1.5;
+    vel.y += game->bulletSpeed * (sin((angle) * 3.14159 / 180)) * -1;
+    fired = true;
+
+    angle = 0;
 
 }
 

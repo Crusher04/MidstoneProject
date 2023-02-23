@@ -105,7 +105,7 @@ void PlayerBody::Render( float scale )
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
     Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
-    float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+    angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
     
     /////////////////////////////////
     //Render Saling
@@ -113,13 +113,23 @@ void PlayerBody::Render( float scale )
     square.w *= scale;
     square.h *= scale;
     
-
+    gunLocation = pos;
+    gunLocation.x += 400;
+    gunLocation.y += 300;
     /////////////////////////////////
     //RENDER
    //////////////////////////////////.
     SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), nullptr, &square, angle, nullptr, SDL_FLIP_NONE);
 
-  
+
+
+
+
+
+
+
+
+
 }
 
 void PlayerBody::HandleEvents( const SDL_Event& event )

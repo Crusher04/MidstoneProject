@@ -71,12 +71,15 @@ public:
 
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
+	int i;
 
 
 	std::vector<Vec3> bulletSpawnLocations;
 	void compileBulletSpawnLocations();
-	Bullet getBullet();
+	Bullet* getBullet() {return bullet;	}
+
 	bool fired;
+	bool fired2;
 	void RenderBullet(float scale = 1.0f);
 	float bulletSpeed;
 	int bulletSelection;

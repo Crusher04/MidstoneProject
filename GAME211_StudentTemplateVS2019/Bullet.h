@@ -49,7 +49,7 @@ public:
     float angle;
     void Shoot();
     void bulletArrPushBack(Bullet bullet_);
-
+    bool fired;
     void setBulletGame(GameManager* game_);
 };
 
