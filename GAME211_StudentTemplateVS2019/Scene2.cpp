@@ -208,17 +208,17 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 	// Check to see if bullet is fired and then call these functions.
-	//if (game->fired == true)
-	//{
+	if (game->fired == true)
+	{
 
-	//	//game->bullets.at(game->bulletSelection).Shoot();
-	//	//game->bullets.at(game->bulletSelection).Update(deltaTime);
-	//	/*game->getBullet()->Shoot();*/
-	//	game->bullets.at(game->bulletSelection).Shoot();
+		//game->bullets.at(game->bulletSelection).Shoot();
+		//game->bullets.at(game->bulletSelection).Update(deltaTime);
+		/*game->getBullet()->Shoot();*/
+		game->bullets.at(game->bulletSelection).Shoot();
 
-	//	
-	//}
-	//game->bullets.at(game->bulletSelection).Update(deltaTime);
+		
+	}
+	game->bullets.at(game->bulletSelection).Update(deltaTime);
 	/*game->getBullet()->Update(deltaTime);*/
 	//if (game->fired == true)
 	//{

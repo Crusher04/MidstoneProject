@@ -272,14 +272,12 @@ void GameManager::handleEvents()
                 {
                     bullet2.setPos(bulletSpawnLocations.at(i));
                     bulletSelection = i;
-                    RenderBullet();
-                    bullets.at(bulletSelection).Update(1);
-                    bullets.at(bulletSelection).Shoot();
+                    
                 }
                 
-            /*    RenderBullet();
+                RenderBullet();
                 bullets.at(bulletSelection).Update(1);
-                bullets.at(bulletSelection).Shoot();*/
+                bullets.at(bulletSelection).Shoot();
             }
             break;
 
