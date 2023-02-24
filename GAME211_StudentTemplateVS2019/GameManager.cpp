@@ -84,7 +84,7 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-    bullet = new Bullet
+ /*   bullet = new Bullet
     (
         this
     );
@@ -92,7 +92,7 @@ bool GameManager::OnCreate() {
     if (bullet->OnCreate() == false) {
         OnDestroy();
         return false;
-    }
+    }*/
   
 
     i = 0;
@@ -133,7 +133,7 @@ bool GameManager::OnCreate() {
     
      
   
-   /*     compileBulletSpawnLocations();
+        compileBulletSpawnLocations();
 
         bullet2.setBulletGame(this);
 
@@ -145,7 +145,7 @@ bool GameManager::OnCreate() {
             bullet2.setPos(bulletSpawnLocations.at(i));
             bullet2.bulletArrPushBack(bullet2);
             bullets.push_back(bullet2);
-        }*/
+        }
         
 
     
@@ -232,6 +232,9 @@ void GameManager::handleEvents()
                 player->ApplyForceX(-speed);
             }
 
+    
+
+
             break;
 
         case SDL_KEYUP:
@@ -264,15 +267,17 @@ void GameManager::handleEvents()
             {
                 fired = true;
                 fired2 = true;
-               /*
+               
                 for (int i = 0; i < bullet2.bullets.size(); i++)
                 {
                     bullet2.setPos(bulletSpawnLocations.at(i));
                     bulletSelection = i;
-                    
+                    RenderBullet();
+                    bullets.at(bulletSelection).Update(1);
+                    bullets.at(bulletSelection).Shoot();
                 }
                 
-                RenderBullet();
+            /*    RenderBullet();
                 bullets.at(bulletSelection).Update(1);
                 bullets.at(bulletSelection).Shoot();*/
             }
@@ -440,11 +445,11 @@ void GameManager::compileBulletSpawnLocations()
 
 void GameManager::RenderBullet(float scale)
 {
-    if (fired == true)
+    /*if (fired == true)
     {
         bullet->Render(scale);
-    }
-               /*      bullets.at(bulletSelection).Render(scale / 6);*/
+    }*/
+          bullets.at(bulletSelection).Render(scale / 6);
     
 
 

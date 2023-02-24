@@ -32,7 +32,7 @@ bool Bullet::OnCreate()
     return true;
     
     angle = 0;
- 
+    
 }
 
 void Bullet::Render( float scale )
