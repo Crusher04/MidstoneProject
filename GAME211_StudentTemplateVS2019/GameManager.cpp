@@ -142,7 +142,7 @@ bool GameManager::OnCreate() {
         for (int i = 0; i < this->round->getZombieAmount(); i++)
         {
 
-            bullet2.setPos(bulletSpawnLocations.at(i));
+            bullet2.setPos(Vec3(player->getPos().x + 400, player->getPos().y + 200, 0.0f));
             bullet2.bulletArrPushBack(bullet2);
             bullets.push_back(bullet2);
         }
@@ -270,7 +270,7 @@ void GameManager::handleEvents()
                
                 for (int i = 0; i < bullet2.bullets.size(); i++)
                 {
-                    bullet2.setPos(bulletSpawnLocations.at(i));
+                   
                     bulletSelection = i;
                     
                 }

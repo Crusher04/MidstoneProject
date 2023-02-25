@@ -133,7 +133,7 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 	//std::cout << game->getPlayer()->angle << std::endl;
-	std::cout << game->bulletSelection << std::endl;
+	std::cout << game->getPlayer()->gunLocation.x << std::endl;
 
 	///Possible Way to Set Bullet Position
 	

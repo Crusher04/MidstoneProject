@@ -19,7 +19,7 @@ bool PlayerBody::OnCreate()
     }
     return true;
 
-   
+
 }
 
 void PlayerBody::Render( float scale )
