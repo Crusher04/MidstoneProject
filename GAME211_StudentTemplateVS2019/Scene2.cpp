@@ -61,20 +61,6 @@ bool Scene2::OnCreate() {
 	game->getPlayer()->setImage(image);
 	game->getPlayer()->setTexture(texture);
 
-
-	//SDL_Surface* image2;
-	//SDL_Texture* texture2;
-	//image2 = IMG_Load("Pacman.png");
-	//texture2 = SDL_CreateTextureFromSurface(renderer, image2);
-	//
-	//game->getBullet()->setImage(image2);
-	//game->getBullet()->setTexture(texture2);
-	//game->getBullet()->setPos(Vec3(800.0f, 500.0f, 0.0f));
-
-
-
-
-
 	/////////////////////////////////
 	//Default Positions
 	/////////////////////////////////
@@ -132,78 +118,61 @@ void Scene2::Update(const float deltaTime) {
 		}
 	}
 
-	//std::cout << game->getPlayer()->angle << std::endl;
-	std::cout << game->getPlayer()->gunLocation.x << std::endl;
 
-	///Possible Way to Set Bullet Position
-	
-	//if (-game->getPlayer()->angle > -10 && -game->getPlayer()->angle < 10)
-	//{
-	//
-	//	if (game->getPlayer()->getPos().x < game->getPlayer()->getPos().x + game->getPlayer()->angle)
-	//	{
-	//		game->getPlayer()->gunLocation.x += game->getBullet()->angle;
-	//	}
-	//}
+	/// Calculate Bullet Position
 
-	//if (-game->getPlayer()->angle > 45 && -game->getPlayer()->angle < 105)
-	//{
-	//	if (game->getPlayer()->getPos().y < game->getPlayer()->getPos().y + -game->getPlayer()->angle)
-	//	{
-	//		game->getPlayer()->gunLocation.x += game->getBullet()->angle - 125;
-	//		game->getPlayer()->gunLocation.y += game->getBullet()->angle - 65;
-	//	}
-	//}
-
-	//if (-game->getPlayer()->angle > 140 - game->getPlayer()->angle <  160)
-	//{	
-	//	if (game->getPlayer()->getPos().x > game->getPlayer()->getPos().x + -game->getPlayer()->angle)
-	//	{
-	//		game->getPlayer()->gunLocation.x += game->getBullet()->angle - 250;
-	//	}
-	//}
-
-	//if (-game->getPlayer()->angle > 45 && -game->getPlayer()->angle < 105)
-	//{
-	//	if (game->getPlayer()->getPos().y > game->getPlayer()->getPos().y + -game->getPlayer()->angle)
-	//	{
-	//		game->getPlayer()->gunLocation.x += game->getBullet()->angle - 125;
-	//		game->getPlayer()->gunLocation.y += game->getBullet()->angle + 65;
-	//	}
-	//}
-	
-	// Current Way to Set Bullet Position
-	//if (game->getPlayer()->getPos().x < game->getPlayer()->getPos().x + game->getPlayer()->angle)
-	//{
-	//	game->getPlayer()->gunLocation.x += game->getBullet()->angle;
-	//}
-	//if (game->getPlayer()->getPos().x > game->getPlayer()->getPos().x + -game->getPlayer()->angle)
-	//{
-	//	game->getPlayer()->gunLocation.x += game->getBullet()->angle - 250;
-	//}
-
-	if (game->getPlayer()->getPos().x < game->getPlayer()->getPos().x + game->getPlayer()->angle)
+	// Calculate Bullet Position for if the player is facing left
+	if (game->getPlayer()->angle < 180 && game->getPlayer()->angle > 140)
 	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle;
+		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 200;
+		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle;
 	}
-	if (game->getPlayer()->getPos().x > game->getPlayer()->getPos().x + -game->getPlayer()->angle)
+	if (game->getPlayer()->angle > -180 && game->getPlayer()->angle < -145)
 	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 250;
+		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 200;
+		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle - 25;
 	}
-	//if (game->getPlayer()->getPos().y < game->getPlayer()->getPos().y + -game->getPlayer()->angle)
-	//{
-	//	game->getPlayer()->gunLocation.x += game->getBullet()->angle - 125;
-	//	game->getPlayer()->gunLocation.y += game->getBullet()->angle - 65;
-	//}
-	//if (game->getPlayer()->getPos().y > game->getPlayer()->getPos().y + -game->getPlayer()->angle)
-	//{
-	//	game->getPlayer()->gunLocation.x += game->getBullet()->angle - 125;
-	//	game->getPlayer()->gunLocation.y += game->getBullet()->angle + 65;
-	//}
 
+	// Calculate Bullet Position for if the player is facing right
+	if (game->getPlayer()->angle < 0 && game->getPlayer()->angle > -25)
+	{
+		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 75;
+		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle - 25;
+	}
+	if (game->getPlayer()->angle > 0 && game->getPlayer()->angle < 25)
+	{
+		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 50;
+		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle;
+	}
+
+	// Calculate Bullet Position for if the player is facing up
+	if (game->getPlayer()->angle > -145 && game->getPlayer()->angle < -75)
+	{
+		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 125;
+		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle - 75;
+	}
+	if (game->getPlayer()->angle > -75 && game->getPlayer()->angle < -25)
+	{
+		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 100;
+		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle - 50;
+	}
+
+	// Calculate Bullet Position for if the player is facing down
+	if (game->getPlayer()->angle < 150 && game->getPlayer()->angle > 70)
+	{
+		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 150;
+		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle + 25;
+	}
+	if (game->getPlayer()->angle < 70 && game->getPlayer()->angle > 20)
+	{
+		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 100;
+		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle + 35;
+	}
+
+
+	// Check to see if the bullet is fired and then set the position
 	if (game->bullets.at(game->bulletSelection).fired == false)
 	{
-		/*game->getBullet()->setPos(game->getPlayer()->gunLocation);*/
 		game->bullets.at(game->bulletSelection).setPos(game->getPlayer()->gunLocation);
 	}
 
@@ -211,26 +180,75 @@ void Scene2::Update(const float deltaTime) {
 	if (game->fired == true)
 	{
 
-		//game->bullets.at(game->bulletSelection).Shoot();
-		//game->bullets.at(game->bulletSelection).Update(deltaTime);
-		/*game->getBullet()->Shoot();*/
 		game->bullets.at(game->bulletSelection).Shoot();
 
-		
 	}
-	game->bullets.at(game->bulletSelection).Update(deltaTime);
-	/*game->getBullet()->Update(deltaTime);*/
-	//if (game->fired == true)
-	//{
-	//	game->bullets.at(game->bulletSelection).setPos(Vec3(game->getPlayer()->getPos().x + 325, game->getPlayer()->getPos().y + 275, game->getPlayer()->getPos().z));
-	//}
+
+
+	// Update Each Bullet Position 
+	if (game->bulletSelection == 1 || game->bulletSelection > 0)
+	{
+		game->bullets.at(1).Update(deltaTime);
+	}
+	if (game->bulletSelection == 2 || game->bulletSelection > 0)
+	{
+		game->bullets.at(2).Update(deltaTime);
+	}
+	if (game->bulletSelection == 3 || game->bulletSelection > 0)
+	{
+		game->bullets.at(3).Update(deltaTime);
+	}
+	if (game->bulletSelection == 4 || game->bulletSelection > 0)
+	{
+		game->bullets.at(4).Update(deltaTime);
+	}
+	if (game->bulletSelection == 5 || game->bulletSelection > 0)
+	{
+		game->bullets.at(5).Update(deltaTime);
+	}
+	if (game->bulletSelection == 6 || game->bulletSelection > 0)
+	{
+		game->bullets.at(6).Update(deltaTime);
+	}
+	if (game->bulletSelection == 7 || game->bulletSelection > 0)
+	{
+		game->bullets.at(7).Update(deltaTime);
+	}
+	if (game->bulletSelection == 8 || game->bulletSelection > 0)
+	{
+		game->bullets.at(8).Update(deltaTime);
+	}
+	if (game->bulletSelection == 9 || game->bulletSelection > 0)
+	{
+		game->bullets.at(9).Update(deltaTime);
+	}
+	if (game->bulletSelection == 10 || game->bulletSelection > 0)
+	{
+		game->bullets.at(10).Update(deltaTime);
+	}
+	if (game->bulletSelection == 11 || game->bulletSelection > 0)
+	{
+		game->bullets.at(11).Update(deltaTime);
+	}
+	if (game->bulletSelection == 12 || game->bulletSelection > 0)
+	{
+		game->bullets.at(12).Update(deltaTime);
+	}
+	if (game->bulletSelection == 13 || game->bulletSelection > 0)
+	{
+		game->bullets.at(13).Update(deltaTime);
+	}
+	if (game->bulletSelection == 14 || game->bulletSelection > 0)
+	{
+		game->bullets.at(14).Update(deltaTime);
+	}
+
 
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)
 	{
 		damageTaken = false;
 	}
-
 
 }
 
@@ -248,7 +266,7 @@ void Scene2::Render() {
 	// render the bullets
 	if (game->fired == true)
 	{
-		game->RenderBullet(0.44f);
+		game->RenderBullet(0.3f);
 	}
 
 	// Present the renderer to the screen

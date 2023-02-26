@@ -32,7 +32,7 @@ bool Bullet::OnCreate()
     return true;
     
     angle = 0;
-    
+
 }
 
 void Bullet::Render( float scale )
@@ -72,22 +72,12 @@ void Bullet::Render( float scale )
     // Convert character orientation from radians to degrees.
     float orientationDegrees = orientation * 180.0f / M_PI;
 
-    //// Calculate Angle Variable
-    int Delta_x; int Delta_y;
-    int mouse_x, mouse_y;
-    SDL_GetMouseState(&mouse_x, &mouse_y);
-
-    Delta_x = mouse_x - game->getPlayer()->getPos().x;
-    Delta_y = mouse_y - game->getPlayer()->getPos().y;
-    float angle2 = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
-
-
     square.w *= scale;
     square.h *= scale;
 
     // Render the Sprite
     SDL_RenderCopyEx(renderer, texture, nullptr, &square,
-    angle2, nullptr, SDL_FLIP_NONE);
+    orientationDegrees, nullptr, SDL_FLIP_NONE);
 
    
 }
@@ -111,27 +101,18 @@ void Bullet::Shoot()
 {
 
     int Delta_x; int Delta_y;
-    int mouse_X, mouse_Y;
     SDL_GetMouseState(&mouse_X, &mouse_Y);
 
     Delta_x = mouse_X - game->getPlayer()->getPos().x;
     Delta_y = mouse_Y - game->getPlayer()->getPos().y;
+    angle = (atan2(-Delta_y, Delta_x) * 180.0000) / M_PI;
 
-    if (game->fired2 == true)
+    if (vel.x == 0 && vel.y == 0)
     {
-        angle = (atan2(-Delta_y, Delta_x) * 180.0000) / M_PI;
+        vel.x += game->bulletSpeed  * 40 * (cos((angle) * 3.14159 / 180));
+        vel.y += game->bulletSpeed * 40 *(sin((angle) * 3.14159 / 180)) * -1;
     }
-
-    if (game->fired2 == false)
-    {
-        angle = 0;
-    }
-    vel.x += game->bulletSpeed * (cos((angle) * 3.14159 / 180));
-    vel.y += game->bulletSpeed * (sin((angle) * 3.14159 / 180)) * -1;
     fired = true;
-
-    angle = 0;
-
 }
 
 void Bullet::bulletArrPushBack(Bullet bullet_)

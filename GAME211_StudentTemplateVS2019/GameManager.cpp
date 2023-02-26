@@ -44,8 +44,12 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
+
+
+    // Set the Game Variables
+    ammoCount = 15;
     bulletSpeed = 20;
-    speed = 1000;
+    speed = 3000;
     w = false;
 
     /////////////////////////////////
@@ -84,19 +88,6 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
- /*   bullet = new Bullet
-    (
-        this
-    );
-    
-    if (bullet->OnCreate() == false) {
-        OnDestroy();
-        return false;
-    }*/
-  
-
-    i = 0;
-
 
     /////////////////////////////////
     //Round Start
@@ -133,23 +124,18 @@ bool GameManager::OnCreate() {
     
      
   
-        compileBulletSpawnLocations();
+       
+    // Bullet Initialization
+    bullet2.setBulletGame(this);
+    bullet2.OnCreate();
+    for (int i = 0; i < ammoCount; i++)
+    {
 
-        bullet2.setBulletGame(this);
 
-        bullet2.OnCreate();
-
-        for (int i = 0; i < this->round->getZombieAmount(); i++)
-        {
-
-            bullet2.setPos(Vec3(player->getPos().x + 400, player->getPos().y + 200, 0.0f));
-            bullet2.bulletArrPushBack(bullet2);
-            bullets.push_back(bullet2);
-        }
+        bullet2.bulletArrPushBack(bullet2);
+        bullets.push_back(bullet2);
+    }
         
-
-    
-
 	return true;
 }
 
@@ -196,7 +182,7 @@ void GameManager::handleEvents()
             isRunning = false;
             break;
         case SDL_KEYDOWN:
-           
+
             if (event.key.keysym.sym == SDLK_ESCAPE)
                 isRunning = false;
 
@@ -208,7 +194,11 @@ void GameManager::handleEvents()
                 std::cout << "ZombieAmount = " << zombies->getZombiesRemaining() << "\n";
 
             }
+            if (event.key.keysym.sym == SDLK_e)
+            {
 
+
+            }
             //Sets the Drag of the player. Lower = slower
             player->setDrag(.9f);
 
@@ -216,29 +206,26 @@ void GameManager::handleEvents()
             {
                 // Start moving player up
                 player->ApplyForceY(-speed);
-                
+
             }
             if (event.key.keysym.sym == SDLK_s)
             {
-                 player->ApplyForceY(speed);
-            }         
+                player->ApplyForceY(speed);
+            }
             if (event.key.keysym.sym == SDLK_d)
             {
 
                 player->ApplyForceX(speed);
-            }   
+            }
             if (event.key.keysym.sym == SDLK_a)
             {
                 player->ApplyForceX(-speed);
             }
 
-    
-
-
             break;
 
         case SDL_KEYUP:
-            
+
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
@@ -248,7 +235,7 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_s)
             {
                 player->ApplyForceY(0);
-            }          
+            }
             if (event.key.keysym.sym == SDLK_d)
             {
 
@@ -266,48 +253,11 @@ void GameManager::handleEvents()
             if (event.button.button == SDL_BUTTON_LEFT)
             {
                 fired = true;
-                fired2 = true;
-               
-                for (int i = 0; i < bullet2.bullets.size(); i++)
-                {
-                   
-                    bulletSelection = i;
-                    
-                }
-                
-                RenderBullet();
-                bullets.at(bulletSelection).Update(1);
-                bullets.at(bulletSelection).Shoot();
-            }
-            break;
 
-        case SDL_MOUSEBUTTONUP:
-            if (event.button.button == SDL_BUTTON_LEFT)
-            {
-               
-           
-                i++;
-
-
-                    if (i == 3 / 1.5)
-                    {
-                        fired2 = false;
-                    }
-                /*
-                 for (int i = 0; i < bullet2.bullets.size(); i++)
-                 {
-                     bullet2.setPos(bulletSpawnLocations.at(i));
-                     bulletSelection = i;
-
-                 }
-
-                 RenderBullet();
-                 bullets.at(bulletSelection).Update(1);
-                 bullets.at(bulletSelection).Shoot();*/
+                bulletSelection++;
             }
             break;
         }
-
        
         currentScene->HandleEvents(event);
     }
@@ -404,53 +354,71 @@ ZombieSpawner GameManager::getZombie()
     return zombies2;
 }
 
-void GameManager::compileBulletSpawnLocations()
-{
-    Vec3 locations(300, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-
-    locations.set(400, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-
-    locations.set(500, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-
-    locations.set(600, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-
-    locations.set(700, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-
-    locations.set(800, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-
-    locations.set(900, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-
-    locations.set(1000, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-
-    locations.set(1100, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-
-    locations.set(1200, 600, 0);
-    bulletSpawnLocations.push_back(locations);
-}
-
-
-
-
-
 void GameManager::RenderBullet(float scale)
 {
-    /*if (fired == true)
+
+    if (bulletSelection == 1 || bulletSelection > 0)
     {
-        bullet->Render(scale);
-    }*/
-          bullets.at(bulletSelection).Render(scale / 6);
+        bullets.at(1).Render(scale / 6);
+    }
+    if (bulletSelection == 2 || bulletSelection > 0)
+    {
+        bullets.at(2).Render(scale / 6);
+    }
+    if (bulletSelection == 3 || bulletSelection > 0)
+    {
+        bullets.at(3).Render(scale / 6);
+    }
+    if (bulletSelection == 4 || bulletSelection > 0)
+    {
+        bullets.at(4).Render(scale / 6);
+    }
+    if (bulletSelection == 5 || bulletSelection > 0)
+    {
+        bullets.at(5).Render(scale / 6);
+    }
+    if (bulletSelection == 6 || bulletSelection > 0)
+    {
+        bullets.at(6).Render(scale / 6);
+    }
+    if (bulletSelection == 7 || bulletSelection > 0)
+    {
+        bullets.at(7).Render(scale / 6);
+    }
+    if (bulletSelection == 8 || bulletSelection > 0)
+    {
+        bullets.at(8).Render(scale / 6);
+    }
+    if (bulletSelection == 9 || bulletSelection > 0)
+    {
+        bullets.at(9).Render(scale / 6);
+    }
+    if (bulletSelection == 10 || bulletSelection > 0)
+    {
+        bullets.at(10).Render(scale / 6);
+
+    }
+    if (bulletSelection == 11 || bulletSelection > 0)
+    {
+        bullets.at(11).Render(scale / 6);
+
+    }
+    if (bulletSelection == 12 || bulletSelection > 0)
+    {
+        bullets.at(12).Render(scale / 6);
+
+    }
+    if (bulletSelection == 13 || bulletSelection > 0)
+    {
+        bullets.at(13).Render(scale / 6);
+
+    }
+    if (bulletSelection == 14 || bulletSelection > 0)
+    {
+        bullets.at(14).Render(scale / 6);
+
+    }
     
-
-
 }
 
 void GameManager::LoadScene( int i )

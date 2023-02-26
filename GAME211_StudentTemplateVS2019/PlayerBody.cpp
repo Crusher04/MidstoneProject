@@ -99,7 +99,7 @@ void PlayerBody::Render( float scale )
 
     //// Calculate Angle Variable
     int Delta_x; int Delta_y;
-    int mouse_x, mouse_y;
+  
     SDL_GetMouseState(&mouse_x, &mouse_y);
 
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
