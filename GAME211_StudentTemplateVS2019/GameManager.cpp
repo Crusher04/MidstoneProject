@@ -52,7 +52,7 @@ bool GameManager::OnCreate() {
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
 
-    currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
+    currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
 
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
