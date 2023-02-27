@@ -42,7 +42,7 @@ public:
 	bool OnCreate();
 	void OnDestroy();
 
-
+	float ammoCount;
 	// These might be unfamiliar
 	float getSceneHeight();
 	float getSceneWidth();
@@ -73,9 +73,13 @@ public:
 
 
 
-	std::vector<Vec3> bulletSpawnLocations;
-	void compileBulletSpawnLocations();
-	Bullet getBullet();
+
+
+
+
+
+	// Bullet Variables and Functions
+	Bullet* getBullet() {return bullet;	}
 	bool fired;
 	void RenderBullet(float scale = 1.0f);
 	float bulletSpeed;

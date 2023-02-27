@@ -49,8 +49,9 @@ public:
     float angle;
     void Shoot();
     void bulletArrPushBack(Bullet bullet_);
-
+    bool fired;
     void setBulletGame(GameManager* game_);
+    int mouse_X, mouse_Y;
 };
 
 #endif /* PLAYERBODY_H */

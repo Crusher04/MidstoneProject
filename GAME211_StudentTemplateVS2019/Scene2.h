@@ -31,6 +31,12 @@ public:
     Matrix4 getProjectionMatrix() { return projectionMatrix; }
 	Matrix4 getInverseMatrix() { return inverseProjection; }
 	float a;
+
+
+
+
+
+
 };
 
 #endif
