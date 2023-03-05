@@ -6,8 +6,10 @@
 #include "Timer.h"
 #include "Scene.h"
 #include "PlayerBody.h"
-
-
+#include "Round.h"
+#include <vector>
+#include "ZombieSpawner.h"
+#include "Bullet.h"
 class GameManager {
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
@@ -27,13 +29,20 @@ private:
 	// This might be unfamiliar
     class PlayerBody *player;
 
+	class Round	*round;
+	
+	class ZombieSpawner *zombies;
+	//class ZombieSpawner zombies2;
+	
+	class Bullet* bullet;
+
 public:
 	GameManager();
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
 
-
+	float ammoCount;
 	// These might be unfamiliar
 	float getSceneHeight();
 	float getSceneWidth();
@@ -41,12 +50,41 @@ public:
     PlayerBody* getPlayer(){ return player; }
 	void RenderPlayer(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
-
+	bool w;
+	float speed;
+	bool e;
 	void Run();
 	void handleEvents();
 	void LoadScene( int i );
     bool ValidateCurrentScene();
-    
+	bool isMoving;
+
+	//Get Round Class
+	Round* getRound() { return round; }
+
+	//Zombie Spawn Locations
+	std::vector<Vec3> zombieSpawnLocations;
+	void compileZombieSpawnLocations();
+
+	void RenderZombie(float scale = 1.0f);
+	ZombieSpawner getZombie();
+
+	std::vector<ZombieSpawner> zombieSpawnerArr2;
+
+
+
+
+
+
+
+
+	// Bullet Variables and Functions
+	Bullet* getBullet() {return bullet;	}
+	bool fired;
+	void RenderBullet(float scale = 1.0f);
+	float bulletSpeed;
+	int bulletSelection;
+	std::vector<Bullet> bullets;
 };
 #endif
 

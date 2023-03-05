@@ -1,20 +1,152 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Body.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBody.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityHealth.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="MMath.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Music.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBody.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Round.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene1.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene2.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene8.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundEffect.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Spawner.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="VMath.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="ZombieSpawner.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene4.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Body.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBody.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityHealth.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MMath.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Music.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBody.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Round.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene1.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene2.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene8.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundEffect.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="VMath.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Spawner.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ZombieSpawner.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene4.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GAME211_StudentTemplateVS2019.rc" />
     <ClCompile Include="Body.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,18 +175,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundEffect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene8.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Music.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,22 +218,18 @@
     <ClInclude Include="Scene2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SoundEffect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene8.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Music.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GAME211_StudentTemplateVS2019.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{53fe0192-020e-469c-bd14-53e905e20561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Class">
+      <UniqueIdentifier>{15164e48-c653-40be-a943-cabb318244cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

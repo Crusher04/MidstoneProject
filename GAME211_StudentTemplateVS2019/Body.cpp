@@ -1,5 +1,5 @@
 #include "Body.h"
-
+#include <stdio.h>
 Body::Body()
 {
     pos = Vec3();
@@ -44,11 +44,21 @@ void Body::ApplyForce( Vec3 force_ ) {
 }
 
 void Body::Update( float deltaTime ){
-    pos = pos + vel * deltaTime + accel * (0.5f * deltaTime * deltaTime);
-    vel = vel + accel * deltaTime;
+    
+    //std::cout << "\nVEL = " << vel.x <<", " << vel.y;
+    //std::cout << "\nAccel = " << accel.x << ", " << accel.y;
+
+    pos = (pos + vel * deltaTime) + (0.5 * (accel * deltaTime * deltaTime));
+    vel = (vel + accel * deltaTime);
+
     // Update orientation
     orientation += rotation * deltaTime;
     rotation += angular * deltaTime;
+
+    vel *= drag;
+
+    
+
 
 }
 
@@ -71,4 +81,26 @@ void Body::HandleEvents( const SDL_Event& event )
 void Body::setPos( Vec3 pos_ )
 {
     pos = pos_; 
-} //commit by trien
+}
+void Body::setVel(Vec3 vel_)
+{
+    vel = vel_;
+}
+
+
+
+void Body::setDrag(float drag_)
+{
+    drag = drag_;
+}
+
+void Body::ApplyForceY(float y)
+{
+    accel.y = y / mass;
+}
+
+void Body::ApplyForceX(float x)
+{
+    accel.x = x / mass;
+}
+
