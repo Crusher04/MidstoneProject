@@ -1,11 +1,17 @@
 #include "SoundEffect.h"
 
-
+enum MyEnum
+{
+	CH_PLAYER,
+	CH_ENEMY
+};
 
 void SoundEffect::loadAudio()
 {
 	addAudio("Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3");
-	addAudio("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3");
+	addAudio("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav");
+	addAudio("Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav");
+	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-83900.wav");
 }
 
 void SoundEffect::addAudio(const char* path)
@@ -28,7 +34,37 @@ void SoundEffect::playAudio(const int which) const
 		return;
 	}
 
-	Mix_PlayChannel(-1, mSoundEffectBank[which], 0);
+	Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[which], 0);
 
 	std::cout << "Played Sound: " << which << std::endl;
+}
+
+void SoundEffect::PistolAudio(bool fired) const
+{
+	if (fired == true) {
+		Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[0], 0);
+	}
+	else {
+		Mix_Pause(CH_PLAYER);
+	}
+}
+
+void SoundEffect::MachineGunAudio(bool fired) const
+{
+	if (fired == true) {
+		Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[2], -1);
+	}
+	else {
+		Mix_Pause(CH_PLAYER);
+	}
+}
+
+void SoundEffect::WalkingAudio(bool walking) const
+{
+	if (walking == true) {
+		Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[3], -1);
+	}
+	else {
+		Mix_Pause(CH_PLAYER);
+	}
 }
