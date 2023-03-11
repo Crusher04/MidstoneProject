@@ -32,7 +32,7 @@ bool Bullet::OnCreate()
     return true;
     
     angle = 0;
-
+    finalVel = vel;
 }
 
 void Bullet::Render( float scale )
@@ -100,6 +100,7 @@ void Bullet::Update( float deltaTime )
 void Bullet::Shoot()
 {
 
+
     int Delta_x; int Delta_y;
     SDL_GetMouseState(&mouse_X, &mouse_Y);
 
@@ -109,10 +110,13 @@ void Bullet::Shoot()
 
     if (vel.x == 0 && vel.y == 0)
     {
-        vel.x += game->bulletSpeed  * 40 * (cos((angle) * 3.14159 / 180));
-        vel.y += game->bulletSpeed * 40 *(sin((angle) * 3.14159 / 180)) * -1;
+  
+        finalVel.x = vel.x + game->bulletSpeed  * 40 * (cos((angle) * 3.14159 / 180));
+        finalVel.y = vel.y + game->bulletSpeed * 40 *(sin((angle) * 3.14159 / 180)) * -1;
+        vel = finalVel;
     }
     fired = true;
+    /*game->i = 0;*/
 }
 
 void Bullet::bulletArrPushBack(Bullet bullet_)
@@ -124,4 +128,5 @@ void Bullet::setBulletGame(GameManager* game_)
 {
     game = game_;
 }
+
 

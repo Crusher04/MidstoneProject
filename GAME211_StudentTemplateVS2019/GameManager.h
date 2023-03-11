@@ -72,10 +72,10 @@ public:
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
 
+	bool bulletRendered;
 
 
-
-
+	int i;
 
 
 	// Bullet Variables and Functions

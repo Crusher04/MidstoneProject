@@ -47,10 +47,13 @@ bool GameManager::OnCreate() {
 
 
     // Set the Game Variables
-    ammoCount = 15;
-    bulletSpeed = 20;
+    ammoCount = 16;
+    bulletSpeed = 30;
     speed = 3000;
     w = false;
+    i = 0;
+
+
 
     /////////////////////////////////
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
@@ -128,6 +131,7 @@ bool GameManager::OnCreate() {
     // Bullet Initialization
     bullet2.setBulletGame(this);
     bullet2.OnCreate();
+ 
     for (int i = 0; i < ammoCount; i++)
     {
 
@@ -196,8 +200,22 @@ void GameManager::handleEvents()
             }
             if (event.key.keysym.sym == SDLK_e)
             {
-
-
+                bulletSelection = 1;
+                bullets.at(1).fired = false;
+                bullets.at(2).fired = false;
+                bullets.at(3).fired = false;
+                bullets.at(4).fired = false;
+                bullets.at(5).fired = false;
+                bullets.at(6).fired = false;
+                bullets.at(7).fired = false;
+                bullets.at(8).fired = false;
+                bullets.at(9).fired = false;
+                bullets.at(10).fired = false;
+                bullets.at(11).fired = false;
+                bullets.at(12).fired = false;
+                bullets.at(13).fired = false;
+                bullets.at(14).fired = false;
+                bullets.at(15).fired = false;
             }
             //Sets the Drag of the player. Lower = slower
             player->setDrag(.9f);
@@ -356,69 +374,82 @@ ZombieSpawner GameManager::getZombie()
 
 void GameManager::RenderBullet(float scale)
 {
+    if (fired == true)
+    {
 
-    if (bulletSelection == 1 || bulletSelection > 0)
-    {
-        bullets.at(1).Render(scale / 6);
-    }
-    if (bulletSelection == 2 || bulletSelection > 0)
-    {
-        bullets.at(2).Render(scale / 6);
-    }
-    if (bulletSelection == 3 || bulletSelection > 0)
-    {
-        bullets.at(3).Render(scale / 6);
-    }
-    if (bulletSelection == 4 || bulletSelection > 0)
-    {
-        bullets.at(4).Render(scale / 6);
-    }
-    if (bulletSelection == 5 || bulletSelection > 0)
-    {
-        bullets.at(5).Render(scale / 6);
-    }
-    if (bulletSelection == 6 || bulletSelection > 0)
-    {
-        bullets.at(6).Render(scale / 6);
-    }
-    if (bulletSelection == 7 || bulletSelection > 0)
-    {
-        bullets.at(7).Render(scale / 6);
-    }
-    if (bulletSelection == 8 || bulletSelection > 0)
-    {
-        bullets.at(8).Render(scale / 6);
-    }
-    if (bulletSelection == 9 || bulletSelection > 0)
-    {
-        bullets.at(9).Render(scale / 6);
-    }
-    if (bulletSelection == 10 || bulletSelection > 0)
-    {
-        bullets.at(10).Render(scale / 6);
+        if (bulletSelection == 1 || bulletSelection > 0)
+        {
+            bullets.at(1).Render(scale / 6);
 
-    }
-    if (bulletSelection == 11 || bulletSelection > 0)
-    {
-        bullets.at(11).Render(scale / 6);
+        }
+        if (bulletSelection == 2 || bulletSelection > 0)
+        {
+            bullets.at(2).Render(scale / 6);
+        }
+        if (bulletSelection == 3 || bulletSelection > 0)
+        {
+            bullets.at(3).Render(scale / 6);
+        }
+        if (bulletSelection == 4 || bulletSelection > 0)
+        {
+            bullets.at(4).Render(scale / 6);
+        }
+        if (bulletSelection == 5 || bulletSelection > 0)
+        {
+            bullets.at(5).Render(scale / 6);
+        }
+        if (bulletSelection == 6 || bulletSelection > 0)
+        {
+            bullets.at(6).Render(scale / 6);
+        }
+        if (bulletSelection == 7 || bulletSelection > 0)
+        {
+            bullets.at(7).Render(scale / 6);
+        }
+        if (bulletSelection == 8 || bulletSelection > 0)
+        {
+            bullets.at(8).Render(scale / 6);
+        }
+        if (bulletSelection == 9 || bulletSelection > 0)
+        {
+            bullets.at(9).Render(scale / 6);
+        }
+        if (bulletSelection == 10 || bulletSelection > 0)
+        {
+            bullets.at(10).Render(scale / 6);
 
-    }
-    if (bulletSelection == 12 || bulletSelection > 0)
-    {
-        bullets.at(12).Render(scale / 6);
+        }
+        if (bulletSelection == 11 || bulletSelection > 0)
+        {
+            bullets.at(11).Render(scale / 6);
 
-    }
-    if (bulletSelection == 13 || bulletSelection > 0)
-    {
-        bullets.at(13).Render(scale / 6);
+        }
+        if (bulletSelection == 12 || bulletSelection > 0)
+        {
+            bullets.at(12).Render(scale / 6);
 
-    }
-    if (bulletSelection == 14 || bulletSelection > 0)
-    {
-        bullets.at(14).Render(scale / 6);
+        }
+        if (bulletSelection == 13 || bulletSelection > 0)
+        {
+            bullets.at(13).Render(scale / 6);
 
+        }
+        if (bulletSelection == 14 || bulletSelection > 0)
+        {
+            bullets.at(14).Render(scale / 6);
+
+
+        }
+        if (bulletSelection == 15 || bulletSelection > 0)
+        {
+            bullets.at(15).Render(scale / 6);
+
+        }
     }
-    
+
+
+
+
 }
 
 void GameManager::LoadScene( int i )
