@@ -14,6 +14,7 @@ public:
 	void PistolAudio(bool fired) const;
 	void MachineGunAudio(bool fired) const;
 	void WalkingAudio(bool walking) const;
+	void SprintingAudio(bool sprinting) const;
 private:
 	void loadAudio();
 	std::vector<Mix_Chunk*> mSoundEffectBank;

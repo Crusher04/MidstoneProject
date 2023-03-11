@@ -12,6 +12,7 @@ void SoundEffect::loadAudio()
 	addAudio("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav");
 	addAudio("Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav");
 	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-83900.wav");
+	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-slow-83900.wav");
 }
 
 void SoundEffect::addAudio(const char* path)
@@ -62,6 +63,16 @@ void SoundEffect::MachineGunAudio(bool fired) const
 void SoundEffect::WalkingAudio(bool walking) const
 {
 	if (walking == true) {
+		Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[4], -1);
+	}
+	else {
+		Mix_Pause(CH_PLAYER);
+	}
+}
+
+void SoundEffect::SprintingAudio(bool sprinting) const
+{
+	if (sprinting == true) {
 		Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[3], -1);
 	}
 	else {
