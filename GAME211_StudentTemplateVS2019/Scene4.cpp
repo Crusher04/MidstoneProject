@@ -83,8 +83,8 @@ bool Scene4::OnCreate() {
 
 	// other
 	wellImage = IMG_Load("Assets/prop/well.png");
-	otherImage0 = IMG_Load("Assets/prop/container_purple.png");
-	otherImage1 = IMG_Load("Assets/prop/container_red_vertical.png");
+	otherImage0 = IMG_Load("Assets/prop/building1_1.png");
+	otherImage1 = IMG_Load("Assets/prop/building1.png");
 	logImage0 = IMG_Load("Assets/organic/log.png");
 
 	otherTexture0 = SDL_CreateTextureFromSurface(renderer, otherImage0);
@@ -221,13 +221,13 @@ void Scene4::Render() {
 	
 	//other 
 	Vec3 well_screenCoords = projectionMatrix * Vec3(17.5f, 9.5f, 0.0f);
-	Vec3 other_screenCoords0 = projectionMatrix * Vec3(6.0f, 1.8f, 0.0f);
-	Vec3 other_screenCoords1 = projectionMatrix * Vec3(13.0f, 13.5f, 0.0f);
+	Vec3 other_screenCoords0 = projectionMatrix * Vec3(6.0f, 1.0f, 0.0f);
+	Vec3 other_screenCoords1 = projectionMatrix * Vec3(13.3f, 13.5f, 0.0f);
 	Vec3 log_screenCoords0 = projectionMatrix * Vec3(20.0f, 4.5f, 0.0f);
 
 	//rock
 	Vec3 rock_screenCoords0 = projectionMatrix * Vec3(5.5f, 15.0f, 0.0f);
-	Vec3 rock_screenCoords1 = projectionMatrix * Vec3(18.5f, 13.4f, 0.0f);
+	Vec3 rock_screenCoords1 = projectionMatrix * Vec3(18.5f, 13.1f, 0.0f);
 	Vec3 rock_screenCoords2 = projectionMatrix * Vec3(7.5f, 9.5f, 0.0f);
 	Vec3 rock_screenCoords3 = projectionMatrix * Vec3(1.8f, 4.0f, 0.0f);
 	Vec3 rock_screenCoords4 = projectionMatrix * Vec3(12.3f, 18.1f, 0.0f);
@@ -415,8 +415,8 @@ void Scene4::Render() {
 	SDL_RenderCopy(renderer, blockTexture2, nullptr, &dest);*/
 
 	//block green
-	dest = scale(blockTexture1, block_screenCoords1.x, block_screenCoords1.y, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
+	/*dest = scale(blockTexture1, block_screenCoords1.x, block_screenCoords1.y, 1.0f);
+	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);*/
 
 	dest = scale(blockTexture1, block_screenCoords2.x, block_screenCoords2.y, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
@@ -427,17 +427,17 @@ void Scene4::Render() {
 	dest = scale(blockTexture1, block_screenCoords4.x, block_screenCoords4.y, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
 
-	dest = scale(blockTexture1, block_screenCoords5.x, block_screenCoords5.y, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
+	/*dest = scale(blockTexture1, block_screenCoords5.x, block_screenCoords5.y, 1.0f);
+	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);*/
 
 	//other
 	dest = scale(wellTexture, well_screenCoords.x, well_screenCoords.y, 0.7f); // well
 	SDL_RenderCopy(renderer, wellTexture, nullptr, &dest);
 
-	dest = scale(otherTexture0, other_screenCoords0.x, other_screenCoords0.y, 1.0f); // container purple - horizontal
+	dest = scale(otherTexture0, other_screenCoords0.x, other_screenCoords0.y, 1.0f); // building
 	SDL_RenderCopy(renderer, otherTexture0, nullptr, &dest);
 
-	dest = scale(otherTexture0, other_screenCoords1.x, other_screenCoords1.y, 1.0f); // container red  
+	dest = scale(otherTexture1, other_screenCoords1.x, other_screenCoords1.y, 1.0f); // building
 	SDL_RenderCopy(renderer, otherTexture1, nullptr, &dest);
 
 	dest = scale(logTexture0, log_screenCoords0.x, log_screenCoords0.y, 0.4f); // log  
@@ -447,7 +447,7 @@ void Scene4::Render() {
 	dest = scale(rockTexture0, rock_screenCoords0.x, rock_screenCoords0.y, 0.2f); // rock0
 	SDL_RenderCopy(renderer, rockTexture0, nullptr, &dest);
 
-	dest = scale(rockTexture1, rock_screenCoords1.x, rock_screenCoords1.y, 0.6f); // rock1
+	dest = scale(rockTexture1, rock_screenCoords1.x, rock_screenCoords1.y, 0.3f); // rock1
 	SDL_RenderCopy(renderer, rockTexture1, nullptr, &dest);
 
 	dest = scale(rockTexture2, rock_screenCoords2.x, rock_screenCoords2.y, 0.2f); // rock2
