@@ -12,6 +12,8 @@
 
 Collider playerColl(1000, 8, 1, 1);
 Collider enemyColl(12, 8, 1, 1);
+std::vector<Collider> zombieCollArr;
+ZombieSpawner zombies;
 
 //Damage Delay variables
 int damageDelay = 1000;
@@ -74,8 +76,15 @@ bool Scene2::OnCreate() {
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 	enemyColl.passthrough = true;
+	std::cout << "spawner size = " << game->zombieSpawnerArr2.size() << "\n";
 
+	for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
+	{
+		enemyColl.setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
+		zombieCollArr.push_back(enemyColl);
+		std::cout << "enemyColl(" << enemyColl.x << ", " << enemyColl.y << ")\n";
 
+	}
 
 	return true;
 	a = 0;  // whats this and why is it after return true? - Ahmed

@@ -9,6 +9,7 @@
 
 ZombieSpawner zombies2;
 Bullet bullet2;
+
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -135,7 +136,7 @@ bool GameManager::OnCreate() {
         bullet2.bulletArrPushBack(bullet2);
         bullets.push_back(bullet2);
     }
-        
+
 	return true;
 }
 
@@ -345,6 +346,7 @@ void GameManager::RenderZombie(float scale)
         //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
         
         zombieSpawnerArr2.at(i).Render(scale / 6);
+        
     }
 
 }

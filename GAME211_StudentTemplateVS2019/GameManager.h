@@ -10,6 +10,7 @@
 #include <vector>
 #include "ZombieSpawner.h"
 #include "Bullet.h"
+
 class GameManager {
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
@@ -70,9 +71,6 @@ public:
 	ZombieSpawner getZombie();
 
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
-
-
-
 
 
 
