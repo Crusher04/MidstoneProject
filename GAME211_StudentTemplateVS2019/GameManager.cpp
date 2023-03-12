@@ -216,6 +216,7 @@ void GameManager::handleEvents()
                 bullets.at(13).fired = false;
                 bullets.at(14).fired = false;
                 bullets.at(15).fired = false;
+              
             }
             //Sets the Drag of the player. Lower = slower
             player->setDrag(.9f);
@@ -270,6 +271,12 @@ void GameManager::handleEvents()
         case SDL_MOUSEBUTTONDOWN:
             if (event.button.button == SDL_BUTTON_LEFT)
             {
+                if (reload == true)
+                {
+                    bulletSelection = 0;
+
+
+                }
                 fired = true;
 
                 bulletSelection++;

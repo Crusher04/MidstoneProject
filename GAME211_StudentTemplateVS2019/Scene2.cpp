@@ -79,7 +79,7 @@ bool Scene2::OnCreate() {
 	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
 	enemyColl.passthrough = true;
 
-
+	v = 5;
 
 	return true;
 	a = 0;  // whats this and why is it after return true? - Ahmed
@@ -92,7 +92,6 @@ void Scene2::Update(const float deltaTime) {
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
 
-	std::cout << game->bulletSelection << std::endl;
 	
 	
 	//Set Collider locations
@@ -175,7 +174,7 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 
-
+	updatedGunPos = game->getPlayer()->gunLocation;
 
 
 
@@ -183,6 +182,7 @@ void Scene2::Update(const float deltaTime) {
 
 	if (game->bulletSelection == 15)
 	{
+
 		game->bulletSelection = 1;
 		game->bullets.at(1).fired = false;
 		game->bullets.at(2).fired = false;
@@ -199,31 +199,80 @@ void Scene2::Update(const float deltaTime) {
 		game->bullets.at(13).fired = false;
 		game->bullets.at(14).fired = false;
 		game->bullets.at(15).fired = false;
-		
+
+		bulletIsMoving = true;
+		game->reload = true;
+	}
+
+
+
+	if (bulletIsMoving == true)
+	{
+
+		v++;
+		if (v > 150)
+		{
+			game->reload = false;
+		}
+		if (v > 350)
+		{
+			updatedGunPos = game->getPlayer()->gunLocation;
+			game->bullets.at(1).setPos(updatedGunPos);
+			game->bullets.at(2).setPos(updatedGunPos);
+			game->bullets.at(3).setPos(updatedGunPos);
+			game->bullets.at(4).setPos(updatedGunPos);
+			game->bullets.at(5).setPos(updatedGunPos);
+			game->bullets.at(6).setPos(updatedGunPos);
+			game->bullets.at(7).setPos(updatedGunPos);
+			game->bullets.at(8).setPos(updatedGunPos);
+			game->bullets.at(9).setPos(updatedGunPos);
+			game->bullets.at(10).setPos(updatedGunPos);
+			game->bullets.at(11).setPos(updatedGunPos);
+			game->bullets.at(12).setPos(updatedGunPos);
+			game->bullets.at(13).setPos(updatedGunPos);
+			game->bullets.at(14).setPos(updatedGunPos);
+			game->bullets.at(15).setPos(updatedGunPos);
+			game->bullets.at(1).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(2).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(3).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(4).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(5).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(6).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(7).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(8).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(9).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(10).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(11).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(12).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(13).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(14).setVel(Vec3(0.0f, 0.0f, 0.0f));
+			game->bullets.at(15).setVel(Vec3(0.0f, 0.0f, 0.0f));
+
+			updatedGunPos = game->getPlayer()->gunLocation;
+			v = 0;
+		}
+
+
 	}
 
 
 	// Check to see if the bullet is fired and then set the position
-	if (game->bullets.at(game->bulletSelection).fired == false)
+	if (game->bullets.at(game->bulletSelection).fired == false && game->reload == false)
 	{
 		game->bullets.at(game->bulletSelection).setPos(game->getPlayer()->gunLocation);
 	}
 
 
 	// Check to see if bullet is fired and then call these functions.
-	if (game->fired == true)
+	if (game->fired == true && game->reload == false)
 	{
-	/*	if (game->bullets.at(game->bulletSelection).fired == false)
-		{
-			game->bullets.at(game->bulletSelection).setPos(game->getPlayer()->gunLocation);
-		}*/
-
-		/*game->bullets.at(game->bulletSelection).setVel((Vec3);*/
-		
 		game->bullets.at(game->bulletSelection).Shoot();
-		game->i++;
+		
+		/*game->i++;*/
 
 	}
+
+
 	if (game->fired == false)
 	{
 
@@ -231,11 +280,11 @@ void Scene2::Update(const float deltaTime) {
 
 	}
 
-	/*if (game->i > 85)
+	if (game->i > 85)
 	{
 		game->fired = false;
-		game->bullets.at(game->bulletSelection).setVel(Vec3(0.0f,0.0f,0.0f));
-	}*/
+		
+	}
 
 	// Update Each Bullet Position 
 	if (game->bulletSelection == 1 || game->bulletSelection > 0)
@@ -299,11 +348,14 @@ void Scene2::Update(const float deltaTime) {
 	{
 		game->bullets.at(15).Update(deltaTime);
 	}
+
+
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)
 	{
 		damageTaken = false;
 	}
+
 
 }
 

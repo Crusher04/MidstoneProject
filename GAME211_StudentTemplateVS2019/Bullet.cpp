@@ -33,6 +33,8 @@ bool Bullet::OnCreate()
     
     angle = 0;
     finalVel = vel;
+
+
 }
 
 void Bullet::Render( float scale )
@@ -90,7 +92,7 @@ void Bullet::Update( float deltaTime )
 {
     // Update position, call Update from base class
     // Note that would update velocity too, and rotation motion
-   
+    
     Body::Update( deltaTime );
 
 }

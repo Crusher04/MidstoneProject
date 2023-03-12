@@ -16,6 +16,7 @@
 #include "Body.h"
 #include <vector>
 
+
 class Bullet : public Body
 {
 protected:
@@ -53,7 +54,7 @@ public:
     void setBulletGame(GameManager* game_);
     int mouse_X, mouse_Y;
     Vec3 finalVel;
-   
+
 };
 
 #endif /* PLAYERBODY_H */

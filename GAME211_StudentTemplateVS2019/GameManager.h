@@ -58,7 +58,7 @@ public:
 	void LoadScene( int i );
     bool ValidateCurrentScene();
 	bool isMoving;
-
+	bool reload;
 	//Get Round Class
 	Round* getRound() { return round; }
 
