@@ -43,6 +43,8 @@ bool Collider::checkCollBox(Collider objectOne, Collider objectTwo)
 	//std::cout << "\nPlayer Position " << objectOne.x << ", " << objectOne.y;
 	//std::cout << "\nEnemy Position " << objectTwo.x << ", " << objectTwo.y;
 	
+	bool flag = false;
+
 	float leftA, leftB;
 	float rightA, rightB;
 	float topA, topB;
@@ -61,36 +63,36 @@ bool Collider::checkCollBox(Collider objectOne, Collider objectTwo)
 	bottomB = objectTwo.y + objectTwo.h;
 
 	// If any of the sides from A are outside of B
-	if (bottomA <= topB) {
-		//std::cout << "BottomA<=TopB\n";
-		previousPos.x = objectOne.x;
-		previousPos.y = objectOne.y;
+	//if (bottomA <= topB) {
+	//	//std::cout << "BottomA<=TopB\n";
+	//	previousPos.x = objectOne.x;
+	//	previousPos.y = objectOne.y;
+	//	return false;
+	//}
+	//else if (topA >= bottomB) {
+	//	//std::cout << "topA >= bottomB\n";
+	//	previousPos.x = objectOne.x;
+	//	previousPos.y = objectOne.y;
+	//	return false;
+	//}
+	//else if (rightA <= leftB) {
+	//	//std::cout << "rightA <= leftB\n";
+	//	previousPos.x = objectOne.x;
+	//	previousPos.y = objectOne.y;
+	//	return false;
+	//}
+	//else if (leftA >= rightB) {
+	//	//std::cout << "leftA >= rightB\n";
+	//	previousPos.x = objectOne.x;
+	//	previousPos.y = objectOne.y;
+	//	return false;
+	//}
+	
+	if (leftA > rightB || leftB > rightA)
 		return false;
-	}
-	else if (topA >= bottomB) {
-		//std::cout << "topA >= bottomB\n";
-		previousPos.x = objectOne.x;
-		previousPos.y = objectOne.y;
-		return false;
-	}
-	else if (rightA <= leftB) {
-		//std::cout << "rightA <= leftB\n";
-		previousPos.x = objectOne.x;
-		previousPos.y = objectOne.y;
-		return false;
-	}
-	else if (leftA >= rightB) {
-		//std::cout << "leftA >= rightB\n";
-		previousPos.x = objectOne.x;
-		previousPos.y = objectOne.y;
-		return false;
-	}
-	else
-	{
-		//std::cout << "\nPlayer Collided";
+	
 
-		return true;
-	}
+	return flag;
 	
 }
 

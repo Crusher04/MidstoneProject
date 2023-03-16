@@ -10,6 +10,7 @@
 ZombieSpawner zombies2;
 Bullet bullet2;
 
+
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -50,7 +51,7 @@ bool GameManager::OnCreate() {
     // Set the Game Variables
     ammoCount = 15;
     bulletSpeed = 20;
-    speed = 3000;
+    speed = 1000;
     w = false;
 
     /////////////////////////////////
@@ -103,7 +104,7 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-    
+
     //ZOMBIES
     compileZombieSpawnLocations();
     
@@ -295,7 +296,7 @@ SDL_Renderer* GameManager::getRenderer()
 void GameManager::RenderPlayer(float scale)
 {
    
-    player->Render(scale);
+    player->Render(1);
 
     
 }
@@ -345,7 +346,7 @@ void GameManager::RenderZombie(float scale)
     {
         //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
         
-        zombieSpawnerArr2.at(i).Render(scale / 6);
+        zombieSpawnerArr2.at(i).Render(.2);
         
     }
 
@@ -357,6 +358,9 @@ ZombieSpawner GameManager::getZombie()
 }
 
 void GameManager::RenderBullet(float scale)
+
+
+
 {
 
     if (bulletSelection == 1 || bulletSelection > 0)

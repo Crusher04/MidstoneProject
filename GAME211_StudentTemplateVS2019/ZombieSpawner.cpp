@@ -4,7 +4,7 @@
 
 bool ZombieSpawner::OnCreate()
 {
-    image = IMG_Load("Assets/Blinky.png");
+    image = IMG_Load("Assets/zombie.png");
     SDL_Renderer* renderer = game->getRenderer();
     texture = SDL_CreateTextureFromSurface(renderer, image);
     if (image == nullptr) {
@@ -35,8 +35,10 @@ void ZombieSpawner::Render(float scale)
     h = image->h * scale;
 
 
-    square.w = static_cast<int>(w) * 5;
-    square.h = static_cast<int>(h) * 25;
+    square.x = static_cast<int>(screenCoords.x - 0.5f * w);
+    square.y = static_cast<int>(screenCoords.y - 0.5f * h);
+    square.w = static_cast<int>(w);
+    square.h = static_cast<int>(h);
 
 
 
@@ -50,21 +52,21 @@ void ZombieSpawner::Render(float scale)
     square.x = pos.x;
     square.y = pos.y;
     SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
-    square.x -= (square.w / 2);
-    square.y -= (square.h / 2);
+    //square.x -= (square.w / 2);
+    //square.y -= (square.h / 2);
 
-    // Convert character orientation from radians to degrees.
-    float orientationDegrees = orientation * 180.0f / M_PI;
+    //// Convert character orientation from radians to degrees.
+    //float orientationDegrees = orientation * 180.0f / M_PI;
 
-    //// Calculate Angle Variable
-    int Delta_x; int Delta_y;
-    int mouse_x, mouse_y;
-    SDL_GetMouseState(&mouse_x, &mouse_y);
+    ////// Calculate Angle Variable
+    //int Delta_x; int Delta_y;
+    //int mouse_x, mouse_y;
+    //SDL_GetMouseState(&mouse_x, &mouse_y);
 
-    Delta_x = mouse_x - game->getPlayer()->getPos().x;
-    Delta_y = mouse_y - game->getPlayer()->getPos().y;
+    //Delta_x = mouse_x - game->getPlayer()->getPos().x;
+    //Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
-    float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+    //float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
 
     /////////////////////////////////
     //Render Saling
@@ -72,11 +74,14 @@ void ZombieSpawner::Render(float scale)
     square.w *= scale;
     square.h *= scale;
 
-
+    
     /////////////////////////////////
     //RENDER
    //////////////////////////////////.
     SDL_RenderCopyEx(renderer, texture, nullptr, &square, NULL, nullptr, SDL_FLIP_NONE);
+    SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
+    SDL_RenderDrawRect(renderer, &square);
+    SDL_RenderDrawRect(renderer, &square);
 
 }
 
