@@ -10,18 +10,28 @@
 // TESTING SCENE - THIS IS OUR PLAYGROUND
 ///////////////////////////////////////////
 
-Collider playerColl(1000, 8, 1, 3);
-Collider enemyColl(300, 800, 10, 10);
-std::vector<Collider> zombieCollArr;
-ZombieSpawner zombies;
+
+//Collider locations
+Collider playerColl(1000, 8, 1, 3);			//Player collider initilization 
+Collider enemyColl(300, 800, 10, 10);		//zombie collider holder
+std::vector<Collider> zombieCollArr;		//zombie collider vector array
+
+/***** SCENE VARIABLES *****/
 
 //Damage Delay variables
 int damageDelay = 1000;
 float timeOfDamage = 0;
 bool damageTaken = false;
-/////////////////////////
+
+//Testing Variables
 bool printPos = false;
 int holdPosX, holdPosY = 0;
+
+//Flag Variables
+bool zombieInitComplete = false;		//Flags the completion of zombie collider initialization 
+
+/***** END OF SCENE VARIABLES *****/
+
 
 // See notes about this constructor in Scene1.h.
 Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
@@ -76,12 +86,12 @@ bool Scene2::OnCreate() {
 	//Set Player Collider
 	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
-	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
+
+
 	enemyColl.passthrough = false;
 	
 
 	return true;
-	a = 0;  // whats this and why is it after return true? - Ahmed
 }
 
 void Scene2::OnDestroy() {}
@@ -92,11 +102,14 @@ void Scene2::Update(const float deltaTime) {
 	
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
+	
+	//Set Player Collider locations
+	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
+	playerColl.setCollBounds(2, 2);
 
-	//enemyColl.setCollPosition(game->zombieSpawnerArr2.at(0).getPos().x, game->zombieSpawnerArr2.at(0).getPos().y);
-	//enemyColl.setCollBounds(game->zombieSpawnerArr2.at(0).getImage()->w *0.18f, game->zombieSpawnerArr2.at(0).getImage()->h * 0.18f);
 
-	if (zombieCollArr.size() != game->zombieSpawnerArr2.size())
+	//Initializes our zombie collider
+	if (zombieCollArr.size() != game->zombieSpawnerArr2.size() && !zombieInitComplete)
 	{
 		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 		{
@@ -104,16 +117,11 @@ void Scene2::Update(const float deltaTime) {
 			enemyColl.setCollBounds(game->zombieSpawnerArr2.at(i).getImage()->w * 0.18f, game->zombieSpawnerArr2.at(i).getImage()->h * 0.18f);
 			zombieCollArr.push_back(enemyColl);
 		}
-
+		zombieInitComplete = true; // This is a flag to make sure this loop doesn't run again
 	}
 	
 
-	//Set Collider locations
-	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
-	//playerColl.setCollBounds((game->getPlayer()->getImage()->w / 2.5), (game->getPlayer()->getImage()->h / 2.5));
-	playerColl.setCollBounds(2, 2);
-
-	/* THIS WAS FOR PRINTING PLAYER LOCATION */
+	/* THIS WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY*/
 	if (holdPosX != (int)playerColl.x || holdPosY != (int)playerColl.y)
 	{
 		holdPosX = playerColl.x;
@@ -285,6 +293,13 @@ void Scene2::Update(const float deltaTime) {
 	if (SDL_GetTicks() > timeOfDamage)
 	{
 		damageTaken = false;
+	}
+
+	//Cheking Health
+	if (game->getPlayer()->health.getHealth() <= 0)
+	{
+		std::cout << "\n YOU HAVE DIED, GAME OVER";
+		exit(0);
 	}
 
 }

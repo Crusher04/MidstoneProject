@@ -48,7 +48,9 @@ bool GameManager::OnCreate() {
 
 
 
-    // Set the Game Variables
+    /////////////////////////////////
+    //Variables for GameManager
+    /////////////////////////////////
     ammoCount = 15;
     bulletSpeed = 20;
     speed = 1000;
@@ -105,17 +107,18 @@ bool GameManager::OnCreate() {
         return false;
     }
 
-    //ZOMBIES
+    /////////////////////////////////
+    //Compile Zomboe Location Array
+    /////////////////////////////////
     compileZombieSpawnLocations();
     
-    //zombies = new ZombieSpawner(this);
+    /////////////////////////////////
+    //Zombie Initialization
+    /////////////////////////////////
     zombies2.setZombieGame(this);
-
-    //zombies->setZombieAmount();
-   // zombies->OnCreate();
-    //zombies->setPos(Vec3(250, 800, 0));
     zombies2.OnCreate();
     
+
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
         
@@ -335,17 +338,15 @@ void GameManager::compileZombieSpawnLocations()
 
 }
 
+/// <summary>
+/// Renders Zombies into scene
+/// </summary>
+/// <param name="scale"></param>
 void GameManager::RenderZombie(float scale)
 {
-    //zombies->Render(scale/2);
-   // zombies->zombieSpawnerArr.at(0).Render(scale / 2);
-    //zombies->zombieSpawnerArr.at(1).Render(scale / 4);
-   // zombies2.zombieSpawnerArr.at(0).Render(scale / 4);
-   // zombies2.zombieSpawnerArr.at(1).Render(scale / 4);
+   
     for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
-    {
-        //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
-        
+    {  
         zombieSpawnerArr2.at(i).Render(.18);
         
     }
