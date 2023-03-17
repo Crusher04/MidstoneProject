@@ -346,7 +346,7 @@ void GameManager::RenderZombie(float scale)
     {
         //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
         
-        zombieSpawnerArr2.at(i).Render(.2);
+        zombieSpawnerArr2.at(i).Render(.18);
         
     }
 

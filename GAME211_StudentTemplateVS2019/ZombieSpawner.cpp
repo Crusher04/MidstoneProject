@@ -79,9 +79,7 @@ void ZombieSpawner::Render(float scale)
     //RENDER
    //////////////////////////////////.
     SDL_RenderCopyEx(renderer, texture, nullptr, &square, NULL, nullptr, SDL_FLIP_NONE);
-    SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
-    SDL_RenderDrawRect(renderer, &square);
-    SDL_RenderDrawRect(renderer, &square);
+    
 
 }
 

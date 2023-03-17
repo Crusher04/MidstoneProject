@@ -77,7 +77,7 @@ bool Scene2::OnCreate() {
 	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 	//enemyColl.setCollPosition(game->getEnemy()->getPos().x, game->getEnemy()->getPos().y);
-	enemyColl.passthrough = true;
+	enemyColl.passthrough = false;
 	
 
 	return true;
@@ -87,31 +87,38 @@ bool Scene2::OnCreate() {
 void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
-	game->getPlayer()->setPos(Vec3(375, 818, 0));
+	//game->getPlayer()->setPos(Vec3(778, 827, 0));
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
 
 	enemyColl.setCollPosition(game->zombieSpawnerArr2.at(0).getPos().x, game->zombieSpawnerArr2.at(0).getPos().y);
-	enemyColl.setCollBounds(game->zombieSpawnerArr2.at(0).getImage()->w *0.2f, game->zombieSpawnerArr2.at(0).getImage()->h * 0.2f);
+	enemyColl.setCollBounds(game->zombieSpawnerArr2.at(0).getImage()->w *0.18f, game->zombieSpawnerArr2.at(0).getImage()->h * 0.18f);
+
+	if (zombieCollArr.size() != game->zombieSpawnerArr2.size())
+	{
+		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
+		{
+			enemyColl.setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
+			enemyColl.setCollBounds(game->zombieSpawnerArr2.at(i).getImage()->w * 0.18f, game->zombieSpawnerArr2.at(i).getImage()->h * 0.18f);
+			zombieCollArr.push_back(enemyColl);
+		}
+
+	}
+	
 
 	//Set Collider locations
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
-	playerColl.setCollBounds(game->getPlayer()->getImage()->w * 1, game->getPlayer()->getImage()->h * 1);
+	//playerColl.setCollBounds((game->getPlayer()->getImage()->w / 2.5), (game->getPlayer()->getImage()->h / 2.5));
+	playerColl.setCollBounds(2, 2);
 
-
-	if (holdPosX != (int)playerColl.x)
+	/* THIS WAS FOR PRINTING PLAYER LOCATION */
+	if (holdPosX != (int)playerColl.x || holdPosY != (int)playerColl.y)
 	{
 		holdPosX = playerColl.x;
-		std::cout << "Player Pos X = " << holdPosX << "\n";
-		std::cout << "Zombie Pos X = " << enemyColl.x << "\n";
-
-	}
-
-	if (holdPosY != (int)playerColl.y)
-	{
 		holdPosY = playerColl.y;
-		std::cout << "Player Pos Y = " << holdPosY << "\n";
-		std::cout << "Zombie Pos Y = " << enemyColl.y << "\n";
+
+		std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+		//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 	}
 
@@ -120,6 +127,8 @@ void Scene2::Update(const float deltaTime) {
 	{
 		if (enemyColl.passthrough == false)
 		{
+			playerColl.previousPos.x = playerColl.x;
+			playerColl.previousPos.y = playerColl.y;
 			if (playerColl.checkCollBox(playerColl, enemyColl))
 			{
 				playerColl.setCollPosition(playerColl.previousPos.x, playerColl.previousPos.y);
@@ -127,15 +136,21 @@ void Scene2::Update(const float deltaTime) {
 			}
 
 		}
-		//Check for collision
-		if (playerColl.checkCollBox(playerColl, enemyColl))
+
+		
+		for (int i = 0; i < zombieCollArr.size(); i++)
 		{
-			std::cout << "\nDamage Taken!";
-			game->getPlayer()->health.takeDamage(10);
-			damageTaken = true; //stops the player from taking damage per tick
-			std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
-			timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay
+			//Check for collision
+			if (playerColl.checkCollBox(playerColl, zombieCollArr.at(i)))
+			{
+				std::cout << "\nDamage Taken!";
+				game->getPlayer()->health.takeDamage(10);
+				damageTaken = true; //stops the player from taking damage per tick
+				std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
+				timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay
+			}
 		}
+		
 	}
 
 

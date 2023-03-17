@@ -125,9 +125,9 @@ void PlayerBody::Render( float scale )
     //RENDER
    //////////////////////////////////
     SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), nullptr, &square, angle, nullptr, SDL_FLIP_NONE);
-    SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
+    /*SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
     SDL_RenderDrawRect(renderer, &square);
-    SDL_RenderDrawRect(renderer, &square);
+    SDL_RenderDrawRect(renderer, &square);*/
 }
 
 void PlayerBody::HandleEvents( const SDL_Event& event )
