@@ -74,11 +74,12 @@ void ZombieSpawner::Render(float scale)
     square.w *= scale;
     square.h *= scale;
 
-    
+    if(orientation == NULL)
+        orientation = 10;
     /////////////////////////////////
     //RENDER
    //////////////////////////////////.
-    SDL_RenderCopyEx(renderer, texture, nullptr, &square, NULL, nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture, nullptr, &square, orientation, nullptr, SDL_FLIP_NONE);
     
 
 }

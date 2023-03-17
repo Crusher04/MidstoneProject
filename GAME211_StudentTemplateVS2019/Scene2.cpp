@@ -195,6 +195,8 @@ void Scene2::Update(const float deltaTime) {
 		if (distance <= 0)
 			yPos -= 1;
 	}
+	float dot = acos((pxPos.x * xPos) + (pxPos.y * yPos));
+	game->zombieSpawnerArr2.at(0).orientation = dot;
 
 	game->zombieSpawnerArr2.at(0).setPos(Vec3(xPos, yPos, 0));
 	zombieCollArr.at(0).setCollPosition(xPos, yPos);
