@@ -87,12 +87,14 @@ bool Scene2::OnCreate() {
 void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
-	//game->getPlayer()->setPos(Vec3(778, 827, 0));
+	
+	//game->getPlayer()->setPos(Vec3(778, 827, 0));		// FOR TESTING PURPOSES
+	
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
 
-	enemyColl.setCollPosition(game->zombieSpawnerArr2.at(0).getPos().x, game->zombieSpawnerArr2.at(0).getPos().y);
-	enemyColl.setCollBounds(game->zombieSpawnerArr2.at(0).getImage()->w *0.18f, game->zombieSpawnerArr2.at(0).getImage()->h * 0.18f);
+	//enemyColl.setCollPosition(game->zombieSpawnerArr2.at(0).getPos().x, game->zombieSpawnerArr2.at(0).getPos().y);
+	//enemyColl.setCollBounds(game->zombieSpawnerArr2.at(0).getImage()->w *0.18f, game->zombieSpawnerArr2.at(0).getImage()->h * 0.18f);
 
 	if (zombieCollArr.size() != game->zombieSpawnerArr2.size())
 	{
@@ -117,7 +119,7 @@ void Scene2::Update(const float deltaTime) {
 		holdPosX = playerColl.x;
 		holdPosY = playerColl.y;
 
-		std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+		//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
 		//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 	}
