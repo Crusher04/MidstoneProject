@@ -131,6 +131,7 @@ void Scene2::Update(const float deltaTime) {
 		//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 	}
+	/*** ABOVE WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY ***/
 
 	//Did player recently take damage?
 	if (!damageTaken)
@@ -163,6 +164,40 @@ void Scene2::Update(const float deltaTime) {
 		
 	}
 
+	//AI Pathing Test
+	int xPos = game->zombieSpawnerArr2.at(0).getPos().x;
+	int yPos = game->zombieSpawnerArr2.at(0).getPos().y;
+	Vec3 pxPos = game->getPlayer()->getPos();
+
+
+	if (pxPos.x > xPos)
+	{
+		int distance = pxPos.x - xPos;
+		if (distance > 0)
+			xPos += 1;
+	}
+	else
+	{
+		int distance = pxPos.x - xPos;
+		if (distance < 0)
+			xPos -= 1;
+	}
+	
+	if (pxPos.y > yPos)
+	{
+		int distance = pxPos.y - yPos;
+		if (distance >= 0)
+			yPos += 1;
+	}
+	else
+	{
+		int distance = pxPos.y - yPos;
+		if (distance <= 0)
+			yPos -= 1;
+	}
+
+	game->zombieSpawnerArr2.at(0).setPos(Vec3(xPos, yPos, 0));
+	zombieCollArr.at(0).setCollPosition(xPos, yPos);
 
 	/// Calculate Bullet Position
 
