@@ -195,11 +195,11 @@ void Scene2::Update(const float deltaTime) {
 		if (distance <= 0)
 			yPos -= 1;
 	}
-	float magA = sqrt(pxPos.x * pxPos.x + pxPos.y * pxPos.y);
-	float magB = sqrt(xPos*xPos + yPos*yPos);
-	float dot = pxPos.x * xPos + pxPos.y * yPos;
+	
+	float radians = atan2(pxPos.y - yPos, pxPos.x - xPos);
+	
 
-	game->zombieSpawnerArr2.at(0).orientation = acos(dot / (magA*magB));
+	game->zombieSpawnerArr2.at(0).orientation = (radians * 180 / M_PI);
 
 	game->zombieSpawnerArr2.at(0).setPos(Vec3(xPos, yPos, 0));
 	zombieCollArr.at(0).setCollPosition(xPos, yPos);
