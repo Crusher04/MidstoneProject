@@ -51,7 +51,15 @@ bool GameManager::OnCreate() {
     bulletSpeed = 30;
     speed = 3000;
     w = false;
-    i = 0;
+    i[0] = 0;
+    i[1] = 0;
+    i[2] = 0;
+    i[3] = 0;
+    i[4] = 0;
+    i[5] = 0;
+    i[6] = 0;
+    i[7] = 0;
+
 
 
 
@@ -209,13 +217,7 @@ void GameManager::handleEvents()
                 bullets.at(6).fired = false;
                 bullets.at(7).fired = false;
                 bullets.at(8).fired = false;
-                bullets.at(9).fired = false;
-                bullets.at(10).fired = false;
-                bullets.at(11).fired = false;
-                bullets.at(12).fired = false;
-                bullets.at(13).fired = false;
-                bullets.at(14).fired = false;
-                bullets.at(15).fired = false;
+      
               
             }
             //Sets the Drag of the player. Lower = slower
@@ -271,13 +273,64 @@ void GameManager::handleEvents()
         case SDL_MOUSEBUTTONDOWN:
             if (event.button.button == SDL_BUTTON_LEFT)
             {
+                fired = true;
+                bulletFired = true;
                 if (reload == true)
                 {
                     bulletSelection = 0;
 
 
                 }
-                fired = true;
+                if (bulletSelection == 0)
+                {
+
+                    fired1 = true;
+
+                }
+
+                if (bulletSelection == 1)
+                {
+
+                    fired2 = true;
+
+                }
+
+                if (bulletSelection == 2)
+                {
+
+                    fired3 = true;
+
+                }
+
+                if (bulletSelection == 3)
+                {
+
+                    fired4 = true;
+
+                }
+
+                if (bulletSelection == 4)
+                {
+
+                    fired5 = true;
+
+                }
+
+                if (bulletSelection == 5)
+                {
+
+                    fired6 = true;
+
+                }
+
+                if (bulletSelection == 6)
+                {
+
+                    fired7 = true;
+
+                }
+
+
 
                 bulletSelection++;
             }
@@ -383,79 +436,49 @@ void GameManager::RenderBullet(float scale)
 {
     if (fired == true)
     {
+        if (fired1 == true)
+        {
 
-        if (bulletSelection == 1 || bulletSelection > 0)
-        {
-            bullets.at(1).Render(scale / 6);
-
-        }
-        if (bulletSelection == 2 || bulletSelection > 0)
-        {
-            bullets.at(2).Render(scale / 6);
-        }
-        if (bulletSelection == 3 || bulletSelection > 0)
-        {
-            bullets.at(3).Render(scale / 6);
-        }
-        if (bulletSelection == 4 || bulletSelection > 0)
-        {
-            bullets.at(4).Render(scale / 6);
-        }
-        if (bulletSelection == 5 || bulletSelection > 0)
-        {
-            bullets.at(5).Render(scale / 6);
-        }
-        if (bulletSelection == 6 || bulletSelection > 0)
-        {
-            bullets.at(6).Render(scale / 6);
-        }
-        if (bulletSelection == 7 || bulletSelection > 0)
-        {
-            bullets.at(7).Render(scale / 6);
-        }
-        if (bulletSelection == 8 || bulletSelection > 0)
-        {
-            bullets.at(8).Render(scale / 6);
-        }
-        if (bulletSelection == 9 || bulletSelection > 0)
-        {
-            bullets.at(9).Render(scale / 6);
-        }
-        if (bulletSelection == 10 || bulletSelection > 0)
-        {
-            bullets.at(10).Render(scale / 6);
+                bullets.at(1).Render(scale / 6);
 
         }
-        if (bulletSelection == 11 || bulletSelection > 0)
+        if (fired2 == true)
         {
-            bullets.at(11).Render(scale / 6);
-
+           
+                bullets.at(2).Render(scale / 6);
+            
         }
-        if (bulletSelection == 12 || bulletSelection > 0)
-        {
-            bullets.at(12).Render(scale / 6);
-
+        if (fired3 == true) {
+         
+                bullets.at(3).Render(scale / 6);
+            
         }
-        if (bulletSelection == 13 || bulletSelection > 0)
-        {
-            bullets.at(13).Render(scale / 6);
+    
 
+        if (fired4 == true)
+        {
+          
+                bullets.at(4).Render(scale / 6);
+            
         }
-        if (bulletSelection == 14 || bulletSelection > 0)
+        if (fired5 == true)
         {
-            bullets.at(14).Render(scale / 6);
-
-
+                bullets.at(5).Render(scale / 6);
+        
         }
-        if (bulletSelection == 15 || bulletSelection > 0)
+        if (fired6 == true)
         {
-            bullets.at(15).Render(scale / 6);
-
+            
+                bullets.at(6).Render(scale / 6);
+            
+        }
+        if (fired7 == true)
+        {
+          
+                bullets.at(7).Render(scale / 6);
+            
         }
     }
-
-
-
 
 }
 
