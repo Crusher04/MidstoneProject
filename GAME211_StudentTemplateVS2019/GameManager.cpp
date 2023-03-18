@@ -9,6 +9,8 @@
 
 ZombieSpawner zombies2;
 Bullet bullet2;
+
+
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -46,10 +48,12 @@ bool GameManager::OnCreate() {
 
 
 
-    // Set the Game Variables
+    /////////////////////////////////
+    //Variables for GameManager
+    /////////////////////////////////
     ammoCount = 15;
     bulletSpeed = 20;
-    speed = 3000;
+    speed = 1000;
     w = false;
 
     /////////////////////////////////
@@ -102,18 +106,19 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-    
-    //ZOMBIES
+
+    /////////////////////////////////
+    //Compile Zomboe Location Array
+    /////////////////////////////////
     compileZombieSpawnLocations();
     
-    //zombies = new ZombieSpawner(this);
+    /////////////////////////////////
+    //Zombie Initialization
+    /////////////////////////////////
     zombies2.setZombieGame(this);
-
-    //zombies->setZombieAmount();
-   // zombies->OnCreate();
-    //zombies->setPos(Vec3(250, 800, 0));
     zombies2.OnCreate();
     
+
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
         
@@ -135,7 +140,7 @@ bool GameManager::OnCreate() {
         bullet2.bulletArrPushBack(bullet2);
         bullets.push_back(bullet2);
     }
-        
+
 	return true;
 }
 
@@ -294,7 +299,7 @@ SDL_Renderer* GameManager::getRenderer()
 void GameManager::RenderPlayer(float scale)
 {
    
-    player->Render(scale);
+    player->Render(1);
 
     
 }
@@ -333,18 +338,17 @@ void GameManager::compileZombieSpawnLocations()
 
 }
 
+/// <summary>
+/// Renders Zombies into scene
+/// </summary>
+/// <param name="scale"></param>
 void GameManager::RenderZombie(float scale)
 {
-    //zombies->Render(scale/2);
-   // zombies->zombieSpawnerArr.at(0).Render(scale / 2);
-    //zombies->zombieSpawnerArr.at(1).Render(scale / 4);
-   // zombies2.zombieSpawnerArr.at(0).Render(scale / 4);
-   // zombies2.zombieSpawnerArr.at(1).Render(scale / 4);
+   
     for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
-    {
-        //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
+    {  
+        zombieSpawnerArr2.at(i).Render(.18);
         
-        zombieSpawnerArr2.at(i).Render(scale / 6);
     }
 
 }
@@ -355,6 +359,9 @@ ZombieSpawner GameManager::getZombie()
 }
 
 void GameManager::RenderBullet(float scale)
+
+
+
 {
 
     if (bulletSelection == 1 || bulletSelection > 0)

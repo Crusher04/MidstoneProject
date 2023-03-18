@@ -8,6 +8,7 @@
 #include <vector>
 
 
+
 class ZombieSpawner : public Body
 {
 protected:
@@ -37,6 +38,8 @@ public:
 	void zombieArrPushBack(ZombieSpawner zombie_);
 
 	void setZombieGame(GameManager* game_);
+
+	float orientation;
 };
 
 #endif

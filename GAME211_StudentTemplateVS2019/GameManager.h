@@ -10,6 +10,7 @@
 #include <vector>
 #include "ZombieSpawner.h"
 #include "Bullet.h"
+
 class GameManager {
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
@@ -37,12 +38,16 @@ private:
 	class Bullet* bullet;
 
 public:
+
+	//Contstructors with onCreate/Destroy
+
 	GameManager();
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
 
-	float ammoCount;
+	
+
 	// These might be unfamiliar
 	float getSceneHeight();
 	float getSceneWidth();
@@ -71,10 +76,7 @@ public:
 
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
-
-
-
-
+	float ammoCount;
 
 
 

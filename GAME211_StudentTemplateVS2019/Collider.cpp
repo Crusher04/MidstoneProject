@@ -6,7 +6,7 @@
 */
 
 #include "Collider.h"
-#include <stdio.h>
+
 Collider::Collider(float x_, float y_, float w_, float h_)
 {
 	x = x_;
@@ -38,60 +38,67 @@ void Collider::setCollBounds(float w_, float h_)
 }
 
 
-bool Collider::checkCollBox(Collider objectOne, Collider objectTwo)
+bool Collider::checkCollBox(Collider player, Collider object)
 {
-	//std::cout << "\nPlayer Position " << objectOne.x << ", " << objectOne.y;
-	//std::cout << "\nEnemy Position " << objectTwo.x << ", " << objectTwo.y;
-	
-	float leftA, leftB;
-	float rightA, rightB;
-	float topA, topB;
-	float bottomA, bottomB;
 
-	// Calculate the sides of rect A
-	leftA = objectOne.x;
-	rightA = objectOne.x + objectOne.w;
-	topA = objectOne.y;
-	bottomA = objectOne.y + objectOne.h;
+	//Player Collider Box
+	Vec2 l1;
+	Vec2 r1;
 
-	// Calculate the sides of rect B
-	leftB = objectTwo.x;
-	rightB = objectTwo.x + objectTwo.w;
-	topB = objectTwo.y;
-	bottomB = objectTwo.y + objectTwo.h;
+	//Object Collider Box
+	Vec2 l2;
+	Vec2 r2;
 
-	// If any of the sides from A are outside of B
-	if (bottomA <= topB) {
-		//std::cout << "BottomA<=TopB\n";
-		previousPos.x = objectOne.x;
-		previousPos.y = objectOne.y;
-		return false;
-	}
-	else if (topA >= bottomB) {
-		//std::cout << "topA >= bottomB\n";
-		previousPos.x = objectOne.x;
-		previousPos.y = objectOne.y;
-		return false;
-	}
-	else if (rightA <= leftB) {
-		//std::cout << "rightA <= leftB\n";
-		previousPos.x = objectOne.x;
-		previousPos.y = objectOne.y;
-		return false;
-	}
-	else if (leftA >= rightB) {
-		//std::cout << "leftA >= rightB\n";
-		previousPos.x = objectOne.x;
-		previousPos.y = objectOne.y;
+	//Set Player Box
+	l1.x = player.x;
+	l1.y = player.y;
+	r1.x = player.x + player.w;
+	r1.y = player.y + player.h;
+
+	//Set Object Box
+	l2.x = object.x;
+	l2.y = object.y;
+	r2.x = object.x + object.w;
+	r2.y = object.y + object.h;
+
+
+
+	if (l1.x > r2.x)
+	{	
 		return false;
 	}
 	else
 	{
-		//std::cout << "\nPlayer Collided";
+		//check if within the object
+		if (l1.x >= l2.x)
+		{
+			if (l1.y >= l2.y && l1.y <= r2.y)
+				return true;
+			if (r1.y <= l1.y && r1.y <= r2.y)
+				return true;
+		}
+	}
 
-		return true;
+	
+	if (r1.x < l2.x)
+	{
+		return false;
+	}
+	else
+	{
+		//check if within the object
+		if (r1.x <= r2.x)
+		{
+			if (l1.y >= l2.y && l1.y <= r2.y)
+				return true;
+			if (r1.y >= l2.y && r1.y <= r2.y)
+				return true;
+
+		}
 	}
 	
+	//if all else fails, not overlapping
+	return false;
 }
 
 
