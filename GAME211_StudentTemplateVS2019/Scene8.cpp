@@ -152,7 +152,7 @@ void Scene8::Update(const float deltaTime) {
 	// Check to see if bullet is fired and then call these functions.
 	if (game->fired == true)
 	{
-		game->bullets.at(game->bulletSelection).Shoot();
+		game->bullets.at(game->bulletSelection).Shoot(deltaTime);
 		//game->fired == false;
 	}
 
