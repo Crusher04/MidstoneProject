@@ -287,10 +287,11 @@ void GameManager::handleEvents()
             {
                 if(weaponManagement.pistolEnabled)
                 {
-                    if (bulletSelection < weaponManagement.pistolMagSize && !weaponManagement.isReloading)
+                    if (bulletSelection < weaponManagement.pistolMagSize && !weaponManagement.isReloading &&!weaponManagement.delayShots())
                     {
                         if (!bullets.at(bulletSelection).fired)
                         {
+                            weaponManagement.shotDelay = SDL_GetTicks();
                             bullets.at(bulletSelection).fired = true;
                             bullets.at(bulletSelection).setPos(getPlayer()->getPos());
                             std::cout << "BulletSelection = " << bulletSelection << "\n";

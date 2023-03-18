@@ -250,10 +250,6 @@ void Scene2::Update(const float deltaTime) {
 	
 	
 
-		
-
-		
-
 
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)
