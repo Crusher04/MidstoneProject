@@ -164,45 +164,59 @@ void Scene2::Update(const float deltaTime) {
 		
 	}
 
-	//AI Pathing Test
-	int xPos = game->zombieSpawnerArr2.at(0).getPos().x;
-	int yPos = game->zombieSpawnerArr2.at(0).getPos().y;
-	Vec3 pxPos = game->getPlayer()->getPos();
+	/////////////////////////////////
+	//ZOMBIE PATHING
+	/////////////////////////////////
 
+	//Variables
+	Vec3 playerPos = game->getPlayer()->getPos();		//Player Position
+	int zombieX, zombieY;									
 
-	if (pxPos.x > xPos)
+	for (int i = 0; i < zombieCollArr.size(); i++)
 	{
-		int distance = pxPos.x - xPos;
-		if (distance > 0)
-			xPos += 1;
+		//Get zombie position
+		zombieX = game->zombieSpawnerArr2.at(i).getPos().x;
+		zombieY = game->zombieSpawnerArr2.at(i).getPos().y;
+
+		//Check where player is and move towards it on X and Y Axis
+		if (playerPos.x > zombieX)
+		{
+			int distance = playerPos.x - zombieX;
+			if (distance > 0)
+				zombieX += 1;
+		}
+		else
+		{
+			int distance = playerPos.x - zombieX;
+			if (distance < 0)
+				zombieX -= 1;
+		}
+
+		if (playerPos.y > zombieY)
+		{
+			int distance = playerPos.y - zombieY;
+			if (distance >= 0)
+				zombieY += 1;
+		}
+		else
+		{
+			int distance = playerPos.y - zombieY;
+			if (distance <= 0)
+				zombieY -= 1;
+		}
+
+		//Calculate orientation to player in radians
+		float radians = atan2(playerPos.y - zombieY, playerPos.x - zombieX);
+
+		//Set orientation towards player in degrees
+		game->zombieSpawnerArr2.at(i).orientation = (radians * 180 / M_PI);
+
+		//Set position for zombie and zombie collider
+		game->zombieSpawnerArr2.at(i).setPos(Vec3(zombieX, zombieY, 0));
+		zombieCollArr.at(i).setCollPosition(zombieX, zombieY);
 	}
-	else
-	{
-		int distance = pxPos.x - xPos;
-		if (distance < 0)
-			xPos -= 1;
-	}
+
 	
-	if (pxPos.y > yPos)
-	{
-		int distance = pxPos.y - yPos;
-		if (distance >= 0)
-			yPos += 1;
-	}
-	else
-	{
-		int distance = pxPos.y - yPos;
-		if (distance <= 0)
-			yPos -= 1;
-	}
-	
-	float radians = atan2(pxPos.y - yPos, pxPos.x - xPos);
-	
-
-	game->zombieSpawnerArr2.at(0).orientation = (radians * 180 / M_PI);
-
-	game->zombieSpawnerArr2.at(0).setPos(Vec3(xPos, yPos, 0));
-	zombieCollArr.at(0).setCollPosition(xPos, yPos);
 
 	/// Calculate Bullet Position
 
