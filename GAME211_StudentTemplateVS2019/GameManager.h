@@ -63,7 +63,7 @@ public:
 	void LoadScene( int i );
     bool ValidateCurrentScene();
 	bool isMoving;
-
+	bool reload;
 	//Get Round Class
 	Round* getRound() { return round; }
 
@@ -80,9 +80,24 @@ public:
 
 
 
+
+	bool bulletRendered;
+
+
+	int i[7];
+
+	bool bulletFired;
 	// Bullet Variables and Functions
 	Bullet* getBullet() {return bullet;	}
 	bool fired;
+	bool fired1;
+	bool fired2;
+	bool fired3;
+	bool fired4;
+	bool fired5;
+	bool fired6;
+	bool fired7;
+	bool fired8;
 	void RenderBullet(float scale = 1.0f);
 	float bulletSpeed;
 	int bulletSelection;

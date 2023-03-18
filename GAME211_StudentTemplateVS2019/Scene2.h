@@ -32,9 +32,10 @@ public:
 	Matrix4 getInverseMatrix() { return inverseProjection; }
 	float a;
 
-
-
-
+	int v;
+	bool bulletIsMoving;
+	
+	Vec3 updatedGunPos;
 
 
 };
