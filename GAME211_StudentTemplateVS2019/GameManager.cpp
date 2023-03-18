@@ -10,7 +10,6 @@
 ZombieSpawner zombies2;
 Bullet bullet2;
 
-
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -52,7 +51,7 @@ bool GameManager::OnCreate() {
     //Variables for GameManager
     /////////////////////////////////
     ammoCount = 15;
-    bulletSpeed = 20;
+    bulletSpeed = 25;
     speed = 1000;
     w = false;
     i[0] = 0;
@@ -144,14 +143,16 @@ bool GameManager::OnCreate() {
     // Bullet Initialization
     bullet2.setBulletGame(this);
     bullet2.OnCreate();
+    bullet2.setPos(getPlayer()->getPos());
  
     for (int i = 0; i < ammoCount; i++)
     {
 
-
         bullet2.bulletArrPushBack(bullet2);
         bullets.push_back(bullet2);
     }
+
+    weaponManagement.onCreate();
 
 	return true;
 }
@@ -205,10 +206,16 @@ void GameManager::handleEvents()
 
             if (event.key.keysym.sym == SDLK_r)
             {
-                std::cout << "Player Pos = (" << player->getPos().x <<
-                    ", " << player->getPos().y << ")\n";
+                //RELOADING
+                if (weaponManagement.pistolEnabled && !weaponManagement.reloadStarted)
+                {
+                    std::cout << "Reloading\n";
+                    weaponManagement.reloadStarted = weaponManagement.reloading();
+                }
+                
+                
 
-                std::cout << "ZombieAmount = " << zombies->getZombiesRemaining() << "\n";
+                
 
             }
             if (event.key.keysym.sym == SDLK_e)
@@ -278,67 +285,30 @@ void GameManager::handleEvents()
         case SDL_MOUSEBUTTONDOWN:
             if (event.button.button == SDL_BUTTON_LEFT)
             {
-                fired = true;
-                bulletFired = true;
-                if (reload == true)
+                if(weaponManagement.pistolEnabled)
                 {
-                    bulletSelection = 0;
+                    if (bulletSelection < weaponManagement.pistolMagSize && !weaponManagement.isReloading)
+                    {
+                        if (!bullets.at(bulletSelection).fired)
+                        {
+                            bullets.at(bulletSelection).fired = true;
+                            bullets.at(bulletSelection).setPos(getPlayer()->getPos());
+                            std::cout << "BulletSelection = " << bulletSelection << "\n";
+                            bulletSelection++;
+                        }
+                    }
+                    else
+                    {
+                        //Reloading
+                        std::cout << "OUT OF AMMO\n";
 
-
+                    }
                 }
-                if (bulletSelection == 0)
-                {
+                
+               
 
-                    fired1 = true;
-
-                }
-
-                if (bulletSelection == 1)
-                {
-
-                    fired2 = true;
-
-                }
-
-                if (bulletSelection == 2)
-                {
-
-                    fired3 = true;
-
-                }
-
-                if (bulletSelection == 3)
-                {
-
-                    fired4 = true;
-
-                }
-
-                if (bulletSelection == 4)
-                {
-
-                    fired5 = true;
-
-                }
-
-                if (bulletSelection == 5)
-                {
-
-                    fired6 = true;
-
-                }
-
-                if (bulletSelection == 6)
-                {
-
-                    fired7 = true;
-
-                }
-
-
-
-                bulletSelection++;
             }
+
             break;
         }
        
@@ -437,10 +407,19 @@ ZombieSpawner GameManager::getZombie()
 }
 
 void GameManager::RenderBullet(float scale)
-
-
-
 {
+    
+    for (int i = 0; i < ammoCount; i++)
+    {
+        if (bullets.at(i).fired)
+            bullets.at(i).Render(scale / 6);
+
+    }
+        
+    
+    
+    
+
     if (fired == true)
     {
         if (fired1 == true)

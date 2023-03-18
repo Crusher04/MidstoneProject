@@ -119,8 +119,8 @@ void PlayerBody::Render( float scale )
     square.h *= scale;
     
     gunLocation = pos;
-    gunLocation.x += 400;
-    gunLocation.y += 300;
+    //gunLocation.x += 400;
+    //gunLocation.y += 300;
     /////////////////////////////////
     //RENDER
    //////////////////////////////////

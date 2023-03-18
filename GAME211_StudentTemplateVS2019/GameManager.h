@@ -10,6 +10,7 @@
 #include <vector>
 #include "ZombieSpawner.h"
 #include "Bullet.h"
+#include "WeaponManagement.h"
 
 class GameManager {
 private:
@@ -87,6 +88,7 @@ public:
 	int i[7];
 
 	bool bulletFired;
+
 	// Bullet Variables and Functions
 	Bullet* getBullet() {return bullet;	}
 	bool fired;
@@ -100,8 +102,10 @@ public:
 	bool fired8;
 	void RenderBullet(float scale = 1.0f);
 	float bulletSpeed;
-	int bulletSelection;
+	int bulletSelection = 0;
 	std::vector<Bullet> bullets;
+	WeaponManagement weaponManagement;
+	
 };
 #endif
 

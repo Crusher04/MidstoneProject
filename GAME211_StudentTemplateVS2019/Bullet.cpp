@@ -31,10 +31,11 @@ bool Bullet::OnCreate()
     }
     return true;
     
+    mass = 1;
     angle = 0;
     finalVel = vel;
-
-
+    drag = 1;
+    fired = false;
 }
 
 void Bullet::Render( float scale )
@@ -68,18 +69,24 @@ void Bullet::Render( float scale )
     square.x = pos.x;
     square.y = pos.y;
     SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
-    square.x -= (square.w / 2);
-    square.y -= (square.h / 2);
+    //square.x -= (square.w / 2);
+    //square.y -= (square.h / 2);
 
     // Convert character orientation from radians to degrees.
     float orientationDegrees = orientation * 180.0f / M_PI;
+
+    float Delta_x = mouse_X - game->getPlayer()->getPos().x;
+    float Delta_y = mouse_Y - game->getPlayer()->getPos().y;
+
+   
+    orientation = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
 
     square.w *= scale;
     square.h *= scale;
 
     // Render the Sprite
     SDL_RenderCopyEx(renderer, texture, nullptr, &square,
-    orientationDegrees, nullptr, SDL_FLIP_NONE);
+        orientation, nullptr, SDL_FLIP_NONE);
 
    
 }
@@ -94,12 +101,12 @@ void Bullet::Update( float deltaTime )
     // Note that would update velocity too, and rotation motion
     
     Body::Update( deltaTime );
-
+    
 }
 
 
 // Function that updates bullet velocity based on player angle 
-void Bullet::Shoot()
+void Bullet::Shoot(float deltaTime)
 {
 
 
@@ -113,12 +120,18 @@ void Bullet::Shoot()
     if (vel.x == 0 && vel.y == 0)
     {
   
-        finalVel.x = vel.x + game->bulletSpeed  * 40 * (cos((angle) * 3.14159 / 180));
+       /* finalVel.x = vel.x + game->bulletSpeed  * 40 * (cos((angle) * 3.14159 / 180));
         finalVel.y = vel.y + game->bulletSpeed * 40 *(sin((angle) * 3.14159 / 180)) * -1;
-        vel = finalVel;
+        vel = finalVel;*/
+        vel.x = vel.x + game->bulletSpeed * 40 * (cos((angle) * M_PI / 180));
+        vel.y = vel.y + game->bulletSpeed * 40 * (sin((angle) * M_PI / 180)) * -1;
+
     }
-    fired = true;
-    /*game->i = 0;*/
+    
+
+    this->Update(deltaTime);
+    
+    //std::cout << "Bullet Vel (" << vel.x << ", " << vel.y << ")\n";
 }
 
 void Bullet::bulletArrPushBack(Bullet bullet_)

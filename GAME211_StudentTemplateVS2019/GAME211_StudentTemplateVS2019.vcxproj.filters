@@ -67,6 +67,7 @@
     <ClCompile Include="Scene4.cpp">
       <Filter>Class</Filter>
     </ClCompile>
+    <ClCompile Include="WeaponManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h">
@@ -144,6 +145,7 @@
     <ClInclude Include="Scene4.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="WeaponManagement.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GAME211_StudentTemplateVS2019.rc" />

@@ -48,7 +48,7 @@ public:
     void Update( float deltaTime );
     void setTexture( SDL_Texture* texture_ ) { texture = texture_; }
     float angle;
-    void Shoot();
+    void Shoot(float deltaTime);
     void bulletArrPushBack(Bullet bullet_);
     bool fired;
     void setBulletGame(GameManager* game_);
