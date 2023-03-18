@@ -6,6 +6,7 @@
 #include "EnemyBody.h"
 #include "Scene8.h"
 #include "Round.h"
+#include "SoundEffect.h"
 
 ZombieSpawner zombies2;
 Bullet bullet2;
@@ -70,7 +71,7 @@ bool GameManager::OnCreate() {
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
 
-    currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+    currentScene = new Scene8(windowPtr->GetSDL_Window(), this);
 
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
@@ -312,6 +313,7 @@ void GameManager::handleEvents()
 
             break;
         }
+        
        
         currentScene->HandleEvents(event);
     }

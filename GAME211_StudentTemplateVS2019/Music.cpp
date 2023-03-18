@@ -54,4 +54,5 @@ int Music::setMusicVolume(int v)
 void Music::loadAudio()
 {
 	addAudio("Audio/BackGround Music/Menu music/awaken-136824.mp3");
+	addAudio("Audio/BackGround Music/In-game music/attack-133580.mp3");
 }
