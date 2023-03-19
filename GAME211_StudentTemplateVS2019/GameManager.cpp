@@ -64,7 +64,7 @@ bool GameManager::OnCreate() {
     i[6] = 0;
     i[7] = 0;
     isSprinting = false;
-
+    zombieSpawned = false;
 
 
     /////////////////////////////////
@@ -130,14 +130,13 @@ bool GameManager::OnCreate() {
     zombies2.OnCreate();
     
 
+   
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
-        
-        zombies2.setPos(zombieSpawnLocations.at(i));
+        zombies2.setPos(compileZombieSpawnLocations());
         zombies2.zombieArrPushBack(zombies2);
         zombieSpawnerArr2.push_back(zombies2);
     }
-    
      
   
        
@@ -419,37 +418,26 @@ void GameManager::RenderPlayer(float scale)
     
 }
 
-void GameManager::compileZombieSpawnLocations()
+Vec3 GameManager::compileZombieSpawnLocations()
 {
-    Vec3 locations(300, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    int maxRangeX, minRangeX, maxRangeY, minRangeY;
 
-    locations.set(400, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    maxRangeX = 500;
+    minRangeX = -500;
+    maxRangeY = 400;
+    minRangeY = -400;
 
-    locations.set(500, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
-    locations.set(600, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    srand((time(NULL)));
+    int randomizeX = rand() % (maxRangeX - minRangeX + 50);
+    int randomizeY = rand() % (maxRangeY - minRangeY + 50);
 
-    locations.set(700, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    Vec3 locations(randomizeX, randomizeY, 0);
 
-    locations.set(800, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    return locations;
 
-    locations.set(900, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
-    locations.set(1000, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
-    locations.set(1100, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(1200, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
 }
 
@@ -459,16 +447,50 @@ void GameManager::compileZombieSpawnLocations()
 /// <param name="scale"></param>
 void GameManager::RenderZombie(float scale)
 {
-
-    for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
-    {  
-        if (zombieSpawnerArr2.at(i).health.getHealth() > 0)
+   
+    if (zombieRender[0] == true)
+    {
+        if (zombieSpawnerArr2.at(0).health.getHealth() > 0)
         {
-            zombieSpawnerArr2.at(i).Render(.18);
+            zombieSpawnerArr2.at(0).Render(.18);
+           
         }
-        
-        
     }
+    if (zombieRender[1] == true)
+    {
+        if (zombieSpawnerArr2.at(1).health.getHealth() > 0)
+        {
+            zombieSpawnerArr2.at(1).Render(.18);
+            
+        }
+    }
+    if (zombieRender[2] == true)
+    {
+        if (zombieSpawnerArr2.at(2).health.getHealth() > 0)
+        {
+            zombieSpawnerArr2.at(2).Render(.18);
+            
+        }
+    }
+    if (zombieRender[3] == true)
+    {
+        if (zombieSpawnerArr2.at(3).health.getHealth() > 0)
+        {
+            zombieSpawnerArr2.at(3).Render(.18);
+            
+        }
+    }
+    if (zombieRender[4] == true)
+    {
+        if (zombieSpawnerArr2.at(4).health.getHealth() > 0)
+        {
+            zombieSpawnerArr2.at(4).Render(.18);
+            
+        }
+    }
+
+        
+    
 
 }
 

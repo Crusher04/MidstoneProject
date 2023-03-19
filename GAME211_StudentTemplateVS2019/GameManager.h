@@ -70,7 +70,7 @@ public:
 
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;
-	void compileZombieSpawnLocations();
+	Vec3 compileZombieSpawnLocations();
 
 	void RenderZombie(float scale = 1.0f);
 	ZombieSpawner getZombie();
@@ -88,6 +88,9 @@ public:
 	int i[7];
 
 	bool bulletFired;
+
+	bool zombieSpawned;
+	bool zombieRender[5];
 
 	// Bullet Variables and Functions
 	Bullet* getBullet() {return bullet;	}

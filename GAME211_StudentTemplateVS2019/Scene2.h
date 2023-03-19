@@ -37,6 +37,12 @@ public:
 	
 	Vec3 updatedGunPos;
 
+	int zombieSpawnTime;
+	int zombieSelection;
+
+	
+
+
 
 };
 

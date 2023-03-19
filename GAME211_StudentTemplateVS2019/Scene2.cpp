@@ -93,7 +93,8 @@ bool Scene2::OnCreate() {
 
 
 	enemyColl.passthrough = false;
-	
+	zombieSpawnTime = 0;
+	zombieSelection = 0;
 	v = 5;
 
 	return true;
@@ -109,10 +110,11 @@ void Scene2::Update(const float deltaTime) {
 
 	for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 	{
-		if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
-			zombieCollArr.at(i).active = false;
+	/*	if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+			zombieCollArr.at(i).active = false;*/
 	}
 
+	
 	
 	/////////////////////////////////
 	//Player Updates
@@ -186,6 +188,39 @@ void Scene2::Update(const float deltaTime) {
 		
 	}
 
+	if (game->zombieSpawned == false)
+	{
+		zombieSpawnTime++;
+	}
+
+	if (zombieSpawnTime == 125 && zombieSelection <= 5)
+	{
+		game->zombieSpawnerArr2.at(zombieSelection).setPos(game->compileZombieSpawnLocations());
+
+		if (game->compileZombieSpawnLocations() == game->getPlayer()->getPos())
+		{
+
+			game->zombieRender[zombieSelection] = false;
+			game->zombieSpawnerArr2.at(zombieSelection).setPos(Vec3(game->zombieSpawnerArr2.at(zombieSelection).getPos().x - 50, game->zombieSpawnerArr2.at(zombieSelection).getPos().y - 50, game->zombieSpawnerArr2.at(zombieSelection).getPos().z));
+			
+		}
+		game->zombieRender[zombieSelection] = true;
+		
+		zombieSelection++;
+		zombieSpawnTime = 0;
+
+	}
+
+	if (zombieSelection == 5)
+	{
+
+		game->zombieSpawned = true;
+		
+
+	}
+	
+	
+
 	
 
 	/////////////////////////////////
@@ -201,6 +236,7 @@ void Scene2::Update(const float deltaTime) {
 		if (game->zombieSpawnerArr2.at(i).health.getHealth() > 0)
 		{
 			//Get zombie position
+			
 			zombieX = game->zombieSpawnerArr2.at(i).getPos().x;
 			zombieY = game->zombieSpawnerArr2.at(i).getPos().y;
 

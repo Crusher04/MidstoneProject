@@ -18,7 +18,7 @@
 		currentRound = 0;
 		
 		//Set default round 1 zombie starting amount
-		zombieStartingAmount = 10; 
+		zombieStartingAmount = 5; 
 
 		zombiesRemaining = zombieStartingAmount;
 	}
@@ -42,6 +42,8 @@
 	/// Returns the round number
 	/// </summary>
 	int Round::getCurrentRound() { return currentRound; }
+
+
 
 	int Round::getZombieAmount()
 	{
