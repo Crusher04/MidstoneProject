@@ -40,7 +40,9 @@ public:
 	int zombieSpawnTime;
 	int zombieSelection;
 
+	int tempZombieSelection;
 	
+	int roundEndTimer;
 
 
 

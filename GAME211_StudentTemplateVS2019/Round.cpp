@@ -18,7 +18,7 @@
 		currentRound = 0;
 		
 		//Set default round 1 zombie starting amount
-		zombieStartingAmount = 5; 
+		zombieStartingAmount = 15; 
 
 		zombiesRemaining = zombieStartingAmount;
 	}
@@ -32,6 +32,13 @@
 	/// sets the amount of starting zombies for round 1
 	/// </summary>
 	void Round::setStartingZombieAmount(int newZombieAmount) { zombieStartingAmount = newZombieAmount; }
+
+	void Round::setZombiesRemaining()
+	{
+
+		zombiesRemaining--;
+
+	}
 
 	/// <summary>
 	/// Increments the rounds

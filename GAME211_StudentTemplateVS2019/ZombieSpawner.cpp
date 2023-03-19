@@ -11,6 +11,9 @@ bool ZombieSpawner::OnCreate()
         std::cerr << "Can't open the image" << std::endl;
         return false;
     }
+
+    spawned = false;
+    health.setHealth(50);
     return true;
 
 }

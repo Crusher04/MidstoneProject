@@ -133,7 +133,7 @@ bool GameManager::OnCreate() {
    
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
-        zombies2.setPos(compileZombieSpawnLocations());
+        zombies2.setPos(Vec3(11000,11000,0));
         zombies2.zombieArrPushBack(zombies2);
         zombieSpawnerArr2.push_back(zombies2);
     }
@@ -447,49 +447,20 @@ Vec3 GameManager::compileZombieSpawnLocations()
 /// <param name="scale"></param>
 void GameManager::RenderZombie(float scale)
 {
-   
-    if (zombieRender[0] == true)
+ 
+    for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
-        if (zombieSpawnerArr2.at(0).health.getHealth() > 0)
+        if (zombieSpawnerArr2.at(i).spawned == true)
         {
-            zombieSpawnerArr2.at(0).Render(.18);
-           
-        }
-    }
-    if (zombieRender[1] == true)
-    {
-        if (zombieSpawnerArr2.at(1).health.getHealth() > 0)
-        {
-            zombieSpawnerArr2.at(1).Render(.18);
-            
-        }
-    }
-    if (zombieRender[2] == true)
-    {
-        if (zombieSpawnerArr2.at(2).health.getHealth() > 0)
-        {
-            zombieSpawnerArr2.at(2).Render(.18);
-            
-        }
-    }
-    if (zombieRender[3] == true)
-    {
-        if (zombieSpawnerArr2.at(3).health.getHealth() > 0)
-        {
-            zombieSpawnerArr2.at(3).Render(.18);
-            
-        }
-    }
-    if (zombieRender[4] == true)
-    {
-        if (zombieSpawnerArr2.at(4).health.getHealth() > 0)
-        {
-            zombieSpawnerArr2.at(4).Render(.18);
-            
+            if (zombieSpawnerArr2.at(i).health.getHealth() > 0)
+            {
+                zombieSpawnerArr2.at(i).Render(.18);
+
+            }
         }
     }
 
-        
+    
     
 
 }
@@ -517,7 +488,7 @@ void GameManager::RenderBullet(float scale)
     
     
 
-    if (fired == true)
+   /* if (fired == true)
     {
         if (fired1 == true)
         {
@@ -561,7 +532,7 @@ void GameManager::RenderBullet(float scale)
                 bullets.at(7).Render(scale / 6);
             
         }
-    }
+    }*/
 
 }
 

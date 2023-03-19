@@ -38,7 +38,10 @@ public:
 
 	void setZombieGame(GameManager* game_);
 
+	bool spawned;
+
 	float orientation;
+
 
 	class EntityHealth health;
 
