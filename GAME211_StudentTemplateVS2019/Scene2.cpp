@@ -205,11 +205,12 @@ void Scene2::Update(const float deltaTime) {
 	if (zombieSpawnTime == 125 && zombieSelection <= game->getRound()->getZombieAmount())
 	{
 		game->zombieSpawnerArr2.at(zombieSelection).setPos(game->compileZombieSpawnLocations());
+		zombieCollArr.at(zombieSelection).setCollPosition(game->zombieSpawnerArr2.at(zombieSelection).getPos().x, game->zombieSpawnerArr2.at(zombieSelection).getPos().y);
 
 		if (game->compileZombieSpawnLocations() == game->getPlayer()->getPos())
 		{
 
-			game->zombieSpawnerArr2.at(zombieSelection).setPos(Vec3(game->zombieSpawnerArr2.at(zombieSelection).getPos().x - 500, game->zombieSpawnerArr2.at(zombieSelection).getPos().y - 50, game->zombieSpawnerArr2.at(zombieSelection).getPos().z));
+			game->zombieSpawnerArr2.at(zombieSelection).setPos(Vec3(game->zombieSpawnerArr2.at(zombieSelection).getPos().x - 500, game->zombieSpawnerArr2.at(zombieSelection).getPos().y - 50, game->zombieSpawnerArr2.at(zombieSelection).getPos().z));			
 			
 		}
 		game->zombieSpawnerArr2.at(zombieSelection).spawned = true;
@@ -350,7 +351,7 @@ void Scene2::Update(const float deltaTime) {
 				{
 					game->zombieSpawnerArr2.at(i).health.takeDamage(100);
 					game->bullets.at(i).collided = true;
-					bulletColl.active = false;
+					//bulletColl.active = false;
 					std::cout << "ZOMBIE " << i << " IS HIT!\n";
 				}
 			}
