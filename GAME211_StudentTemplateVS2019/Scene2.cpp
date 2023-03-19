@@ -228,6 +228,7 @@ void Scene2::Update(const float deltaTime) {
 
 	}
 
+	//std::cout << game->getRound()->getZombieAmount() << std::endl;
 	std::cout << game->getRound()->getZombieAmount() << std::endl;
 	
 	if (game->getRound()->getZombieAmount() == 0)
@@ -246,7 +247,7 @@ void Scene2::Update(const float deltaTime) {
 
 	}
 
-	if (roundEndTimer >= 625)
+	if (roundEndTimer >= 312)
 	{
 		game->getRound()->newRound = false;
 		roundEndTimer = 0;
