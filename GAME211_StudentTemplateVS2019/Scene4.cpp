@@ -1,7 +1,16 @@
 #include "Scene4.h"
 #include "VMath.h"
+#include "Collider.h"
+#include "Spawner.h"
+#include "Round.h"
+#include "EnemyBody.h"
+#include <vector>
+#include <iostream>
 using namespace std;
 //#include "Collider.h"
+
+
+
 
 // See notes about this constructor in Scene1.h.
 Scene4::Scene4(SDL_Window* sdlWindow_, GameManager* game_){
@@ -62,7 +71,10 @@ bool Scene4::OnCreate() {
 	// Set images
 	/*SDL_Surface* bg;
 	SDL_Texture* bg_texture;*/
-
+	
+	/////////////////////////////////
+	//MAP STUFF
+	/////////////////////////////////
 	
 	bgImage = IMG_Load("Assets/background/bg_green1.png");
 	bgTexture = SDL_CreateTextureFromSurface(renderer, bgImage);
