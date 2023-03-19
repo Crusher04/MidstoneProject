@@ -37,6 +37,12 @@ Scene4::Scene4(SDL_Window* sdlWindow_, GameManager* game_){
 	rockTexture1 = nullptr;
 	rockTexture2 = nullptr;
 	rockTexture3 = nullptr;
+
+	//UI
+	hbEmptyTexture = nullptr;
+	hbFullTexture = nullptr;
+	zombieIconTexture = nullptr;
+
 }
 
 Scene4::~Scene4(){
@@ -100,6 +106,16 @@ bool Scene4::OnCreate() {
 	rockTexture0 = SDL_CreateTextureFromSurface(renderer, rockImage0);
 	rockTexture1 = SDL_CreateTextureFromSurface(renderer, rockImage1);
 	rockTexture2 = SDL_CreateTextureFromSurface(renderer, rockImage2);
+
+	//UI
+	hbEmptyImage = IMG_Load("Assets/UI/HUD/healthbar/hb_empty.png");
+	hbFullImage = IMG_Load("Assets/UI/HUD/healthbar/hb_full.png");
+	zombieIconImage = IMG_Load("Assets/UI/HUD/zombie_counter_icon.png");
+
+	hbEmptyTexture = SDL_CreateTextureFromSurface(renderer, hbEmptyImage);
+	hbFullTexture = SDL_CreateTextureFromSurface(renderer, hbFullImage);
+	zombieIconTexture = SDL_CreateTextureFromSurface(renderer, zombieIconImage);
+
 	return true;
 }
 
@@ -108,14 +124,19 @@ SDL_Texture* Scene4::loadImage(const char* textureFile)
 	return nullptr;
 }
 
-SDL_Rect Scene4::scale(SDL_Texture* objectTexture, int start_x, int start_y, float scale) {
+
+
+SDL_Rect Scene4::scale(SDL_Texture* objectTexture, int start_x, int start_y, float scaleX, float scaleY) {
 
 	// Get the size of the input texture
 	SDL_Point size;
 	SDL_QueryTexture(objectTexture, nullptr, nullptr, &size.x, &size.y);
-	SDL_Rect dest = { start_x, start_y, size.x * scale, size.y * scale };
+	SDL_Rect dest = { start_x, start_y, size.x * scaleX, size.y * scaleY };
 	return dest;
 }
+
+
+
 
 void Scene4::OnDestroy() {}
 
@@ -236,241 +257,260 @@ void Scene4::Render() {
 	Vec3 rock_screenCoords7 = projectionMatrix * Vec3(10.3f, 12.1f, 0.0f);
 	Vec3 rock_screenCoords8 = projectionMatrix * Vec3(18.3f, 6.2f, 0.0f);
 
+	//UI
+	Vec3 hbEmpty_screenCoords = projectionMatrix * Vec3(2.0f, 14.0f, 0.0f);
+	Vec3 hbFull_screenCoords = projectionMatrix * Vec3(2.0f, 14.0f, 0.0f);
+	Vec3 zombieIcon_screenCoords = projectionMatrix * Vec3(22.0f, 15.0f, 0.0f);
+
 	//------------------------ RENDER IMAGE
 	// tree row 1
-	SDL_Rect dest = scale(bgTexture, bg_screenCoords.x, bg_screenCoords.y, 0.4f);
+	SDL_Rect dest = scale(bgTexture, bg_screenCoords.x, bg_screenCoords.y, 0.4f, 0.4f);
 	SDL_RenderCopy(renderer, bgTexture, nullptr, &dest);
 
-	dest = scale(pathTexture, path_screenCoords.x, path_screenCoords.y, 0.6f);
+	dest = scale(pathTexture, path_screenCoords.x, path_screenCoords.y, 0.6f, 0.6f);
 	SDL_RenderCopy(renderer, pathTexture, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords0.x, tree_screenCoords0.y, 0.8f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords0.x, tree_screenCoords0.y, 0.8f, 0.8f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords1.x, tree_screenCoords1.y, 0.85f); //bush2
+	dest = scale(treeTexture1, tree_screenCoords1.x, tree_screenCoords1.y, 0.85f,0.85f); //bush2
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords2.x, tree_screenCoords2.y, 0.9f); //bush0 
+	dest = scale(treeTexture0, tree_screenCoords2.x, tree_screenCoords2.y, 0.9f, 0.9f); //bush0 
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords3.x, tree_screenCoords3.y, 0.85f); //bush
+	dest = scale(treeTexture1, tree_screenCoords3.x, tree_screenCoords3.y, 0.85f, 0.85f); //bush
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords4.x, tree_screenCoords4.y, 0.9f); //bush2
+	dest = scale(treeTexture0, tree_screenCoords4.x, tree_screenCoords4.y, 0.9f, 0.9f); //bush2
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords5.x, tree_screenCoords5.y, 0.7f); //bush1
+	dest = scale(treeTexture1, tree_screenCoords5.x, tree_screenCoords5.y, 0.7f, 0.7f); //bush1
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords6.x, tree_screenCoords6.y, 0.6f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords6.x, tree_screenCoords6.y, 0.6f, 0.6f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords7.x, tree_screenCoords7.y, 1.0f); //bush
+	dest = scale(treeTexture1, tree_screenCoords7.x, tree_screenCoords7.y, 1.0f, 1.0f); //bush
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
 	// tree row 1.1
-	dest = scale(treeTexture0, tree_screenCoords0_1.x, tree_screenCoords0_1.y, 0.7f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords0_1.x, tree_screenCoords0_1.y, 0.7f, 0.7f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords1_1.x, tree_screenCoords1_1.y, 0.85f); //bush2
+	dest = scale(treeTexture1, tree_screenCoords1_1.x, tree_screenCoords1_1.y, 0.85f, 0.85f); //bush2
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords2_1.x, tree_screenCoords2_1.y, 0.9f); //bush0 
+	dest = scale(treeTexture0, tree_screenCoords2_1.x, tree_screenCoords2_1.y, 0.9f, 0.9f); //bush0 
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords3_1.x, tree_screenCoords3_1.y, 0.85f); //bush
+	dest = scale(treeTexture1, tree_screenCoords3_1.x, tree_screenCoords3_1.y, 0.85f, 0.85f); //bush
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords4_1.x, tree_screenCoords4_1.y, 0.9f); //bush2
+	dest = scale(treeTexture0, tree_screenCoords4_1.x, tree_screenCoords4_1.y, 0.9f, 0.9f); //bush2
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords5_1.x, tree_screenCoords5_1.y, 0.6f); //bush1
+	dest = scale(treeTexture1, tree_screenCoords5_1.x, tree_screenCoords5_1.y, 0.6f, 0.6f); //bush1
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords6_1.x, tree_screenCoords6_1.y, 0.8f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords6_1.x, tree_screenCoords6_1.y, 0.8f, 0.8f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords7_1.x, tree_screenCoords7_1.y, 1.0f); //bush
+	dest = scale(treeTexture1, tree_screenCoords7_1.x, tree_screenCoords7_1.y, 1.0f, 1.0f); //bush
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
 	//tree row 2
-	dest = scale(treeTexture0, tree_screenCoords0_2.x, tree_screenCoords0_2.y, 0.65f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords0_2.x, tree_screenCoords0_2.y, 0.65f, 0.65f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords1_2.x, tree_screenCoords1_2.y, 0.85f); //bush2
+	dest = scale(treeTexture1, tree_screenCoords1_2.x, tree_screenCoords1_2.y, 0.85f, 0.85f); //bush2
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords2_2.x, tree_screenCoords2_2.y, 0.9f); //bush0 
+	dest = scale(treeTexture0, tree_screenCoords2_2.x, tree_screenCoords2_2.y, 0.9f, 0.9f); //bush0 
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords3_2.x, tree_screenCoords3_2.y, 0.85f); //bush
+	dest = scale(treeTexture1, tree_screenCoords3_2.x, tree_screenCoords3_2.y, 0.85f, 0.85f); //bush
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords4_2.x, tree_screenCoords4_2.y, 0.9f); //bush2
+	dest = scale(treeTexture0, tree_screenCoords4_2.x, tree_screenCoords4_2.y, 0.9f, 0.9f); //bush2
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords5_2.x, tree_screenCoords5_2.y, 0.72f); //bush1
+	dest = scale(treeTexture1, tree_screenCoords5_2.x, tree_screenCoords5_2.y, 0.72f, 0.72f); //bush1
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords6_2.x, tree_screenCoords6_2.y, 0.81f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords6_2.x, tree_screenCoords6_2.y, 0.81f, 0.81f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords7_2.x, tree_screenCoords7_2.y, 0.74f); //bush
+	dest = scale(treeTexture1, tree_screenCoords7_2.x, tree_screenCoords7_2.y, 0.74f, 0.74f); //bush
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
 	//tree row 3
-	dest = scale(treeTexture0, tree_screenCoords0_3.x, tree_screenCoords0_3.y, 0.65f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords0_3.x, tree_screenCoords0_3.y, 0.65f, 0.65f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords1_3.x, tree_screenCoords1_3.y, 0.85f); //bush2
+	dest = scale(treeTexture1, tree_screenCoords1_3.x, tree_screenCoords1_3.y, 0.85f, 0.85f); //bush2
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords2_3.x, tree_screenCoords2_3.y, 0.9f); //bush0 
+	dest = scale(treeTexture0, tree_screenCoords2_3.x, tree_screenCoords2_3.y, 0.9f, 0.9f); //bush0 
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords3_3.x, tree_screenCoords3_3.y, 0.85f); //bush
+	dest = scale(treeTexture1, tree_screenCoords3_3.x, tree_screenCoords3_3.y, 0.85f, 0.85f); //bush
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords4_3.x, tree_screenCoords4_3.y, 0.9f); //bush2
+	dest = scale(treeTexture0, tree_screenCoords4_3.x, tree_screenCoords4_3.y, 0.9f, 0.9f); //bush2
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords5_3.x, tree_screenCoords5_3.y, 0.73f); //bush1
+	dest = scale(treeTexture1, tree_screenCoords5_3.x, tree_screenCoords5_3.y, 0.73f, 0.73f); //bush1
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords6_3.x, tree_screenCoords6_3.y, 0.62f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords6_3.x, tree_screenCoords6_3.y, 0.62f, 0.62f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords7_3.x, tree_screenCoords7_3.y, 1.0f); //bush
+	dest = scale(treeTexture1, tree_screenCoords7_3.x, tree_screenCoords7_3.y, 1.0f, 1.0f); //bush
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
 	//tree row 4
-	dest = scale(treeTexture0, tree_screenCoords0_4.x, tree_screenCoords0_4.y, 0.73f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords0_4.x, tree_screenCoords0_4.y, 0.73f, 0.73f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords1_4.x, tree_screenCoords1_4.y, 0.85f); //bush2
+	dest = scale(treeTexture1, tree_screenCoords1_4.x, tree_screenCoords1_4.y, 0.85f, 0.85f); //bush2
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords2_4.x, tree_screenCoords2_4.y, 0.9f); //bush0 
+	dest = scale(treeTexture0, tree_screenCoords2_4.x, tree_screenCoords2_4.y, 0.9f, 0.9f); //bush0 
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords3_4.x, tree_screenCoords3_4.y, 0.85f); //bush
+	dest = scale(treeTexture0, tree_screenCoords3_4.x, tree_screenCoords3_4.y, 0.85f, 0.85f); //bush
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords4_4.x, tree_screenCoords4_4.y, 0.9f); //bush2
+	dest = scale(treeTexture1, tree_screenCoords4_4.x, tree_screenCoords4_4.y, 0.9f, 0.9f); //bush2
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords5_4.x, tree_screenCoords5_4.y, 0.66f); //bush1
+	dest = scale(treeTexture0, tree_screenCoords5_4.x, tree_screenCoords5_4.y, 0.66f, 0.66f); //bush1
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords6_4.x, tree_screenCoords6_4.y, 0.72f); //bush1
+	dest = scale(treeTexture1, tree_screenCoords6_4.x, tree_screenCoords6_4.y, 0.72f, 0.72f); //bush1
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords7_4.x, tree_screenCoords7_4.y, 1.0f); //bush
+	dest = scale(treeTexture0, tree_screenCoords7_4.x, tree_screenCoords7_4.y, 1.0f, 1.0f); //bush
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
 	//tree row 5
-	dest = scale(treeTexture0, tree_screenCoords0_5.x, tree_screenCoords0_5.y, 0.73f);
+	dest = scale(treeTexture0, tree_screenCoords0_5.x, tree_screenCoords0_5.y, 0.73f, 0.73f);
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords1_5.x, tree_screenCoords1_5.y, 0.85f);
+	dest = scale(treeTexture1, tree_screenCoords1_5.x, tree_screenCoords1_5.y, 0.85f, 0.85f);
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords2_5.x, tree_screenCoords2_5.y, 0.9f);
+	dest = scale(treeTexture0, tree_screenCoords2_5.x, tree_screenCoords2_5.y, 0.9f, 0.9f);
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords3_5.x, tree_screenCoords3_5.y, 0.85f);
+	dest = scale(treeTexture0, tree_screenCoords3_5.x, tree_screenCoords3_5.y, 0.85f, 0.85f);
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords4_5.x, tree_screenCoords4_5.y, 0.9f);
+	dest = scale(treeTexture1, tree_screenCoords4_5.x, tree_screenCoords4_5.y, 0.9f, 0.9f);
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords5_5.x, tree_screenCoords5_5.y, 0.66f); 
+	dest = scale(treeTexture0, tree_screenCoords5_5.x, tree_screenCoords5_5.y, 0.66f, 0.66f);
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords6_5.x, tree_screenCoords6_5.y, 0.72f); 
+	dest = scale(treeTexture1, tree_screenCoords6_5.x, tree_screenCoords6_5.y, 0.72f, 0.72f);
 	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords7_5.x, tree_screenCoords7_5.y, 1.0f);
+	dest = scale(treeTexture0, tree_screenCoords7_5.x, tree_screenCoords7_5.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords8_5.x, tree_screenCoords8_5.y, 1.0f);
+	dest = scale(treeTexture0, tree_screenCoords8_5.x, tree_screenCoords8_5.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords9_5.x, tree_screenCoords9_5.y, 1.0f);
+	dest = scale(treeTexture0, tree_screenCoords9_5.x, tree_screenCoords9_5.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords10_5.x, tree_screenCoords10_5.y, 1.0f);
+	dest = scale(treeTexture0, tree_screenCoords10_5.x, tree_screenCoords10_5.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+
+	dest = scale(zombieIconTexture, zombieIcon_screenCoords.x, zombieIcon_screenCoords.y, 1.0f, 1.0f);
+	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+
 	//block brown
-	/*dest = scale(blockTexture0, block_screenCoords0.x, block_screenCoords0.y, 1.0f);
+	/*dest = scale(blockTexture0, block_screenCoords0.x, block_screenCoords0.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture2, nullptr, &dest);
 
-	dest = scale(blockTexture0, block_screenCoords0_1.x, block_screenCoords0_1.y, 1.0f);
+	dest = scale(blockTexture0, block_screenCoords0_1.x, block_screenCoords0_1.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture2, nullptr, &dest);
 
-	dest = scale(blockTexture0, block_screenCoords0_2.x, block_screenCoords0_2.y, 1.0f);
+	dest = scale(blockTexture0, block_screenCoords0_2.x, block_screenCoords0_2.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture2, nullptr, &dest);
 
-	dest = scale(blockTexture0, block_screenCoords0_3.x, block_screenCoords0_3.y, 1.0f);
+	dest = scale(blockTexture0, block_screenCoords0_3.x, block_screenCoords0_3.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture2, nullptr, &dest);*/
 
 	//block green
-	/*dest = scale(blockTexture1, block_screenCoords1.x, block_screenCoords1.y, 1.0f);
+	/*dest = scale(blockTexture1, block_screenCoords1.x, block_screenCoords1.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);*/
 
-	dest = scale(blockTexture1, block_screenCoords2.x, block_screenCoords2.y, 1.0f);
+	dest = scale(blockTexture1, block_screenCoords2.x, block_screenCoords2.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
 
-	dest = scale(blockTexture1, block_screenCoords3.x, block_screenCoords3.y, 1.0f);
+	dest = scale(blockTexture1, block_screenCoords3.x, block_screenCoords3.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
 
-	dest = scale(blockTexture1, block_screenCoords4.x, block_screenCoords4.y, 1.0f);
+	dest = scale(blockTexture1, block_screenCoords4.x, block_screenCoords4.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
 
 	/*dest = scale(blockTexture1, block_screenCoords5.x, block_screenCoords5.y, 1.0f);
 	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);*/
 
 	//other
-	dest = scale(wellTexture, well_screenCoords.x, well_screenCoords.y, 0.7f); // well
+	dest = scale(wellTexture, well_screenCoords.x, well_screenCoords.y, 0.7f, 0.7f); // well
 	SDL_RenderCopy(renderer, wellTexture, nullptr, &dest);
 
-	dest = scale(otherTexture0, other_screenCoords0.x, other_screenCoords0.y, 1.0f); // building
+	dest = scale(otherTexture0, other_screenCoords0.x, other_screenCoords0.y, 1.0f, 1.0f); // building
 	SDL_RenderCopy(renderer, otherTexture0, nullptr, &dest);
 
-	dest = scale(otherTexture1, other_screenCoords1.x, other_screenCoords1.y, 1.0f); // building
+	dest = scale(otherTexture1, other_screenCoords1.x, other_screenCoords1.y, 1.0f, 1.0f); // building
 	SDL_RenderCopy(renderer, otherTexture1, nullptr, &dest);
 
-	dest = scale(logTexture0, log_screenCoords0.x, log_screenCoords0.y, 0.4f); // log  
+	dest = scale(logTexture0, log_screenCoords0.x, log_screenCoords0.y, 0.4f, 0.4f); // log  
 	SDL_RenderCopy(renderer, logTexture0, nullptr, &dest);
 
 	//rock
-	dest = scale(rockTexture0, rock_screenCoords0.x, rock_screenCoords0.y, 0.2f); // rock0
+	dest = scale(rockTexture0, rock_screenCoords0.x, rock_screenCoords0.y, 0.2f, 0.2f); // rock0
 	SDL_RenderCopy(renderer, rockTexture0, nullptr, &dest);
 
-	dest = scale(rockTexture1, rock_screenCoords1.x, rock_screenCoords1.y, 0.3f); // rock1
+	dest = scale(rockTexture1, rock_screenCoords1.x, rock_screenCoords1.y, 0.3f, 0.3f); // rock1
 	SDL_RenderCopy(renderer, rockTexture1, nullptr, &dest);
 
-	dest = scale(rockTexture2, rock_screenCoords2.x, rock_screenCoords2.y, 0.2f); // rock2
+	dest = scale(rockTexture2, rock_screenCoords2.x, rock_screenCoords2.y, 0.2f, 0.2f); // rock2
 	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
 
-	dest = scale(rockTexture2, rock_screenCoords3.x, rock_screenCoords3.y, 0.35f); // rock3
+	dest = scale(rockTexture2, rock_screenCoords3.x, rock_screenCoords3.y, 0.35f, 0.35f); // rock3
 	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
 
-	dest = scale(rockTexture0, rock_screenCoords4.x, rock_screenCoords4.y, 0.4f); // rock4
+	dest = scale(rockTexture0, rock_screenCoords4.x, rock_screenCoords4.y, 0.4f, 0.4f); // rock4
 	SDL_RenderCopy(renderer, rockTexture0, nullptr, &dest);
 
-	dest = scale(rockTexture2, rock_screenCoords5.x, rock_screenCoords5.y, 0.4f); // rock5
+	dest = scale(rockTexture2, rock_screenCoords5.x, rock_screenCoords5.y, 0.4f, 0.4f); // rock5
 	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
 
-	dest = scale(rockTexture2, rock_screenCoords6.x, rock_screenCoords6.y, 0.4f); // rock6
+	dest = scale(rockTexture2, rock_screenCoords6.x, rock_screenCoords6.y, 0.4f, 0.4f); // rock6
 	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
 
-	dest = scale(rockTexture2, rock_screenCoords7.x, rock_screenCoords7.y, 0.4f); // rock7
+	dest = scale(rockTexture2, rock_screenCoords7.x, rock_screenCoords7.y, 0.4f, 0.4f); // rock7
 	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
 
-	dest = scale(rockTexture0, rock_screenCoords8.x, rock_screenCoords8.y, 0.4f); // rock8
+	dest = scale(rockTexture0, rock_screenCoords8.x, rock_screenCoords8.y, 0.4f, 0.4f); // rock8
 	SDL_RenderCopy(renderer, rockTexture0, nullptr, &dest);
 	
+	//UI
+	dest = scale(hbEmptyTexture, hbEmpty_screenCoords.x, hbEmpty_screenCoords.y, 1.0f * 1.5f, 1.0f * 1.5f); // hb empty * scale 1.5
+	SDL_RenderCopy(renderer, hbEmptyTexture, nullptr, &dest);
+
+	dest = scale(hbFullTexture, hbFull_screenCoords.x, hbFull_screenCoords.y, 0.5f* 1.5f, 1.0f * 1.5f); // hb half * scale 1.5
+	SDL_RenderCopy(renderer, hbFullTexture, nullptr, &dest);
+
+	dest = scale(zombieIconTexture, zombieIcon_screenCoords.x, zombieIcon_screenCoords.y, 1.2f, 1.2f); // zombie counter icon
+	SDL_RenderCopy(renderer, zombieIconTexture, nullptr, &dest);
+
 	// render the player
 	//game->RenderPlayer(0.10f);
 
