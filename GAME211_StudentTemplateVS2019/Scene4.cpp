@@ -1,5 +1,6 @@
 #include "Scene4.h"
 #include "VMath.h"
+
 using namespace std;
 //#include "Collider.h"
 
@@ -37,6 +38,7 @@ Scene4::Scene4(SDL_Window* sdlWindow_, GameManager* game_){
 	rockTexture1 = nullptr;
 	rockTexture2 = nullptr;
 	rockTexture3 = nullptr;
+	
 }
 
 Scene4::~Scene4(){
@@ -57,7 +59,6 @@ bool Scene4::OnCreate() {
 	/*SDL_Surface* bg;
 	SDL_Texture* bg_texture;*/
 
-	
 	bgImage = IMG_Load("Assets/background/bg_green1.png");
 	bgTexture = SDL_CreateTextureFromSurface(renderer, bgImage);
 
@@ -100,6 +101,10 @@ bool Scene4::OnCreate() {
 	rockTexture0 = SDL_CreateTextureFromSurface(renderer, rockImage0);
 	rockTexture1 = SDL_CreateTextureFromSurface(renderer, rockImage1);
 	rockTexture2 = SDL_CreateTextureFromSurface(renderer, rockImage2);
+	
+	
+	
+
 	return true;
 }
 
@@ -117,12 +122,14 @@ SDL_Rect Scene4::scale(SDL_Texture* objectTexture, int start_x, int start_y, flo
 	return dest;
 }
 
-void Scene4::OnDestroy() {}
+void Scene4::OnDestroy() { }
 
 void Scene4::Update(const float deltaTime) {
 
 	// Update player
-	game->getPlayer()->Update(deltaTime);
+	//game->getPlayer()->Update(deltaTime);
+	
+	
 }
 
 void Scene4::Render() {

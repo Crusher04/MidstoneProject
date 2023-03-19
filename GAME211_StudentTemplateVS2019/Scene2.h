@@ -37,6 +37,7 @@ public:
 	
 	Vec3 updatedGunPos;
 
+	Scene2();
 
 };
 

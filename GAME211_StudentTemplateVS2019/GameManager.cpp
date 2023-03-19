@@ -137,11 +137,10 @@ bool GameManager::OnCreate() {
         zombies2.zombieArrPushBack(zombies2);
         zombieSpawnerArr2.push_back(zombies2);
     }
-    
-     
-  
-       
-    // Bullet Initialization
+
+    /////////////////////////////////
+    //Bullet Initialization
+    /////////////////////////////////
     bullet2.setBulletGame(this);
     bullet2.OnCreate();
     bullet2.setPos(getPlayer()->getPos());
@@ -153,6 +152,9 @@ bool GameManager::OnCreate() {
         bullets.push_back(bullet2);
     }
 
+    /////////////////////////////////
+    //Weapon Management Initialization
+    /////////////////////////////////
     weaponManagement.onCreate();
 
 	return true;
@@ -306,15 +308,12 @@ void GameManager::handleEvents()
 
                     }
                 }
-                
-               
 
-            }
+            }//End of SDL_BUTTON_LEFT
 
             break;
         }
-        
-       
+ 
         currentScene->HandleEvents(event);
     }
 }
@@ -419,62 +418,10 @@ void GameManager::RenderBullet(float scale)
     for (int i = 0; i < ammoCount; i++)
     {
         
-       if (bullets.at(i).fired)
+       if (bullets.at(i).fired && !bullets.at(i).collided)
             bullets.at(i).Render(scale / 6);
             
             
-        
-
-    }
-        
-    
-    
-    
-
-    if (fired == true)
-    {
-        if (fired1 == true)
-        {
-
-                bullets.at(1).Render(scale / 6);
-
-        }
-        if (fired2 == true)
-        {
-           
-                bullets.at(2).Render(scale / 6);
-            
-        }
-        if (fired3 == true) {
-         
-                bullets.at(3).Render(scale / 6);
-            
-        }
-    
-
-        if (fired4 == true)
-        {
-          
-                bullets.at(4).Render(scale / 6);
-            
-        }
-        if (fired5 == true)
-        {
-                bullets.at(5).Render(scale / 6);
-        
-        }
-        if (fired6 == true)
-        {
-            
-                bullets.at(6).Render(scale / 6);
-            
-        }
-        if (fired7 == true)
-        {
-          
-                bullets.at(7).Render(scale / 6);
-            
-        }
     }
 
 }

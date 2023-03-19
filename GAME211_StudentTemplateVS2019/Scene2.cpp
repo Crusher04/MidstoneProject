@@ -252,17 +252,19 @@ void Scene2::Update(const float deltaTime) {
 	{
 		if (game->bullets.at(i).fired)
 		{
+			//Shoot Bullet
 			game->bullets.at(i).Shoot(deltaTime);
-
+			
 			//Bullet Collision Detection with zombies
 			bulletColl.setCollPosition(game->bullets.at(i).getPos().x, game->bullets.at(i).getPos().y);
 			for (int i = 0; i < zombieCollArr.size(); i++)
 			{
 				if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
 				{
+					game->bullets.at(i).fired = false;
+					game->bullets.at(i).collided = true;		
 					game->zombieSpawnerArr2.at(i).health.takeDamage(100);
-					game->bullets.at(i).collided = true;
-					bulletColl.active = false;
+					
 					std::cout << "ZOMBIE " << i << " IS HIT!\n";
 				}
 			}
@@ -270,6 +272,7 @@ void Scene2::Update(const float deltaTime) {
 		}
 	}
 
+	
 
 	//???
 	if (game->i[game->bulletSelection] > 50)
@@ -321,13 +324,10 @@ void Scene2::Render() {
 	// render the zombies
 	game->RenderZombie(1.0f);
 
-	// render the bullets
-	if (game->fired == true)
-	{
-		
-	}
-
+	
 	game->RenderBullet(0.3f);
+	
+	
 
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
@@ -339,4 +339,8 @@ void Scene2::HandleEvents(const SDL_Event& event)
 	game->getPlayer()->HandleEvents(event);
 
 	
+}
+
+Scene2::Scene2()
+{
 }
