@@ -106,6 +106,7 @@ public:
 	std::vector<Bullet> bullets;
 	WeaponManagement weaponManagement;
 	
+
 };
 #endif
 

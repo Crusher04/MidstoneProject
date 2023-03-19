@@ -17,6 +17,7 @@
 //Collider locations
 Collider playerColl(1000, 8, 1, 3);			//Player collider initilization 
 Collider enemyColl(300, 800, 10, 10);		//zombie collider holder
+Collider bulletColl(0, 0, 1, 1);			//Bullet collider holder
 std::vector<Collider> zombieCollArr;		//zombie collider vector array
 
 /***** SCENE VARIABLES *****/
@@ -221,17 +222,29 @@ void Scene2::Update(const float deltaTime) {
 	}
 	
 	
+	/////////////////////////////////
+	//Bullet Management
+	/////////////////////////////////
 	
-	
+	//Shoot bullet
 	for (int i = 0; i < game->ammoCount; i++)
 	{
 		if (game->bullets.at(i).fired)
 		{
 			game->bullets.at(i).Shoot(deltaTime);
+			bulletColl.setCollPosition(game->bullets.at(i).getPos().x, game->bullets.at(i).getPos().y);
+			for (int i = 0; i < zombieCollArr.size(); i++)
+			{
+				if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
+				{
+					std::cout << "ZOMBIE " << i << " IS HIT!\n";
+				}
+			}
 			game->i[i]++;
 		}
 	}
 
+	//???
 	if (game->i[game->bulletSelection] > 50)
 	{
 		game->bullets.at(game->bulletSelection).fired = false;
@@ -240,7 +253,7 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 
-
+	//Check if reloading is done
 	if (SDL_GetTicks() > game->weaponManagement.pistolTimerDelay && game->weaponManagement.isReloading)
 	{
 		std::cout << "Reload done \n";
@@ -248,6 +261,10 @@ void Scene2::Update(const float deltaTime) {
 		game->bulletSelection = 0;
 	}
 	
+	
+	/////////////////////////////////
+	//Bullet Colliding
+	/////////////////////////////////
 	
 
 
