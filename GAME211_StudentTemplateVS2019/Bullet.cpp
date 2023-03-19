@@ -36,6 +36,7 @@ bool Bullet::OnCreate()
     finalVel = vel;
     drag = 1;
     fired = false;
+    collided = false;
 }
 
 void Bullet::Render( float scale )

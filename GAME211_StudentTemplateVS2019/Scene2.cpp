@@ -261,12 +261,15 @@ void Scene2::Update(const float deltaTime) {
 				if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
 				{
 					game->zombieSpawnerArr2.at(i).health.takeDamage(100);
+					game->bullets.at(i).collided = true;
+					bulletColl.active = false;
 					std::cout << "ZOMBIE " << i << " IS HIT!\n";
 				}
 			}
 			game->i[i]++;
 		}
 	}
+
 
 	//???
 	if (game->i[game->bulletSelection] > 50)
@@ -283,6 +286,11 @@ void Scene2::Update(const float deltaTime) {
 		std::cout << "Reload done \n";
 		game->weaponManagement.reloadStarted = game->weaponManagement.reloading();
 		game->bulletSelection = 0;
+
+		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
+		{
+			game->bullets.at(i).collided = false;
+		}
 	}
 	
 
@@ -300,8 +308,6 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 	
-
-
 }
 
 void Scene2::Render() {

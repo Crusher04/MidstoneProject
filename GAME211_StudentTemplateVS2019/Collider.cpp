@@ -41,7 +41,7 @@ void Collider::setCollBounds(float w_, float h_)
 
 bool Collider::checkCollBox(Collider player, Collider object)
 {
-	if (object.active)
+	if (object.active && player.active)
 	{
 		//Player Collider Box
 		Vec2 l1;

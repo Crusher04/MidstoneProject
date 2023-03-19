@@ -418,8 +418,12 @@ void GameManager::RenderBullet(float scale)
     
     for (int i = 0; i < ammoCount; i++)
     {
-        if (bullets.at(i).fired)
+        
+       if (bullets.at(i).fired)
             bullets.at(i).Render(scale / 6);
+            
+            
+        
 
     }
         

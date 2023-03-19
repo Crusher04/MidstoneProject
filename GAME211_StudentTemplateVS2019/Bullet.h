@@ -55,6 +55,8 @@ public:
     int mouse_X, mouse_Y;
     Vec3 finalVel;
 
+    bool collided;
+
 };
 
 #endif /* PLAYERBODY_H */
