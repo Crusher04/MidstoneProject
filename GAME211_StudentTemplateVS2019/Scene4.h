@@ -13,7 +13,7 @@ private:
 	SDL_Window* window;		// an SDL window with a SDL renderer
 	SDL_Renderer* renderer;	// the renderer associated with SDL window 
 	Matrix4 projectionMatrix;	// set in OnCreate()
-    Matrix4     inverseProjection;	// set in OnCreate()
+	Matrix4     inverseProjection;	// set in OnCreate()
 
 	// TEXTURE
 	SDL_Texture* bgTexture;
@@ -22,7 +22,7 @@ private:
 	//tree
 	SDL_Texture* treeTexture0;
 	SDL_Texture* treeTexture1;
-	
+
 	//other Texture
 	SDL_Texture* wellTexture;
 	SDL_Texture* otherTexture0;
@@ -41,8 +41,12 @@ private:
 	SDL_Texture* rockTexture1;
 	SDL_Texture* rockTexture2;
 	SDL_Texture* rockTexture3;
-	
-	
+
+	//UI
+	SDL_Texture* hbEmptyTexture;
+	SDL_Texture* hbFullTexture;
+	SDL_Texture* zombieIconTexture;
+
 	//_____________________________________IMAGE
 	Body* bg;
 
@@ -69,12 +73,16 @@ private:
 	SDL_Surface* rockImage1;
 	SDL_Surface* rockImage2;
 
+	//UI
+	SDL_Surface* hbEmptyImage;
+	SDL_Surface* hbFullImage;
+	SDL_Surface* zombieIconImage;
 
 	SDL_Texture* loadImage(const char* textureFile);
 
 	//PHUNG
 	SDL_Rect scale(SDL_Texture* objectTexture,
-		int start_x = 0, int start_y = 0, float scale = 1.0f);
+		int start_x = 0, int start_y = 0, float scaleX =1.0f, float scaleY = 1.0f);
 
 public:
 	// This constructor may be different from what you've seen before
@@ -86,11 +94,11 @@ public:
 	void OnDestroy();
 	void Update(const float time);
 	void Render();
-    void HandleEvents(const SDL_Event &event);
+	void HandleEvents(const SDL_Event& event);
 	float getxAxis() { return xAxis; }
 	float getyAxis() { return yAxis; }
 	SDL_Window* getWindow() { return window; }
-    Matrix4 getProjectionMatrix() { return projectionMatrix; }
+	Matrix4 getProjectionMatrix() { return projectionMatrix; }
 	Matrix4 getInverseMatrix() { return inverseProjection; }
 };
 
