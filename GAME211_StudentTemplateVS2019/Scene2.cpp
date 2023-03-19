@@ -103,8 +103,21 @@ void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
 	
-	//game->getPlayer()->setPos(Vec3(778, 827, 0));		// FOR TESTING PURPOSES
+	/////////////////////////////////
+	//CHECK IF ZOMBIES ARE ALIVE
+	/////////////////////////////////
+
+	for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
+	{
+		if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+			zombieCollArr.at(i).active = false;
+	}
+
 	
+	/////////////////////////////////
+	//Player Updates
+	/////////////////////////////////
+
 	//Update Player
 	game->getPlayer()->Update(deltaTime);
 	
@@ -112,6 +125,10 @@ void Scene2::Update(const float deltaTime) {
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 	playerColl.setCollBounds(2, 2);
 
+
+	/////////////////////////////////
+	//Zombie Collision Detection
+	/////////////////////////////////
 
 	//Initializes our zombie collider
 	if (zombieCollArr.size() != game->zombieSpawnerArr2.size() && !zombieInitComplete)
@@ -179,46 +196,50 @@ void Scene2::Update(const float deltaTime) {
 
 	for (int i = 0; i < zombieCollArr.size(); i++)
 	{
-		//Get zombie position
-		zombieX = game->zombieSpawnerArr2.at(i).getPos().x;
-		zombieY = game->zombieSpawnerArr2.at(i).getPos().y;
-
-		//Check where player is and move towards it on X and Y Axis
-		if (playerPos.x > zombieX)
+		if (game->zombieSpawnerArr2.at(i).health.getHealth() > 0)
 		{
-			int distance = playerPos.x - zombieX;
-			if (distance > 0)
-				zombieX += 1;
-		}
-		else
-		{
-			int distance = playerPos.x - zombieX;
-			if (distance < 0)
-				zombieX -= 1;
-		}
+			//Get zombie position
+			zombieX = game->zombieSpawnerArr2.at(i).getPos().x;
+			zombieY = game->zombieSpawnerArr2.at(i).getPos().y;
 
-		if (playerPos.y > zombieY)
-		{
-			int distance = playerPos.y - zombieY;
-			if (distance >= 0)
-				zombieY += 1;
+			//Check where player is and move towards it on X and Y Axis
+			if (playerPos.x > zombieX)
+			{
+				int distance = playerPos.x - zombieX;
+				if (distance > 0)
+					zombieX += 1;
+			}
+			else
+			{
+				int distance = playerPos.x - zombieX;
+				if (distance < 0)
+					zombieX -= 1;
+			}
+
+			if (playerPos.y > zombieY)
+			{
+				int distance = playerPos.y - zombieY;
+				if (distance >= 0)
+					zombieY += 1;
+			}
+			else
+			{
+				int distance = playerPos.y - zombieY;
+				if (distance <= 0)
+					zombieY -= 1;
+			}
+
+			//Calculate orientation to player in radians
+			float radians = atan2(playerPos.y - zombieY, playerPos.x - zombieX);
+
+			//Set orientation towards player in degrees
+			game->zombieSpawnerArr2.at(i).orientation = (radians * 180 / M_PI);
+
+			//Set position for zombie and zombie collider
+			game->zombieSpawnerArr2.at(i).setPos(Vec3(zombieX, zombieY, 0));
+			zombieCollArr.at(i).setCollPosition(zombieX, zombieY);
 		}
-		else
-		{
-			int distance = playerPos.y - zombieY;
-			if (distance <= 0)
-				zombieY -= 1;
-		}
-
-		//Calculate orientation to player in radians
-		float radians = atan2(playerPos.y - zombieY, playerPos.x - zombieX);
-
-		//Set orientation towards player in degrees
-		game->zombieSpawnerArr2.at(i).orientation = (radians * 180 / M_PI);
-
-		//Set position for zombie and zombie collider
-		//game->zombieSpawnerArr2.at(i).setPos(Vec3(zombieX, zombieY, 0));
-		zombieCollArr.at(i).setCollPosition(zombieX, zombieY);
+		
 	}
 	
 	
@@ -232,11 +253,14 @@ void Scene2::Update(const float deltaTime) {
 		if (game->bullets.at(i).fired)
 		{
 			game->bullets.at(i).Shoot(deltaTime);
+
+			//Bullet Collision Detection with zombies
 			bulletColl.setCollPosition(game->bullets.at(i).getPos().x, game->bullets.at(i).getPos().y);
 			for (int i = 0; i < zombieCollArr.size(); i++)
 			{
 				if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
 				{
+					game->zombieSpawnerArr2.at(i).health.takeDamage(100);
 					std::cout << "ZOMBIE " << i << " IS HIT!\n";
 				}
 			}
@@ -261,12 +285,6 @@ void Scene2::Update(const float deltaTime) {
 		game->bulletSelection = 0;
 	}
 	
-	
-	/////////////////////////////////
-	//Bullet Colliding
-	/////////////////////////////////
-	
-
 
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)
@@ -280,6 +298,9 @@ void Scene2::Update(const float deltaTime) {
 		std::cout << "\n YOU HAVE DIED, GAME OVER";
 		exit(0);
 	}
+
+	
+
 
 }
 

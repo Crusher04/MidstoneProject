@@ -395,10 +395,14 @@ void GameManager::compileZombieSpawnLocations()
 /// <param name="scale"></param>
 void GameManager::RenderZombie(float scale)
 {
-   
+
     for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
     {  
-        zombieSpawnerArr2.at(i).Render(.18);
+        if (zombieSpawnerArr2.at(i).health.getHealth() > 0)
+        {
+            zombieSpawnerArr2.at(i).Render(.18);
+        }
+        
         
     }
 

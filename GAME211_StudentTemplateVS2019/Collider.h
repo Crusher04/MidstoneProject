@@ -17,6 +17,7 @@ public:
 	float x, y, w, h;
 	bool passthrough;
 	Vec3 previousPos;
+	bool active;
 
 	//Constructor
 	Collider(float x_, float y_, float w_, float h_);
