@@ -186,6 +186,8 @@ void Scene2::Update(const float deltaTime) {
 		
 	}
 
+	
+
 	/////////////////////////////////
 	//ZOMBIE PATHING
 	/////////////////////////////////

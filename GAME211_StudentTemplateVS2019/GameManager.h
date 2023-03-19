@@ -79,7 +79,7 @@ public:
 
 	float ammoCount;
 
-
+	bool isSprinting;
 
 
 	bool bulletRendered;

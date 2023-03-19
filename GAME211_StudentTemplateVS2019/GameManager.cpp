@@ -63,7 +63,7 @@ bool GameManager::OnCreate() {
     i[5] = 0;
     i[6] = 0;
     i[7] = 0;
-
+    isSprinting = false;
 
 
 
@@ -236,25 +236,83 @@ void GameManager::handleEvents()
             //Sets the Drag of the player. Lower = slower
             player->setDrag(.9f);
 
+
+            if (event.key.keysym.sym == SDLK_LSHIFT)
+            {
+                isSprinting = true;
+            }
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
-                player->ApplyForceY(-speed);
+           
+                if (isSprinting == true)
+                {
 
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
+                player->ApplyForceY(-speed);
             }
             if (event.key.keysym.sym == SDLK_s)
             {
+                
+                if (isSprinting == true)
+                {
+
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
                 player->ApplyForceY(speed);
+
             }
             if (event.key.keysym.sym == SDLK_d)
             {
 
+                
+                if (isSprinting == true)
+                {
+
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
                 player->ApplyForceX(speed);
             }
             if (event.key.keysym.sym == SDLK_a)
             {
+                
+                if (isSprinting == true)
+                {
+
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
                 player->ApplyForceX(-speed);
             }
+
 
             break;
 
@@ -280,6 +338,12 @@ void GameManager::handleEvents()
 
                 player->ApplyForceX(0);
             }
+
+            if (event.key.keysym.sym == SDLK_LSHIFT)
+            {
+                isSprinting = false;
+            }
+
 
             break;
 
