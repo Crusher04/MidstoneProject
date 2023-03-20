@@ -326,7 +326,7 @@ void Scene2::Update(const float deltaTime) {
 
 	}
 
-	std::cout << game->getRound()->getZombieAmount() << std::endl;
+	//std::cout << game->getRound()->getZombieAmount() << std::endl;
 	
 	if (game->getRound()->getZombieAmount() == 0)
 	{

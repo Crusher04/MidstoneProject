@@ -482,56 +482,7 @@ void GameManager::RenderBullet(float scale)
         
 
     }
-        
-    
-    
-    
 
-   /* if (fired == true)
-    {
-        if (fired1 == true)
-        {
-
-                bullets.at(1).Render(scale / 6);
-
-        }
-        if (fired2 == true)
-        {
-           
-                bullets.at(2).Render(scale / 6);
-            
-        }
-        if (fired3 == true) {
-         
-                bullets.at(3).Render(scale / 6);
-            
-        }
-    
-
-        if (fired4 == true)
-        {
-          
-                bullets.at(4).Render(scale / 6);
-            
-        }
-        if (fired5 == true)
-        {
-                bullets.at(5).Render(scale / 6);
-        
-        }
-        if (fired6 == true)
-        {
-            
-                bullets.at(6).Render(scale / 6);
-            
-        }
-        if (fired7 == true)
-        {
-          
-                bullets.at(7).Render(scale / 6);
-            
-        }
-    }*/
 
 }
 
