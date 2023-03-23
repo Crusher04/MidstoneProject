@@ -30,12 +30,8 @@ private:
 
 	// This might be unfamiliar
     class PlayerBody *player;
-
-	class Round	*round;
-	
-	class ZombieSpawner *zombies;
-	//class ZombieSpawner zombies2;
-	
+	class Round	*round;	
+	class ZombieSpawner *zombies;	
 	class Bullet* bullet;
 
 public:

@@ -172,8 +172,8 @@ void Scene2::Update(const float deltaTime) {
 		holdPosX = playerColl.x;
 		holdPosY = playerColl.y;
 
-		//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
-		//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
+		std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+		std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 	}
 	/*** ABOVE WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY ***/
@@ -202,7 +202,7 @@ void Scene2::Update(const float deltaTime) {
 				std::cout << "\nDamage Taken!";
 				game->getPlayer()->health.takeDamage(10);
 				damageTaken = true; //stops the player from taking damage per tick
-				std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
+				std::cout << "\nPLAYER HEdddALTH = " << game->getPlayer()->health.getHealth() << "\n";
 				timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
 			}
 		}
