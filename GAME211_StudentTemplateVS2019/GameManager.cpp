@@ -138,15 +138,13 @@ bool GameManager::OnCreate() {
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
         zombies2.setPos(Vec3(11000,11000,0));
-        zombies2.zombieArrPushBack(zombies2);
+        //zombies2.zombieArrPushBack(zombies2);
         zombieSpawnerArr2.push_back(zombies2);
     }
 
     /////////////////////////////////
     //Bullet Initialization
     /////////////////////////////////
-     
-  
        
     // Bullet Initialization
     bullet2.setBulletGame(this);
@@ -457,7 +455,7 @@ Vec3 GameManager::compileZombieSpawnLocations()
 
     Vec3 locations(randomizeX, randomizeY, 0);
 
-    return locations;
+    return Vec3(50, 50, 0);
 
 
 

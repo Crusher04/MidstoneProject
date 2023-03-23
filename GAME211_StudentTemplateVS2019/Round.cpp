@@ -26,14 +26,14 @@
 	/// <summary>
 	/// Starts the Game with Round 1
 	/// </summary>
-	void Round::GameStart() { currentRound = 1; }
+	void Round::GameStart() { currentRound = 1; prevZombieAmount = zombiesRemaining; }
 
 	/// <summary>
 	/// sets the amount of starting zombies for round 1
 	/// </summary>
 	void Round::setStartingZombieAmount(int newZombieAmount) { zombieStartingAmount = newZombieAmount; }
 
-	void Round::setZombiesRemaining()
+	void Round::removeAZombie()
 	{
 
 		zombiesRemaining--;
@@ -43,7 +43,12 @@
 	/// <summary>
 	/// Increments the rounds
 	/// </summary>
-	void Round::RoundEnd() { currentRound += 1; }
+	void Round::RoundEnd() 
+	{ 
+		currentRound += 1; 
+		prevZombieAmount *= 1.2;
+		zombiesRemaining = prevZombieAmount;
+	}
 
 	/// <summary>
 	/// Returns the round number

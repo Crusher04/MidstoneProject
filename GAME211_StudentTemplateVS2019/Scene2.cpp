@@ -99,9 +99,9 @@ bool Scene2::OnCreate() {
 
 	enemyColl.passthrough = false;
 	zombieSpawnTime = 0;
+	zombieTimeBetweenSpawn = 1500;
 	zombieSelection = 0;
 	roundEndTimer = 0;
-	v = 5;
 
 	/////////////////////////////////
 	//MAP STUFF
@@ -131,6 +131,7 @@ void Scene2::Update(const float deltaTime) {
 
 	for (int i = 0; i < game->getRound()->getZombieAmount(); i++)
 	{
+		//If they're dead, they can't be active no more
 		if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 			zombieCollArr.at(i).active = false;
 	}
@@ -172,8 +173,8 @@ void Scene2::Update(const float deltaTime) {
 		holdPosX = playerColl.x;
 		holdPosY = playerColl.y;
 
-		std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
-		std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
+		//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+		//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 	}
 	/*** ABOVE WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY ***/
@@ -210,78 +211,23 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 
-	if (game->zombieSpawned == false)
-	{
-		zombieSpawnTime++;
-	}
-
-	if (zombieSpawnTime == 125 && zombieSelection <= game->getRound()->getZombieAmount())
-	{
-		game->zombieSpawnerArr2.at(zombieSelection).setPos(game->compileZombieSpawnLocations());
-		zombieCollArr.at(zombieSelection).setCollPosition(game->zombieSpawnerArr2.at(zombieSelection).getPos().x, game->zombieSpawnerArr2.at(zombieSelection).getPos().y);
-
-		if (game->compileZombieSpawnLocations() == game->getPlayer()->getPos())
-		{
-
-			game->zombieSpawnerArr2.at(zombieSelection).setPos(Vec3(game->zombieSpawnerArr2.at(zombieSelection).getPos().x - 500, game->zombieSpawnerArr2.at(zombieSelection).getPos().y - 50, game->zombieSpawnerArr2.at(zombieSelection).getPos().z));			
-			
-		}
-		game->zombieSpawnerArr2.at(zombieSelection).spawned = true;
-		
-		zombieSelection++;
-		zombieSpawnTime = 0;
-
-	}
-
-	if (zombieSelection == game->getRound()->getZombieAmount())
-	{
-
-		game->zombieSpawned = true;
-		
-
-	}
-
-	//std::cout << game->getRound()->getZombieAmount() << std::endl;
+	/////////////////////////////////
+	//Zombie Spawning / Round Management
+	/////////////////////////////////
 	
-	if (game->getRound()->getZombieAmount() == 0)
+	if (zombieSpawnTime < SDL_GetTicks())
 	{
-
-		zombieSelection = 0;
-		game->getRound()->RoundEnd();
-		game->getRound()->newRound = true;
-	}
-
-	if (game->getRound()->newRound == true)
-	{
-
-		game->getRound()->setStartingZombieAmount(20);
-		roundEndTimer++;
-
-	}
-
-	if (roundEndTimer >= 625)
-	{
-		game->getRound()->newRound = false;
-		roundEndTimer = 0;
-
-	}
-
-
-
-
-	if (game->zombieSpawnerArr2.at(tempZombieSelection).health.getHealth() <= 0)
-	{
-		game->getRound()->setZombiesRemaining();
-
-		/*game->zombieSpawnerArr2.at(tempZombieSelection).health.setHealth(10);*/
-		tempZombieSelection++;
-
-	}
-
-	if (tempZombieSelection >= 15)
-	{
-		tempZombieSelection = 0;
-
+		for (int i = 0; i < zombieCollArr.size(); i++)
+		{
+			if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
+			{
+				game->zombieSpawnerArr2.at(i).setPos(game->compileZombieSpawnLocations());
+				zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
+				game->zombieSpawnerArr2.at(i).spawned = true;
+				zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
+				zombieTimeBetweenSpawn = rand() % 2500 + 1000;
+			}
+		}
 	}
 
 	

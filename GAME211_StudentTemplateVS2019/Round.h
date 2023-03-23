@@ -12,6 +12,7 @@ private:
 	int currentRound;
 	int zombieStartingAmount;
 	int zombiesRemaining;
+	int prevZombieAmount;
 
 public:
 
@@ -32,7 +33,10 @@ public:
 	/// </summary>
 	void setStartingZombieAmount(int newZombieAmount);
 
-	void setZombiesRemaining();
+	/// <summary>
+	/// Counts zombiesRemaining down
+	/// </summary>
+	void removeAZombie();
 
 	/// <summary>
 	/// Increments the rounds

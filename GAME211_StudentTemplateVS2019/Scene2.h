@@ -112,14 +112,13 @@ public:
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 
 	float a;
-	int v;
 	bool bulletIsMoving;
 	
 	Vec3 updatedGunPos;
 	int zombieSpawnTime;
 	int zombieSelection;
 
-	int tempZombieSelection;
+	int zombieTimeBetweenSpawn;
 	
 	int roundEndTimer;
 
