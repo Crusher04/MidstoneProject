@@ -163,7 +163,7 @@ void Scene2::Update(const float deltaTime) {
 		holdPosX = playerColl.x;
 		holdPosY = playerColl.y;
 
-		//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+		std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
 		//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 	}
@@ -396,11 +396,12 @@ void Scene2::Render() {
 
 	// render the zombies
 	game->RenderZombie(1.0f);
-
 	
 	game->RenderBullet(0.3f);
 	
 	game->RenderOutOfAmmo();
+
+	game->RenderRoundUI();
 
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
@@ -461,8 +462,8 @@ void Scene2::buildMap()
 	rockTexture2 = SDL_CreateTextureFromSurface(renderer, rockImage2);
 
 	//UI
-	hbEmptyImage = IMG_Load("Assets/UI/HUD/healthbar/hb_empty.png");
-	hbFullImage = IMG_Load("Assets/UI/HUD/healthbar/hb_full.png");
+	/*hbEmptyImage = IMG_Load("Assets/UI/HUD/healthbar/hb_empty.png");
+	hbFullImage = IMG_Load("Assets/UI/HUD/healthbar/hb_full.png");*/
 	zombieIconImage = IMG_Load("Assets/UI/HUD/zombie_counter_icon.png");
 
 	hbEmptyTexture = SDL_CreateTextureFromSurface(renderer, hbEmptyImage);

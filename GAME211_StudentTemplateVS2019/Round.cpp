@@ -46,7 +46,7 @@
 	void Round::RoundEnd() 
 	{ 
 		currentRound += 1; 
-		prevZombieAmount *= 1.2;
+		prevZombieAmount *= 1.7;
 		zombiesRemaining = prevZombieAmount;
 	}
 

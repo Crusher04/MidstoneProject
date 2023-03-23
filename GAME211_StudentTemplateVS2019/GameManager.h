@@ -11,6 +11,7 @@
 #include "ZombieSpawner.h"
 #include "Bullet.h"
 #include "WeaponManagement.h"
+#include "NumbersUI.h"
 
 class GameManager {
 private:
@@ -88,6 +89,7 @@ public:
 	bool zombieSpawned;
 	bool zombieRender[5];
 
+	
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
@@ -110,6 +112,9 @@ public:
 	WeaponManagement weaponManagement;
 	bool outOfAmmo;
 
+	//Round UI
+	NumbersUI RoundUI;
+
 	/////////////////////////////////////
 	//ALL FUNCTIONS GO DOWN HERE
 	////////////////////////////////////
@@ -124,6 +129,11 @@ public:
 	/// Renders the out of ammo UI for when out of ammo
 	/// </summary>
 	void RenderOutOfAmmo();
+
+	/// <summary>
+	/// Renders the UI for displaying current round number
+	/// </summary>
+	void RenderRoundUI();
 
 	/// <summary>
 	/// returns bullet class

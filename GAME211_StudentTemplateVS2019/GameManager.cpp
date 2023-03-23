@@ -149,6 +149,12 @@ bool GameManager::OnCreate() {
     weaponManagement.onCreate(getRenderer());
     outOfAmmo = false;
 
+    /////////////////////////////////
+    //RoundUI Initialization
+    /////////////////////////////////
+        
+    RoundUI.OnCreate(getRenderer());
+
 	return true;
 }
 
@@ -529,6 +535,11 @@ void GameManager::RenderOutOfAmmo()
     {
         weaponManagement.renderOutOfAmmo(getRenderer(), 0.6f, player->getPos().x, player->getPos().y);
     }
+}
+
+void GameManager::RenderRoundUI()
+{
+    RoundUI.Render(getRenderer(), 1.0f, getRound()->getCurrentRound());
 }
 
 void GameManager::zombieArrayInit()

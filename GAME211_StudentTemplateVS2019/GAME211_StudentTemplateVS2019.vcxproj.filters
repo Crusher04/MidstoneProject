@@ -70,6 +70,7 @@
     <ClCompile Include="WeaponManagement.cpp">
       <Filter>Class</Filter>
     </ClCompile>
+    <ClCompile Include="NumbersUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h">
@@ -150,6 +151,7 @@
     <ClInclude Include="WeaponManagement.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="NumbersUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GAME211_StudentTemplateVS2019.rc" />
