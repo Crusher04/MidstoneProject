@@ -32,6 +32,8 @@ public:
 	/// </summary>
 	void setStartingZombieAmount(int newZombieAmount);
 
+	void setZombiesRemaining();
+
 	/// <summary>
 	/// Increments the rounds
 	/// </summary>
@@ -46,6 +48,7 @@ public:
 	/// </summary>
 	int getCurrentRound();
 
+	bool newRound;
 
 	int getZombieAmount();
 };

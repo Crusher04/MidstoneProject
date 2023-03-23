@@ -6,11 +6,10 @@
 */
 
 #include <stdio.h>
-#include "Body.h"
 #include "GameManager.h"
 
 #pragma once
-class Collider : public Body
+class Collider
 {
 protected:
 public:
@@ -18,6 +17,8 @@ public:
 	float x, y, w, h;
 	bool passthrough;
 	Vec3 previousPos;
+	bool active;
+
 	//Constructor
 	Collider(float x_, float y_, float w_, float h_);
 
@@ -47,9 +48,9 @@ public:
 	/// <summary>
 	/// Checks of two Collider Boxs intersect. 
 	/// </summary>
-	/// <param name="objectOne"></param>
-	/// <param name="objectTwo"></param>
+	/// <param name="player"></param>
+	/// <param name="object"></param>
 	/// <returns></returns>
-	bool checkCollBox(Collider objectOne, Collider objectTwo);
+	bool checkCollBox(Collider player, Collider object);
 };
 

@@ -10,6 +10,8 @@
 #include <vector>
 #include "ZombieSpawner.h"
 #include "Bullet.h"
+#include "WeaponManagement.h"
+
 class GameManager {
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
@@ -37,12 +39,16 @@ private:
 	class Bullet* bullet;
 
 public:
+
+	//Contstructors with onCreate/Destroy
+
 	GameManager();
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
 
-	float ammoCount;
+	
+
 	// These might be unfamiliar
 	float getSceneHeight();
 	float getSceneWidth();
@@ -58,33 +64,52 @@ public:
 	void LoadScene( int i );
     bool ValidateCurrentScene();
 	bool isMoving;
-
+	bool reload;
 	//Get Round Class
 	Round* getRound() { return round; }
 
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;
-	void compileZombieSpawnLocations();
+	Vec3 compileZombieSpawnLocations();
 
 	void RenderZombie(float scale = 1.0f);
 	ZombieSpawner getZombie();
 
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
+	float ammoCount;
+
+	bool isSprinting;
 
 
+	bool bulletRendered;
 
 
+	int i[7];
 
+	bool bulletFired;
 
+	bool zombieSpawned;
+	bool zombieRender[5];
 
 	// Bullet Variables and Functions
 	Bullet* getBullet() {return bullet;	}
 	bool fired;
+	bool fired1;
+	bool fired2;
+	bool fired3;
+	bool fired4;
+	bool fired5;
+	bool fired6;
+	bool fired7;
+	bool fired8;
 	void RenderBullet(float scale = 1.0f);
 	float bulletSpeed;
-	int bulletSelection;
+	int bulletSelection = 0;
 	std::vector<Bullet> bullets;
+	WeaponManagement weaponManagement;
+	
+
 };
 #endif
 

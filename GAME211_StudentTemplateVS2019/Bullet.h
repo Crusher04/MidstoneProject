@@ -16,6 +16,7 @@
 #include "Body.h"
 #include <vector>
 
+
 class Bullet : public Body
 {
 protected:
@@ -47,11 +48,15 @@ public:
     void Update( float deltaTime );
     void setTexture( SDL_Texture* texture_ ) { texture = texture_; }
     float angle;
-    void Shoot();
+    void Shoot(float deltaTime);
     void bulletArrPushBack(Bullet bullet_);
     bool fired;
     void setBulletGame(GameManager* game_);
     int mouse_X, mouse_Y;
+    Vec3 finalVel;
+
+    bool collided;
+
 };
 
 #endif /* PLAYERBODY_H */

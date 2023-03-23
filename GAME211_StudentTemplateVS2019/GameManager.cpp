@@ -1,7 +1,6 @@
 #include "GameManager.h"
 #include "Scene1.h"
 #include "Scene2.h"
-#include "Scene4.h"
 #include "EntityHealth.h"
 #include "EnemyBody.h"
 #include "Scene8.h"
@@ -10,6 +9,7 @@
 
 ZombieSpawner zombies2;
 Bullet bullet2;
+
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -47,17 +47,30 @@ bool GameManager::OnCreate() {
 
 
 
-    // Set the Game Variables
+    /////////////////////////////////
+    //Variables for GameManager
+    /////////////////////////////////
     ammoCount = 15;
-    bulletSpeed = 20;
-    speed = 3000;
+    bulletSpeed = 25;
+    speed = 1000;
     w = false;
+    i[0] = 0;
+    i[1] = 0;
+    i[2] = 0;
+    i[3] = 0;
+    i[4] = 0;
+    i[5] = 0;
+    i[6] = 0;
+    i[7] = 0;
+    isSprinting = false;
+    zombieSpawned = false;
+
 
     /////////////////////////////////
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
 
-    currentScene = new Scene8(windowPtr->GetSDL_Window(), this);
+    currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
 
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
@@ -103,40 +116,43 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-    
-    //ZOMBIES
+
+    /////////////////////////////////
+    //Compile Zomboe Location Array
+    /////////////////////////////////
     compileZombieSpawnLocations();
     
-    //zombies = new ZombieSpawner(this);
+    /////////////////////////////////
+    //Zombie Initialization
+    /////////////////////////////////
     zombies2.setZombieGame(this);
-
-    //zombies->setZombieAmount();
-   // zombies->OnCreate();
-    //zombies->setPos(Vec3(250, 800, 0));
     zombies2.OnCreate();
     
+
+   
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
-        
-        zombies2.setPos(zombieSpawnLocations.at(i));
+        zombies2.setPos(Vec3(11000,11000,0));
         zombies2.zombieArrPushBack(zombies2);
         zombieSpawnerArr2.push_back(zombies2);
     }
-    
      
   
        
     // Bullet Initialization
     bullet2.setBulletGame(this);
     bullet2.OnCreate();
+    bullet2.setPos(getPlayer()->getPos());
+ 
     for (int i = 0; i < ammoCount; i++)
     {
-
 
         bullet2.bulletArrPushBack(bullet2);
         bullets.push_back(bullet2);
     }
-        
+
+    weaponManagement.onCreate();
+
 	return true;
 }
 
@@ -189,39 +205,112 @@ void GameManager::handleEvents()
 
             if (event.key.keysym.sym == SDLK_r)
             {
-                std::cout << "Player Pos = (" << player->getPos().x <<
-                    ", " << player->getPos().y << ")\n";
+                //RELOADING
+                if (weaponManagement.pistolEnabled && !weaponManagement.reloadStarted)
+                {
+                    std::cout << "Reloading\n";
+                    weaponManagement.reloadStarted = weaponManagement.reloading();
+                }
+                
+                
 
-                std::cout << "ZombieAmount = " << zombies->getZombiesRemaining() << "\n";
+                
 
             }
             if (event.key.keysym.sym == SDLK_e)
             {
-
-
+                bulletSelection = 1;
+                bullets.at(1).fired = false;
+                bullets.at(2).fired = false;
+                bullets.at(3).fired = false;
+                bullets.at(4).fired = false;
+                bullets.at(5).fired = false;
+                bullets.at(6).fired = false;
+                bullets.at(7).fired = false;
+                bullets.at(8).fired = false;
+      
+              
             }
             //Sets the Drag of the player. Lower = slower
             player->setDrag(.9f);
 
+
+            if (event.key.keysym.sym == SDLK_LSHIFT)
+            {
+                isSprinting = true;
+            }
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
-                player->ApplyForceY(-speed);
+           
+                if (isSprinting == true)
+                {
 
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
+                player->ApplyForceY(-speed);
             }
             if (event.key.keysym.sym == SDLK_s)
             {
+                
+                if (isSprinting == true)
+                {
+
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
                 player->ApplyForceY(speed);
+
             }
             if (event.key.keysym.sym == SDLK_d)
             {
 
+                
+                if (isSprinting == true)
+                {
+
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
                 player->ApplyForceX(speed);
             }
             if (event.key.keysym.sym == SDLK_a)
             {
+                
+                if (isSprinting == true)
+                {
+
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
                 player->ApplyForceX(-speed);
             }
+
 
             break;
 
@@ -248,14 +337,42 @@ void GameManager::handleEvents()
                 player->ApplyForceX(0);
             }
 
+            if (event.key.keysym.sym == SDLK_LSHIFT)
+            {
+                isSprinting = false;
+            }
+
+
             break;
 
         case SDL_MOUSEBUTTONDOWN:
             if (event.button.button == SDL_BUTTON_LEFT)
             {
-                fired = true;
-                bulletSelection++;
+                if(weaponManagement.pistolEnabled)
+                {
+                    if (bulletSelection < weaponManagement.pistolMagSize && !weaponManagement.isReloading &&!weaponManagement.delayShots())
+                    {
+                        if (!bullets.at(bulletSelection).fired)
+                        {
+                            weaponManagement.shotDelay = SDL_GetTicks();
+                            bullets.at(bulletSelection).fired = true;
+                            bullets.at(bulletSelection).setPos(getPlayer()->getPos());
+                            std::cout << "BulletSelection = " << bulletSelection << "\n";
+                            bulletSelection++;
+                        }
+                    }
+                    else
+                    {
+                        //Reloading
+                        std::cout << "OUT OF AMMO\n";
+
+                    }
+                }
+                
+               
+
             }
+
             break;
         }
         
@@ -295,58 +412,55 @@ SDL_Renderer* GameManager::getRenderer()
 void GameManager::RenderPlayer(float scale)
 {
    
-    player->Render(scale);
+    player->Render(1);
 
     
 }
 
-void GameManager::compileZombieSpawnLocations()
+Vec3 GameManager::compileZombieSpawnLocations()
 {
-    Vec3 locations(300, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    int maxRangeX, minRangeX, maxRangeY, minRangeY;
 
-    locations.set(400, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    maxRangeX = 500;
+    minRangeX = -500;
+    maxRangeY = 400;
+    minRangeY = -400;
 
-    locations.set(500, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
-    locations.set(600, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    srand((time(NULL)));
+    int randomizeX = rand() % (maxRangeX - minRangeX + 50);
+    int randomizeY = rand() % (maxRangeY - minRangeY + 50);
 
-    locations.set(700, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    Vec3 locations(randomizeX, randomizeY, 0);
 
-    locations.set(800, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    return locations;
 
-    locations.set(900, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
-    locations.set(1000, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
-    locations.set(1100, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(1200, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
 }
 
+/// <summary>
+/// Renders Zombies into scene
+/// </summary>
+/// <param name="scale"></param>
 void GameManager::RenderZombie(float scale)
 {
-    //zombies->Render(scale/2);
-   // zombies->zombieSpawnerArr.at(0).Render(scale / 2);
-    //zombies->zombieSpawnerArr.at(1).Render(scale / 4);
-   // zombies2.zombieSpawnerArr.at(0).Render(scale / 4);
-   // zombies2.zombieSpawnerArr.at(1).Render(scale / 4);
-    for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
+ 
+    for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
-        //zombies2.zombieSpawnerArr.at(i).Render(scale / 6);
-        
-        zombieSpawnerArr2.at(i).Render(scale / 6);
+        if (zombieSpawnerArr2.at(i).spawned == true)
+        {
+            if (zombieSpawnerArr2.at(i).health.getHealth() > 0)
+            {
+                zombieSpawnerArr2.at(i).Render(.18);
+
+            }
+        }
     }
+
+    
+    
 
 }
 
@@ -357,69 +471,19 @@ ZombieSpawner GameManager::getZombie()
 
 void GameManager::RenderBullet(float scale)
 {
-
-    if (bulletSelection == 1 || bulletSelection > 0)
-    {
-        bullets.at(1).Render(scale / 6);
-    }
-    if (bulletSelection == 2 || bulletSelection > 0)
-    {
-        bullets.at(2).Render(scale / 6);
-    }
-    if (bulletSelection == 3 || bulletSelection > 0)
-    {
-        bullets.at(3).Render(scale / 6);
-    }
-    if (bulletSelection == 4 || bulletSelection > 0)
-    {
-        bullets.at(4).Render(scale / 6);
-    }
-    if (bulletSelection == 5 || bulletSelection > 0)
-    {
-        bullets.at(5).Render(scale / 6);
-    }
-    if (bulletSelection == 6 || bulletSelection > 0)
-    {
-        bullets.at(6).Render(scale / 6);
-    }
-    if (bulletSelection == 7 || bulletSelection > 0)
-    {
-        bullets.at(7).Render(scale / 6);
-    }
-    if (bulletSelection == 8 || bulletSelection > 0)
-    {
-        bullets.at(8).Render(scale / 6);
-    }
-    if (bulletSelection == 9 || bulletSelection > 0)
-    {
-        bullets.at(9).Render(scale / 6);
-    }
-    if (bulletSelection == 10 || bulletSelection > 0)
-    {
-        bullets.at(10).Render(scale / 6);
-
-    }
-    if (bulletSelection == 11 || bulletSelection > 0)
-    {
-        bullets.at(11).Render(scale / 6);
-
-    }
-    if (bulletSelection == 12 || bulletSelection > 0)
-    {
-        bullets.at(12).Render(scale / 6);
-
-    }
-    if (bulletSelection == 13 || bulletSelection > 0)
-    {
-        bullets.at(13).Render(scale / 6);
-
-    }
-    if (bulletSelection == 14 || bulletSelection > 0)
-    {
-        bullets.at(14).Render(scale / 6);
-
-    }
     
+    for (int i = 0; i < ammoCount; i++)
+    {
+        
+       if (bullets.at(i).fired)
+            bullets.at(i).Render(scale / 6);
+            
+            
+        
+
+    }
+
+
 }
 
 void GameManager::LoadScene( int i )
@@ -439,7 +503,7 @@ void GameManager::LoadScene( int i )
             currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
             break;
         case 4:
-            currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
+            //currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
             break;
         case 8:
             currentScene = new Scene8(windowPtr->GetSDL_Window(), this);

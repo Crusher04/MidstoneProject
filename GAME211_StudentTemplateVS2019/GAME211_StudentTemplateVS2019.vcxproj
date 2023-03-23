@@ -39,6 +39,7 @@
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VMath.cpp" />
+    <ClCompile Include="WeaponManagement.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="ZombieSpawner.cpp" />
   </ItemGroup>
@@ -66,6 +67,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VMath.h" />
+    <ClInclude Include="WeaponManagement.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="ZombieSpawner.h" />
   </ItemGroup>

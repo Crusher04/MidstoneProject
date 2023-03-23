@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include "Body.h"
 #include "GameManager.h"
-
+#include "Collider.h"
 
 class EnemyBody : public Body
 {
 protected:
     class GameManager* game;
-
+    float x, y, w, h;
 public:
     EnemyBody() : Body{}
     {
@@ -41,11 +41,14 @@ public:
 
     // use the base class versions of getters
     Vec3 enemyPos;
+    Collider* bodyColl;
+
     bool OnCreate();
     void Render(float scale = 1.0f);
     void HandleEvents(const SDL_Event& event);
     void Update(float deltaTime);
     void setTexture(SDL_Texture* texture_) { texture = texture_; }
+
 
 };
 
