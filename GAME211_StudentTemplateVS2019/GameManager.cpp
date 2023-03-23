@@ -105,6 +105,9 @@ bool GameManager::OnCreate() {
         return false;
     }
 
+    //Sets the Drag of the player. Lower = slower
+    player->setDrag(.9f);
+
     /////////////////////////////////
     //Round Start
     /////////////////////////////////
@@ -204,13 +207,24 @@ void GameManager::handleEvents()
     {
         switch (event.type)
         {
+
+       /////////////////////////////////
+       // Quick Exit Program
+       /////////////////////////////////
         case SDL_QUIT:
             isRunning = false;
             break;
         case SDL_KEYDOWN:
 
+            /////////////////////////////////
+            // Quick Exit Program
+            /////////////////////////////////
             if (event.key.keysym.sym == SDLK_ESCAPE)
                 isRunning = false;
+
+            /////////////////////////////////
+            // Reload
+            /////////////////////////////////
 
             if (event.key.keysym.sym == SDLK_r)
             {
@@ -219,35 +233,23 @@ void GameManager::handleEvents()
                 {
                     std::cout << "Reloading\n";
                     weaponManagement.reloadStarted = weaponManagement.reloading();
-                }
-                
-                
-
-                
+                } 
 
             }
-            if (event.key.keysym.sym == SDLK_e)
-            {
-                bulletSelection = 1;
-                bullets.at(1).fired = false;
-                bullets.at(2).fired = false;
-                bullets.at(3).fired = false;
-                bullets.at(4).fired = false;
-                bullets.at(5).fired = false;
-                bullets.at(6).fired = false;
-                bullets.at(7).fired = false;
-                bullets.at(8).fired = false;
-      
-              
-            }
-            //Sets the Drag of the player. Lower = slower
-            player->setDrag(.9f);
 
+            /////////////////////////////////
+            // Sprinting
+            /////////////////////////////////
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
                 isSprinting = true;
             }
+
+            /////////////////////////////////
+            // Player Movement
+            /////////////////////////////////
+
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
@@ -325,6 +327,11 @@ void GameManager::handleEvents()
 
         case SDL_KEYUP:
 
+            /////////////////////////////////
+            // Player Movement
+            /////////////////////////////////
+
+
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
@@ -355,6 +362,11 @@ void GameManager::handleEvents()
             break;
 
         case SDL_MOUSEBUTTONDOWN:
+           
+            /////////////////////////////////
+           // Shooting
+           /////////////////////////////////
+
             if (event.button.button == SDL_BUTTON_LEFT)
             {
                 if(weaponManagement.pistolEnabled)
@@ -372,7 +384,7 @@ void GameManager::handleEvents()
                     }
                     else
                     {
-                        //Reloading
+                        //Tell user they're out of ammo
                         std::cout << "OUT OF AMMO\n";
 
                     }
