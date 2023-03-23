@@ -18,7 +18,7 @@
 		currentRound = 0;
 		
 		//Set default round 1 zombie starting amount
-		zombieStartingAmount = 15; 
+		zombieStartingAmount = 10; 
 
 		zombiesRemaining = zombieStartingAmount;
 	}

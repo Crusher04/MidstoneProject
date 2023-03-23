@@ -107,7 +107,7 @@ public:
 	//Our Functions
 	void buildMap();		//This runs in OnCreate for the Scene2 to build the map.
 	void initMapVar();		//This initializes the variables for our map.
-	void renderMap();		//This renders our map;
+	void renderMap();		//This renders our map
 
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 

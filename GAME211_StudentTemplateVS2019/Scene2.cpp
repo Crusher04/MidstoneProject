@@ -203,7 +203,7 @@ void Scene2::Update(const float deltaTime) {
 				game->getPlayer()->health.takeDamage(10);
 				damageTaken = true; //stops the player from taking damage per tick
 				std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
-				timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay
+				timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
 			}
 		}
 		

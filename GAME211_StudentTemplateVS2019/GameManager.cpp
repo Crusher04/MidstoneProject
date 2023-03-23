@@ -7,6 +7,8 @@
 #include "Round.h"
 #include "SoundEffect.h"
 
+
+//GameManager Variables
 ZombieSpawner zombies2;
 Bullet bullet2;
 
@@ -48,7 +50,7 @@ bool GameManager::OnCreate() {
 
 
     /////////////////////////////////
-    //Variables for GameManager
+    //Variables init
     /////////////////////////////////
     ammoCount = 15;
     bulletSpeed = 25;
@@ -118,7 +120,7 @@ bool GameManager::OnCreate() {
     }
 
     /////////////////////////////////
-    //Compile Zomboe Location Array
+    //Compile Zombie Location Array
     /////////////////////////////////
     compileZombieSpawnLocations();
     
