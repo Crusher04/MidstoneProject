@@ -10,7 +10,7 @@
 
 
 ///////////////////////////////////////////
-// TESTING SCENE - THIS IS OUR PLAYGROUND
+// OFFICIAL SCENE 
 ///////////////////////////////////////////
 
 
@@ -45,41 +45,13 @@ Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
 	xAxis = 25.0f;
 	yAxis = 15.0f;
 
-	/// PHUNG
-	//bg = new Body(Vec3(0.0f, 15.0f, 0.0f)); // background position
-	bgTexture = nullptr;
-	pathTexture = nullptr;
-
-	//tree
-	treeTexture0 = nullptr;
-	treeTexture1 = nullptr;
-
-	//block
-	blockTexture0 = nullptr;
-	blockTexture1 = nullptr;
-	blockTexture2 = nullptr;
-	blockTexture3 = nullptr;
-
-	//other
-	wellTexture = nullptr;
-	otherTexture0 = nullptr;
-	otherTexture1 = nullptr;
-	logTexture0 = nullptr;
-
-	//rock
-	rockTexture0 = nullptr;
-	rockTexture1 = nullptr;
-	rockTexture2 = nullptr;
-	rockTexture3 = nullptr;
-
-	//UI
-	hbEmptyTexture = nullptr;
-	hbFullTexture = nullptr;
-	zombieIconTexture = nullptr;
+	//Initialize map Variables to nullptr
+	initMapVar();
 
 }
 
-Scene2::~Scene2(){
+Scene2::~Scene2()
+{
 }
 
 bool Scene2::OnCreate() {
@@ -135,57 +107,7 @@ bool Scene2::OnCreate() {
 	//MAP STUFF
 	/////////////////////////////////
 
-	bgImage = IMG_Load("Assets/background/bg_green1.png");
-	bgTexture = SDL_CreateTextureFromSurface(renderer, bgImage);
-
-	pathImage = IMG_Load("Assets/background/bg_path.png");
-	pathTexture = SDL_CreateTextureFromSurface(renderer, pathImage);
-
-	//tree row 1
-	treeImage0 = IMG_Load("Assets/organic/bush1.png");
-	treeTexture0 = SDL_CreateTextureFromSurface(renderer, treeImage0);
-
-	treeImage1 = IMG_Load("Assets/organic/bush.png");
-	treeTexture1 = SDL_CreateTextureFromSurface(renderer, treeImage1);
-
-	//block
-	blockImage0 = IMG_Load("Assets/organic/block1.png");
-	blockTexture0 = SDL_CreateTextureFromSurface(renderer, blockImage0);
-
-	blockImage1 = IMG_Load("Assets/organic/block3.1.png");
-	blockTexture1 = SDL_CreateTextureFromSurface(renderer, blockImage1);
-
-	blockImage2 = IMG_Load("Assets/organic/block3.png");
-	blockTexture2 = SDL_CreateTextureFromSurface(renderer, blockImage2);
-
-	// other
-	wellImage = IMG_Load("Assets/prop/well.png");
-	otherImage0 = IMG_Load("Assets/prop/building1_1.png");
-	otherImage1 = IMG_Load("Assets/prop/building1.png");
-	logImage0 = IMG_Load("Assets/organic/log.png");
-
-	otherTexture0 = SDL_CreateTextureFromSurface(renderer, otherImage0);
-	otherTexture1 = SDL_CreateTextureFromSurface(renderer, otherImage1);
-	wellTexture = SDL_CreateTextureFromSurface(renderer, wellImage);
-	logTexture0 = SDL_CreateTextureFromSurface(renderer, logImage0);
-
-	//rock
-	rockImage0 = IMG_Load("Assets/organic/rock1.png");
-	rockImage1 = IMG_Load("Assets/organic/rock2.png");
-	rockImage2 = IMG_Load("Assets/organic/rock3.png");
-
-	rockTexture0 = SDL_CreateTextureFromSurface(renderer, rockImage0);
-	rockTexture1 = SDL_CreateTextureFromSurface(renderer, rockImage1);
-	rockTexture2 = SDL_CreateTextureFromSurface(renderer, rockImage2);
-
-	//UI
-	hbEmptyImage = IMG_Load("Assets/UI/HUD/healthbar/hb_empty.png");
-	hbFullImage = IMG_Load("Assets/UI/HUD/healthbar/hb_full.png");
-	zombieIconImage = IMG_Load("Assets/UI/HUD/zombie_counter_icon.png");
-
-	hbEmptyTexture = SDL_CreateTextureFromSurface(renderer, hbEmptyImage);
-	hbFullTexture = SDL_CreateTextureFromSurface(renderer, hbFullImage);
-	zombieIconTexture = SDL_CreateTextureFromSurface(renderer, zombieIconImage);
+	buildMap();
 
 	return true;
 }
@@ -286,13 +208,6 @@ void Scene2::Update(const float deltaTime) {
 		}
 		
 	}
-
-	//if (zombieSelection == 0)
-	//{
-
-	//	game->zombieSpawnerArr2.at(zombieSelection).setPos(Vec3(1100, 1100, 0));
-
-	//}
 
 
 	if (game->zombieSpawned == false)
@@ -507,7 +422,131 @@ void Scene2::Render() {
 	/////////////////////////////////
 	//MAP RENDERING 
 	/////////////////////////////////
-	// 
+	 
+	renderMap();
+
+
+
+	// render the player
+	game->RenderPlayer(1.5f);
+
+	// render the zombies
+	game->RenderZombie(1.0f);
+
+	
+	game->RenderBullet(0.3f);
+	
+	
+
+	// Present the renderer to the screen
+	SDL_RenderPresent(renderer);
+}
+
+void Scene2::HandleEvents(const SDL_Event& event)
+{
+	// send events to player as needed
+	game->getPlayer()->HandleEvents(event);
+
+	
+}
+
+void Scene2::buildMap()
+{
+
+	bgImage = IMG_Load("Assets/background/bg_green1.png");
+	bgTexture = SDL_CreateTextureFromSurface(renderer, bgImage);
+
+	pathImage = IMG_Load("Assets/background/bg_path.png");
+	pathTexture = SDL_CreateTextureFromSurface(renderer, pathImage);
+
+	//tree row 1
+	treeImage0 = IMG_Load("Assets/organic/bush1.png");
+	treeTexture0 = SDL_CreateTextureFromSurface(renderer, treeImage0);
+
+	treeImage1 = IMG_Load("Assets/organic/bush.png");
+	treeTexture1 = SDL_CreateTextureFromSurface(renderer, treeImage1);
+
+	//block
+	blockImage0 = IMG_Load("Assets/organic/block1.png");
+	blockTexture0 = SDL_CreateTextureFromSurface(renderer, blockImage0);
+
+	blockImage1 = IMG_Load("Assets/organic/block3.1.png");
+	blockTexture1 = SDL_CreateTextureFromSurface(renderer, blockImage1);
+
+	blockImage2 = IMG_Load("Assets/organic/block3.png");
+	blockTexture2 = SDL_CreateTextureFromSurface(renderer, blockImage2);
+
+	// other
+	wellImage = IMG_Load("Assets/prop/well.png");
+	otherImage0 = IMG_Load("Assets/prop/building1_1.png");
+	otherImage1 = IMG_Load("Assets/prop/building1.png");
+	logImage0 = IMG_Load("Assets/organic/log.png");
+
+	otherTexture0 = SDL_CreateTextureFromSurface(renderer, otherImage0);
+	otherTexture1 = SDL_CreateTextureFromSurface(renderer, otherImage1);
+	wellTexture = SDL_CreateTextureFromSurface(renderer, wellImage);
+	logTexture0 = SDL_CreateTextureFromSurface(renderer, logImage0);
+
+	//rock
+	rockImage0 = IMG_Load("Assets/organic/rock1.png");
+	rockImage1 = IMG_Load("Assets/organic/rock2.png");
+	rockImage2 = IMG_Load("Assets/organic/rock3.png");
+
+	rockTexture0 = SDL_CreateTextureFromSurface(renderer, rockImage0);
+	rockTexture1 = SDL_CreateTextureFromSurface(renderer, rockImage1);
+	rockTexture2 = SDL_CreateTextureFromSurface(renderer, rockImage2);
+
+	//UI
+	hbEmptyImage = IMG_Load("Assets/UI/HUD/healthbar/hb_empty.png");
+	hbFullImage = IMG_Load("Assets/UI/HUD/healthbar/hb_full.png");
+	zombieIconImage = IMG_Load("Assets/UI/HUD/zombie_counter_icon.png");
+
+	hbEmptyTexture = SDL_CreateTextureFromSurface(renderer, hbEmptyImage);
+	hbFullTexture = SDL_CreateTextureFromSurface(renderer, hbFullImage);
+	zombieIconTexture = SDL_CreateTextureFromSurface(renderer, zombieIconImage);
+
+
+
+}
+
+void Scene2::initMapVar()
+{
+	/// PHUNG
+	//bg = new Body(Vec3(0.0f, 15.0f, 0.0f)); // background position
+	bgTexture = nullptr;
+	pathTexture = nullptr;
+
+	//tree
+	treeTexture0 = nullptr;
+	treeTexture1 = nullptr;
+
+	//block
+	blockTexture0 = nullptr;
+	blockTexture1 = nullptr;
+	blockTexture2 = nullptr;
+	blockTexture3 = nullptr;
+
+	//other
+	wellTexture = nullptr;
+	otherTexture0 = nullptr;
+	otherTexture1 = nullptr;
+	logTexture0 = nullptr;
+
+	//rock
+	rockTexture0 = nullptr;
+	rockTexture1 = nullptr;
+	rockTexture2 = nullptr;
+	rockTexture3 = nullptr;
+
+	//UI
+	hbEmptyTexture = nullptr;
+	hbFullTexture = nullptr;
+	zombieIconTexture = nullptr;
+}
+
+void Scene2::renderMap()
+{
+
 	//bg and path
 	Vec3 bg_screenCoords = projectionMatrix * Vec3(0.0f, 15.0f, 0.0f);
 	Vec3 path_screenCoords = projectionMatrix * Vec3(0.0f, 8.0f, 0.0f);
@@ -860,36 +899,4 @@ void Scene2::Render() {
 	SDL_RenderCopy(renderer, zombieIconTexture, nullptr, &dest);
 
 
-
-
-	// render the player
-	game->RenderPlayer(1.5f);
-
-	// render the zombies
-	game->RenderZombie(1.0f);
-
-	
-	game->RenderBullet(0.3f);
-	
-	
-
-
-	
-
-	
-
-	// Present the renderer to the screen
-	SDL_RenderPresent(renderer);
-}
-
-void Scene2::HandleEvents(const SDL_Event& event)
-{
-	// send events to player as needed
-	game->getPlayer()->HandleEvents(event);
-
-	
-}
-
-Scene2::Scene2()
-{
 }

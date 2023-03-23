@@ -104,14 +104,18 @@ public:
     Matrix4 getProjectionMatrix() { return projectionMatrix; }
 	Matrix4 getInverseMatrix() { return inverseProjection; }
 	
+	//Our Functions
+	void buildMap();		//This runs in OnCreate for the Scene2 to build the map.
+	void initMapVar();		//This initializes the variables for our map.
+	void renderMap();		//This renders our map;
+
+	//Variables - ADD HERE WITH DESCRIPTION!! 
 
 	float a;
 	int v;
 	bool bulletIsMoving;
 	
 	Vec3 updatedGunPos;
-
-	Scene2();
 	int zombieSpawnTime;
 	int zombieSelection;
 
@@ -119,6 +123,7 @@ public:
 	
 	int roundEndTimer;
 
+	
 
 
 };
