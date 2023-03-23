@@ -130,17 +130,7 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     //Zombie Initialization
     /////////////////////////////////
-    zombies2.setZombieGame(this);
-    zombies2.OnCreate();
-    
-
-   
-    for (int i = 0; i < this->round->getZombieAmount(); i++)
-    {
-        zombies2.setPos(Vec3(11000,11000,0));
-        //zombies2.zombieArrPushBack(zombies2);
-        zombieSpawnerArr2.push_back(zombies2);
-    }
+    zombieArrayInit();
 
     /////////////////////////////////
     //Bullet Initialization
@@ -469,7 +459,7 @@ Vec3 GameManager::compileZombieSpawnLocations()
 void GameManager::RenderZombie(float scale)
 {
  
-    for (int i = 0; i < this->round->getZombieAmount(); i++)
+    for (int i = 0; i < zombieSpawnerArr2.size(); i++)
     {
         if (zombieSpawnerArr2.at(i).spawned == true)
         {
@@ -497,7 +487,7 @@ void GameManager::RenderBullet(float scale)
     for (int i = 0; i < ammoCount; i++)
     {
         
-       if (bullets.at(i).fired && !bullets.at(i).collided)
+       if (bullets.at(i).fired)
             bullets.at(i).Render(scale / 6);
             
             
@@ -510,6 +500,21 @@ void GameManager::RenderOutOfAmmo()
     if (outOfAmmo)
     {
         weaponManagement.renderOutOfAmmo(getRenderer(), 0.6f, player->getPos().x, player->getPos().y);
+    }
+}
+
+void GameManager::zombieArrayInit()
+{
+    zombies2.setZombieGame(this);
+    zombies2.OnCreate();
+
+
+
+    for (int i = 0; i < this->round->getZombieAmount(); i++)
+    {
+        zombies2.setPos(Vec3(11000, 11000, 0));
+        //zombies2.zombieArrPushBack(zombies2);
+        zombieSpawnerArr2.push_back(zombies2);
     }
 }
 

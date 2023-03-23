@@ -137,6 +137,8 @@ public:
 	/// <returns></returns>
 	Round* getRound() { return round; }
 
+	void zombieArrayInit();
+
 };
 #endif
 

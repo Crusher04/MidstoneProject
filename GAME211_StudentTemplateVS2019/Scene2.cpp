@@ -126,19 +126,6 @@ void Scene2::OnDestroy() {}
 void Scene2::Update(const float deltaTime) {
 	
 	/////////////////////////////////
-	//CHECK IF ZOMBIES ARE ALIVE
-	/////////////////////////////////
-
-	for (int i = 0; i < game->getRound()->getZombieAmount(); i++)
-	{
-		//If they're dead, they can't be active no more
-		if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
-			zombieCollArr.at(i).active = false;
-	}
-
-	
-	
-	/////////////////////////////////
 	//Player Updates
 	/////////////////////////////////
 
@@ -203,7 +190,7 @@ void Scene2::Update(const float deltaTime) {
 				std::cout << "\nDamage Taken!";
 				game->getPlayer()->health.takeDamage(10);
 				damageTaken = true; //stops the player from taking damage per tick
-				std::cout << "\nPLAYER HEdddALTH = " << game->getPlayer()->health.getHealth() << "\n";
+				std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
 				timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
 			}
 		}
@@ -215,6 +202,18 @@ void Scene2::Update(const float deltaTime) {
 	//Zombie Spawning / Round Management
 	/////////////////////////////////
 	
+	if (game->getRound()->getZombieAmount() <= 0)
+	{
+		game->getRound()->RoundEnd();
+		std::cout << "Round " << game->getRound()->getCurrentRound() << " has started!\n ";
+
+		game->zombieSpawnerArr2.clear();
+		zombieCollArr.clear();
+
+		game->zombieArrayInit();
+		zombieInitComplete = false;
+	}
+
 	if (zombieSpawnTime < SDL_GetTicks())
 	{
 		for (int i = 0; i < zombieCollArr.size(); i++)
@@ -229,6 +228,7 @@ void Scene2::Update(const float deltaTime) {
 			}
 		}
 	}
+
 
 	
 
@@ -302,7 +302,7 @@ void Scene2::Update(const float deltaTime) {
 		{
 			//Shoot Bullet
 			game->bullets.at(i).Shoot(deltaTime);
-			
+
 			//Bullet Collision Detection with zombies
 			bulletColl.setCollPosition(game->bullets.at(i).getPos().x, game->bullets.at(i).getPos().y);
 			for (int i = 0; i < zombieCollArr.size(); i++)
@@ -310,14 +310,18 @@ void Scene2::Update(const float deltaTime) {
 				if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
 				{
 					game->bullets.at(i).fired = false;
-					game->bullets.at(i).collided = true;		
+					//game->bullets.at(i).collided = true;		
 					game->zombieSpawnerArr2.at(i).health.takeDamage(100);
-					//bulletColl.active = false;
+					zombieCollArr.at(i).active = false;
 					std::cout << "ZOMBIE " << i << " IS HIT!\n";
+					game->getRound()->removeAZombie();
+					bulletColl.active = false;
 				}
 			}
 			game->i[i]++;
+
 		}
+		bulletColl.active = true;
 	}
 
 	

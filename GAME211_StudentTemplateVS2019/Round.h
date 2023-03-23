@@ -52,8 +52,6 @@ public:
 	/// </summary>
 	int getCurrentRound();
 
-	bool newRound;
-
 	int getZombieAmount();
 };
 
