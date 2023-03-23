@@ -431,31 +431,67 @@ void GameManager::RenderPlayer(float scale)
 
 Vec3 GameManager::compileZombieSpawnLocations()
 {
-    int maxRangeX, minRangeX, maxRangeY, minRangeY;
+    int location = rand() % 17 + 1;
 
-    maxRangeX = 500;
-    minRangeX = -500;
-    maxRangeY = 400;
-    minRangeY = -400;
-
-
-    srand((time(NULL)));
-    int randomizeX = rand() % (maxRangeX - minRangeX + 50);
-    int randomizeY = rand() % (maxRangeY - minRangeY + 50);
-
-    Vec3 locations(randomizeX, randomizeY, 0);
-
-    return Vec3(50, 50, 0);
-
-
-
-
+    switch (location) {
+    case 1:
+        return Vec3(21, 31, 0);
+        break;
+    case 2:
+        return Vec3(21, 322, 0);
+        break;
+    case 3:
+        return Vec3(21, 757, 0);
+        break;
+    case 4:
+        return Vec3(21, 985, 0);
+        break;
+    case 5:
+        return Vec3(712, 1059, 0);
+        break;
+    case 6:
+        return Vec3(509, 20, 0);
+        break;
+    case 7:
+        return Vec3(1622, 1053, 0);
+        break;
+    case 8:
+        return Vec3(1274, 1059, 0);
+        break;
+    case 9:
+        return Vec3(1663, 800, 0);
+        break;
+    case 10:
+        return Vec3(1908, 573, 0);
+        break;
+    case 11:
+        return Vec3(1908, 729, 0);
+        break;
+    case 12:
+        return Vec3(1908, 1834, 0);
+        break;
+    case 13:
+        return Vec3(1300, 16, 0);
+        break;
+    case 14:
+        return Vec3(930, 16, 0);
+        break;
+    case 15:
+        return Vec3(490, 16, 0);
+        break;
+    case 16:
+        return Vec3(290, 16, 0);
+        break;
+    case 17:
+        return Vec3(200, 700, 0);
+        break;
+    default:
+        return Vec3(50, 50, 0);
+        break;
+    }
 }
 
-/// <summary>
-/// Renders Zombies into scene
-/// </summary>
-/// <param name="scale"></param>
+
 void GameManager::RenderZombie(float scale)
 {
  
@@ -469,10 +505,7 @@ void GameManager::RenderZombie(float scale)
 
             }
         }
-    }
-
-    
-    
+    }  
 
 }
 
@@ -505,15 +538,14 @@ void GameManager::RenderOutOfAmmo()
 
 void GameManager::zombieArrayInit()
 {
+    //Init Zombie var
     zombies2.setZombieGame(this);
     zombies2.OnCreate();
 
-
-
+    //Init Zombie Array
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
         zombies2.setPos(Vec3(11000, 11000, 0));
-        //zombies2.zombieArrPushBack(zombies2);
         zombieSpawnerArr2.push_back(zombies2);
     }
 }

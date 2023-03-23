@@ -14,6 +14,8 @@ private:
 	int zombiesRemaining;
 	int prevZombieAmount;
 
+	float holdTime;
+
 public:
 
 	/// <summary>
@@ -52,6 +54,11 @@ public:
 	/// </summary>
 	int getCurrentRound();
 
+	/// <summary>
+	/// Returns zombie amount
+	/// </summary>
+	/// <returns></returns>
 	int getZombieAmount();
+
 };
 

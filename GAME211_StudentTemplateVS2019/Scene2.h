@@ -121,7 +121,7 @@ public:
 	int zombieTimeBetweenSpawn;
 	
 	int roundEndTimer;
-
+	bool roundEnded;
 	
 
 

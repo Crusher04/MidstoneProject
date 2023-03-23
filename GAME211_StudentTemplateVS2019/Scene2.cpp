@@ -34,6 +34,8 @@ int holdPosX, holdPosY = 0;
 //Flag Variables
 bool zombieInitComplete = false;		//Flags the completion of zombie collider initialization 
 
+//Round timer variables
+float holdTime = 0;
 /***** END OF SCENE VARIABLES *****/
 
 
@@ -102,6 +104,7 @@ bool Scene2::OnCreate() {
 	zombieTimeBetweenSpawn = 1500;
 	zombieSelection = 0;
 	roundEndTimer = 0;
+	roundEnded = false;
 
 	/////////////////////////////////
 	//MAP STUFF
@@ -201,10 +204,18 @@ void Scene2::Update(const float deltaTime) {
 	/////////////////////////////////
 	//Zombie Spawning / Round Management
 	/////////////////////////////////
-	
 	if (game->getRound()->getZombieAmount() <= 0)
 	{
+		holdTime = SDL_GetTicks() + 5000;
 		game->getRound()->RoundEnd();
+		roundEnded = true;
+	}
+	
+		
+
+	if (holdTime < SDL_GetTicks() && roundEnded)
+	{
+
 		std::cout << "Round " << game->getRound()->getCurrentRound() << " has started!\n ";
 
 		game->zombieSpawnerArr2.clear();
@@ -212,7 +223,10 @@ void Scene2::Update(const float deltaTime) {
 
 		game->zombieArrayInit();
 		zombieInitComplete = false;
+		roundEnded = false;
 	}
+		
+
 
 	if (zombieSpawnTime < SDL_GetTicks())
 	{
