@@ -1,7 +1,6 @@
 #include "GameManager.h"
 #include "Scene1.h"
 #include "Scene2.h"
-#include "Scene4.h"
 #include "EntityHealth.h"
 #include "EnemyBody.h"
 #include "Scene8.h"
@@ -63,8 +62,8 @@ bool GameManager::OnCreate() {
     i[5] = 0;
     i[6] = 0;
     i[7] = 0;
-
-
+    isSprinting = false;
+    zombieSpawned = false;
 
 
     /////////////////////////////////
@@ -130,10 +129,10 @@ bool GameManager::OnCreate() {
     zombies2.OnCreate();
     
 
+   
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
-        
-        zombies2.setPos(zombieSpawnLocations.at(i));
+        zombies2.setPos(Vec3(11000,11000,0));
         zombies2.zombieArrPushBack(zombies2);
         zombieSpawnerArr2.push_back(zombies2);
     }
@@ -141,6 +140,10 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     //Bullet Initialization
     /////////////////////////////////
+     
+  
+       
+    // Bullet Initialization
     bullet2.setBulletGame(this);
     bullet2.OnCreate();
     bullet2.setPos(getPlayer()->getPos());
@@ -238,25 +241,83 @@ void GameManager::handleEvents()
             //Sets the Drag of the player. Lower = slower
             player->setDrag(.9f);
 
+
+            if (event.key.keysym.sym == SDLK_LSHIFT)
+            {
+                isSprinting = true;
+            }
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
-                player->ApplyForceY(-speed);
+           
+                if (isSprinting == true)
+                {
 
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
+                player->ApplyForceY(-speed);
             }
             if (event.key.keysym.sym == SDLK_s)
             {
+                
+                if (isSprinting == true)
+                {
+
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
                 player->ApplyForceY(speed);
+
             }
             if (event.key.keysym.sym == SDLK_d)
             {
 
+                
+                if (isSprinting == true)
+                {
+
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
                 player->ApplyForceX(speed);
             }
             if (event.key.keysym.sym == SDLK_a)
             {
+                
+                if (isSprinting == true)
+                {
+
+                    speed = 5000;
+
+                }
+                if (isSprinting == false)
+                {
+
+                    speed = 1000;
+
+                }
                 player->ApplyForceX(-speed);
             }
+
 
             break;
 
@@ -282,6 +343,12 @@ void GameManager::handleEvents()
 
                 player->ApplyForceX(0);
             }
+
+            if (event.key.keysym.sym == SDLK_LSHIFT)
+            {
+                isSprinting = false;
+            }
+
 
             break;
 
@@ -354,37 +421,26 @@ void GameManager::RenderPlayer(float scale)
     
 }
 
-void GameManager::compileZombieSpawnLocations()
+Vec3 GameManager::compileZombieSpawnLocations()
 {
-    Vec3 locations(300, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    int maxRangeX, minRangeX, maxRangeY, minRangeY;
 
-    locations.set(400, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    maxRangeX = 500;
+    minRangeX = -500;
+    maxRangeY = 400;
+    minRangeY = -400;
 
-    locations.set(500, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
-    locations.set(600, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    srand((time(NULL)));
+    int randomizeX = rand() % (maxRangeX - minRangeX + 50);
+    int randomizeY = rand() % (maxRangeY - minRangeY + 50);
 
-    locations.set(700, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    Vec3 locations(randomizeX, randomizeY, 0);
 
-    locations.set(800, 800, 0);
-    zombieSpawnLocations.push_back(locations);
+    return locations;
 
-    locations.set(900, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
-    locations.set(1000, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
-    locations.set(1100, 800, 0);
-    zombieSpawnLocations.push_back(locations);
-
-    locations.set(1200, 800, 0);
-    zombieSpawnLocations.push_back(locations);
 
 }
 
@@ -394,16 +450,21 @@ void GameManager::compileZombieSpawnLocations()
 /// <param name="scale"></param>
 void GameManager::RenderZombie(float scale)
 {
-
-    for (int i = 0; i < zombies2.zombieSpawnerArr.size(); i++)
-    {  
-        if (zombieSpawnerArr2.at(i).health.getHealth() > 0)
+ 
+    for (int i = 0; i < this->round->getZombieAmount(); i++)
+    {
+        if (zombieSpawnerArr2.at(i).spawned == true)
         {
-            zombieSpawnerArr2.at(i).Render(.18);
+            if (zombieSpawnerArr2.at(i).health.getHealth() > 0)
+            {
+                zombieSpawnerArr2.at(i).Render(.18);
+
+            }
         }
-        
-        
     }
+
+    
+    
 
 }
 
@@ -443,7 +504,7 @@ void GameManager::LoadScene( int i )
             currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
             break;
         case 4:
-            currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
+            //currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
             break;
         case 8:
             currentScene = new Scene8(windowPtr->GetSDL_Window(), this);
