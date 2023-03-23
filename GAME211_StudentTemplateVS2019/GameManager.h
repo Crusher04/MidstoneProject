@@ -66,7 +66,7 @@ public:
 
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;
-	Vec3 compileZombieSpawnLocations();
+	Vec3 getZombieSpawnLocations();
 
 	void RenderZombie(float scale = 1.0f);
 	ZombieSpawner getZombie();

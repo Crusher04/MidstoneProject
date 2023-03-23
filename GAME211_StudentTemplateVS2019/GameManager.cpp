@@ -121,11 +121,6 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
-
-    /////////////////////////////////
-    //Compile Zombie Location Array
-    /////////////////////////////////
-    compileZombieSpawnLocations();
     
     /////////////////////////////////
     //Zombie Initialization
@@ -365,8 +360,6 @@ void GameManager::handleEvents()
                     {
                         if (!bullets.at(bulletSelection).fired)
                         {
-
-
                             weaponManagement.shotDelay = SDL_GetTicks();
                             bullets.at(bulletSelection).fired = true;
                             bullets.at(bulletSelection).setPos(getPlayer()->getPos());
@@ -429,10 +422,12 @@ void GameManager::RenderPlayer(float scale)
     
 }
 
-Vec3 GameManager::compileZombieSpawnLocations()
+Vec3 GameManager::getZombieSpawnLocations()
 {
+    //Chooses a location at random...IF you add a location below, increase the first number.
     int location = rand() % 17 + 1;
 
+    //Set spawn locations
     switch (location) {
     case 1:
         return Vec3(21, 31, 0);

@@ -211,7 +211,6 @@ void Scene2::Update(const float deltaTime) {
 		roundEnded = true;
 	}
 	
-		
 
 	if (holdTime < SDL_GetTicks() && roundEnded)
 	{
@@ -234,7 +233,7 @@ void Scene2::Update(const float deltaTime) {
 		{
 			if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
 			{
-				game->zombieSpawnerArr2.at(i).setPos(game->compileZombieSpawnLocations());
+				game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
 				zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
 				game->zombieSpawnerArr2.at(i).spawned = true;
 				zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
@@ -359,6 +358,7 @@ void Scene2::Update(const float deltaTime) {
 		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 		{
 			game->bullets.at(i).collided = false;
+			game->bullets.at(i).fired = false;
 		}
 	}
 	
