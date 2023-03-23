@@ -436,7 +436,7 @@ void Scene2::Render() {
 	
 	game->RenderBullet(0.3f);
 	
-	
+	game->RenderOutOfAmmo();
 
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);

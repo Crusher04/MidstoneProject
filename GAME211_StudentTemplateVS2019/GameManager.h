@@ -104,6 +104,8 @@ public:
 	bool fired7;
 	bool fired8;
 	void RenderBullet(float scale = 1.0f);
+	void RenderOutOfAmmo();
+	bool outOfAmmo;
 	float bulletSpeed;
 	int bulletSelection = 0;
 	std::vector<Bullet> bullets;

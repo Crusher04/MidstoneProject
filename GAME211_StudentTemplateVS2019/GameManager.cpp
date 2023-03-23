@@ -163,7 +163,8 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     //Weapon Management Initialization
     /////////////////////////////////
-    weaponManagement.onCreate();
+    weaponManagement.onCreate(getRenderer());
+    outOfAmmo = false;
 
 	return true;
 }
@@ -233,6 +234,7 @@ void GameManager::handleEvents()
                 {
                     std::cout << "Reloading\n";
                     weaponManagement.reloadStarted = weaponManagement.reloading();
+                    outOfAmmo = false;
                 } 
 
             }
@@ -375,6 +377,8 @@ void GameManager::handleEvents()
                     {
                         if (!bullets.at(bulletSelection).fired)
                         {
+
+
                             weaponManagement.shotDelay = SDL_GetTicks();
                             bullets.at(bulletSelection).fired = true;
                             bullets.at(bulletSelection).setPos(getPlayer()->getPos());
@@ -386,6 +390,8 @@ void GameManager::handleEvents()
                     {
                         //Tell user they're out of ammo
                         std::cout << "OUT OF AMMO\n";
+
+                        outOfAmmo = true;
 
                     }
                 }
@@ -499,6 +505,14 @@ void GameManager::RenderBullet(float scale)
             
     }
 
+}
+
+void GameManager::RenderOutOfAmmo()
+{
+    if (outOfAmmo)
+    {
+        weaponManagement.renderOutOfAmmo(getRenderer(), 0.6f, player->getPos().x, player->getPos().y);
+    }
 }
 
 void GameManager::LoadScene( int i )
