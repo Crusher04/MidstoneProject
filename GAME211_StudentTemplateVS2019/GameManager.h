@@ -65,8 +65,8 @@ public:
     bool ValidateCurrentScene();
 	bool isMoving;
 	bool reload;
-	//Get Round Class
-	Round* getRound() { return round; }
+
+	
 
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;
@@ -92,8 +92,11 @@ public:
 	bool zombieSpawned;
 	bool zombieRender[5];
 
-	// Bullet Variables and Functions
-	Bullet* getBullet() {return bullet;	}
+	/////////////////////////////////////
+	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
+	////////////////////////////////////
+	
+	//Bullet Variables
 	bool fired;
 	bool fired1;
 	bool fired2;
@@ -103,14 +106,40 @@ public:
 	bool fired6;
 	bool fired7;
 	bool fired8;
-	void RenderBullet(float scale = 1.0f);
-	void RenderOutOfAmmo();
-	bool outOfAmmo;
 	float bulletSpeed;
 	int bulletSelection = 0;
 	std::vector<Bullet> bullets;
+
+	//Weapon Management
 	WeaponManagement weaponManagement;
+	bool outOfAmmo;
+
+	/////////////////////////////////////
+	//ALL FUNCTIONS GO DOWN HERE
+	////////////////////////////////////
+
+	/// <summary>
+	/// Renders the bullet
+	/// </summary>
+	/// <param name="scale"></param>
+	void RenderBullet(float scale = 1.0f);
+
+	/// <summary>
+	/// Renders the out of ammo UI for when out of ammo
+	/// </summary>
+	void RenderOutOfAmmo();
+
+	/// <summary>
+	/// returns bullet class
+	/// </summary>
+	/// <returns></returns>
+	Bullet* getBullet() { return bullet; }
 	
+	/// <summary>
+	/// gets the round
+	/// </summary>
+	/// <returns></returns>
+	Round* getRound() { return round; }
 
 };
 #endif
