@@ -17,9 +17,6 @@
 //Collider locations
 Collider playerColl(1000, 8, 1, 3);				//Player collider initilization 
 Collider enemyColl(300, 800, 10, 10);			//zombie collider holder
-Collider bulletColl(0, 0, 1, 1);				//Bullet collider holder
-std::vector<Collider> bulletCollArr;			//Bullet Collider vector array
-std::vector<Collider> bulletInMotionCollArr;	//Bullet Collider vector array for bullets in motion
 std::vector<Collider> zombieCollArr;			//zombie collider vector array
 
 /***** SCENE VARIABLES *****/
