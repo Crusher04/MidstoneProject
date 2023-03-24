@@ -211,10 +211,10 @@ void Scene2::Update(const float deltaTime) {
 
 	if (zombieSpawnTime == 125 && zombieSelection <= game->getRound()->getZombieAmount())
 	{
-		game->zombieSpawnerArr2.at(zombieSelection).setPos(game->compileZombieSpawnLocations());
+		game->zombieSpawnerArr2.at(zombieSelection).setPos(game->getZombieSpawnLocations());
 		zombieCollArr.at(zombieSelection).setCollPosition(game->zombieSpawnerArr2.at(zombieSelection).getPos().x, game->zombieSpawnerArr2.at(zombieSelection).getPos().y);
 
-		if (game->compileZombieSpawnLocations() == game->getPlayer()->getPos())
+		if (game->getZombieSpawnLocations() == game->getPlayer()->getPos())
 		{
 
 			game->zombieSpawnerArr2.at(zombieSelection).setPos(Vec3(game->zombieSpawnerArr2.at(zombieSelection).getPos().x - 500, game->zombieSpawnerArr2.at(zombieSelection).getPos().y - 50, game->zombieSpawnerArr2.at(zombieSelection).getPos().z));			

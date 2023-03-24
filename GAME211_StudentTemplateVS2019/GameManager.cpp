@@ -421,195 +421,195 @@ void GameManager::RenderPlayer(float scale)
 
 Vec3 GameManager::getZombieSpawnLocations()
 {
-    int maxRange, minRange;
+    //int maxRange, minRange;
 
-    maxRange = 20;
-    minRange = 1;
-    
+    //maxRange = 20;
+    //minRange = 1;
+    //
 
 
-    srand((time(NULL)));
-    int randomize = rand() % (maxRange - minRange + 1);
+    //srand((time(NULL)));
+    //int randomize = rand() % (maxRange - minRange + 1);
 
-    Vec3 locations;
+    //Vec3 locations;
 
-    if (randomize == 1)
-    {
+    //if (randomize == 1)
+    //{
 
-        locations.set(325, 225, 0);
+    //    locations.set(325, 225, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 2)
-    {
+    //if (randomize == 2)
+    //{
 
-        locations.set(325, 450, 0);
+    //    locations.set(325, 450, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 3)
-    {
+    //if (randomize == 3)
+    //{
 
-        locations.set(325, 675, 0);
+    //    locations.set(325, 675, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 4)
-    {
+    //if (randomize == 4)
+    //{
 
-        locations.set(325, 900, 0);
+    //    locations.set(325, 900, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 5)
-    {
+    //if (randomize == 5)
+    //{
 
-        locations.set(650, 225, 0);
+    //    locations.set(650, 225, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 6)
-    {
+    //if (randomize == 6)
+    //{
 
-        locations.set(650, 450, 0);
+    //    locations.set(650, 450, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 7)
-    {
+    //if (randomize == 7)
+    //{
 
-        locations.set(650, 675, 0);
+    //    locations.set(650, 675, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 8)
-    {
+    //if (randomize == 8)
+    //{
 
-        locations.set(650, 900, 0);
+    //    locations.set(650, 900, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 9)
-    {
+    //if (randomize == 9)
+    //{
 
-        locations.set(975, 225, 0);
+    //    locations.set(975, 225, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 10)
-    {
+    //if (randomize == 10)
+    //{
 
-        locations.set(975, 450, 0);
+    //    locations.set(975, 450, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 11)
-    {
+    //if (randomize == 11)
+    //{
 
-        locations.set(975, 675, 0);
+    //    locations.set(975, 675, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 12)
-    {
+    //if (randomize == 12)
+    //{
 
-        locations.set(975, 900, 0);
+    //    locations.set(975, 900, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 13)
-    {
+    //if (randomize == 13)
+    //{
 
-        locations.set(1300, 225, 0);
+    //    locations.set(1300, 225, 0);
 
 
-    }
+    //}
 
 
-    if (randomize == 14)
-    {
+    //if (randomize == 14)
+    //{
 
-        locations.set(1300, 450, 0);
+    //    locations.set(1300, 450, 0);
 
 
-    }
+    //}
 
-    if (randomize == 15)
-    {
+    //if (randomize == 15)
+    //{
 
-        locations.set(1300, 675, 0);
+    //    locations.set(1300, 675, 0);
 
 
-    }
+    //}
 
-    if (randomize == 16)
-    {
+    //if (randomize == 16)
+    //{
 
-        locations.set(1300, 900, 0);
+    //    locations.set(1300, 900, 0);
 
 
-    }
+    //}
 
-    if (randomize == 17)
-    {
+    //if (randomize == 17)
+    //{
 
-        locations.set(1625, 225, 0);
+    //    locations.set(1625, 225, 0);
 
 
-    }
+    //}
 
-    if (randomize == 18)
-    {
+    //if (randomize == 18)
+    //{
 
-        locations.set(1625, 450, 0);
+    //    locations.set(1625, 450, 0);
 
 
-    }
+    //}
 
-    if (randomize == 19)
-    {
+    //if (randomize == 19)
+    //{
 
-        locations.set(1625, 675, 0);
+    //    locations.set(1625, 675, 0);
 
 
-    }
+    //}
 
-    if (randomize == 20)
-    {
+    //if (randomize == 20)
+    //{
 
-        locations.set(1625, 900, 0);
+    //    locations.set(1625, 900, 0);
 
 
-    }
+    //}
 
  
 
 
-    return locations;
+    //return locations;
 
 
 
