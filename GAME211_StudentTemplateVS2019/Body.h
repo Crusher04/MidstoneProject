@@ -1,10 +1,12 @@
 #ifndef BODY_H
 #define BODY_H
 
+//#include "Collider.h"
 #include "MMath.h"
 #include "VMath.h"
 #include <SDL.h>
 #include <SDL_image.h>
+
 
 using namespace MATH;
 
@@ -66,6 +68,8 @@ public:
     virtual void setDrag(float drag_);
     virtual void ApplyForceY(float y);
     virtual void ApplyForceX(float x);
+
+    
 };
 
 #endif /* BODY_H */

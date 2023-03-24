@@ -1,7 +1,6 @@
 #ifndef SCENE4_H
 #define SCENE4_H
 #include "Body.h"
-
 #include "MMath.h"
 #include "Scene.h"
 
@@ -100,6 +99,7 @@ public:
 	SDL_Window* getWindow() { return window; }
 	Matrix4 getProjectionMatrix() { return projectionMatrix; }
 	Matrix4 getInverseMatrix() { return inverseProjection; }
+	
 };
 
 #endif

@@ -19,7 +19,7 @@ bool PlayerBody::OnCreate()
     }
     return true;
 
-   
+
 }
 
 void PlayerBody::Render( float scale )
@@ -44,17 +44,22 @@ void PlayerBody::Render( float scale )
     // where SDL will draw the .png image.
     // The 0.5f * w/h offset is to place the .png so that pos represents the center
     // (Note the y axis for screen coords points downward, hence subtraction!!!!)
-   /* square.x = static_cast<int>(screenCoords.x - 0.5f * w);
+    square.x = static_cast<int>(screenCoords.x - 0.5f * w);
     square.y = static_cast<int>(screenCoords.y - 0.5f * h);
     square.w = static_cast<int>(w);
-    square.h = static_cast<int>(h);*/
+    square.h = static_cast<int>(h);
 
-    square.w = static_cast<int>(w) * 5;
-    square.h = static_cast<int>(h) * 25;
+    //square.w = static_cast<int>(w) * 5;
+   // square.h = static_cast<int>(h) * 25;
 
 
 
-   /* SDL_Rect d;
+   /* 
+   ////////////
+   //THIS WAS FOR ANIMATION
+   ///////////
+   
+   SDL_Rect d;
     d.x = 4670;
     d.y = 0;
     d.w = 1995;
@@ -99,13 +104,13 @@ void PlayerBody::Render( float scale )
 
     //// Calculate Angle Variable
     int Delta_x; int Delta_y;
-    int mouse_x, mouse_y;
+  
     SDL_GetMouseState(&mouse_x, &mouse_y);
 
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
     Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
-    float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+    angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
     
     /////////////////////////////////
     //Render Saling
@@ -113,13 +118,16 @@ void PlayerBody::Render( float scale )
     square.w *= scale;
     square.h *= scale;
     
-
+    gunLocation = pos;
+    //gunLocation.x += 400;
+    //gunLocation.y += 300;
     /////////////////////////////////
     //RENDER
-   //////////////////////////////////.
+   //////////////////////////////////
     SDL_RenderCopyEx(renderer, game->getPlayer()->getTexture(), nullptr, &square, angle, nullptr, SDL_FLIP_NONE);
-
-  
+    /*SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
+    SDL_RenderDrawRect(renderer, &square);
+    SDL_RenderDrawRect(renderer, &square);*/
 }
 
 void PlayerBody::HandleEvents( const SDL_Event& event )

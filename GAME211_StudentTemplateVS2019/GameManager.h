@@ -10,6 +10,9 @@
 #include <vector>
 #include "ZombieSpawner.h"
 #include "Bullet.h"
+#include "WeaponManagement.h"
+#include "NumbersUI.h"
+
 class GameManager {
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
@@ -28,20 +31,19 @@ private:
 
 	// This might be unfamiliar
     class PlayerBody *player;
-
-	class Round	*round;
-	
-	class ZombieSpawner *zombies;
-	//class ZombieSpawner zombies2;
-	
-	class Bullet* bullet;
+	class Round	*round;	
+	class ZombieSpawner *zombies;	
 
 public:
+
+	//Contstructors with onCreate/Destroy
+
 	GameManager();
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
 
+	
 
 	// These might be unfamiliar
 	float getSceneHeight();
@@ -50,37 +52,87 @@ public:
     PlayerBody* getPlayer(){ return player; }
 	void RenderPlayer(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
-	bool w;
 	float speed;
-	bool e;
 	void Run();
 	void handleEvents();
 	void LoadScene( int i );
     bool ValidateCurrentScene();
 	bool isMoving;
 
-	//Get Round Class
-	Round* getRound() { return round; }
-
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;
-	void compileZombieSpawnLocations();
+	Vec3 getZombieSpawnLocations();
 
 	void RenderZombie(float scale = 1.0f);
 	ZombieSpawner getZombie();
 
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
+	bool isSprinting;
 
+	/////////////////////////////////////
+	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
+	////////////////////////////////////
+	
+	//Bullet Variables
+	
 
-	std::vector<Vec3> bulletSpawnLocations;
-	void compileBulletSpawnLocations();
-	Bullet getBullet();
-	bool fired;
-	void RenderBullet(float scale = 1.0f);
-	float bulletSpeed;
-	int bulletSelection;
-	std::vector<Bullet> bullets;
+	//Weapon Management
+	WeaponManagement weaponManagement;
+	Bullet bulletHolder;
+	std::vector <Bullet> bullets;
+	std::vector <Bullet> bulletsInMotion;
+	bool outOfAmmo;
+	
+	
+
+	//Round UI
+	NumbersUI RoundUI;
+
+	//HealthUI
+	NumbersUI HealthUI;
+
+	//ZombieCounterUI
+	NumbersUI ZombieCounterUI;
+
+	/////////////////////////////////////
+	//ALL FUNCTIONS GO DOWN HERE
+	////////////////////////////////////
+
+	/// <summary>
+	/// Renders the bullet
+	/// </summary>
+	/// <param name="scale"></param>
+	void RenderBullet(int i);
+
+	/// <summary>
+	/// Renders the out of ammo UI for when out of ammo
+	/// </summary>
+	void RenderOutOfAmmo();
+
+	/// <summary>
+	/// Renders the UI for displaying current round number
+	/// </summary>
+	void RenderRoundUI();
+
+	/// <summary>
+	/// Renders UI for Health
+	/// </summary>
+	void RenderHealthUI();
+
+	/// <summary>
+	/// Renders UI for Zombie Count
+	/// </summary>
+	void RenderZombieCountUI();
+	
+	/// <summary>
+	/// gets the round
+	/// </summary>
+	/// <returns></returns>
+	Round* getRound() { return round; }
+
+	void zombieArrayInit();
+
 };
 #endif
 

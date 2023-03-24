@@ -6,6 +6,7 @@
 #include "Body.h"
 #include "GameManager.h"
 #include <vector>
+#include "EntityHealth.h"
 
 
 class ZombieSpawner : public Body
@@ -15,8 +16,7 @@ protected:
 	class GameManager* game;
 	
 public:
-	
-	
+		
 	std::vector<ZombieSpawner> zombieSpawnerArr;
 
 	ZombieSpawner() : Body{}
@@ -37,6 +37,14 @@ public:
 	void zombieArrPushBack(ZombieSpawner zombie_);
 
 	void setZombieGame(GameManager* game_);
+
+	bool spawned;
+
+	float orientation;
+
+
+	class EntityHealth health;
+
 };
 
 #endif

@@ -2,7 +2,7 @@
 
 bool EnemyBody::OnCreate()
 {
-    image = IMG_Load("Steve_atk.png");
+    image = IMG_Load("Pacman.png");
     SDL_Renderer* renderer = game->getRenderer();
     texture = SDL_CreateTextureFromSurface(renderer, image);
     if (image == nullptr) {
@@ -34,26 +34,38 @@ void EnemyBody::Render(float scale)
     // where SDL will draw the .png image.
     // The 0.5f * w/h offset is to place the .png so that pos represents the center
     // (Note the y axis for screen coords points downward, hence subtraction!!!!)
-    square.x = static_cast<int>(screenCoords.x - 0.5f * w);
-    square.y = static_cast<int>(screenCoords.y - 0.5f * h);
-    square.w = static_cast<int>(w) / 2.0;
-    square.h = static_cast<int>(h) * 5;
 
-
-
-    SDL_Rect d;
-    d.x = 6510;
-    d.y = 0;
-    d.w = 7182;
-    d.h = 589;
-
+    SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+    square.x -= (square.w / 2);
+    square.y -= (square.h / 2);
 
     // Convert character orientation from radians to degrees.
     float orientationDegrees = orientation * 180.0f / M_PI;
+
+    //// Calculate Angle Variable
+    int Delta_x; int Delta_y;
+    int mouse_x, mouse_y;
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+
+    Delta_x = mouse_x - game->getPlayer()->getPos().x;
+    Delta_y = mouse_y - game->getPlayer()->getPos().y;
+
+    float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+
+    /////////////////////////////////
+    //Render Saling
+    /////////////////////////////////
+    square.w *= scale;
+    square.h *= scale;
+
+\
+
+
+
     
     // Render the Sprite
     SDL_RenderCopyEx(renderer, texture, nullptr, &square,
-        orientationDegrees, nullptr, SDL_FLIP_NONE);
+        angle, nullptr, SDL_FLIP_NONE);
 }
 
 void EnemyBody::HandleEvents(const SDL_Event& event)
