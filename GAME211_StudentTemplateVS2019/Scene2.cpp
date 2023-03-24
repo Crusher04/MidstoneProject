@@ -163,7 +163,7 @@ void Scene2::Update(const float deltaTime) {
 		holdPosX = playerColl.x;
 		holdPosY = playerColl.y;
 
-		std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+		//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
 		//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 	}
@@ -307,61 +307,36 @@ void Scene2::Update(const float deltaTime) {
 	/////////////////////////////////
 	//Bullet Management
 	/////////////////////////////////
-	
-	//Shoot bullet
-	for (int i = 0; i < game->ammoCount; i++)
+	for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 	{
 		if (game->bullets.at(i).fired)
 		{
-			//Shoot Bullet
-			game->bullets.at(i).Shoot(deltaTime);
-
-			//Bullet Collision Detection with zombies
-			bulletColl.setCollPosition(game->bullets.at(i).getPos().x, game->bullets.at(i).getPos().y);
-			for (int i = 0; i < zombieCollArr.size(); i++)
+			if (game->bullets.at(i).chamberRelease)
 			{
-				if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
-				{
-					game->bullets.at(i).fired = false;
-					//game->bullets.at(i).collided = true;		
-					game->zombieSpawnerArr2.at(i).health.takeDamage(100);
-					zombieCollArr.at(i).active = false;
-					std::cout << "ZOMBIE " << i << " IS HIT!\n";
-					game->getRound()->removeAZombie();
-					bulletColl.active = false;
-				}
+				game->bullets.at(i).setPos(Vec3(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, 0));
 			}
-			game->i[i]++;
 
+			game->bullets.at(i).Shoot(deltaTime, game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, game->weaponManagement.bulletSpeed);
 		}
-		bulletColl.active = true;
+
 	}
 
-	
-
-	//???
-	if (game->i[game->bulletSelection] > 50)
+	if (game->weaponManagement.reloading())
 	{
-		game->bullets.at(game->bulletSelection).fired = false;
-		game->bullets.at(game->bulletSelection).setVel(Vec3(0, 0, 0));
-		game->i[game->bulletSelection] = 0;
-	}
-
-
-	//Check if reloading is done
-	if (SDL_GetTicks() > game->weaponManagement.pistolTimerDelay && game->weaponManagement.isReloading)
-	{
-		std::cout << "Reload done \n";
-		game->weaponManagement.reloadStarted = game->weaponManagement.reloading();
-		game->bulletSelection = 0;
-
+		game->bullets.clear();
+		
 		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 		{
-			game->bullets.at(i).collided = false;
-			game->bullets.at(i).fired = false;
+			game->bullets.push_back(game->bulletHolder);
 		}
+		game->weaponManagement.ammoRemaining = game->weaponManagement.pistolMagSize - 1;	
+		
 	}
-	
+	else
+	{
+		game->weaponManagement.shotDelayFlag = false;
+	}
+
 
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)
@@ -397,7 +372,14 @@ void Scene2::Render() {
 	// render the zombies
 	game->RenderZombie(1.0f);
 	
-	game->RenderBullet(0.3f);
+	for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
+	{
+		if (game->bullets.at(i).fired)
+		{
+			game->RenderBullet(i);
+
+		}
+	}
 	
 	game->RenderOutOfAmmo();
 

@@ -23,8 +23,9 @@ public:
 	//Variables
 	bool pistolEnabled, rifleEnabled, reloadStarted, isReloading, shotDelayFlag;
 	Uint32 pistolMagSize, rifleMagSize;
-	int pistolTimer, pistolTimerDelay, rifleTimer, rifleTimerDelay;
+	int pistolTimer, pistolTimerDelay, rifleTimer, rifleTimerDelay, ammoRemaining;
 	int pistolTimeBetweenShots, rifleTimeBetweenShots, shotDelay;
+	float bulletSpeed;
 
 	//Constructor
 	WeaponManagement();

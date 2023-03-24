@@ -14,6 +14,8 @@ bool WeaponManagement::onCreate(SDL_Renderer* renderer_)
 	pistolTimeBetweenShots = 1000;
 	rifleTimeBetweenShots = 200;
 	shotDelay = 0;
+	ammoRemaining = 0;
+	bulletSpeed = 15;
 
 	//Load Out Of Ammo Image
 	image = IMG_Load("Assets/UI/Ammo Management/Out_Of_Ammo.png");
@@ -28,18 +30,22 @@ bool WeaponManagement::onCreate(SDL_Renderer* renderer_)
 
 bool WeaponManagement::reloading()
 {
-	if (!isReloading)
+	if (!isReloading && reloadStarted)
 	{
 		isReloading = true;
 		pistolTimer = SDL_GetTicks();
-		pistolTimerDelay = pistolTimer + 1000;
+		pistolTimerDelay = pistolTimer + 2000;
 	}
 	else
 	{
 		if (SDL_GetTicks() > pistolTimerDelay)
+		{
 			isReloading = false;
+			reloadStarted = false;
+			if (shotDelayFlag)
+				std::cout << "Reload Complete\n";
+		}	
 	}
-	
 
 	return isReloading;
 }

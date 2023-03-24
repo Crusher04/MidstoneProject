@@ -110,9 +110,6 @@ public:
 	void renderMap();		//This renders our map
 
 	//Variables - ADD HERE WITH DESCRIPTION!! 
-
-	float a;
-	bool bulletIsMoving;
 	
 	Vec3 updatedGunPos;
 	int zombieSpawnTime;

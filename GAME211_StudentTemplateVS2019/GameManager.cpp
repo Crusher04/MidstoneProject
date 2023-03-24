@@ -19,7 +19,7 @@ GameManager::GameManager() {
 	currentScene = nullptr;
     player = nullptr;
     round = nullptr;
-    bullet = nullptr;
+    
 }
 
 bool GameManager::OnCreate() {
@@ -30,7 +30,6 @@ bool GameManager::OnCreate() {
     // Use 1000x600 for less than full screen
     const int SCREEN_WIDTH = 1920;
     const int SCREEN_HEIGHT = 1080;
-    fired = false;
     windowPtr = new Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (windowPtr == nullptr) {
 		OnDestroy();
@@ -52,18 +51,8 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     //Variables init
     /////////////////////////////////
-    ammoCount = 15;
-    bulletSpeed = 25;
+    
     speed = 1000;
-    w = false;
-    i[0] = 0;
-    i[1] = 0;
-    i[2] = 0;
-    i[3] = 0;
-    i[4] = 0;
-    i[5] = 0;
-    i[6] = 0;
-    i[7] = 0;
     isSprinting = false;
     zombieSpawned = false;
 
@@ -127,27 +116,30 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     zombieArrayInit();
 
-    /////////////////////////////////
-    //Bullet Initialization
-    /////////////////////////////////
-       
-    // Bullet Initialization
-    bullet2.setBulletGame(this);
-    bullet2.OnCreate();
-    bullet2.setPos(getPlayer()->getPos());
- 
-    for (int i = 0; i < ammoCount; i++)
-    {
-
-        bullet2.bulletArrPushBack(bullet2);
-        bullets.push_back(bullet2);
-    }
+    
+    
 
     /////////////////////////////////
     //Weapon Management Initialization
     /////////////////////////////////
     weaponManagement.onCreate(getRenderer());
+    if (weaponManagement.pistolEnabled)
+    {
+        weaponManagement.ammoRemaining = weaponManagement.pistolMagSize - 1;
+    }
     outOfAmmo = false;
+    
+    /////////////////////////////////
+    //Bullet Initialization
+    /////////////////////////////////
+    bulletHolder.OnCreate(getRenderer());
+    if (weaponManagement.pistolEnabled)
+    {
+        for (int i = 0; i < weaponManagement.pistolMagSize; i++)
+        {
+            bullets.push_back(bulletHolder);
+        }
+    }
 
     /////////////////////////////////
     //UI Initialization
@@ -226,7 +218,8 @@ void GameManager::handleEvents()
                 if (weaponManagement.pistolEnabled && !weaponManagement.reloadStarted)
                 {
                     std::cout << "Reloading\n";
-                    weaponManagement.reloadStarted = weaponManagement.reloading();
+                    weaponManagement.shotDelayFlag = true;
+                    weaponManagement.reloadStarted = true;
                     outOfAmmo = false;
                 } 
 
@@ -357,40 +350,32 @@ void GameManager::handleEvents()
             break;
 
         case SDL_MOUSEBUTTONDOWN:
-           
-            /////////////////////////////////
-           // Shooting
-           /////////////////////////////////
 
-            if (event.button.button == SDL_BUTTON_LEFT)
-            {
-                if(weaponManagement.pistolEnabled)
-                {
-                    if (bulletSelection < weaponManagement.pistolMagSize && !weaponManagement.isReloading &&!weaponManagement.delayShots())
-                    {
-                        if (!bullets.at(bulletSelection).fired)
-                        {
-                            weaponManagement.shotDelay = SDL_GetTicks();
-                            bullets.at(bulletSelection).fired = true;
-                            bullets.at(bulletSelection).setPos(getPlayer()->getPos());
-                            std::cout << "BulletSelection = " << bulletSelection << "\n";
-                            bulletSelection++;
-                        }
+			/////////////////////////////////
+		   // Shooting
+		   /////////////////////////////////
+
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+				if (weaponManagement.pistolEnabled)
+				{
+                    if (weaponManagement.ammoRemaining < 0)
+                        weaponManagement.ammoRemaining = 0;
+
+					if (!bullets.at(weaponManagement.ammoRemaining).fired)
+					{
+						bullets.at(weaponManagement.ammoRemaining).fired = true;
+                        bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
+                        weaponManagement.ammoRemaining--;
                     }
-                    else
-                    {
-                        //Tell user they're out of ammo
-                        std::cout << "OUT OF AMMO\n";
 
-                        outOfAmmo = true;
 
-                    }
-                }
+				}
 
-            }//End of SDL_BUTTON_LEFT
+			}//End of SDL_BUTTON_LEFT
 
-            break;
-        }
+			break;
+		}
  
         currentScene->HandleEvents(event);
     }
@@ -519,17 +504,10 @@ ZombieSpawner GameManager::getZombie()
     return zombies2;
 }
 
-void GameManager::RenderBullet(float scale)
+void GameManager::RenderBullet(int i)
 {
     
-    for (int i = 0; i < ammoCount; i++)
-    {
-        
-       if (bullets.at(i).fired)
-            bullets.at(i).Render(scale / 6);
-            
-            
-    }
+    bullets.at(i).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);
 
 }
 
