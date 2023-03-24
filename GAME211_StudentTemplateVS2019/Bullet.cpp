@@ -9,8 +9,8 @@ Bullet::Bullet()
     mouse_Y = 0;
     ammo = 0;
     fired = false;
-	pos.x = 0;
-	pos.y = 0;
+	pos.x = -20;
+	pos.y = -20;
 	chamberRelease = false;
 	active = true;
 	pushedBack = false;

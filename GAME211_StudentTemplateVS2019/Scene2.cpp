@@ -313,15 +313,20 @@ void Scene2::Update(const float deltaTime) {
 	//Managing Reloading
 	if (game->weaponManagement.reloading())
 	{
+		//Check for bullets already fired, move them to in motion
 		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 		{
 			if (game->bullets.at(i).fired)
 			{
 				game->bulletsInMotion.push_back(game->bullets.at(i));
+				std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
 			}
 		}
+
+		//Clear original magazine
 		game->bullets.clear();
 
+		//re-initialize magazine
 		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 		{
 			game->bullets.push_back(game->bulletHolder);
@@ -351,6 +356,8 @@ void Scene2::Update(const float deltaTime) {
 
 	}
 
+
+	//Update Bullets that are already in motion
 	if (game->bulletsInMotion.size() > 0)
 	{
 		for (int j = 0; j < game->bulletsInMotion.size(); j++)
@@ -361,6 +368,7 @@ void Scene2::Update(const float deltaTime) {
 	//Managing Collision of bullets with zombies
 	for (int i = 0; i < zombieCollArr.size(); i++)
 	{
+		//Check for collisions with bullets 
 		for (int k = 0; k < game->weaponManagement.pistolMagSize; k++)
 		{
 
@@ -378,6 +386,8 @@ void Scene2::Update(const float deltaTime) {
 			}	
 		}
 
+
+		//Check collisions for bullets in motion (Bullets in motion are bullets still in motion after user reloads)
 		if (game->bulletsInMotion.size() > 0)
 		{
 			for (int j = 0; j < game->bulletsInMotion.size(); j++)
@@ -387,6 +397,8 @@ void Scene2::Update(const float deltaTime) {
 					std::cout << "Zombie " << i << " hit!\n";
 					game->zombieSpawnerArr2.at(i).health.takeDamage(25);
 					game->bulletsInMotion.at(j).collider.active = false;
+					game->bulletsInMotion.erase(game->bulletsInMotion.begin() + j);
+					std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
 
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 					{
@@ -398,6 +410,21 @@ void Scene2::Update(const float deltaTime) {
 		}
 	}
 
+	/////////////////////////////////
+	//Bullets In Motion Resource Management
+	/////////////////////////////////
+	if (game->bulletsInMotion.size() > 0)
+	{
+		for (int i = 0; i < game->bulletsInMotion.size(); i++)
+		{
+			if (game->bulletsInMotion.at(i).getPos().x > 2000 || game->bulletsInMotion.at(i).getPos().y > 1100 || game->bulletsInMotion.at(i).getPos().x < -10 || game->bulletsInMotion.at(i).getPos().y < -10)
+			{
+				game->bulletsInMotion.erase(game->bulletsInMotion.begin() + i);
+				std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
+
+			}
+		}
+	}
 
 	/////////////////////////////////
 	//Player Health/Damage Check
