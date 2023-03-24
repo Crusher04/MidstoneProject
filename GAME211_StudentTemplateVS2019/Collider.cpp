@@ -7,6 +7,10 @@
 
 #include "Collider.h"
 
+Collider::Collider()
+{
+}
+
 Collider::Collider(float x_, float y_, float w_, float h_)
 {
 	x = x_;

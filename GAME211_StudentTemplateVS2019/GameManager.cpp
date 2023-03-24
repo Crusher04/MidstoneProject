@@ -509,8 +509,18 @@ ZombieSpawner GameManager::getZombie()
 
 void GameManager::RenderBullet(int i)
 {
-    if(bullets.at(i).active)
+    if (bullets.at(i).active)
+    {
         bullets.at(i).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);
+
+        if (bulletsInMotion.size() > 0)
+        {
+            for (int j = 0; j < bulletsInMotion.size(); j++)
+            {
+                bulletsInMotion.at(j).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);
+            }
+        }
+    }   
 
 }
 

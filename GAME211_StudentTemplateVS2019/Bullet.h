@@ -10,6 +10,7 @@
 #include <SDL_image.h>
 #include <iostream>
 #include "Body.h"
+#include "Collider.h"
 
 class Bullet : public Body
 {
@@ -27,6 +28,7 @@ public:
 	bool fired;
 	bool chamberRelease;
 	bool active;
+	bool pushedBack;
 
 	//Functions
 	Bullet();

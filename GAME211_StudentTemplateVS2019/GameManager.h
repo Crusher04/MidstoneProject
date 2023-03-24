@@ -81,6 +81,7 @@ public:
 	WeaponManagement weaponManagement;
 	Bullet bulletHolder;
 	std::vector <Bullet> bullets;
+	std::vector <Bullet> bulletsInMotion;
 	bool outOfAmmo;
 	
 	

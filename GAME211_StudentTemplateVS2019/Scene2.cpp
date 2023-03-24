@@ -15,10 +15,12 @@
 
 
 //Collider locations
-Collider playerColl(1000, 8, 1, 3);			//Player collider initilization 
-Collider enemyColl(300, 800, 10, 10);		//zombie collider holder
-Collider bulletColl(0, 0, 1, 1);			//Bullet collider holder
-std::vector<Collider> zombieCollArr;		//zombie collider vector array
+Collider playerColl(1000, 8, 1, 3);				//Player collider initilization 
+Collider enemyColl(300, 800, 10, 10);			//zombie collider holder
+Collider bulletColl(0, 0, 1, 1);				//Bullet collider holder
+std::vector<Collider> bulletCollArr;			//Bullet Collider vector array
+std::vector<Collider> bulletInMotionCollArr;	//Bullet Collider vector array for bullets in motion
+std::vector<Collider> zombieCollArr;			//zombie collider vector array
 
 /***** SCENE VARIABLES *****/
 
@@ -308,6 +310,32 @@ void Scene2::Update(const float deltaTime) {
 	//Bullet Management
 	/////////////////////////////////
 
+	//Managing Reloading
+	if (game->weaponManagement.reloading())
+	{
+		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
+		{
+			if (game->bullets.at(i).fired)
+			{
+				game->bulletsInMotion.push_back(game->bullets.at(i));
+			}
+		}
+		game->bullets.clear();
+
+		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
+		{
+			game->bullets.push_back(game->bulletHolder);
+		}
+		game->weaponManagement.ammoRemaining = game->weaponManagement.pistolMagSize - 1;
+
+	}
+	else
+	{
+		game->weaponManagement.shotDelayFlag = false;
+	}
+
+
+
 	//Managing bullet position and movement
 	for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 	{
@@ -316,29 +344,28 @@ void Scene2::Update(const float deltaTime) {
 			if (game->bullets.at(i).chamberRelease)
 			{
 				game->bullets.at(i).setPos(Vec3(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, 0));
+				
+				if (!game->bullets.at(i).pushedBack)
+				{
+					bulletColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
+					bulletCollArr.push_back(bulletColl);
+					std::cout << "BullerCollArr PUSHBACK! Size at: " << bulletCollArr.size() << std::endl;
+					game->bullets.at(i).pushedBack = true;
+				}
 			}
 
-			game->bullets.at(i).Shoot(deltaTime, game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, game->weaponManagement.bulletSpeed);
+			game->bullets.at(i).Shoot(deltaTime, game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, game->weaponManagement.bulletSpeed);	
 			
 		}
 
 	}
 
-	//Managing Reloading
-	if (game->weaponManagement.reloading())
+
+
+	if (game->bulletsInMotion.size() > 0)
 	{
-		game->bullets.clear();
-		
-		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
-		{
-			game->bullets.push_back(game->bulletHolder);
-		}
-		game->weaponManagement.ammoRemaining = game->weaponManagement.pistolMagSize - 1;	
-		
-	}
-	else
-	{
-		game->weaponManagement.shotDelayFlag = false;
+		for (int j = 0; j < game->bulletsInMotion.size(); j++)
+			game->bulletsInMotion.at(j).Update(deltaTime);
 	}
 
 
@@ -349,36 +376,51 @@ void Scene2::Update(const float deltaTime) {
 		{
 			if (game->bullets.at(j).fired)
 			{
-				bulletColl.setCollPosition(game->bullets.at(j).getPos().x, game->bullets.at(j).getPos().y);
-				bulletColl.active = game->bullets.at(j).active;
+				//bulletColl.setCollPosition(game->bullets.at(j).getPos().x, game->bullets.at(j).getPos().y);
+				bulletColl.active = game->bullets.at(j).active;	
 				break;
 			}
 		}
 
-		if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
+		for (int k = 0; k < bulletCollArr.size(); k++)
 		{
-			std::cout << "ZOMBIE HIT\n";
-			game->zombieSpawnerArr2.at(i).health.takeDamage(25);
-		
-			for (int j = 0; j < game->weaponManagement.pistolMagSize; j++)
+			if (bulletColl.checkCollBox(bulletCollArr.at(k), zombieCollArr.at(i)))
 			{
-				if (game->bullets.at(j).fired)
-				{
-					game->bullets.at(j).active = false;
-					break;
-				}
-			}
+				std::cout << "Zombie " << i << " hit!\n";
+				game->zombieSpawnerArr2.at(i).health.takeDamage(25);
 
-			if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
-			{
-				zombieCollArr.at(i).active = false;
-				game->getRound()->removeAZombie();
+				for (int j = 0; j < game->weaponManagement.pistolMagSize; j++)
+				{
+					if (game->bullets.at(j).fired)
+					{
+						game->bullets.at(j).active = false;
+						bulletCollArr.erase(bulletCollArr.begin() + k);
+						bulletCollArr.shrink_to_fit();
+						break;
+					}
+				}
+
+				if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+				{
+					zombieCollArr.at(i).active = false;
+					game->getRound()->removeAZombie();
+				}
+
+
 			}
-				
-			
 		}
+		
 	}
 
+	for (int i = 0; i < bulletCollArr.size(); i++)
+	{
+		
+	}
+
+	if (game->bulletsInMotion.size() > 0)
+	{
+		
+	}
 
 	/////////////////////////////////
 	//Player Health/Damage Check
