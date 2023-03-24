@@ -52,7 +52,7 @@ bool WeaponManagement::reloading()
 
 bool WeaponManagement::delayShots()
 {
-	
+	//Check to see if delay between shots is over
 	if (shotDelay > (SDL_GetTicks() + pistolTimeBetweenShots))
 		shotDelayFlag = true;
 	else
@@ -63,7 +63,6 @@ bool WeaponManagement::delayShots()
 
 void WeaponManagement::renderOutOfAmmo(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_)
 {
-
 	//Assign renderer
 	 renderer = renderer_;
 
@@ -79,8 +78,6 @@ void WeaponManagement::renderOutOfAmmo(SDL_Renderer* renderer_, float scale, flo
 	 square.y = static_cast<int>(playerPosY_);
 	 square.w = static_cast<int>(w);
 	 square.h = static_cast<int>(h);
-
-	 //SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 	
 	 /////////////////////////////////
 	 //Render Saling
@@ -90,6 +87,7 @@ void WeaponManagement::renderOutOfAmmo(SDL_Renderer* renderer_, float scale, flo
 	 
 	 square.x -= 50;
 	 square.y -= 80;
+
 	 /////////////////////////////////
 	 //RENDER
 	 //////////////////////////////////.

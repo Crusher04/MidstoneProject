@@ -44,7 +44,7 @@ public:
 	bool reloading();
 
 	/// <summary>
-	/// Checks for that delay for reloading is done
+	/// Checks for that delay between shots
 	/// </summary>
 	/// <returns></returns>
 	bool delayShots();
