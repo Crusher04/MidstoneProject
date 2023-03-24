@@ -12,7 +12,7 @@
 #include "Bullet.h"
 #include "WeaponManagement.h"
 #include "NumbersUI.h"
-
+#include "ItemManagement.h"
 class GameManager {
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
@@ -69,6 +69,8 @@ public:
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
 	bool isSprinting;
+
+	bool itemDrop;
 
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
@@ -131,6 +133,18 @@ public:
 	Round* getRound() { return round; }
 
 	void zombieArrayInit();
+
+
+
+	ItemManagement itemManagement;
+
+
+	void RenderItem();
+
+
+
+
+
 
 };
 #endif

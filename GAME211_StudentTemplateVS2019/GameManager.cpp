@@ -54,6 +54,7 @@ bool GameManager::OnCreate() {
     
     speed = 1000;
     isSprinting = false;
+    itemDrop = false;
 
 
     /////////////////////////////////
@@ -148,7 +149,7 @@ bool GameManager::OnCreate() {
     HealthUI.OnCreate(getRenderer(), false);
     ZombieCounterUI.OnCreate(getRenderer(), true);
 
-
+    itemManagement.onCreate(getRenderer());
 
 	return true;
 }
@@ -223,6 +224,19 @@ void GameManager::handleEvents()
                 } 
 
             }
+
+            if (event.key.keysym.sym == SDLK_e)
+            {
+
+                itemDrop = false;
+                getPlayer()->health.healPlayer(10);
+
+
+            }
+
+
+
+
 
             /////////////////////////////////
             // Sprinting
@@ -362,6 +376,7 @@ void GameManager::handleEvents()
                     {
                         weaponManagement.ammoRemaining = 0;
                         outOfAmmo = true;
+
                     }
 
 					if (!bullets.at(weaponManagement.ammoRemaining).fired)
@@ -740,6 +755,14 @@ void GameManager::zombieArrayInit()
     {
         zombies2.setPos(Vec3(11000, 11000, 0));
         zombieSpawnerArr2.push_back(zombies2);
+    }
+}
+
+void GameManager::RenderItem()
+{
+    if (itemDrop == true)
+    {
+        itemManagement.Render(getRenderer(), 1.0f, player->getPos().x, player->getPos().y);
     }
 }
 

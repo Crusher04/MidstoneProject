@@ -99,6 +99,8 @@ bool Scene2::OnCreate() {
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 
 
+	game->itemDrop = true;
+
 	enemyColl.passthrough = false;
 	zombieSpawnTime = 0;
 	zombieTimeBetweenSpawn = 1500;
@@ -200,6 +202,7 @@ void Scene2::Update(const float deltaTime) {
 		
 	}
 
+	std::cout << game->getPlayer()->health.getHealth() << std::endl;
 
 	/////////////////////////////////
 	//Zombie Spawning / Round Management
@@ -414,6 +417,9 @@ void Scene2::Render() {
 	renderMap();
 
 
+	
+
+
 
 	// render the player
 	game->RenderPlayer(1.5f);
@@ -427,6 +433,9 @@ void Scene2::Render() {
 
 	}
 	
+	game->RenderItem();
+
+
 	game->RenderOutOfAmmo();
 
 	game->RenderRoundUI();

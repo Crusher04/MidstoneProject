@@ -73,6 +73,9 @@
     <ClCompile Include="NumbersUI.cpp">
       <Filter>Class</Filter>
     </ClCompile>
+    <ClCompile Include="ItemManagement.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h">
@@ -154,6 +157,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="NumbersUI.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemManagement.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
