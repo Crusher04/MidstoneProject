@@ -83,7 +83,7 @@ void Bullet::Update(float deltaTime)
     // Note that would update velocity too, and rotation motion
 
     Body::Update(deltaTime);
-
+	collider.setCollPosition(pos.x, pos.y);
 }
 
 void Bullet::Shoot(float deltaTime, float playerX, float playerY, float bulletSpeed)

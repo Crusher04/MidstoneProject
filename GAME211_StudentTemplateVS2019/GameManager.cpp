@@ -509,7 +509,7 @@ ZombieSpawner GameManager::getZombie()
 
 void GameManager::RenderBullet(int i)
 {
-    if (bullets.at(i).active)
+    if (bullets.at(i).active && bullets.at(i).collider.active)
     {
         bullets.at(i).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);
 

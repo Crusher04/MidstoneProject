@@ -9,6 +9,11 @@
 
 Collider::Collider()
 {
+	x = -10;
+	y = -10;
+	w = 1;
+	h = 1;
+	active = true;
 }
 
 Collider::Collider(float x_, float y_, float w_, float h_)

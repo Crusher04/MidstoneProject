@@ -29,6 +29,7 @@ public:
 	bool chamberRelease;
 	bool active;
 	bool pushedBack;
+	Collider collider;
 
 	//Functions
 	Bullet();
