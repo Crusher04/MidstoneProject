@@ -1,9 +1,7 @@
 #include "WeaponManagement.h"
 
 
-WeaponManagement::WeaponManagement() {}
-
-bool WeaponManagement::onCreate(SDL_Renderer* renderer_)
+WeaponManagement::WeaponManagement() 
 {
 	//Run These First to init variables
 	pistolEnabled = true;
@@ -16,6 +14,10 @@ bool WeaponManagement::onCreate(SDL_Renderer* renderer_)
 	shotDelay = 0;
 	ammoRemaining = 0;
 	bulletSpeed = 25;
+}
+
+bool WeaponManagement::onCreate(SDL_Renderer* renderer_)
+{
 
 	//Load Out Of Ammo Image
 	image = IMG_Load("Assets/UI/Ammo Management/Out_Of_Ammo.png");
