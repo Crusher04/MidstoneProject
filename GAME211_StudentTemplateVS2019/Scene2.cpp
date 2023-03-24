@@ -351,13 +351,11 @@ void Scene2::Update(const float deltaTime) {
 
 	}
 
-
-
-	/*if (game->bulletsInMotion.size() > 0)
+	if (game->bulletsInMotion.size() > 0)
 	{
 		for (int j = 0; j < game->bulletsInMotion.size(); j++)
 			game->bulletsInMotion.at(j).Update(deltaTime);
-	}*/
+	}
 
 
 	//Managing Collision of bullets with zombies
@@ -365,6 +363,7 @@ void Scene2::Update(const float deltaTime) {
 	{
 		for (int k = 0; k < game->weaponManagement.pistolMagSize; k++)
 		{
+
 			if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, zombieCollArr.at(i)))
 			{
 				std::cout << "Zombie " << i << " hit!\n";
@@ -376,10 +375,26 @@ void Scene2::Update(const float deltaTime) {
 					zombieCollArr.at(i).active = false;
 					game->getRound()->removeAZombie();
 				}
+			}	
+		}
 
+		if (game->bulletsInMotion.size() > 0)
+		{
+			for (int j = 0; j < game->bulletsInMotion.size(); j++)
+			{
+				if (game->bulletsInMotion.at(j).collider.checkCollBox(game->bulletsInMotion.at(j).collider, zombieCollArr.at(i)))
+				{
+					std::cout << "Zombie " << i << " hit!\n";
+					game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+					game->bulletsInMotion.at(j).collider.active = false;
 
+					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+					{
+						zombieCollArr.at(i).active = false;
+						game->getRound()->removeAZombie();
+					}
+				}
 			}
-
 		}
 	}
 

@@ -513,15 +513,17 @@ void GameManager::RenderBullet(int i)
     {
         bullets.at(i).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);
 
-        if (bulletsInMotion.size() > 0)
-        {
-            for (int j = 0; j < bulletsInMotion.size(); j++)
-            {
-                bulletsInMotion.at(j).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);
-            }
-        }
     }   
 
+	if (bulletsInMotion.size() > 0)
+	{
+		for (int j = 0; j < bulletsInMotion.size(); j++)
+		{
+			if (bulletsInMotion.at(j).active && bulletsInMotion.at(j).collider.active)
+				bulletsInMotion.at(j).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);                
+		}
+
+	}
 }
 
 void GameManager::RenderOutOfAmmo()
