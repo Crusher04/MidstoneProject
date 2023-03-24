@@ -405,6 +405,8 @@ void Scene2::Render() {
 
 	game->RenderHealthUI();
 
+	game->RenderZombieCountUI();
+
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }

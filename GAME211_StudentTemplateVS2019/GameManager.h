@@ -118,6 +118,9 @@ public:
 	//HealthUI
 	NumbersUI HealthUI;
 
+	//ZombieCounterUI
+	NumbersUI ZombieCounterUI;
+
 	/////////////////////////////////////
 	//ALL FUNCTIONS GO DOWN HERE
 	////////////////////////////////////
@@ -138,7 +141,15 @@ public:
 	/// </summary>
 	void RenderRoundUI();
 
+	/// <summary>
+	/// Renders UI for Health
+	/// </summary>
 	void RenderHealthUI();
+
+	/// <summary>
+	/// Renders UI for Zombie Count
+	/// </summary>
+	void RenderZombieCountUI();
 
 	/// <summary>
 	/// returns bullet class
