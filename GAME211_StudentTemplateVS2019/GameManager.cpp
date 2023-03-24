@@ -153,12 +153,12 @@ bool GameManager::OnCreate() {
     //RoundUI Initialization
     /////////////////////////////////
         
-    RoundUI.OnCreate(getRenderer());
+    RoundUI.OnCreate(getRenderer(), true);
 
     /////////////////////////////////
     //HealthUI Initialization
     /////////////////////////////////
-    HealthUI.OnCreate(getRenderer());
+    HealthUI.OnCreate(getRenderer(), false);
 
 	return true;
 }

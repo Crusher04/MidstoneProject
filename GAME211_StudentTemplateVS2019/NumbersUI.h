@@ -44,12 +44,12 @@ public:
 	float screenX, screenY;
 
 	NumbersUI();
-
 	/// <summary>
-	/// Initializes our values and graphics rendering
+	/// Initializes our values and graphics rendering, choosing between health and round/zombie UI colour schemes
 	/// </summary>
-	/// <returns></returns>
-	void OnCreate(SDL_Renderer* renderer_);
+	/// <param name="renderer_"></param>
+	/// <param name="RoundorZombieUI"></param>
+	void OnCreate(SDL_Renderer* renderer_, bool RoundorZombieUI);
 
 	/// <summary>
 	/// Logic for rendering numbers to the screen 
