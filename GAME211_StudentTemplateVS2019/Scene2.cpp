@@ -350,18 +350,39 @@ void Scene2::Update(const float deltaTime) {
 			if (game->bullets.at(j).fired)
 			{
 				bulletColl.setCollPosition(game->bullets.at(j).getPos().x, game->bullets.at(j).getPos().y);
+				bulletColl.active = game->bullets.at(j).active;
 				break;
 			}
 		}
+
 		if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
 		{
-			game->zombieSpawnerArr2.at(i).health.takeDamage(100);
-			zombieCollArr.at(i).active = false;
-			bulletColl.active = false;
-			game->getRound()->removeAZombie();
+			std::cout << "ZOMBIE HIT\n";
+			game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+		
+			for (int j = 0; j < game->weaponManagement.pistolMagSize; j++)
+			{
+				if (game->bullets.at(j).fired)
+				{
+					game->bullets.at(j).active = false;
+					break;
+				}
+			}
+
+			if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+			{
+				zombieCollArr.at(i).active = false;
+				game->getRound()->removeAZombie();
+			}
+				
+			
 		}
 	}
-	bulletColl.active = true;
+
+
+	/////////////////////////////////
+	//Player Health/Damage Check
+	/////////////////////////////////
 
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)

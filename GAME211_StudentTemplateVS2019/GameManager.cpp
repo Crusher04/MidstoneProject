@@ -54,7 +54,6 @@ bool GameManager::OnCreate() {
     
     speed = 1000;
     isSprinting = false;
-    zombieSpawned = false;
 
 
     /////////////////////////////////
@@ -510,7 +509,7 @@ ZombieSpawner GameManager::getZombie()
 
 void GameManager::RenderBullet(int i)
 {
-    if(bullets.at(i).fired)
+    if(bullets.at(i).active)
         bullets.at(i).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);
 
 }

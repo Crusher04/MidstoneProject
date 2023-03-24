@@ -15,7 +15,7 @@ bool WeaponManagement::onCreate(SDL_Renderer* renderer_)
 	rifleTimeBetweenShots = 200;
 	shotDelay = 0;
 	ammoRemaining = 0;
-	bulletSpeed = 15;
+	bulletSpeed = 25;
 
 	//Load Out Of Ammo Image
 	image = IMG_Load("Assets/UI/Ammo Management/Out_Of_Ammo.png");

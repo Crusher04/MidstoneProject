@@ -70,10 +70,6 @@ public:
 
 	bool isSprinting;
 
-	bool zombieSpawned;
-	bool zombieRender[5];
-
-	
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
