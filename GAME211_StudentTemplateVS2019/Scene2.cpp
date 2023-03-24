@@ -141,7 +141,7 @@ void Scene2::Update(const float deltaTime) {
 
 
 	/////////////////////////////////
-	//Zombie Collision Detection
+	//Zombie Collision Detection with PLAYER
 	/////////////////////////////////
 
 	//Initializes our zombie collider
@@ -307,6 +307,8 @@ void Scene2::Update(const float deltaTime) {
 	/////////////////////////////////
 	//Bullet Management
 	/////////////////////////////////
+
+	//Managing bullet position and movement
 	for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 	{
 		if (game->bullets.at(i).fired)
@@ -317,10 +319,12 @@ void Scene2::Update(const float deltaTime) {
 			}
 
 			game->bullets.at(i).Shoot(deltaTime, game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, game->weaponManagement.bulletSpeed);
+			
 		}
 
 	}
 
+	//Managing Reloading
 	if (game->weaponManagement.reloading())
 	{
 		game->bullets.clear();
@@ -337,6 +341,27 @@ void Scene2::Update(const float deltaTime) {
 		game->weaponManagement.shotDelayFlag = false;
 	}
 
+
+	//Managing Collision of bullets with zombies
+	for (int i = 0; i < zombieCollArr.size(); i++)
+	{
+		for (int j = 0; j < game->weaponManagement.pistolMagSize; j++)
+		{
+			if (game->bullets.at(j).fired)
+			{
+				bulletColl.setCollPosition(game->bullets.at(j).getPos().x, game->bullets.at(j).getPos().y);
+				break;
+			}
+		}
+		if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
+		{
+			game->zombieSpawnerArr2.at(i).health.takeDamage(100);
+			zombieCollArr.at(i).active = false;
+			bulletColl.active = false;
+			game->getRound()->removeAZombie();
+		}
+	}
+	bulletColl.active = true;
 
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage)
@@ -373,12 +398,9 @@ void Scene2::Render() {
 	game->RenderZombie(1.0f);
 	
 	for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
-	{
-		if (game->bullets.at(i).fired)
-		{
+	{		
 			game->RenderBullet(i);
 
-		}
 	}
 	
 	game->RenderOutOfAmmo();

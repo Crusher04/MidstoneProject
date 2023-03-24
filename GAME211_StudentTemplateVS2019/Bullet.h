@@ -26,6 +26,7 @@ public:
 	//variable
 	bool fired;
 	bool chamberRelease;
+	bool active;
 
 	//Functions
 	Bullet();

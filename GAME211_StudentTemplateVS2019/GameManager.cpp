@@ -360,7 +360,10 @@ void GameManager::handleEvents()
 				if (weaponManagement.pistolEnabled)
 				{
                     if (weaponManagement.ammoRemaining < 0)
+                    {
                         weaponManagement.ammoRemaining = 0;
+                        outOfAmmo = true;
+                    }
 
 					if (!bullets.at(weaponManagement.ammoRemaining).fired)
 					{
@@ -368,7 +371,7 @@ void GameManager::handleEvents()
                         bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
                         weaponManagement.ammoRemaining--;
                     }
-
+                    
 
 				}
 
@@ -420,7 +423,8 @@ void GameManager::RenderPlayer(float scale)
 Vec3 GameManager::getZombieSpawnLocations()
 {
     //Chooses a location at random...IF you add a location below, increase the first number.
-    int location = rand() % 17 + 1;
+    std::srand((unsigned int)time(NULL));
+    int location = (rand() % 17) + 1;
 
     //Set spawn locations
     switch (location) {
@@ -506,8 +510,8 @@ ZombieSpawner GameManager::getZombie()
 
 void GameManager::RenderBullet(int i)
 {
-    
-    bullets.at(i).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);
+    if(bullets.at(i).fired)
+        bullets.at(i).Render(0.05f, getPlayer()->getPos().x, getPlayer()->getPos().y);
 
 }
 

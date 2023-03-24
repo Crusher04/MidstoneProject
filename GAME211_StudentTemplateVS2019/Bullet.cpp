@@ -12,6 +12,7 @@ Bullet::Bullet()
 	pos.x = 0;
 	pos.y = 0;
 	chamberRelease = false;
+	active = true;
 }
 
 void Bullet::OnCreate(SDL_Renderer* renderer_)
