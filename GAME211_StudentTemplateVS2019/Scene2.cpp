@@ -403,6 +403,8 @@ void Scene2::Render() {
 
 	game->RenderRoundUI();
 
+	game->RenderHealthUI();
+
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }

@@ -104,10 +104,45 @@ void NumbersUI::OnCreate(SDL_Renderer* renderer_)
 	
 }
 
-void NumbersUI::Render(SDL_Renderer* renderer_, float scale, int currentRound)
+void NumbersUI::Render(SDL_Renderer* renderer_, float scale, int number, float screenX_, float screenY_)
 {
 	//Assign renderer
 	renderer = renderer_;
+	
+	if (number < 10)
+	{
+		selectNumber(renderer, scale, number, screenX_, screenY_);
+
+	}
+	else if (number < 100)
+	{
+		//Break dowwn the number
+		ones = number / 10;
+		tens = number % 10;
+
+		selectNumber(renderer, scale, ones, screenX_, screenY_);
+		//Screen Coords - move number to right
+		screenX += 50;
+		selectNumber(renderer, scale, tens, screenX, screenY_);
+	}
+	else if (number < 1000)
+	{
+		//Break dowwn the number
+		ones = number / 100;
+		tens = (number % 100) / 10;
+		hundreds = number % 10;
+
+		selectNumber(renderer, scale, ones, screenX_, screenY_);
+		screenX += 40;
+		selectNumber(renderer, scale, tens, screenX, screenY_);
+		screenX += 50;
+		selectNumber(renderer, scale, hundreds, screenX, screenY_);
+	}
+	
+}
+
+void NumbersUI::selectNumber(SDL_Renderer* renderer_, float scale, int number, float screenX_, float screenY_)
+{
 
 	// square represents the position and dimensions for where to draw the image
 	SDL_Rect square;
@@ -115,237 +150,253 @@ void NumbersUI::Render(SDL_Renderer* renderer_, float scale, int currentRound)
 	//Values for width and height
 	float w, h = 0;
 
-	if (currentRound < 10)
+	//Screen Coords
+	screenX = screenX_;
+	screenY = screenY_;
+
+	switch (number)
 	{
-		//Screen Coords
-		screenX = 50;
-		screenY = 30;
+	case 0:
+		//Get image width and height and adjust it to scale
+		w = imageZero->w * scale;
+		h = imageZero->h * scale;
 
-		switch (currentRound) 
-		{
-		case 1: 
-			//Get image width and height and adjust it to scale
-			w = imageOne->w * scale;
-			h = imageOne->h * scale;
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
 
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-			//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
 
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= scale;
-			square.h *= scale;
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureZero, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
 
-			/////////////////////////////////
-			//RENDER
-			//////////////////////////////////.
-			SDL_RenderCopyEx(renderer, textureOne, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-			break;
-		case 2:
-			//Get image width and height and adjust it to scale
-			w = imageTwo->w * scale;
-			h = imageTwo->h * scale;
+	case 1:
+		//Get image width and height and adjust it to scale
+		w = imageOne->w * scale;
+		h = imageOne->h * scale;
 
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
 
-			//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= scale;
-			square.h *= scale;
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
 
-			/////////////////////////////////
-			//RENDER
-			//////////////////////////////////.
-			SDL_RenderCopyEx(renderer, textureTwo, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-			break;
-		case 3:
-			//Get image width and height and adjust it to scale
-			w = imageThree->w * scale;
-			h = imageThree->h * scale;
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureOne, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
+	case 2:
+		//Get image width and height and adjust it to scale
+		w = imageTwo->w * scale;
+		h = imageTwo->h * scale;
 
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
 
-			//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= scale;
-			square.h *= scale;
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
 
-			/////////////////////////////////
-			//RENDER
-			//////////////////////////////////.
-			SDL_RenderCopyEx(renderer, textureThree, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-			break;
-		case 4:
-			//Get image width and height and adjust it to scale
-			w = imageFour->w * scale;
-			h = imageFour->h * scale;
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureTwo, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
+	case 3:
+		//Get image width and height and adjust it to scale
+		w = imageThree->w * scale;
+		h = imageThree->h * scale;
 
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
 
-			//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= scale;
-			square.h *= scale;
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
 
-			/////////////////////////////////
-			//RENDER
-			//////////////////////////////////.
-			SDL_RenderCopyEx(renderer, textureFour, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-			break;
-		case 5:
-			//Get image width and height and adjust it to scale
-			w = imageFive->w * scale;
-			h = imageFive->h * scale;
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureThree, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
+	case 4:
+		//Get image width and height and adjust it to scale
+		w = imageFour->w * scale;
+		h = imageFour->h * scale;
 
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
 
-			//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= scale;
-			square.h *= scale;
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
 
-			/////////////////////////////////
-			//RENDER
-			//////////////////////////////////.
-			SDL_RenderCopyEx(renderer, textureFive, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-			break;
-		case 6:
-			//Get image width and height and adjust it to scale
-			w = imageSix->w * scale;
-			h = imageSix->h * scale;
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureFour, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
+	case 5:
+		//Get image width and height and adjust it to scale
+		w = imageFive->w * scale;
+		h = imageFive->h * scale;
 
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
 
-			//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= scale;
-			square.h *= scale;
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
 
-			/////////////////////////////////
-			//RENDER
-			//////////////////////////////////.
-			SDL_RenderCopyEx(renderer, textureSix, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-			break;
-		case 7:
-			//Get image width and height and adjust it to scale
-			w = imageSeven->w * scale;
-			h = imageSeven->h * scale;
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureFive, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
+	case 6:
+		//Get image width and height and adjust it to scale
+		w = imageSix->w * scale;
+		h = imageSix->h * scale;
 
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
 
-			//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= scale;
-			square.h *= scale;
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
 
-			/////////////////////////////////
-			//RENDER
-			//////////////////////////////////.
-			SDL_RenderCopyEx(renderer, textureSeven, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-			break;
-		case 8:
-			//Get image width and height and adjust it to scale
-			w = imageEight->w * scale;
-			h = imageEight->h * scale;
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureSix, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
+	case 7:
+		//Get image width and height and adjust it to scale
+		w = imageSeven->w * scale;
+		h = imageSeven->h * scale;
 
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
 
-			//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= scale;
-			square.h *= scale;
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
 
-			/////////////////////////////////
-			//RENDER
-			//////////////////////////////////.
-			SDL_RenderCopyEx(renderer, textureEight, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-			break;
-		case 9:
-			//Get image width and height and adjust it to scale
-			w = imageNine->w * scale;
-			h = imageNine->h * scale;
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureSeven, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
+	case 8:
+		//Get image width and height and adjust it to scale
+		w = imageEight->w * scale;
+		h = imageEight->h * scale;
 
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
 
-			//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= scale;
-			square.h *= scale;
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
 
-			/////////////////////////////////
-			//RENDER
-			//////////////////////////////////.
-			SDL_RenderCopyEx(renderer, textureNine, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-			break;
-		}
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureEight, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
+	case 9:
+		//Get image width and height and adjust it to scale
+		w = imageNine->w * scale;
+		h = imageNine->h * scale;
 
+		//Create Square
+		square.x = static_cast<int>(screenX);
+		square.y = static_cast<int>(screenY);
+		square.w = static_cast<int>(w);
+		square.h = static_cast<int>(h);
+
+		//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+		/////////////////////////////////
+		//Render Saling
+		/////////////////////////////////
+		square.w *= scale;
+		square.h *= scale;
+
+		/////////////////////////////////
+		//RENDER
+		//////////////////////////////////.
+		SDL_RenderCopyEx(renderer, textureNine, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+		break;
 	}
-	else if (currentRound < 100)
-	{
 
-	}
-
-	
 }

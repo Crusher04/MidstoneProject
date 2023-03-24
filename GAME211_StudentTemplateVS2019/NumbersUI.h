@@ -52,10 +52,23 @@ public:
 	void OnCreate(SDL_Renderer* renderer_);
 
 	/// <summary>
-	/// Renders the numbers on screen
+	/// Logic for rendering numbers to the screen 
 	/// </summary>
 	/// <param name="renderer_"></param>
 	/// <param name="scale"></param>
-	void Render(SDL_Renderer* renderer_, float scale, int currentRound);
+	/// <param name="number"></param>
+	/// <param name="screenX_"></param>
+	/// <param name="screenY_"></param>
+	void Render(SDL_Renderer* renderer_, float scale, int number, float screenX_, float screenY_);
+	
+	/// <summary>
+	/// Renders individual numbers based off of Render() logic
+	/// </summary>
+	/// <param name="renderer_"></param>
+	/// <param name="scale"></param>
+	/// <param name="number"></param>
+	/// <param name="screenX_"></param>
+	/// <param name="screenY_"></param>
+	void selectNumber(SDL_Renderer* renderer_, float scale, int number, float screenX_, float screenY_);
 };
 

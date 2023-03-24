@@ -115,6 +115,9 @@ public:
 	//Round UI
 	NumbersUI RoundUI;
 
+	//HealthUI
+	NumbersUI HealthUI;
+
 	/////////////////////////////////////
 	//ALL FUNCTIONS GO DOWN HERE
 	////////////////////////////////////
@@ -134,6 +137,8 @@ public:
 	/// Renders the UI for displaying current round number
 	/// </summary>
 	void RenderRoundUI();
+
+	void RenderHealthUI();
 
 	/// <summary>
 	/// returns bullet class

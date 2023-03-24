@@ -155,6 +155,11 @@ bool GameManager::OnCreate() {
         
     RoundUI.OnCreate(getRenderer());
 
+    /////////////////////////////////
+    //HealthUI Initialization
+    /////////////////////////////////
+    HealthUI.OnCreate(getRenderer());
+
 	return true;
 }
 
@@ -539,7 +544,12 @@ void GameManager::RenderOutOfAmmo()
 
 void GameManager::RenderRoundUI()
 {
-    RoundUI.Render(getRenderer(), 1.0f, getRound()->getCurrentRound());
+    RoundUI.Render(getRenderer(), 1.0f, getRound()->getCurrentRound(), 50, 50);
+}
+
+void GameManager::RenderHealthUI()
+{
+    HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 40, 980);
 }
 
 void GameManager::zombieArrayInit()
