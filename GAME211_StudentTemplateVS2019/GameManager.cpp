@@ -579,7 +579,7 @@ void GameManager::RenderItem()
 {
     if (itemManagement.itemDrop == true)
     {
-        itemManagement.Render(getRenderer(), 1.0f, tempZombieLocation.x, tempZombieLocation.y);
+        itemManagement.Render(getRenderer(), 0.35f, tempZombieLocation.x + 50, tempZombieLocation.y + 100);
     }
     
 

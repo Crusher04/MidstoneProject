@@ -12,8 +12,8 @@ bool ItemManagement::onCreate(SDL_Renderer* renderer_)
 
 	dropChance = 0;
 
-	//Load Out Of Ammo Image
-	image = IMG_Load("Assets/organic/rock2.png");
+	//Load Item Drop Image
+	image = IMG_Load("Assets/ItemDrops/HealthDrop.png");
 	renderer = renderer_;
 	texture = SDL_CreateTextureFromSurface(renderer, image);
 	if (image == nullptr) {

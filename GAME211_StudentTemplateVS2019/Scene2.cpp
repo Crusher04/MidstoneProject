@@ -375,11 +375,16 @@ void Scene2::Update(const float deltaTime) {
 
 			if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 			{
-				game->tempZombieLocation = game->zombieSpawnerArr2.at(i).getPos();
+				if (game->itemManagement.itemDrop == false)
+				{
+					game->tempZombieLocation = game->zombieSpawnerArr2.at(i).getPos();
+					game->itemManagement.RandomizeDrops();
+					game->itemManagement.Drops();
+				}
 				zombieCollArr.at(i).active = false;
 				game->getRound()->removeAZombie();
-				game->itemManagement.RandomizeDrops();
-				game->itemManagement.Drops();
+	
+				
 			}
 				
 			
