@@ -23,7 +23,7 @@ public:
 	//Variables
 	bool healthDrop, ammoDrop;
 	
-
+	bool itemDrop;
 	
 
 
@@ -36,6 +36,14 @@ public:
 
 
 	void Render(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_);
+
+	
+	void RandomizeDrops();
+
+	void Drops();
+
+	int dropChance;
+
 };
 
 

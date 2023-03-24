@@ -54,7 +54,7 @@ bool GameManager::OnCreate() {
     
     speed = 1000;
     isSprinting = false;
-    itemDrop = false;
+    
 
 
     /////////////////////////////////
@@ -116,7 +116,7 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     zombieArrayInit();
 
-    
+
     
 
     /////////////////////////////////
@@ -149,6 +149,10 @@ bool GameManager::OnCreate() {
     HealthUI.OnCreate(getRenderer(), false);
     ZombieCounterUI.OnCreate(getRenderer(), true);
 
+
+    ////////////////////////////////
+    //Item Initialization
+    ////////////////////////////////
     itemManagement.onCreate(getRenderer());
 
 	return true;
@@ -225,12 +229,16 @@ void GameManager::handleEvents()
 
             }
 
+
+            /////////////////////////////////
+            // Item Pickup 
+            ////////////////////////////////
             if (event.key.keysym.sym == SDLK_e)
             {
-
-                itemDrop = false;
+              
+                itemManagement.itemDrop = false;
                 getPlayer()->health.healPlayer(10);
-
+               
 
             }
 
@@ -436,197 +444,6 @@ void GameManager::RenderPlayer(float scale)
 
 Vec3 GameManager::getZombieSpawnLocations()
 {
-    //int maxRange, minRange;
-
-    //maxRange = 20;
-    //minRange = 1;
-    //
-
-
-    //srand((time(NULL)));
-    //int randomize = rand() % (maxRange - minRange + 1);
-
-    //Vec3 locations;
-
-    //if (randomize == 1)
-    //{
-
-    //    locations.set(325, 225, 0);
-
-
-    //}
-
-
-    //if (randomize == 2)
-    //{
-
-    //    locations.set(325, 450, 0);
-
-
-    //}
-
-
-    //if (randomize == 3)
-    //{
-
-    //    locations.set(325, 675, 0);
-
-
-    //}
-
-
-    //if (randomize == 4)
-    //{
-
-    //    locations.set(325, 900, 0);
-
-
-    //}
-
-
-    //if (randomize == 5)
-    //{
-
-    //    locations.set(650, 225, 0);
-
-
-    //}
-
-
-    //if (randomize == 6)
-    //{
-
-    //    locations.set(650, 450, 0);
-
-
-    //}
-
-
-    //if (randomize == 7)
-    //{
-
-    //    locations.set(650, 675, 0);
-
-
-    //}
-
-
-    //if (randomize == 8)
-    //{
-
-    //    locations.set(650, 900, 0);
-
-
-    //}
-
-
-    //if (randomize == 9)
-    //{
-
-    //    locations.set(975, 225, 0);
-
-
-    //}
-
-
-    //if (randomize == 10)
-    //{
-
-    //    locations.set(975, 450, 0);
-
-
-    //}
-
-
-    //if (randomize == 11)
-    //{
-
-    //    locations.set(975, 675, 0);
-
-
-    //}
-
-
-    //if (randomize == 12)
-    //{
-
-    //    locations.set(975, 900, 0);
-
-
-    //}
-
-
-    //if (randomize == 13)
-    //{
-
-    //    locations.set(1300, 225, 0);
-
-
-    //}
-
-
-    //if (randomize == 14)
-    //{
-
-    //    locations.set(1300, 450, 0);
-
-
-    //}
-
-    //if (randomize == 15)
-    //{
-
-    //    locations.set(1300, 675, 0);
-
-
-    //}
-
-    //if (randomize == 16)
-    //{
-
-    //    locations.set(1300, 900, 0);
-
-
-    //}
-
-    //if (randomize == 17)
-    //{
-
-    //    locations.set(1625, 225, 0);
-
-
-    //}
-
-    //if (randomize == 18)
-    //{
-
-    //    locations.set(1625, 450, 0);
-
-
-    //}
-
-    //if (randomize == 19)
-    //{
-
-    //    locations.set(1625, 675, 0);
-
-
-    //}
-
-    //if (randomize == 20)
-    //{
-
-    //    locations.set(1625, 900, 0);
-
-
-    //}
-
- 
-
-
-    //return locations;
-
-
 
     //Chooses a location at random...IF you add a location below, increase the first number.
     std::srand((unsigned int)time(NULL));
@@ -760,10 +577,14 @@ void GameManager::zombieArrayInit()
 
 void GameManager::RenderItem()
 {
-    if (itemDrop == true)
+    if (itemManagement.itemDrop == true)
     {
-        itemManagement.Render(getRenderer(), 1.0f, player->getPos().x, player->getPos().y);
+        itemManagement.Render(getRenderer(), 1.0f, tempZombieLocation.x, tempZombieLocation.y);
     }
+    
+
+
+
 }
 
 void GameManager::LoadScene( int i )

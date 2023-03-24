@@ -99,7 +99,7 @@ bool Scene2::OnCreate() {
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 
 
-	game->itemDrop = true;
+	
 
 	enemyColl.passthrough = false;
 	zombieSpawnTime = 0;
@@ -202,15 +202,13 @@ void Scene2::Update(const float deltaTime) {
 		
 	}
 
-	std::cout << game->getPlayer()->health.getHealth() << std::endl;
+	std::cout << game->itemManagement.dropChance << std::endl;
 
 	/////////////////////////////////
 	//Zombie Spawning / Round Management
 	/////////////////////////////////
-	if (game->getRound()->getZombieAmount() == 0)
+	if (game->getRound()->getZombieAmount() <= 0)
 	{
-
-		zombieSelection = 0;
 		holdTime = SDL_GetTicks() + 5000;
 		game->getRound()->RoundEnd();
 		roundEnded = true;
@@ -231,7 +229,7 @@ void Scene2::Update(const float deltaTime) {
 	}
 		
 
-	if (roundEndTimer >= 312)
+
 
 	if (zombieSpawnTime < SDL_GetTicks())
 	{
@@ -377,13 +375,19 @@ void Scene2::Update(const float deltaTime) {
 
 			if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 			{
+				game->tempZombieLocation = game->zombieSpawnerArr2.at(i).getPos();
 				zombieCollArr.at(i).active = false;
 				game->getRound()->removeAZombie();
+				game->itemManagement.RandomizeDrops();
+				game->itemManagement.Drops();
 			}
 				
 			
 		}
 	}
+
+
+
 
 
 	/////////////////////////////////

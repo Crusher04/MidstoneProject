@@ -70,7 +70,7 @@ public:
 
 	bool isSprinting;
 
-	bool itemDrop;
+	
 
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
@@ -136,11 +136,16 @@ public:
 
 
 
+	//Item Management
 	ItemManagement itemManagement;
 
-
+	/// <summary>
+	/// Renders Items
+	/// </summary>
 	void RenderItem();
 
+	//Temporary Zombie Location;
+	Vec3 tempZombieLocation;
 
 
 

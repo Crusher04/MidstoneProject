@@ -8,7 +8,9 @@ bool ItemManagement::onCreate(SDL_Renderer* renderer_)
 	//Run These First to init variables
 	healthDrop = false;
 	ammoDrop = false;
-	
+	itemDrop = false;
+
+	dropChance = 0;
 
 	//Load Out Of Ammo Image
 	image = IMG_Load("Assets/organic/rock2.png");
@@ -57,4 +59,98 @@ void ItemManagement::Render(SDL_Renderer* renderer_, float scale, float playerPo
 	 //RENDER
 	 //////////////////////////////////.
 	 SDL_RenderCopyEx(renderer, texture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+}
+
+void ItemManagement::RandomizeDrops()
+{
+
+	//Chooses a item at random...IF you add a item below, increase the first number.
+	std::srand((unsigned int)time(NULL));
+	int item = (rand() % 2) + 1;
+
+	if (item == 1)
+	{
+
+		healthDrop = true;
+
+	}
+
+	if (item == 2)
+	{
+
+		ammoDrop = true;
+
+	}
+
+
+}
+
+void ItemManagement::Drops()
+{
+
+	std::srand((unsigned int)time(NULL));
+	dropChance = (rand() % 10) + 1;
+
+	if (dropChance == 1)
+	{
+
+		itemDrop = true;
+
+	}
+
+	if (dropChance == 2)
+	{
+
+		itemDrop = false;
+
+	}
+	if (dropChance == 3)
+	{
+
+		itemDrop = false;
+
+	}
+	if (dropChance == 4)
+	{
+
+		itemDrop = false;
+
+	}
+	if (dropChance == 5)
+	{
+
+		itemDrop = false;
+
+	}
+	if (dropChance == 6)
+	{
+
+		itemDrop = false;
+
+	}
+	if (dropChance == 7)
+	{
+
+		itemDrop = false;
+
+	}
+	if (dropChance == 8)
+	{
+
+		itemDrop = false;
+
+	}
+	if (dropChance == 9)
+	{
+
+		itemDrop = false;
+
+	}
+	if (dropChance == 10)
+	{
+
+		itemDrop = false;
+
+	}
+
 }
