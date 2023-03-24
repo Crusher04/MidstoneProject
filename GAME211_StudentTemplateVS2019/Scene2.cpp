@@ -204,40 +204,6 @@ void Scene2::Update(const float deltaTime) {
 	/////////////////////////////////
 	//Zombie Spawning / Round Management
 	/////////////////////////////////
-	if (game->getRound()->getZombieAmount() <= 0)
-	{
-		zombieSpawnTime++;
-	}
-
-	if (zombieSpawnTime == 125 && zombieSelection <= game->getRound()->getZombieAmount())
-	{
-		game->zombieSpawnerArr2.at(zombieSelection).setPos(game->getZombieSpawnLocations());
-		zombieCollArr.at(zombieSelection).setCollPosition(game->zombieSpawnerArr2.at(zombieSelection).getPos().x, game->zombieSpawnerArr2.at(zombieSelection).getPos().y);
-
-		if (game->getZombieSpawnLocations() == game->getPlayer()->getPos())
-		{
-
-			game->zombieSpawnerArr2.at(zombieSelection).setPos(Vec3(game->zombieSpawnerArr2.at(zombieSelection).getPos().x - 500, game->zombieSpawnerArr2.at(zombieSelection).getPos().y - 50, game->zombieSpawnerArr2.at(zombieSelection).getPos().z));			
-			
-		}
-		game->zombieSpawnerArr2.at(zombieSelection).spawned = true;
-		
-		zombieSelection++;
-		zombieSpawnTime = 0;
-
-	}
-
-	if (zombieSelection == game->getRound()->getZombieAmount())
-	{
-
-		game->zombieSpawned = true;
-		
-
-	}
-
-	//std::cout << game->getRound()->getZombieAmount() << std::endl;
-	std::cout << game->getRound()->getZombieAmount() << std::endl;
-	
 	if (game->getRound()->getZombieAmount() == 0)
 	{
 
