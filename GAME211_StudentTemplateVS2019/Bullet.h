@@ -56,6 +56,7 @@ public:
     Vec3 finalVel;
 
     bool collided;
+   
 
 };
 

@@ -50,7 +50,6 @@ public:
     
     // use the base class versions of getters
     Vec3 playerPos;
-    Vec3 enemyPos;
     EntityHealth health;
     bool OnCreate();
     void Render( float scale = 1.0f );

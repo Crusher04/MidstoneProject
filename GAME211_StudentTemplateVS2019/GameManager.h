@@ -11,6 +11,7 @@
 #include "ZombieSpawner.h"
 #include "Bullet.h"
 #include "WeaponManagement.h"
+#include "NumbersUI.h"
 
 class GameManager {
 private:
@@ -30,12 +31,8 @@ private:
 
 	// This might be unfamiliar
     class PlayerBody *player;
-
-	class Round	*round;
-	
-	class ZombieSpawner *zombies;
-	//class ZombieSpawner zombies2;
-	
+	class Round	*round;	
+	class ZombieSpawner *zombies;	
 	class Bullet* bullet;
 
 public:
@@ -65,12 +62,12 @@ public:
     bool ValidateCurrentScene();
 	bool isMoving;
 	bool reload;
-	//Get Round Class
-	Round* getRound() { return round; }
+
+	
 
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;
-	Vec3 compileZombieSpawnLocations();
+	Vec3 getZombieSpawnLocations();
 
 	void RenderZombie(float scale = 1.0f);
 	ZombieSpawner getZombie();
@@ -92,8 +89,12 @@ public:
 	bool zombieSpawned;
 	bool zombieRender[5];
 
-	// Bullet Variables and Functions
-	Bullet* getBullet() {return bullet;	}
+	
+	/////////////////////////////////////
+	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
+	////////////////////////////////////
+	
+	//Bullet Variables
 	bool fired;
 	bool fired1;
 	bool fired2;
@@ -103,12 +104,55 @@ public:
 	bool fired6;
 	bool fired7;
 	bool fired8;
-	void RenderBullet(float scale = 1.0f);
 	float bulletSpeed;
 	int bulletSelection = 0;
 	std::vector<Bullet> bullets;
+
+	//Weapon Management
 	WeaponManagement weaponManagement;
+	bool outOfAmmo;
+
+	//Round UI
+	NumbersUI RoundUI;
+
+	//HealthUI
+	NumbersUI HealthUI;
+
+	/////////////////////////////////////
+	//ALL FUNCTIONS GO DOWN HERE
+	////////////////////////////////////
+
+	/// <summary>
+	/// Renders the bullet
+	/// </summary>
+	/// <param name="scale"></param>
+	void RenderBullet(float scale = 1.0f);
+
+	/// <summary>
+	/// Renders the out of ammo UI for when out of ammo
+	/// </summary>
+	void RenderOutOfAmmo();
+
+	/// <summary>
+	/// Renders the UI for displaying current round number
+	/// </summary>
+	void RenderRoundUI();
+
+	void RenderHealthUI();
+
+	/// <summary>
+	/// returns bullet class
+	/// </summary>
+	/// <returns></returns>
+	Bullet* getBullet() { return bullet; }
 	
+	/// <summary>
+	/// gets the round
+	/// </summary>
+	/// <returns></returns>
+	Round* getRound() { return round; }
+
+	void zombieArrayInit();
 
 };
 #endif

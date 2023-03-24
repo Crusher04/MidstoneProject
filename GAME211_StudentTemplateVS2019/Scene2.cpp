@@ -10,7 +10,7 @@
 
 
 ///////////////////////////////////////////
-// TESTING SCENE - THIS IS OUR PLAYGROUND
+// OFFICIAL SCENE 
 ///////////////////////////////////////////
 
 
@@ -34,6 +34,8 @@ int holdPosX, holdPosY = 0;
 //Flag Variables
 bool zombieInitComplete = false;		//Flags the completion of zombie collider initialization 
 
+//Round timer variables
+float holdTime = 0;
 /***** END OF SCENE VARIABLES *****/
 
 
@@ -45,41 +47,13 @@ Scene2::Scene2(SDL_Window* sdlWindow_, GameManager* game_){
 	xAxis = 25.0f;
 	yAxis = 15.0f;
 
-	/// PHUNG
-	//bg = new Body(Vec3(0.0f, 15.0f, 0.0f)); // background position
-	bgTexture = nullptr;
-	pathTexture = nullptr;
-
-	//tree
-	treeTexture0 = nullptr;
-	treeTexture1 = nullptr;
-
-	//block
-	blockTexture0 = nullptr;
-	blockTexture1 = nullptr;
-	blockTexture2 = nullptr;
-	blockTexture3 = nullptr;
-
-	//other
-	wellTexture = nullptr;
-	otherTexture0 = nullptr;
-	otherTexture1 = nullptr;
-	logTexture0 = nullptr;
-
-	//rock
-	rockTexture0 = nullptr;
-	rockTexture1 = nullptr;
-	rockTexture2 = nullptr;
-	rockTexture3 = nullptr;
-
-	//UI
-	hbEmptyTexture = nullptr;
-	hbFullTexture = nullptr;
-	zombieIconTexture = nullptr;
+	//Initialize map Variables to nullptr
+	initMapVar();
 
 }
 
-Scene2::~Scene2(){
+Scene2::~Scene2()
+{
 }
 
 bool Scene2::OnCreate() {
@@ -127,65 +101,16 @@ bool Scene2::OnCreate() {
 
 	enemyColl.passthrough = false;
 	zombieSpawnTime = 0;
+	zombieTimeBetweenSpawn = 1500;
 	zombieSelection = 0;
 	roundEndTimer = 0;
-	v = 5;
+	roundEnded = false;
 
 	/////////////////////////////////
 	//MAP STUFF
 	/////////////////////////////////
 
-	bgImage = IMG_Load("Assets/background/bg_green1.png");
-	bgTexture = SDL_CreateTextureFromSurface(renderer, bgImage);
-
-	pathImage = IMG_Load("Assets/background/bg_path.png");
-	pathTexture = SDL_CreateTextureFromSurface(renderer, pathImage);
-
-	//tree row 1
-	treeImage0 = IMG_Load("Assets/organic/bush1.png");
-	treeTexture0 = SDL_CreateTextureFromSurface(renderer, treeImage0);
-
-	treeImage1 = IMG_Load("Assets/organic/bush.png");
-	treeTexture1 = SDL_CreateTextureFromSurface(renderer, treeImage1);
-
-	//block
-	blockImage0 = IMG_Load("Assets/organic/block1.png");
-	blockTexture0 = SDL_CreateTextureFromSurface(renderer, blockImage0);
-
-	blockImage1 = IMG_Load("Assets/organic/block3.1.png");
-	blockTexture1 = SDL_CreateTextureFromSurface(renderer, blockImage1);
-
-	blockImage2 = IMG_Load("Assets/organic/block3.png");
-	blockTexture2 = SDL_CreateTextureFromSurface(renderer, blockImage2);
-
-	// other
-	wellImage = IMG_Load("Assets/prop/well.png");
-	otherImage0 = IMG_Load("Assets/prop/building1_1.png");
-	otherImage1 = IMG_Load("Assets/prop/building1.png");
-	logImage0 = IMG_Load("Assets/organic/log.png");
-
-	otherTexture0 = SDL_CreateTextureFromSurface(renderer, otherImage0);
-	otherTexture1 = SDL_CreateTextureFromSurface(renderer, otherImage1);
-	wellTexture = SDL_CreateTextureFromSurface(renderer, wellImage);
-	logTexture0 = SDL_CreateTextureFromSurface(renderer, logImage0);
-
-	//rock
-	rockImage0 = IMG_Load("Assets/organic/rock1.png");
-	rockImage1 = IMG_Load("Assets/organic/rock2.png");
-	rockImage2 = IMG_Load("Assets/organic/rock3.png");
-
-	rockTexture0 = SDL_CreateTextureFromSurface(renderer, rockImage0);
-	rockTexture1 = SDL_CreateTextureFromSurface(renderer, rockImage1);
-	rockTexture2 = SDL_CreateTextureFromSurface(renderer, rockImage2);
-
-	//UI
-	hbEmptyImage = IMG_Load("Assets/UI/HUD/healthbar/hb_empty.png");
-	hbFullImage = IMG_Load("Assets/UI/HUD/healthbar/hb_full.png");
-	zombieIconImage = IMG_Load("Assets/UI/HUD/zombie_counter_icon.png");
-
-	hbEmptyTexture = SDL_CreateTextureFromSurface(renderer, hbEmptyImage);
-	hbFullTexture = SDL_CreateTextureFromSurface(renderer, hbFullImage);
-	zombieIconTexture = SDL_CreateTextureFromSurface(renderer, zombieIconImage);
+	buildMap();
 
 	return true;
 }
@@ -202,18 +127,6 @@ SDL_Rect Scene2::scale(SDL_Texture* objectTexture, int start_x, int start_y, flo
 void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
-	
-	/////////////////////////////////
-	//CHECK IF ZOMBIES ARE ALIVE
-	/////////////////////////////////
-
-	for (int i = 0; i < game->getRound()->getZombieAmount(); i++)
-	{
-		if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
-			zombieCollArr.at(i).active = false;
-	}
-
-	
 	
 	/////////////////////////////////
 	//Player Updates
@@ -250,7 +163,7 @@ void Scene2::Update(const float deltaTime) {
 		holdPosX = playerColl.x;
 		holdPosY = playerColl.y;
 
-		//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+		std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
 		//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 	}
@@ -278,96 +191,57 @@ void Scene2::Update(const float deltaTime) {
 			if (playerColl.checkCollBox(playerColl, zombieCollArr.at(i)))
 			{
 				std::cout << "\nDamage Taken!";
-				game->getPlayer()->health.takeDamage(10);
+				game->getPlayer()->health.takeDamage(12);
 				damageTaken = true; //stops the player from taking damage per tick
 				std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
-				timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay
+				timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
 			}
 		}
 		
 	}
 
-	//if (zombieSelection == 0)
-	//{
 
-	//	game->zombieSpawnerArr2.at(zombieSelection).setPos(Vec3(1100, 1100, 0));
-
-	//}
-
-
-	if (game->zombieSpawned == false)
+	/////////////////////////////////
+	//Zombie Spawning / Round Management
+	/////////////////////////////////
+	if (game->getRound()->getZombieAmount() <= 0)
 	{
-		zombieSpawnTime++;
-	}
-
-	if (zombieSpawnTime == 125 && zombieSelection <= game->getRound()->getZombieAmount())
-	{
-		game->zombieSpawnerArr2.at(zombieSelection).setPos(game->compileZombieSpawnLocations());
-		zombieCollArr.at(zombieSelection).setCollPosition(game->zombieSpawnerArr2.at(zombieSelection).getPos().x, game->zombieSpawnerArr2.at(zombieSelection).getPos().y);
-
-		if (game->compileZombieSpawnLocations() == game->getPlayer()->getPos())
-		{
-
-			game->zombieSpawnerArr2.at(zombieSelection).setPos(Vec3(game->zombieSpawnerArr2.at(zombieSelection).getPos().x - 500, game->zombieSpawnerArr2.at(zombieSelection).getPos().y - 50, game->zombieSpawnerArr2.at(zombieSelection).getPos().z));			
-			
-		}
-		game->zombieSpawnerArr2.at(zombieSelection).spawned = true;
-		
-		zombieSelection++;
-		zombieSpawnTime = 0;
-
-	}
-
-	if (zombieSelection == game->getRound()->getZombieAmount())
-	{
-
-		game->zombieSpawned = true;
-		
-
-	}
-
-	//std::cout << game->getRound()->getZombieAmount() << std::endl;
-	
-	if (game->getRound()->getZombieAmount() == 0)
-	{
-
-		zombieSelection = 0;
+		holdTime = SDL_GetTicks() + 5000;
 		game->getRound()->RoundEnd();
-		game->getRound()->newRound = true;
+		roundEnded = true;
 	}
+	
 
-	if (game->getRound()->newRound == true)
+	if (holdTime < SDL_GetTicks() && roundEnded)
 	{
 
-		game->getRound()->setStartingZombieAmount(20);
-		roundEndTimer++;
+		std::cout << "Round " << game->getRound()->getCurrentRound() << " has started!\n ";
 
+		game->zombieSpawnerArr2.clear();
+		zombieCollArr.clear();
+
+		game->zombieArrayInit();
+		zombieInitComplete = false;
+		roundEnded = false;
 	}
+		
 
-	if (roundEndTimer >= 625)
+
+	if (zombieSpawnTime < SDL_GetTicks())
 	{
-		game->getRound()->newRound = false;
-		roundEndTimer = 0;
-
+		for (int i = 0; i < zombieCollArr.size(); i++)
+		{
+			if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
+			{
+				game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
+				zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
+				game->zombieSpawnerArr2.at(i).spawned = true;
+				zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
+				zombieTimeBetweenSpawn = rand() % 2500 + 1000;
+			}
+		}
 	}
 
-
-
-
-	if (game->zombieSpawnerArr2.at(tempZombieSelection).health.getHealth() <= 0)
-	{
-		game->getRound()->setZombiesRemaining();
-
-		/*game->zombieSpawnerArr2.at(tempZombieSelection).health.setHealth(10);*/
-		tempZombieSelection++;
-
-	}
-
-	if (tempZombieSelection >= 15)
-	{
-		tempZombieSelection = 0;
-
-	}
 
 	
 
@@ -439,6 +313,7 @@ void Scene2::Update(const float deltaTime) {
 	{
 		if (game->bullets.at(i).fired)
 		{
+			//Shoot Bullet
 			game->bullets.at(i).Shoot(deltaTime);
 
 			//Bullet Collision Detection with zombies
@@ -447,16 +322,22 @@ void Scene2::Update(const float deltaTime) {
 			{
 				if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
 				{
+					game->bullets.at(i).fired = false;
+					//game->bullets.at(i).collided = true;		
 					game->zombieSpawnerArr2.at(i).health.takeDamage(100);
-					game->bullets.at(i).collided = true;
-					//bulletColl.active = false;
+					zombieCollArr.at(i).active = false;
 					std::cout << "ZOMBIE " << i << " IS HIT!\n";
+					game->getRound()->removeAZombie();
+					bulletColl.active = false;
 				}
 			}
 			game->i[i]++;
+
 		}
+		bulletColl.active = true;
 	}
 
+	
 
 	//???
 	if (game->i[game->bulletSelection] > 50)
@@ -477,6 +358,7 @@ void Scene2::Update(const float deltaTime) {
 		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 		{
 			game->bullets.at(i).collided = false;
+			game->bullets.at(i).fired = false;
 		}
 	}
 	
@@ -504,7 +386,134 @@ void Scene2::Render() {
 	/////////////////////////////////
 	//MAP RENDERING 
 	/////////////////////////////////
-	// 
+	 
+	renderMap();
+
+
+
+	// render the player
+	game->RenderPlayer(1.5f);
+
+	// render the zombies
+	game->RenderZombie(1.0f);
+	
+	game->RenderBullet(0.3f);
+	
+	game->RenderOutOfAmmo();
+
+	game->RenderRoundUI();
+
+	game->RenderHealthUI();
+
+	// Present the renderer to the screen
+	SDL_RenderPresent(renderer);
+}
+
+void Scene2::HandleEvents(const SDL_Event& event)
+{
+	// send events to player as needed
+	game->getPlayer()->HandleEvents(event);
+
+	
+}
+
+void Scene2::buildMap()
+{
+
+	bgImage = IMG_Load("Assets/background/bg_green1.png");
+	bgTexture = SDL_CreateTextureFromSurface(renderer, bgImage);
+
+	pathImage = IMG_Load("Assets/background/bg_path.png");
+	pathTexture = SDL_CreateTextureFromSurface(renderer, pathImage);
+
+	//tree row 1
+	treeImage0 = IMG_Load("Assets/organic/bush1.png");
+	treeTexture0 = SDL_CreateTextureFromSurface(renderer, treeImage0);
+
+	treeImage1 = IMG_Load("Assets/organic/bush.png");
+	treeTexture1 = SDL_CreateTextureFromSurface(renderer, treeImage1);
+
+	//block
+	blockImage0 = IMG_Load("Assets/organic/block1.png");
+	blockTexture0 = SDL_CreateTextureFromSurface(renderer, blockImage0);
+
+	blockImage1 = IMG_Load("Assets/organic/block3.1.png");
+	blockTexture1 = SDL_CreateTextureFromSurface(renderer, blockImage1);
+
+	blockImage2 = IMG_Load("Assets/organic/block3.png");
+	blockTexture2 = SDL_CreateTextureFromSurface(renderer, blockImage2);
+
+	// other
+	wellImage = IMG_Load("Assets/prop/well.png");
+	otherImage0 = IMG_Load("Assets/prop/building1_1.png");
+	otherImage1 = IMG_Load("Assets/prop/building1.png");
+	logImage0 = IMG_Load("Assets/organic/log.png");
+
+	otherTexture0 = SDL_CreateTextureFromSurface(renderer, otherImage0);
+	otherTexture1 = SDL_CreateTextureFromSurface(renderer, otherImage1);
+	wellTexture = SDL_CreateTextureFromSurface(renderer, wellImage);
+	logTexture0 = SDL_CreateTextureFromSurface(renderer, logImage0);
+
+	//rock
+	rockImage0 = IMG_Load("Assets/organic/rock1.png");
+	rockImage1 = IMG_Load("Assets/organic/rock2.png");
+	rockImage2 = IMG_Load("Assets/organic/rock3.png");
+
+	rockTexture0 = SDL_CreateTextureFromSurface(renderer, rockImage0);
+	rockTexture1 = SDL_CreateTextureFromSurface(renderer, rockImage1);
+	rockTexture2 = SDL_CreateTextureFromSurface(renderer, rockImage2);
+
+	//UI
+	/*hbEmptyImage = IMG_Load("Assets/UI/HUD/healthbar/hb_empty.png");
+	hbFullImage = IMG_Load("Assets/UI/HUD/healthbar/hb_full.png");*/
+	zombieIconImage = IMG_Load("Assets/UI/HUD/zombie_counter_icon.png");
+
+	hbEmptyTexture = SDL_CreateTextureFromSurface(renderer, hbEmptyImage);
+	hbFullTexture = SDL_CreateTextureFromSurface(renderer, hbFullImage);
+	zombieIconTexture = SDL_CreateTextureFromSurface(renderer, zombieIconImage);
+
+
+
+}
+
+void Scene2::initMapVar()
+{
+	/// PHUNG
+	//bg = new Body(Vec3(0.0f, 15.0f, 0.0f)); // background position
+	bgTexture = nullptr;
+	pathTexture = nullptr;
+
+	//tree
+	treeTexture0 = nullptr;
+	treeTexture1 = nullptr;
+
+	//block
+	blockTexture0 = nullptr;
+	blockTexture1 = nullptr;
+	blockTexture2 = nullptr;
+	blockTexture3 = nullptr;
+
+	//other
+	wellTexture = nullptr;
+	otherTexture0 = nullptr;
+	otherTexture1 = nullptr;
+	logTexture0 = nullptr;
+
+	//rock
+	rockTexture0 = nullptr;
+	rockTexture1 = nullptr;
+	rockTexture2 = nullptr;
+	rockTexture3 = nullptr;
+
+	//UI
+	hbEmptyTexture = nullptr;
+	hbFullTexture = nullptr;
+	zombieIconTexture = nullptr;
+}
+
+void Scene2::renderMap()
+{
+
 	//bg and path
 	Vec3 bg_screenCoords = projectionMatrix * Vec3(0.0f, 15.0f, 0.0f);
 	Vec3 path_screenCoords = projectionMatrix * Vec3(0.0f, 8.0f, 0.0f);
@@ -857,35 +866,4 @@ void Scene2::Render() {
 	SDL_RenderCopy(renderer, zombieIconTexture, nullptr, &dest);
 
 
-
-
-	// render the player
-	game->RenderPlayer(1.5f);
-
-	// render the zombies
-	game->RenderZombie(1.0f);
-
-	// render the bullets
-	if (game->fired == true)
-	{
-		
-	}
-
-	game->RenderBullet(0.3f);
-
-
-	
-
-	
-
-	// Present the renderer to the screen
-	SDL_RenderPresent(renderer);
-}
-
-void Scene2::HandleEvents(const SDL_Event& event)
-{
-	// send events to player as needed
-	game->getPlayer()->HandleEvents(event);
-
-	
 }

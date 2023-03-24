@@ -1,5 +1,6 @@
 #include "Scene4.h"
 #include "VMath.h"
+
 #include "Collider.h"
 #include "Spawner.h"
 #include "Round.h"
@@ -46,6 +47,7 @@ Scene4::Scene4(SDL_Window* sdlWindow_, GameManager* game_){
 	rockTexture1 = nullptr;
 	rockTexture2 = nullptr;
 	rockTexture3 = nullptr;
+	
 
 	//UI
 	hbEmptyTexture = nullptr;
@@ -71,6 +73,7 @@ bool Scene4::OnCreate() {
 	// Set images
 	/*SDL_Surface* bg;
 	SDL_Texture* bg_texture;*/
+
 	
 	/////////////////////////////////
 	//MAP STUFF
@@ -118,6 +121,9 @@ bool Scene4::OnCreate() {
 	rockTexture0 = SDL_CreateTextureFromSurface(renderer, rockImage0);
 	rockTexture1 = SDL_CreateTextureFromSurface(renderer, rockImage1);
 	rockTexture2 = SDL_CreateTextureFromSurface(renderer, rockImage2);
+	
+	
+	
 
 	//UI
 	hbEmptyImage = IMG_Load("Assets/UI/HUD/healthbar/hb_empty.png");
@@ -147,15 +153,14 @@ SDL_Rect Scene4::scale(SDL_Texture* objectTexture, int start_x, int start_y, flo
 	return dest;
 }
 
-
-
-
 void Scene4::OnDestroy() {}
 
 void Scene4::Update(const float deltaTime) {
 
 	// Update player
-	game->getPlayer()->Update(deltaTime);
+	//game->getPlayer()->Update(deltaTime);
+	
+	
 }
 
 void Scene4::Render() {
