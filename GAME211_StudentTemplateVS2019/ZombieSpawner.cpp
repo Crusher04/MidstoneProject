@@ -4,6 +4,10 @@
 
 bool ZombieSpawner::OnCreate()
 {
+    //Default Variables Init
+    spawned = false;
+    health.setHealth(50);
+
     image = IMG_Load("Assets/zombie.png");
     SDL_Renderer* renderer = game->getRenderer();
     texture = SDL_CreateTextureFromSurface(renderer, image);
@@ -11,9 +15,6 @@ bool ZombieSpawner::OnCreate()
         std::cerr << "Can't open the image" << std::endl;
         return false;
     }
-
-    spawned = false;
-    health.setHealth(50);
     return true;
 
 }
