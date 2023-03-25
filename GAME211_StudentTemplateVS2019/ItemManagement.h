@@ -21,10 +21,13 @@ protected:
 
 public:
 	//Variables
-	bool healthDrop, ammoDrop;
+	bool healthDrop, bigHealthDrop;
 	
 	bool itemDrop;
 	
+	int dropChance;
+	int item;
+	int dropPercentage;
 
 
 	//Constructor
@@ -42,7 +45,9 @@ public:
 
 	void Drops();
 
-	int dropChance;
+
+
+
 
 };
 

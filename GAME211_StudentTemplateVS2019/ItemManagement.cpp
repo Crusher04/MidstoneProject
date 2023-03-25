@@ -7,12 +7,15 @@ bool ItemManagement::onCreate(SDL_Renderer* renderer_)
 {
 	//Run These First to init variables
 	healthDrop = false;
-	ammoDrop = false;
+	bigHealthDrop = false;
 	itemDrop = false;
 
 	dropChance = 0;
+	item = 0;
+	dropPercentage = 5;
 
 	//Load Item Drop Image
+
 	image = IMG_Load("Assets/ItemDrops/HealthDrop.png");
 	renderer = renderer_;
 	texture = SDL_CreateTextureFromSurface(renderer, image);
@@ -59,41 +62,51 @@ void ItemManagement::Render(SDL_Renderer* renderer_, float scale, float playerPo
 	 //RENDER
 	 //////////////////////////////////.
 	 SDL_RenderCopyEx(renderer, texture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
 }
 
 void ItemManagement::RandomizeDrops()
 {
 
 	//Chooses a item at random...IF you add a item below, increase the first number.
-	std::srand((unsigned int)time(NULL));
-	int item = (rand() % 2) + 1;
+	if (item == 0)
+	{ 
+	
+		std::srand((unsigned int)time(NULL));
+	
+	}
 
+	item = (rand() % 2) + 1;
+		
 	if (item == 1)
 	{
 
 		healthDrop = true;
-
+		
+		item = 1;
 	}
 
 	if (item == 2)
 	{
 
-		ammoDrop = true;
-
+		bigHealthDrop = true;
+		
+		item = 2;
 	}
-
 
 }
 
 void ItemManagement::Drops()
 {
 
+	//Determines whether or not a item drops when a zombie is killed
+	//If you want to lower or raise the chance, then increase or decrease the dropPercentage variable and add additional "if" statements if needed
 	std::srand((unsigned int)time(NULL));
-	dropChance = (rand() % 10) + 1;
+	dropChance = (rand() % dropPercentage) + 1;
 
 	if (dropChance == 1)
 	{
-
+		RandomizeDrops();
 		itemDrop = true;
 
 	}

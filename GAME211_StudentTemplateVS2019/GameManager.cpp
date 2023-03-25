@@ -236,9 +236,16 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_e)
             {
               
-                itemManagement.itemDrop = false;
-                getPlayer()->health.healPlayer(10);
-               
+                if (itemManagement.itemDrop == true)
+                {
+                    //Apply Effects of Item Drop
+                    DropEffects();
+
+                    //Reset all Item Drop bools to false
+                    itemManagement.healthDrop = false;
+                    itemManagement.bigHealthDrop = false;
+                    itemManagement.itemDrop = false;
+                }
 
             }
 
@@ -584,6 +591,27 @@ void GameManager::RenderItem()
     
 
 
+
+}
+
+void GameManager::DropEffects()
+{
+
+    //Applies an effect depending on which item is dropped
+    //If you want to add more new effects for new item drops, just create another "if" statement for that item drop
+    //Make sure to always set the specific item drop bool to false at the end of each "if" statement
+
+    if (itemManagement.healthDrop == true)
+    {
+        getPlayer()->health.healPlayer(10);
+        itemManagement.healthDrop = false;
+    }
+
+    if (itemManagement.bigHealthDrop == true)
+    {
+        getPlayer()->health.healPlayer(30);
+        itemManagement.bigHealthDrop = false;
+    }
 
 }
 

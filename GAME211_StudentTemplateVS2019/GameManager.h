@@ -147,7 +147,10 @@ public:
 	//Temporary Zombie Location;
 	Vec3 tempZombieLocation;
 
-
+	/// <summary>
+	/// Applies Drop Effect
+	/// </summary>
+	void DropEffects();
 
 
 
