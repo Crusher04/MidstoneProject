@@ -3,16 +3,22 @@
 enum MyEnum
 {
 	CH_PLAYER,
+	CH_WEAPON,
 	CH_ENEMY
 };
+SoundEffect::SoundEffect() : Audio() { 
+	loadAudio(); 
+	setSoundVolume(100);
+}
 
 void SoundEffect::loadAudio()
 {
-	addAudio("Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3");
-	addAudio("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav");
-	addAudio("Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav");
-	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-83900.wav");
-	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-slow-83900.wav");
+	addAudio("Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3"); //0
+	//addAudio("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav");
+	addAudio("Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav"); //1
+	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-83900.wav"); //2
+	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-slow-83900.wav"); //3
+	addAudio("Audio/Sound effect/Weapon SFX/Empty-gun-sound-72163.wav"); //4
 }
 
 void SoundEffect::addAudio(const char* path)
@@ -30,6 +36,7 @@ void SoundEffect::addAudio(const char* path)
 
 void SoundEffect::playAudio(const int which) const
 {
+	// Manualy play audio of a specific sound effect
 	if (which > mSoundEffectBank.size() - 1) {
 		std::cout << "Sound out of range. \n";
 		return;
@@ -43,39 +50,66 @@ void SoundEffect::playAudio(const int which) const
 void SoundEffect::PistolAudio(bool fired) const
 {
 	if (fired == true) {
-		Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[0], 0);
+		Mix_Volume(CH_WEAPON, Volume);
+		Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[0], 0);
 	}
 	else {
-		Mix_Pause(CH_PLAYER);
+		Mix_Pause(CH_WEAPON);
 	}
 }
 
 void SoundEffect::MachineGunAudio(bool fired) const
 {
 	if (fired == true) {
-		Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[2], -1);
+		Mix_Volume(CH_WEAPON, Volume);
+		Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[1], -1);
 	}
 	else {
-		Mix_Pause(CH_PLAYER);
+		Mix_Pause(CH_WEAPON);
 	}
 }
 
-void SoundEffect::WalkingAudio(bool walking) const
+void SoundEffect::WalkingAudio(bool walking) 
 {
+
 	if (walking == true) {
-		Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[4], -1);
+		if (isWalking == false) {
+			Mix_Volume(CH_PLAYER, Volume);
+			Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[3], -1);
+			isWalking = true;
+		}
 	}
 	else {
 		Mix_Pause(CH_PLAYER);
+		isWalking = false;
 	}
 }
 
-void SoundEffect::SprintingAudio(bool sprinting) const
+void SoundEffect::SprintingAudio(bool sprinting)
 {
 	if (sprinting == true) {
-		Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[3], -1);
+		if (isSprinting == false) {
+			Mix_Volume(CH_PLAYER, Volume);
+			Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[2], -1);
+			isSprinting = true;
+		}
 	}
 	else {
 		Mix_Pause(CH_PLAYER);
+		isSprinting = false;
 	}
+}
+
+void SoundEffect::EmptyMag() const
+{
+	Mix_Volume(CH_WEAPON, Volume);
+	Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[4], 0);
+}
+
+void SoundEffect::setSoundVolume(int v)
+{
+	int volume;
+	volume = (MIX_MAX_VOLUME * v) / 100;
+	std::cout << "Volume of sound effect " << volume << std::endl;
+	Volume = volume;
 }

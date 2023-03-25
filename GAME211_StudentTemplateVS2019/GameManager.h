@@ -12,6 +12,8 @@
 #include "Bullet.h"
 #include "WeaponManagement.h"
 #include "NumbersUI.h"
+#include "SoundEffect.h"
+#include "Music.h"
 
 class GameManager {
 private:
@@ -58,6 +60,10 @@ public:
 	void LoadScene( int i );
     bool ValidateCurrentScene();
 	bool isMoving;
+
+	//Audio variable
+	SoundEffect Sf;
+	Music Ms;
 
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;

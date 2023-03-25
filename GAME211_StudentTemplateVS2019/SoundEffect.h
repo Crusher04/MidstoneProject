@@ -7,15 +7,34 @@
 class SoundEffect : public Audio
 {
 public:
-	SoundEffect() : Audio() { loadAudio(); }
+	SoundEffect();
+	// Add the Audio to the vector
 	void addAudio(const char* path);
 
+	// Manualy play audio of a specific sound effect
 	void playAudio(const int which) const;
+
+	//Play Pistol sound
 	void PistolAudio(bool fired) const;
+
+	//Play MachineGun sound in a loop
 	void MachineGunAudio(bool fired) const;
-	void WalkingAudio(bool walking) const;
-	void SprintingAudio(bool sprinting) const;
+
+	//Play Walking sound in a loop
+	void WalkingAudio(bool walking);
+
+	//Play Sprinting sound in a loop
+	void SprintingAudio(bool sprinting);
+
+	//Play Empty Magazine sound
+	void EmptyMag() const;
+
+	//Convert SoundEffect volume from percentage
+	void setSoundVolume(int v);
 private:
+	int Volume;
+	bool isWalking = false;
+	bool isSprinting = false;
 	void loadAudio();
 	std::vector<Mix_Chunk*> mSoundEffectBank;
 };

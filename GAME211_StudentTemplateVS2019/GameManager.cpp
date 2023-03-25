@@ -5,7 +5,7 @@
 #include "EnemyBody.h"
 #include "Scene8.h"
 #include "Round.h"
-#include "SoundEffect.h"
+
 
 
 //GameManager Variables
@@ -308,6 +308,10 @@ void GameManager::handleEvents()
                 }
                 player->ApplyForceX(-speed);
             }
+            if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
+                event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
+                Sf.WalkingAudio(true);
+            }
 
 
             break;
@@ -328,21 +332,35 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_s)
             {
                 player->ApplyForceY(0);
+              
+
             }
             if (event.key.keysym.sym == SDLK_d)
             {
 
                 player->ApplyForceX(0);
+                
+
             }
             if (event.key.keysym.sym == SDLK_a)
             {
 
                 player->ApplyForceX(0);
+                
+
             }
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
                 isSprinting = false;
+
+            }
+            if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
+                event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
+
+                //Stop moving audio
+                Sf.WalkingAudio(false);
+
             }
 
 
@@ -360,6 +378,9 @@ void GameManager::handleEvents()
 				{
                     if (weaponManagement.ammoRemaining < 0)
                     {
+                        // Play Empty Magazine sound
+                        Sf.EmptyMag();
+
                         weaponManagement.ammoRemaining = 0;
                         outOfAmmo = true;
                     }
@@ -369,6 +390,9 @@ void GameManager::handleEvents()
 						bullets.at(weaponManagement.ammoRemaining).fired = true;
                         bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
                         weaponManagement.ammoRemaining--;
+
+                        // Play Pistol Audio
+                        Sf.PistolAudio(true);
                     }
                     
 
