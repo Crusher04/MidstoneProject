@@ -23,17 +23,39 @@ public:
 	//Variables
 	bool pistolEnabled, rifleEnabled, reloadStarted, isReloading, shotDelayFlag;
 	Uint32 pistolMagSize, rifleMagSize;
-	int pistolTimer, pistolTimerDelay, rifleTimer, rifleTimerDelay;
+	int pistolTimer, pistolTimerDelay, rifleTimer, rifleTimerDelay, ammoRemaining;
 	int pistolTimeBetweenShots, rifleTimeBetweenShots, shotDelay;
+	float bulletSpeed;
 
-	//Constructor
+	//Default Constructor
 	WeaponManagement();
 
+	/// <summary>
+	/// Sets default variables for our class
+	/// </summary>
+	/// <param name="renderer_"></param>
+	/// <returns></returns>
 	bool onCreate(SDL_Renderer* renderer_);
+
+	/// <summary>
+	/// Reloads the weapon
+	/// </summary>
+	/// <returns></returns>
 	bool reloading();
 
+	/// <summary>
+	/// Checks for that delay between shots
+	/// </summary>
+	/// <returns></returns>
 	bool delayShots();
 
+	/// <summary>
+	/// Renders out of ammo UI
+	/// </summary>
+	/// <param name="renderer_"></param>
+	/// <param name="scale"></param>
+	/// <param name="playerPosX_"></param>
+	/// <param name="playerPosY_"></param>
 	void renderOutOfAmmo(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_);
 };
 

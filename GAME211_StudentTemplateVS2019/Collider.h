@@ -6,7 +6,10 @@
 */
 
 #include <stdio.h>
-#include "GameManager.h"
+#include <VMath.h>
+#include <Vector.h>
+using namespace MATH;
+
 
 #pragma once
 class Collider
@@ -18,6 +21,8 @@ public:
 	bool passthrough;
 	Vec3 previousPos;
 	bool active;
+
+	Collider();
 
 	//Constructor
 	Collider(float x_, float y_, float w_, float h_);

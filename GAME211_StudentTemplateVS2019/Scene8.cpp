@@ -94,127 +94,7 @@ void Scene8::Update(const float deltaTime) {
 		}
 	}
 
-	if (game->getPlayer()->angle < 180 && game->getPlayer()->angle > 140)
-	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 200;
-		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle;
-	}
-	if (game->getPlayer()->angle > -180 && game->getPlayer()->angle < -145)
-	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 200;
-		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle - 25;
-	}
-
-	// Calculate Bullet Position for if the player is facing right
-	if (game->getPlayer()->angle < 0 && game->getPlayer()->angle > -25)
-	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 75;
-		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle - 25;
-	}
-	if (game->getPlayer()->angle > 0 && game->getPlayer()->angle < 25)
-	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 50;
-		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle;
-	}
-
-	// Calculate Bullet Position for if the player is facing up
-	if (game->getPlayer()->angle > -145 && game->getPlayer()->angle < -75)
-	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 125;
-		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle - 75;
-	}
-	if (game->getPlayer()->angle > -75 && game->getPlayer()->angle < -25)
-	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 100;
-		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle - 50;
-	}
-
-	// Calculate Bullet Position for if the player is facing down
-	if (game->getPlayer()->angle < 150 && game->getPlayer()->angle > 70)
-	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 150;
-		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle + 25;
-	}
-	if (game->getPlayer()->angle < 70 && game->getPlayer()->angle > 20)
-	{
-		game->getPlayer()->gunLocation.x += game->bullets.at(game->bulletSelection).angle - 100;
-		game->getPlayer()->gunLocation.y += game->bullets.at(game->bulletSelection).angle + 35;
-	}
-
-
-	// Check to see if the bullet is fired and then set the position
-	if (game->bullets.at(game->bulletSelection).fired == false)
-	{
-		game->bullets.at(game->bulletSelection).setPos(game->getPlayer()->gunLocation);
-		//se.PistolAudio(game->fired);
-	}
-
-	// Check to see if bullet is fired and then call these functions.
-	if (game->fired == true)
-	{
-		game->bullets.at(game->bulletSelection).Shoot(deltaTime);
-		//game->fired == false;
-	}
-
-
-	// Update Each Bullet Position 
-	if (game->bulletSelection == 1 || game->bulletSelection > 0)
-	{
-		game->bullets.at(1).Update(deltaTime);
-	}
-	if (game->bulletSelection == 2 || game->bulletSelection > 0)
-	{
-		game->bullets.at(2).Update(deltaTime);
-	}
-	if (game->bulletSelection == 3 || game->bulletSelection > 0)
-	{
-		game->bullets.at(3).Update(deltaTime);
-	}
-	if (game->bulletSelection == 4 || game->bulletSelection > 0)
-	{
-		game->bullets.at(4).Update(deltaTime);
-	}
-	if (game->bulletSelection == 5 || game->bulletSelection > 0)
-	{
-		game->bullets.at(5).Update(deltaTime);
-	}
-	if (game->bulletSelection == 6 || game->bulletSelection > 0)
-	{
-		game->bullets.at(6).Update(deltaTime);
-	}
-	if (game->bulletSelection == 7 || game->bulletSelection > 0)
-	{
-		game->bullets.at(7).Update(deltaTime);
-	}
-	if (game->bulletSelection == 8 || game->bulletSelection > 0)
-	{
-		game->bullets.at(8).Update(deltaTime);
-	}
-	if (game->bulletSelection == 9 || game->bulletSelection > 0)
-	{
-		game->bullets.at(9).Update(deltaTime);
-	}
-	if (game->bulletSelection == 10 || game->bulletSelection > 0)
-	{
-		game->bullets.at(10).Update(deltaTime);
-	}
-	if (game->bulletSelection == 11 || game->bulletSelection > 0)
-	{
-		game->bullets.at(11).Update(deltaTime);
-	}
-	if (game->bulletSelection == 12 || game->bulletSelection > 0)
-	{
-		game->bullets.at(12).Update(deltaTime);
-	}
-	if (game->bulletSelection == 13 || game->bulletSelection > 0)
-	{
-		game->bullets.at(13).Update(deltaTime);
-	}
-	if (game->bulletSelection == 14 || game->bulletSelection > 0)
-	{
-		game->bullets.at(14).Update(deltaTime);
-	}
-
+	
 
 	//Checks to see if delay is over so player can take damage again
 	if (SDL_GetTicks() > timeOfDamage2)
@@ -233,11 +113,7 @@ void Scene8::Render() {
 	// render the zombies
 	game->RenderZombie(1.0f);
 
-	// render the bullets
-	if (game->fired == true)
-	{
-		game->RenderBullet(0.3f);
-	}
+	
 
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);

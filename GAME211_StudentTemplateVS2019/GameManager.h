@@ -33,7 +33,6 @@ private:
     class PlayerBody *player;
 	class Round	*round;	
 	class ZombieSpawner *zombies;	
-	class Bullet* bullet;
 
 public:
 
@@ -53,17 +52,12 @@ public:
     PlayerBody* getPlayer(){ return player; }
 	void RenderPlayer(float scale = 1.0f);
 	SDL_Renderer* getRenderer();
-	bool w;
 	float speed;
-	bool e;
 	void Run();
 	void handleEvents();
 	void LoadScene( int i );
     bool ValidateCurrentScene();
 	bool isMoving;
-	bool reload;
-
-	
 
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;
@@ -74,49 +68,32 @@ public:
 
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
-	float ammoCount;
-
 	bool isSprinting;
 
-
-	bool bulletRendered;
-
-
-	int i[7];
-
-	bool bulletFired;
-
-	bool zombieSpawned;
-	bool zombieRender[5];
-
-	
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
 	
 	//Bullet Variables
-	bool fired;
-	bool fired1;
-	bool fired2;
-	bool fired3;
-	bool fired4;
-	bool fired5;
-	bool fired6;
-	bool fired7;
-	bool fired8;
-	float bulletSpeed;
-	int bulletSelection = 0;
-	std::vector<Bullet> bullets;
+	
 
 	//Weapon Management
 	WeaponManagement weaponManagement;
+	Bullet bulletHolder;
+	std::vector <Bullet> bullets;
+	std::vector <Bullet> bulletsInMotion;
 	bool outOfAmmo;
+	
+	
 
 	//Round UI
 	NumbersUI RoundUI;
 
 	//HealthUI
 	NumbersUI HealthUI;
+
+	//ZombieCounterUI
+	NumbersUI ZombieCounterUI;
 
 	/////////////////////////////////////
 	//ALL FUNCTIONS GO DOWN HERE
@@ -126,7 +103,7 @@ public:
 	/// Renders the bullet
 	/// </summary>
 	/// <param name="scale"></param>
-	void RenderBullet(float scale = 1.0f);
+	void RenderBullet(int i);
 
 	/// <summary>
 	/// Renders the out of ammo UI for when out of ammo
@@ -138,13 +115,15 @@ public:
 	/// </summary>
 	void RenderRoundUI();
 
+	/// <summary>
+	/// Renders UI for Health
+	/// </summary>
 	void RenderHealthUI();
 
 	/// <summary>
-	/// returns bullet class
+	/// Renders UI for Zombie Count
 	/// </summary>
-	/// <returns></returns>
-	Bullet* getBullet() { return bullet; }
+	void RenderZombieCountUI();
 	
 	/// <summary>
 	/// gets the round
