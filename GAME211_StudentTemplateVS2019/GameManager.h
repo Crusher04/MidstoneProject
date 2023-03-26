@@ -137,20 +137,22 @@ public:
 
 
 	//Item Management
-	ItemManagement itemManagement;
-
+	//ItemManagement itemManagement;
+	std::vector <ItemManagement> itemManagement;
 	/// <summary>
 	/// Renders Items
 	/// </summary>
 	void RenderItem();
 
-	//Temporary Zombie Location;
-	Vec3 tempZombieLocation;
+	//Item Spawn Location;
+	Vec3 itemSpawnLocation;
 
 	/// <summary>
 	/// Applies Drop Effect
 	/// </summary>
 	void DropEffects();
+
+	
 
 
 

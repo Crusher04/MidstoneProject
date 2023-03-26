@@ -12,8 +12,12 @@ bool ItemManagement::onCreate(SDL_Renderer* renderer_)
 
 	dropChance = 0;
 	item = 0;
-	dropPercentage = 5;
+	dropPercentage = 100;
 
+	itemPickup = false;
+
+	dropTimer = 0;
+	
 	//Load Item Drop Image
 
 	image = IMG_Load("Assets/ItemDrops/HealthDrop.png");
@@ -104,66 +108,34 @@ void ItemManagement::Drops()
 	std::srand((unsigned int)time(NULL));
 	dropChance = (rand() % dropPercentage) + 1;
 
-	if (dropChance == 1)
+	if (dropChance >= 0 && dropChance <= 10)
 	{
+		//Randomizes which drop it is and spawns that drop
 		RandomizeDrops();
 		itemDrop = true;
+		
+		//Creates a timer so that the drop disappears after a certain amount of time
+		dropTimer = 3000;
+		dropTimerDelay = SDL_GetTicks() + dropTimer;
 
+		//Sets ItemPickup to false to ensure that the player can only pickup the item when the player is near it 
+		itemPickup = false;
 	}
 
-	if (dropChance == 2)
+	if (dropChance >= 9)
 	{
 
 		itemDrop = false;
 
 	}
-	if (dropChance == 3)
-	{
 
-		itemDrop = false;
+}
 
-	}
-	if (dropChance == 4)
-	{
+void ItemManagement::IncreaseDropPercentage()
+{
+	//Function that can be called to increase the drop percentage
 
-		itemDrop = false;
+	dropPercentage -= 2;
 
-	}
-	if (dropChance == 5)
-	{
-
-		itemDrop = false;
-
-	}
-	if (dropChance == 6)
-	{
-
-		itemDrop = false;
-
-	}
-	if (dropChance == 7)
-	{
-
-		itemDrop = false;
-
-	}
-	if (dropChance == 8)
-	{
-
-		itemDrop = false;
-
-	}
-	if (dropChance == 9)
-	{
-
-		itemDrop = false;
-
-	}
-	if (dropChance == 10)
-	{
-
-		itemDrop = false;
-
-	}
 
 }

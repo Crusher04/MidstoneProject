@@ -11,7 +11,7 @@
 //GameManager Variables
 ZombieSpawner zombies2;
 Bullet bullet2;
-
+ItemManagement items;
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -54,7 +54,7 @@ bool GameManager::OnCreate() {
     
     speed = 1000;
     isSprinting = false;
-    
+
 
 
     /////////////////////////////////
@@ -153,7 +153,15 @@ bool GameManager::OnCreate() {
     ////////////////////////////////
     //Item Initialization
     ////////////////////////////////
-    itemManagement.onCreate(getRenderer());
+    
+    items.onCreate(getRenderer());
+    for (int i = 0; i < this->round->getZombieAmount(); i++)
+    {
+   
+        itemManagement.push_back(items);
+    }
+
+
 
 	return true;
 }
@@ -230,21 +238,22 @@ void GameManager::handleEvents()
             }
 
 
-            /////////////////////////////////
+            ////////////////////////////////
             // Item Pickup 
             ////////////////////////////////
             if (event.key.keysym.sym == SDLK_e)
             {
               
-                if (itemManagement.itemDrop == true)
+                if (itemManagement.at(1).itemDrop == true && itemManagement.at(1).itemPickup == true)
                 {
                     //Apply Effects of Item Drop
                     DropEffects();
 
                     //Reset all Item Drop bools to false
-                    itemManagement.healthDrop = false;
-                    itemManagement.bigHealthDrop = false;
-                    itemManagement.itemDrop = false;
+                    itemManagement.at(1).healthDrop = false;
+                    itemManagement.at(1).bigHealthDrop = false;
+                    itemManagement.at(1).itemDrop = false;
+                    itemManagement.at(1).itemPickup = false;
                 }
 
             }
@@ -584,9 +593,9 @@ void GameManager::zombieArrayInit()
 
 void GameManager::RenderItem()
 {
-    if (itemManagement.itemDrop == true)
+    if (itemManagement.at(1).itemDrop == true)
     {
-        itemManagement.Render(getRenderer(), 0.35f, tempZombieLocation.x + 50, tempZombieLocation.y + 100);
+        itemManagement.at(1).Render(getRenderer(), 0.35f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
     }
     
 
@@ -601,16 +610,16 @@ void GameManager::DropEffects()
     //If you want to add more new effects for new item drops, just create another "if" statement for that item drop
     //Make sure to always set the specific item drop bool to false at the end of each "if" statement
 
-    if (itemManagement.healthDrop == true)
+    if (itemManagement.at(1).healthDrop == true)
     {
         getPlayer()->health.healPlayer(10);
-        itemManagement.healthDrop = false;
+        itemManagement.at(1).healthDrop = false;
     }
 
-    if (itemManagement.bigHealthDrop == true)
+    if (itemManagement.at(1).bigHealthDrop == true)
     {
         getPlayer()->health.healPlayer(30);
-        itemManagement.bigHealthDrop = false;
+        itemManagement.at(1).bigHealthDrop = false;
     }
 
 }

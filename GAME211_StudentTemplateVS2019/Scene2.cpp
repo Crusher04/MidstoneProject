@@ -19,6 +19,9 @@ Collider playerColl(1000, 8, 1, 3);			//Player collider initilization
 Collider enemyColl(300, 800, 10, 10);		//zombie collider holder
 Collider bulletColl(0, 0, 1, 1);			//Bullet collider holder
 std::vector<Collider> zombieCollArr;		//zombie collider vector array
+Collider itemDropColl(1000, 1000, 1, 1);    //ItemDrop collider initialization
+
+
 
 /***** SCENE VARIABLES *****/
 
@@ -98,7 +101,7 @@ bool Scene2::OnCreate() {
 	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 
-
+	
 	
 
 	enemyColl.passthrough = false;
@@ -375,12 +378,14 @@ void Scene2::Update(const float deltaTime) {
 
 			if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 			{
-				if (game->itemManagement.itemDrop == false)
+				//Calling Function to see if an item drops when a zombie is killed 
+				if (game->itemManagement.at(1).itemDrop == false)
 				{
-					game->tempZombieLocation = game->zombieSpawnerArr2.at(i).getPos();
-					
-					game->itemManagement.Drops();
+					game->itemManagement.at(1).itemPickup = false;
+					game->itemSpawnLocation = game->zombieSpawnerArr2.at(i).getPos();
+					game->itemManagement.at(1).Drops();
 				}
+
 				zombieCollArr.at(i).active = false;
 				game->getRound()->removeAZombie();
 	
@@ -391,7 +396,31 @@ void Scene2::Update(const float deltaTime) {
 		}
 	}
 
+	/////////////////////////////////
+	///Item Drops Management
+	/////////////////////////////////
+	
 
+	//Setting the items collision bounds and position
+	if (game->itemManagement.at(1).itemDrop == true)
+	{
+
+		itemDropColl.setCollBounds(game->itemManagement.at(1).getImage()->w * 0.35, game->itemManagement.at(1).getImage()->h * 0.35);
+		itemDropColl.setCollPosition(game->itemSpawnLocation.x, game->itemSpawnLocation.y);
+		if (game->itemManagement.at(1).dropTimerDelay < SDL_GetTicks())
+		{
+			game->itemManagement.at(1).itemDrop = false;
+		}
+
+	}
+
+	//Checking to see if the player collides with an item
+	if (itemDropColl.checkCollBox(playerColl, itemDropColl))
+	{
+
+		game->itemManagement.at(1).itemPickup = true;
+
+	}
 
 
 
