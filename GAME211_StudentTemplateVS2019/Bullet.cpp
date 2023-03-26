@@ -9,10 +9,11 @@ Bullet::Bullet()
     mouse_Y = 0;
     ammo = 0;
     fired = false;
-	pos.x = 0;
-	pos.y = 0;
+	pos.x = -20;
+	pos.y = -20;
 	chamberRelease = false;
 	active = true;
+	pushedBack = false;
 }
 
 void Bullet::OnCreate(SDL_Renderer* renderer_)
@@ -82,7 +83,7 @@ void Bullet::Update(float deltaTime)
     // Note that would update velocity too, and rotation motion
 
     Body::Update(deltaTime);
-
+	collider.setCollPosition(pos.x, pos.y);
 }
 
 void Bullet::Shoot(float deltaTime, float playerX, float playerY, float bulletSpeed)

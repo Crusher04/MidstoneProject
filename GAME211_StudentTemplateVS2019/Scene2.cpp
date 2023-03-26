@@ -22,6 +22,9 @@ std::vector<Collider> zombieCollArr;		//zombie collider vector array
 Collider itemDropColl(1000, 1000, 1, 1);    //ItemDrop collider initialization
 
 
+Collider playerColl(1000, 8, 1, 3);				//Player collider initilization 
+Collider enemyColl(300, 800, 10, 10);			//zombie collider holder
+std::vector<Collider> zombieCollArr;			//zombie collider vector array
 
 /***** SCENE VARIABLES *****/
 
@@ -315,6 +318,37 @@ void Scene2::Update(const float deltaTime) {
 	//Bullet Management
 	/////////////////////////////////
 
+	//Managing Reloading
+	if (game->weaponManagement.reloading())
+	{
+		//Check for bullets already fired, move them to in motion
+		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
+		{
+			if (game->bullets.at(i).fired)
+			{
+				game->bulletsInMotion.push_back(game->bullets.at(i));
+				std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
+			}
+		}
+
+		//Clear original magazine
+		game->bullets.clear();
+
+		//re-initialize magazine
+		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
+		{
+			game->bullets.push_back(game->bulletHolder);
+		}
+		game->weaponManagement.ammoRemaining = game->weaponManagement.pistolMagSize - 1;
+
+	}
+	else
+	{
+		game->weaponManagement.shotDelayFlag = false;
+	}
+
+
+
 	//Managing bullet position and movement
 	for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 	{
@@ -324,55 +358,61 @@ void Scene2::Update(const float deltaTime) {
 			{
 				game->bullets.at(i).setPos(Vec3(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, 0));
 			}
-
-			game->bullets.at(i).Shoot(deltaTime, game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, game->weaponManagement.bulletSpeed);
+			game->bullets.at(i).Shoot(deltaTime, game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, game->weaponManagement.bulletSpeed);	
 			
 		}
 
 	}
 
-	//Managing Reloading
-	if (game->weaponManagement.reloading())
+
+	//Update Bullets that are already in motion
+	if (game->bulletsInMotion.size() > 0)
 	{
-		game->bullets.clear();
-		
-		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
-		{
-			game->bullets.push_back(game->bulletHolder);
-		}
-		game->weaponManagement.ammoRemaining = game->weaponManagement.pistolMagSize - 1;	
-		
-	}
-	else
-	{
-		game->weaponManagement.shotDelayFlag = false;
+		for (int j = 0; j < game->bulletsInMotion.size(); j++)
+			game->bulletsInMotion.at(j).Update(deltaTime);
 	}
 
 
 	//Managing Collision of bullets with zombies
 	for (int i = 0; i < zombieCollArr.size(); i++)
 	{
-		for (int j = 0; j < game->weaponManagement.pistolMagSize; j++)
+		//Check for collisions with bullets 
+		for (int k = 0; k < game->weaponManagement.pistolMagSize; k++)
 		{
-			if (game->bullets.at(j).fired)
+
+			if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, zombieCollArr.at(i)))
 			{
-				bulletColl.setCollPosition(game->bullets.at(j).getPos().x, game->bullets.at(j).getPos().y);
-				bulletColl.active = game->bullets.at(j).active;
-				break;
-			}
+				std::cout << "Zombie " << i << " hit!\n";
+				game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+				game->bullets.at(k).collider.active = false;
+
+				if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+				{
+					zombieCollArr.at(i).active = false;
+					game->getRound()->removeAZombie();
+				}
+			}	
 		}
 
-		if (bulletColl.checkCollBox(bulletColl, zombieCollArr.at(i)))
+
+		//Check collisions for bullets in motion (Bullets in motion are bullets still in motion after user reloads)
+		if (game->bulletsInMotion.size() > 0)
 		{
-			std::cout << "ZOMBIE HIT\n";
-			game->zombieSpawnerArr2.at(i).health.takeDamage(25);
-		
-			for (int j = 0; j < game->weaponManagement.pistolMagSize; j++)
+			for (int j = 0; j < game->bulletsInMotion.size(); j++)
 			{
-				if (game->bullets.at(j).fired)
+				if (game->bulletsInMotion.at(j).collider.checkCollBox(game->bulletsInMotion.at(j).collider, zombieCollArr.at(i)))
 				{
-					game->bullets.at(j).active = false;
-					break;
+					std::cout << "Zombie " << i << " hit!\n";
+					game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+					game->bulletsInMotion.at(j).collider.active = false;
+					game->bulletsInMotion.erase(game->bulletsInMotion.begin() + j);
+					std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
+
+					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+					{
+						zombieCollArr.at(i).active = false;
+						game->getRound()->removeAZombie();
+					}
 				}
 			}
 
@@ -423,6 +463,20 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 
+	//Bullets In Motion Resource Management
+	/////////////////////////////////
+	if (game->bulletsInMotion.size() > 0)
+	{
+		for (int i = 0; i < game->bulletsInMotion.size(); i++)
+		{
+			if (game->bulletsInMotion.at(i).getPos().x > 2000 || game->bulletsInMotion.at(i).getPos().y > 1100 || game->bulletsInMotion.at(i).getPos().x < -10 || game->bulletsInMotion.at(i).getPos().y < -10)
+			{
+				game->bulletsInMotion.erase(game->bulletsInMotion.begin() + i);
+				std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
+
+			}
+		}
+	}
 
 	/////////////////////////////////
 	//Player Health/Damage Check
