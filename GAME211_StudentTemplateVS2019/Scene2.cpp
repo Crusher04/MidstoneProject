@@ -17,14 +17,8 @@
 //Collider locations
 Collider playerColl(1000, 8, 1, 3);			//Player collider initilization 
 Collider enemyColl(300, 800, 10, 10);		//zombie collider holder
-Collider bulletColl(0, 0, 1, 1);			//Bullet collider holder
 std::vector<Collider> zombieCollArr;		//zombie collider vector array
 Collider itemDropColl(1000, 1000, 1, 1);    //ItemDrop collider initialization
-
-
-Collider playerColl(1000, 8, 1, 3);				//Player collider initilization 
-Collider enemyColl(300, 800, 10, 10);			//zombie collider holder
-std::vector<Collider> zombieCollArr;			//zombie collider vector array
 
 /***** SCENE VARIABLES *****/
 
@@ -436,10 +430,25 @@ void Scene2::Update(const float deltaTime) {
 		}
 	}
 
+	//Bullets In Motion Resource Management
+	/////////////////////////////////
+	if (game->bulletsInMotion.size() > 0)
+	{
+		for (int i = 0; i < game->bulletsInMotion.size(); i++)
+		{
+			if (game->bulletsInMotion.at(i).getPos().x > 2000 || game->bulletsInMotion.at(i).getPos().y > 1100 || game->bulletsInMotion.at(i).getPos().x < -10 || game->bulletsInMotion.at(i).getPos().y < -10)
+			{
+				game->bulletsInMotion.erase(game->bulletsInMotion.begin() + i);
+				std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
+
+			}
+		}
+	}
+
 	/////////////////////////////////
 	///Item Drops Management
 	/////////////////////////////////
-	
+
 
 	//Setting the items collision bounds and position
 	if (game->itemManagement.at(1).itemDrop == true)
@@ -463,20 +472,7 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 
-	//Bullets In Motion Resource Management
-	/////////////////////////////////
-	if (game->bulletsInMotion.size() > 0)
-	{
-		for (int i = 0; i < game->bulletsInMotion.size(); i++)
-		{
-			if (game->bulletsInMotion.at(i).getPos().x > 2000 || game->bulletsInMotion.at(i).getPos().y > 1100 || game->bulletsInMotion.at(i).getPos().x < -10 || game->bulletsInMotion.at(i).getPos().y < -10)
-			{
-				game->bulletsInMotion.erase(game->bulletsInMotion.begin() + i);
-				std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
 
-			}
-		}
-	}
 
 	/////////////////////////////////
 	//Player Health/Damage Check

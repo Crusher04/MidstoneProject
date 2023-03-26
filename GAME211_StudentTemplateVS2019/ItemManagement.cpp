@@ -108,7 +108,7 @@ void ItemManagement::Drops()
 	std::srand((unsigned int)time(NULL));
 	dropChance = (rand() % dropPercentage) + 1;
 
-	if (dropChance >= 0 && dropChance <= 10)
+	if (dropChance >= 0 && dropChance <= 50)
 	{
 		//Randomizes which drop it is and spawns that drop
 		RandomizeDrops();
@@ -122,7 +122,7 @@ void ItemManagement::Drops()
 		itemPickup = false;
 	}
 
-	if (dropChance >= 9)
+	if (dropChance >= 49)
 	{
 
 		itemDrop = false;
