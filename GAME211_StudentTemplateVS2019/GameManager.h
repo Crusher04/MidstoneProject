@@ -13,6 +13,9 @@
 #include "WeaponManagement.h"
 #include "NumbersUI.h"
 #include "ItemManagement.h"
+#include "SoundEffect.h"
+#include "Music.h"
+
 class GameManager {
 private:
 	/// These are called "forward declarations" The idea is that a pointer is 
@@ -58,6 +61,10 @@ public:
 	void LoadScene( int i );
     bool ValidateCurrentScene();
 	bool isMoving;
+
+	//Audio variable
+	SoundEffect Sf;
+	Music Ms;
 
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;
