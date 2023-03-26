@@ -19,6 +19,7 @@ void SoundEffect::loadAudio()
 	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-83900.wav"); //2
 	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-slow-83900.wav"); //3
 	addAudio("Audio/Sound effect/Weapon SFX/Empty-gun-sound-72163.wav"); //4
+	addAudio("Audio/Sound effect/Weapon SFX/pistol-cock-6014.wav"); //5
 }
 
 void SoundEffect::addAudio(const char* path)
@@ -112,4 +113,9 @@ void SoundEffect::setSoundVolume(int v)
 	volume = (MIX_MAX_VOLUME * v) / 100;
 	std::cout << "Volume of sound effect " << volume << std::endl;
 	Volume = volume;
+}
+
+void SoundEffect::ReloadAudio() const
+{
+	Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[5], 0);
 }

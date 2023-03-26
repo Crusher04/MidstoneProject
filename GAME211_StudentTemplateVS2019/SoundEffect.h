@@ -31,6 +31,9 @@ public:
 
 	//Convert SoundEffect volume from percentage
 	void setSoundVolume(int v);
+
+	//Play Reload sound
+	void ReloadAudio() const;
 private:
 	int Volume;
 	bool isWalking = false;

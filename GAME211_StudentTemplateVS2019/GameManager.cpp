@@ -220,6 +220,7 @@ void GameManager::handleEvents()
                     weaponManagement.shotDelayFlag = true;
                     weaponManagement.reloadStarted = true;
                     outOfAmmo = false;
+                    Sf.ReloadAudio();
                 } 
 
             }
