@@ -546,6 +546,8 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						std::cout << "Mouse Pressed Menu\n";
 						game->isStartMenuActive = false;
 						game->gamePaused = false;
+						zombieCollArr.clear();
+						zombieInitComplete = false;
 						game->LoadScene(3);
 					}
 

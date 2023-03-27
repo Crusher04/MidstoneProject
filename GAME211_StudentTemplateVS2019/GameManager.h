@@ -50,7 +50,6 @@ public:
 	bool OnCreate();
 	void OnDestroy();
 	bool isStartMenuActive;
-	
 
 	// These might be unfamiliar
 	float getSceneHeight();

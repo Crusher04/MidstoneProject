@@ -22,6 +22,7 @@ GameManager::GameManager() {
     round = nullptr;
     gamePaused = false;
     
+    
 }
 
 bool GameManager::OnCreate() {
