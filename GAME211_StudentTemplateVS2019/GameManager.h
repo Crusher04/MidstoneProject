@@ -93,7 +93,22 @@ public:
 	std::vector <Bullet> bulletsInMotion;
 	bool outOfAmmo;
 	
-	
+	//Damage of a bullet
+	int bulletDamage;
+
+
+	///Item Variables
+
+	//Item Management
+	ItemManagement itemManagement;
+	//Item Spawn Location;
+	Vec3 itemSpawnLocation;
+
+	//Bool for if the player is using the golden gun
+	bool goldenGunOn;
+	//Variables for the golden gun timer
+	int goldenGunTimer, goldenGunTimerDelay;
+
 
 	//Round UI
 	NumbersUI RoundUI;
@@ -142,27 +157,19 @@ public:
 
 	void zombieArrayInit();
 
-
-
-	//Item Management
-	//ItemManagement itemManagement;
-	std::vector <ItemManagement> itemManagement;
+	//std::vector <ItemManagement> itemManagement;
 	/// <summary>
 	/// Renders Items
 	/// </summary>
 	void RenderItem();
 
-	//Item Spawn Location;
-	Vec3 itemSpawnLocation;
-
 	/// <summary>
-	/// Applies Drop Effect
+	/// Applies Item Drop Effect
 	/// </summary>
 	void DropEffects();
 
 	
-
-
+	
 
 };
 #endif

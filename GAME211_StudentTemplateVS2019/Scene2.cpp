@@ -100,7 +100,6 @@ bool Scene2::OnCreate() {
 
 	
 
-
 	enemyColl.passthrough = false;
 	zombieSpawnTime = 0;
 	zombieTimeBetweenSpawn = 1500;
@@ -159,6 +158,7 @@ void Scene2::Update(const float deltaTime) {
 	}
 	
 
+
 	/* THIS WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY*/
 	if (holdPosX != (int)playerColl.x || holdPosY != (int)playerColl.y)
 	{
@@ -202,7 +202,7 @@ void Scene2::Update(const float deltaTime) {
 		
 	}
 
-	std::cout << game->getPlayer()->health.getHealth() << std::endl;
+	std::cout << game->itemManagement.itemDrop << std::endl;
 
 	/////////////////////////////////
 	//Zombie Spawning / Round Management
@@ -377,11 +377,21 @@ void Scene2::Update(const float deltaTime) {
 			if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, zombieCollArr.at(i)))
 			{
 				std::cout << "Zombie " << i << " hit!\n";
-				game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+				game->zombieSpawnerArr2.at(i).health.takeDamage(game->bulletDamage);
 				game->bullets.at(k).collider.active = false;
 
 				if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 				{
+					//Calling Function to see if an item drops when a zombie is killed 
+					if (game->itemManagement.itemDrop == false)
+					{
+						game->itemManagement.itemPickup = false;
+						game->itemSpawnLocation = game->zombieSpawnerArr2.at(i).getPos();
+						game->itemManagement.Drops();
+
+					}
+
+
 					zombieCollArr.at(i).active = false;
 					game->getRound()->removeAZombie();
 				}
@@ -397,22 +407,13 @@ void Scene2::Update(const float deltaTime) {
 				if (game->bulletsInMotion.at(j).collider.checkCollBox(game->bulletsInMotion.at(j).collider, zombieCollArr.at(i)))
 				{
 					std::cout << "Zombie " << i << " hit!\n";
-					game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bulletDamage);
 					game->bulletsInMotion.at(j).collider.active = false;
 					game->bulletsInMotion.erase(game->bulletsInMotion.begin() + j);
 					std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
 
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 					{
-
-						//Calling Function to see if an item drops when a zombie is killed 
-						if (game->itemManagement.at(0).itemDrop == false)
-						{
-							game->itemManagement.at(0).itemPickup = false;
-							game->itemSpawnLocation = game->zombieSpawnerArr2.at(i).getPos();
-							game->itemManagement.at(0).Drops();
-						}
-
 						zombieCollArr.at(i).active = false;
 						game->getRound()->removeAZombie();
 					}
@@ -442,14 +443,16 @@ void Scene2::Update(const float deltaTime) {
 
 
 	//Setting the items collision bounds and position
-	if (game->itemManagement.at(0).itemDrop == true)
+	if (game->itemManagement.itemDrop == true)
 	{
 
-		itemDropColl.setCollBounds(game->itemManagement.at(0).getImage()->w * 0.35, game->itemManagement.at(0).getImage()->h * 0.35);
+		itemDropColl.setCollBounds(game->itemManagement.getImage()->w * 0.35, game->itemManagement.getImage()->h * 0.35);
 		itemDropColl.setCollPosition(game->itemSpawnLocation.x, game->itemSpawnLocation.y);
-		if (game->itemManagement.at(0).dropTimerDelay < SDL_GetTicks())
+		
+		//Despawns the item drop after a certain amount of time
+		if (game->itemManagement.dropTimerDelay <= SDL_GetTicks())
 		{
-			game->itemManagement.at(0).itemDrop = false;
+			game->itemManagement.itemDrop = false;
 		}
 
 	}
@@ -458,7 +461,22 @@ void Scene2::Update(const float deltaTime) {
 	if (itemDropColl.checkCollBox(playerColl, itemDropColl))
 	{
 
-		game->itemManagement.at(0).itemPickup = true;
+		game->itemManagement.itemPickup = true;
+
+	}
+
+
+	//Checking to see if the golden gun drop is active	
+	if (game->goldenGunOn == true)
+	{
+		//Set the bullet damage back to normal if the golden gun timer runs out
+		if (game->goldenGunTimerDelay <= SDL_GetTicks())
+		{
+
+			game->bulletDamage = 25;
+
+		}
+
 
 	}
 
@@ -512,7 +530,7 @@ void Scene2::Render() {
 
 	}
 	
-	game->RenderItem();
+	
 
 
 	game->RenderOutOfAmmo();
@@ -522,7 +540,7 @@ void Scene2::Render() {
 	game->RenderHealthUI();
 
 	game->RenderZombieCountUI();
-
+	game->RenderItem();
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }

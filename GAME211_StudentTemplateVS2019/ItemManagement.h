@@ -15,18 +15,20 @@ class ItemManagement
 protected:
 
 	//for image rendering
-	SDL_Surface* image;
 	SDL_Renderer* renderer;
-	SDL_Texture* texture;
-
-
+	SDL_Surface* healthImage;
+	SDL_Texture* healthTexture;
+	SDL_Surface* goldenGunImage;
+	SDL_Texture* goldenGunTexture;
+	SDL_Surface* speedBoostImage;
+	SDL_Texture* speedBoostTexture;
 
 public:
 
 	///Variables
 
 	//Bools for each different item drop
-	bool healthDrop, bigHealthDrop;
+	bool healthDrop, goldenGunDrop, speedBoostDrop;
 	
 	//Bools for whether an item has dropped or not and if an item is able to be picked up or not
 	bool itemDrop;
@@ -49,10 +51,15 @@ public:
 
 	bool onCreate(SDL_Renderer* renderer_);
 
-	SDL_Surface* getImage() { return image; }
+	SDL_Surface* getImage() { return healthImage; }
 
 
-	void Render(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_);
+
+	void RenderHealth(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_);
+
+	void RenderGoldenGun(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_);
+
+	void RenderSpeedBoost(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_);
 
 	//Randomly chooses which drop will be spawned
 	void RandomizeDrops();
@@ -64,7 +71,7 @@ public:
 	//Can be called at the end of each round or can be called for if a player picks up an item
 	void IncreaseDropPercentage();
 
-
+	void ResetBools();
 
 
 };

@@ -11,7 +11,7 @@
 //GameManager Variables
 ZombieSpawner zombies2;
 Bullet bullet2;
-ItemManagement items;
+//ItemManagement items;
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -54,7 +54,7 @@ bool GameManager::OnCreate() {
     
     speed = 1000;
     isSprinting = false;
-
+    bulletDamage = 25;
 
 
     /////////////////////////////////
@@ -154,13 +154,13 @@ bool GameManager::OnCreate() {
     //Item Initialization
     ////////////////////////////////
     
-    items.onCreate(getRenderer());
-    for (int i = 0; i < this->round->getZombieAmount(); i++)
-    {
+    //items.onCreate(getRenderer());
+    //for (int i = 0; i < this->round->getZombieAmount(); i++)
+    //{
    
-        itemManagement.push_back(items);
-    }
-
+    //    itemManagement.push_back(items);
+    //}
+    itemManagement.onCreate(getRenderer());
 
 
 	return true;
@@ -245,16 +245,13 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_e)
             {
               
-                if (itemManagement.at(0).itemDrop == true && itemManagement.at(0).itemPickup == true)
+                if (itemManagement.itemDrop == true && itemManagement.itemPickup == true)
                 {
                     //Apply Effects of Item Drop
                     DropEffects();
 
                     //Reset all Item Drop bools to false
-                    itemManagement.at(0).healthDrop = false;
-                    itemManagement.at(0).bigHealthDrop = false;
-                    itemManagement.at(0).itemDrop = false;
-                    itemManagement.at(0).itemPickup = false;
+                    itemManagement.ResetBools();
                 }
 
             }
@@ -280,71 +277,23 @@ void GameManager::handleEvents()
             {
                 // Start moving player up
            
-                if (isSprinting == true)
-                {
-
-                    speed = 5000;
-
-                }
-                if (isSprinting == false)
-                {
-
-                    speed = 1000;
-
-                }
                 player->ApplyForceY(-speed);
             }
             if (event.key.keysym.sym == SDLK_s)
             {
                 
-                if (isSprinting == true)
-                {
-
-                    speed = 5000;
-
-                }
-                if (isSprinting == false)
-                {
-
-                    speed = 1000;
-
-                }
+             
                 player->ApplyForceY(speed);
 
             }
             if (event.key.keysym.sym == SDLK_d)
             {
 
-                
-                if (isSprinting == true)
-                {
-
-                    speed = 5000;
-
-                }
-                if (isSprinting == false)
-                {
-
-                    speed = 1000;
-
-                }
                 player->ApplyForceX(speed);
             }
             if (event.key.keysym.sym == SDLK_a)
             {
                 
-                if (isSprinting == true)
-                {
-
-                    speed = 5000;
-
-                }
-                if (isSprinting == false)
-                {
-
-                    speed = 1000;
-
-                }
                 player->ApplyForceX(-speed);
             }
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
@@ -632,13 +581,20 @@ void GameManager::zombieArrayInit()
 
 void GameManager::RenderItem()
 {
-    if (itemManagement.at(0).itemDrop == true)
+    if (itemManagement.itemDrop == true && itemManagement.healthDrop == true)
     {
-        itemManagement.at(0).Render(getRenderer(), 0.35f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+        itemManagement.RenderHealth(getRenderer(), 0.50f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
     }
     
+    if (itemManagement.itemDrop == true && itemManagement.goldenGunDrop == true)
+    {
+        itemManagement.RenderGoldenGun(getRenderer(), 0.95f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+    }
 
-
+    if (itemManagement.itemDrop == true && itemManagement.speedBoostDrop == true)
+    {
+        itemManagement.RenderSpeedBoost(getRenderer(), 0.45f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+    }
 
 }
 
@@ -649,19 +605,29 @@ void GameManager::DropEffects()
     //If you want to add more new effects for new item drops, just create another "if" statement for that item drop
     //Make sure to always set the specific item drop bool to false at the end of each "if" statement
 
-    if (itemManagement.at(0).healthDrop == true)
+    if (itemManagement.healthDrop == true)
     {
         getPlayer()->health.healPlayer(10);
-        itemManagement.at(0).healthDrop = false;
+        itemManagement.healthDrop = false;
     }
 
-    if (itemManagement.at(0).bigHealthDrop == true)
+    if (itemManagement.goldenGunDrop == true)
     {
-        getPlayer()->health.healPlayer(30);
-        itemManagement.at(0).bigHealthDrop = false;
+        bulletDamage = 150;
+        goldenGunTimer = 13000;
+        goldenGunTimerDelay = SDL_GetTicks() + goldenGunTimer;
+        goldenGunOn = true;
+        itemManagement.goldenGunDrop = false;
     }
+
+    if (itemManagement.speedBoostDrop == true)
+    {
+        speed *= 1.5f;
+    }
+
 
 }
+
 
 void GameManager::LoadScene( int i )
 {

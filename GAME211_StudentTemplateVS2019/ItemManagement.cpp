@@ -7,7 +7,8 @@ bool ItemManagement::onCreate(SDL_Renderer* renderer_)
 {
 	//Run These First to init variables
 	healthDrop = false;
-	bigHealthDrop = false;
+	goldenGunDrop = false;
+	speedBoostDrop = false;
 	itemDrop = false;
 
 	dropChance = 0;
@@ -19,21 +20,37 @@ bool ItemManagement::onCreate(SDL_Renderer* renderer_)
 	dropTimer = 0;
 	
 	//Load Item Drop Image
-
-	image = IMG_Load("Assets/ItemDrops/HealthDrop.png");
 	renderer = renderer_;
-	texture = SDL_CreateTextureFromSurface(renderer, image);
-	if (image == nullptr) {
+
+	healthImage = IMG_Load("Assets/ItemDrops/HealthDropSmall.png");
+	healthTexture = SDL_CreateTextureFromSurface(renderer, healthImage);
+	if (healthImage == nullptr) {
 		std::cerr << "Can't open the image" << std::endl;
 		return false;
 	}
+
+	goldenGunImage = IMG_Load("Assets/ItemDrops/GoldenGunClear.png");
+	goldenGunTexture = SDL_CreateTextureFromSurface(renderer, goldenGunImage);
+	if (goldenGunImage == nullptr) {
+		std::cerr << "Can't open the image" << std::endl;
+		return false;
+	}
+
+	speedBoostImage = IMG_Load("Assets/ItemDrops/SpeedBoostDrop.png");
+	speedBoostTexture = SDL_CreateTextureFromSurface(renderer, speedBoostImage);
+	if (speedBoostImage == nullptr) {
+		std::cerr << "Can't open the image" << std::endl;
+		return false;
+	}
+
+
 	return true;
 }
 
 
 
 
-void ItemManagement::Render(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_)
+void ItemManagement::RenderHealth(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_)
 {
 
 	//Assign renderer
@@ -43,8 +60,8 @@ void ItemManagement::Render(SDL_Renderer* renderer_, float scale, float playerPo
 	 SDL_Rect square;
 
 	 //Get image width and height and adjust it to scale
-	 float w = image->w * scale;
-	 float h = image->h * scale;
+	 float w = healthImage->w * scale;
+	 float h = healthImage->h * scale;
 
 	 //Create Square
 	 square.x = static_cast<int>(playerPosX_);
@@ -65,7 +82,84 @@ void ItemManagement::Render(SDL_Renderer* renderer_, float scale, float playerPo
 	 /////////////////////////////////
 	 //RENDER
 	 //////////////////////////////////.
-	 SDL_RenderCopyEx(renderer, texture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	 SDL_RenderCopyEx(renderer, healthTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+}
+
+void ItemManagement::RenderGoldenGun(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_)
+{
+
+
+	//Assign renderer
+	renderer = renderer_;
+
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Get image width and height and adjust it to scale
+	float w = goldenGunImage->w * scale;
+	float h = goldenGunImage->h * scale;
+
+	//Create Square
+	square.x = static_cast<int>(playerPosX_);
+	square.y = static_cast<int>(playerPosY_);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= scale;
+	square.h *= scale;
+
+	square.x -= 50;
+	square.y -= 80;
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, goldenGunTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+}
+
+void ItemManagement::RenderSpeedBoost(SDL_Renderer* renderer_, float scale, float playerPosX_, float playerPosY_)
+{
+	//Assign renderer
+	renderer = renderer_;
+
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Get image width and height and adjust it to scale
+	float w = speedBoostImage->w * scale;
+	float h = speedBoostImage->h * scale;
+
+	//Create Square
+	square.x = static_cast<int>(playerPosX_);
+	square.y = static_cast<int>(playerPosY_);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= scale;
+	square.h *= scale;
+
+	square.x -= 50;
+	square.y -= 80;
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, speedBoostTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+
+
+
+
 
 }
 
@@ -80,22 +174,32 @@ void ItemManagement::RandomizeDrops()
 	
 	}
 
-	item = (rand() % 2) + 1;
+	item = (rand() % 3) + 1;
 		
 	if (item == 1)
 	{
 
 		healthDrop = true;
-		
+		goldenGunDrop = false;
+		speedBoostDrop = false;
 		item = 1;
 	}
 
 	if (item == 2)
 	{
 
-		bigHealthDrop = true;
-		
+		goldenGunDrop = true;
+		healthDrop = false;
+		speedBoostDrop = false;
 		item = 2;
+	}
+
+	if (item == 3)
+	{
+		speedBoostDrop = true;
+		goldenGunDrop = false;
+		healthDrop = false;
+		item = 3;
 	}
 
 }
@@ -137,5 +241,17 @@ void ItemManagement::IncreaseDropPercentage()
 
 	dropPercentage -= 2;
 
+
+}
+
+void ItemManagement::ResetBools()
+{
+	//Add all bools in this function and set them to false
+
+	healthDrop = false;
+	goldenGunDrop = false;
+	speedBoostDrop = false;
+	itemDrop = false;
+	itemPickup = false;
 
 }
