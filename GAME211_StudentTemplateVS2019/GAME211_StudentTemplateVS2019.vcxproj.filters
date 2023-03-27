@@ -73,7 +73,10 @@
     <ClCompile Include="NumbersUI.cpp">
       <Filter>Class</Filter>
     </ClCompile>
-    <ClCompile Include="Scene3.cpp" />
+    <ClCompile Include="Scene9.cpp" />
+    <ClCompile Include="Scene3.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h">
@@ -157,7 +160,10 @@
     <ClInclude Include="NumbersUI.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Scene3.h" />
+    <ClInclude Include="Scene9.h" />
+    <ClInclude Include="Scene3.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GAME211_StudentTemplateVS2019.rc" />

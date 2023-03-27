@@ -605,7 +605,8 @@ void GameManager::RenderHealthUI()
 
 void GameManager::RenderZombieCountUI()
 {
-    ZombieCounterUI.Render(getRenderer(), 1.0f, round->getZombieAmount(), 1820, 40);
+    ZombieCounterUI.Render(getRenderer(), 1.0f, round->getZombieAmount(), 1750, 40);
+    
 }
 
 void GameManager::zombieArrayInit()

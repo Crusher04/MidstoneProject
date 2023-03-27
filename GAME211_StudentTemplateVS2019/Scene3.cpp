@@ -25,7 +25,7 @@ bool Scene3::OnCreate() {
 	/// Turn on the SDL imaging subsystem
 	IMG_Init(IMG_INIT_PNG);
 
-	// Set player image to PacMan
+	//Load all images
 
 	backgroundImage = IMG_Load("Assets/background/game_background_4.png");
 	renderer = game->getRenderer();
@@ -67,6 +67,24 @@ bool Scene3::OnCreate() {
 
 	}
 
+	backButtonImage = IMG_Load("Assets/UI/Pause Menu/back_btn.png");
+	renderer = game->getRenderer();
+	backButtonTexture = SDL_CreateTextureFromSurface(renderer, backButtonImage);
+	if (backButtonImage == nullptr) {
+		std::cerr << "Can't open the back button image" << std::endl;
+
+	}
+
+	aboutUsPageImage = IMG_Load("Assets/UI/Start Menu/ABOUT  US.png");
+	renderer = game->getRenderer();
+	aboutUsPageTexture = SDL_CreateTextureFromSurface(renderer, aboutUsPageImage);
+	if (backButtonImage == nullptr) {
+		std::cerr << "Can't open the about us page image" << std::endl;
+
+	}
+
+	//Default variable 
+	aboutUSOn = false;
 
 	return true;
 }
@@ -84,9 +102,20 @@ void Scene3::Render() {
 	SDL_RenderClear(renderer);
 
 	RenderStartMenuBackground();
-	RenderStartMenu();
-	RenderPlayButton();
-	RenderQuitButton();
+
+	//Change renders if about us is clicked..
+	if (aboutUSOn)
+	{
+		RenderAboutUsPage();
+		RenderBackButton();
+	}
+	else
+	{
+		RenderStartMenu();
+		RenderPlayButton();
+		RenderAboutButton();
+		RenderQuitButton();
+	}
 
 	SDL_RenderPresent(renderer);
 }
@@ -102,20 +131,41 @@ void Scene3::HandleEvents(const SDL_Event& event)
 		
 		if (event.button.button == SDL_BUTTON_LEFT)
 		{
-			if (mouseX >= playButtonColl.x && mouseX <= (playButtonColl.x + playButtonColl.w)
-				&& mouseY >= playButtonColl.y && mouseY <= (playButtonColl.y + playButtonColl.h))
+			if (!aboutUSOn)
 			{
-				std::cout << "MOUSE OVER PLay Button and pressed\n--\n";
-				game->isStartMenuActive = false;
-				game->LoadScene(2);
-			}
+				if (mouseX >= playButtonColl.x && mouseX <= (playButtonColl.x + playButtonColl.w)
+					&& mouseY >= playButtonColl.y && mouseY <= (playButtonColl.y + playButtonColl.h))
+				{
+					std::cout << "MOUSE OVER PLay Button and pressed\n--\n";
+					game->isStartMenuActive = false;
+					game->LoadScene(2);
+				}
 
-			if (mouseX >= quitButtonColl.x && mouseX <= (quitButtonColl.x + quitButtonColl.w)
-				&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
-			{
-				std::cout << "MOUSE Pressed Quit Button\n--\n";
-				game->Quit();
+				if (mouseX >= quitButtonColl.x && mouseX <= (quitButtonColl.x + quitButtonColl.w)
+					&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
+				{
+					std::cout << "MOUSE Pressed Quit Button\n--\n";
+					game->Quit();
+				}
+
+				if (mouseX >= aboutButtonColl.x && mouseX <= (aboutButtonColl.x + aboutButtonColl.w)
+					&& mouseY >= aboutButtonColl.y && mouseY <= (aboutButtonColl.y + aboutButtonColl.h))
+				{
+					std::cout << "MOUSE Pressed About Button\n--\n";
+					aboutUSOn = true;
+				}
 			}
+			else
+			{
+				if (mouseX >= backButtonColl.x && mouseX <= (backButtonColl.x + backButtonColl.w)
+					&& mouseY >= backButtonColl.y && mouseY <= (backButtonColl.y + backButtonColl.h))
+				{
+					std::cout << "MOUSE Pressed on back Button\n--\n";
+					aboutUSOn = false;
+				}
+			}
+			
+
 			
 		}
 }
@@ -289,7 +339,7 @@ void Scene3::RenderAboutButton()
 
 	//Screen Coords
 	screenX = 700;
-	screenY = 625;
+	screenY = 475;
 
 
 	//Get image width and height and adjust it to scale
@@ -317,5 +367,85 @@ void Scene3::RenderAboutButton()
 	//RENDER
 	//////////////////////////////////.
 	SDL_RenderCopyEx(renderer, aboutButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+}
+
+void Scene3::RenderBackButton()
+{
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	screenX = 50;
+	screenY = 50;
+
+
+	//Get image width and height and adjust it to scale
+	w = backButtonImage->w * 2;
+	h = backButtonImage->h * 2;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w;
+	square.h;
+
+	backButtonColl.setCollPosition(screenX, screenY);
+	backButtonColl.setCollBounds(w, h);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, backButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+}
+
+void Scene3::RenderAboutUsPage()
+{
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	screenX = 480;
+	screenY = 80;
+
+
+	//Get image width and height and adjust it to scale
+	w = aboutUsPageImage->w;
+	h = aboutUsPageImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w;
+	square.h;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, aboutUsPageTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
 
 }

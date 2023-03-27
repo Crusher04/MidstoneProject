@@ -37,6 +37,7 @@
     <ClCompile Include="Scene3.cpp" />
     <ClCompile Include="Scene4.cpp" />
     <ClCompile Include="Scene8.cpp" />
+    <ClCompile Include="Scene9.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="Scene3.h" />
     <ClInclude Include="Scene4.h" />
     <ClInclude Include="Scene8.h" />
+    <ClInclude Include="Scene9.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="Timer.h" />
