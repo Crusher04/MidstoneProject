@@ -85,8 +85,7 @@ public:
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
 	
-	
-
+	bool gamePaused;
 	//Weapon Management
 	WeaponManagement weaponManagement;
 	Bullet bulletHolder;

@@ -110,7 +110,8 @@ void PlayerBody::Render( float scale )
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
     Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
-    angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+    if(!game->gamePaused)
+        angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
     
     /////////////////////////////////
     //Render Saling

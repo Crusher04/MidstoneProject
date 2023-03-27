@@ -20,6 +20,7 @@ GameManager::GameManager() {
 	currentScene = nullptr;
     player = nullptr;
     round = nullptr;
+    gamePaused = false;
     
 }
 
@@ -214,7 +215,16 @@ void GameManager::handleEvents()
             // Quick Exit Program + change scene
             /////////////////////////////////
             if (event.key.keysym.sym == SDLK_ESCAPE)
-                isRunning = false;
+            {
+                if (isStartMenuActive)
+                {
+                    isRunning = false;
+                }
+                else
+                {
+                    gamePaused = !gamePaused;
+                }
+            }
             else if (event.type == changeSceneEventType)
             {
                 currentScene->OnDestroy();
@@ -229,7 +239,7 @@ void GameManager::handleEvents()
             /////////////////////////////////
             // Reload
             /////////////////////////////////
-            if (!isStartMenuActive)
+            if (!isStartMenuActive && !gamePaused)
             {
                 if (event.key.keysym.sym == SDLK_r)
                 {
@@ -259,7 +269,7 @@ void GameManager::handleEvents()
             /////////////////////////////////
             // Player Movement
             /////////////////////////////////
-            if (!isStartMenuActive)
+            if (!isStartMenuActive && !gamePaused)
             { 
                if (event.key.keysym.sym == SDLK_w)
                 {
@@ -400,7 +410,7 @@ void GameManager::handleEvents()
 			/////////////////////////////////
 		    // Shooting
 		   /////////////////////////////////
-			if (!isStartMenuActive)
+			if (!isStartMenuActive && !gamePaused)
 			{
 				if (event.button.button == SDL_BUTTON_LEFT)
 				{

@@ -83,6 +83,19 @@ private:
 	SDL_Surface* hbFullImage;
 	SDL_Surface* zombieIconImage;
 
+	SDL_Surface* pauseMenuImage;
+	SDL_Texture* pauseMenuTexture;
+
+	SDL_Surface* menuButtonImage;
+	SDL_Texture* menuButtonTexture;
+	Collider menuButtonColl;
+
+	SDL_Surface* quitButtonImage;
+	SDL_Texture* quitButtonTexture;
+	Collider quitButtonColl;
+
+	int mouseX, mouseY;
+
 	SDL_Texture* loadImage(const char* textureFile);
 
 	//PHUNG
@@ -110,6 +123,7 @@ public:
 	void buildMap();		//This runs in OnCreate for the Scene2 to build the map.
 	void initMapVar();		//This initializes the variables for our map.
 	void renderMap();		//This renders our map
+	void RenderPauseMenu();
 
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 	
