@@ -22,7 +22,6 @@ GameManager::GameManager() {
     round = nullptr;
     gamePaused = false;
     
-    
 }
 
 bool GameManager::OnCreate() {
@@ -624,14 +623,15 @@ void GameManager::zombieArrayInit()
 {
     //Init Zombie var
     zombies2.setZombieGame(this);
-    zombies2.OnCreate();
 
     //Init Zombie Array
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
+        zombies2.OnCreate();
         zombies2.setPos(Vec3(11000, 11000, 0));
         zombieSpawnerArr2.push_back(zombies2);
     }
+    zombies2.initZombFlag = true;
 }
 
 Uint32 GameManager::GetChangeScene()
