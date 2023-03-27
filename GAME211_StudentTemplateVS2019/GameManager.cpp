@@ -7,7 +7,7 @@
 #include "Scene8.h"
 #include "Round.h"
 
-
+#include <algorithm>
 
 //GameManager Variables
 ZombieSpawner zombies2;
@@ -528,7 +528,7 @@ Vec3 GameManager::getZombieSpawnLocations()
         return Vec3(1908, 729, 0);
         break;
     case 12:
-        return Vec3(1908, 1834, 0);
+        return Vec3(1908, 1100, 0);
         break;
     case 13:
         return Vec3(1300, 16, 0);
@@ -632,6 +632,9 @@ void GameManager::zombieArrayInit()
         zombieSpawnerArr2.push_back(zombies2);
     }
     zombies2.initZombFlag = true;
+
+    std::random_shuffle(zombieSpawnerArr2.begin(), zombieSpawnerArr2.end());
+
 }
 
 Uint32 GameManager::GetChangeScene()

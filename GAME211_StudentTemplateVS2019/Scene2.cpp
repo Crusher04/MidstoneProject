@@ -270,13 +270,15 @@ void Scene2::Update(const float deltaTime) {
 			{
 				if (game->zombieSpawnerArr2.size() != 0)
 				{
+
 					if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
 					{
 						game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
 						zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
 						game->zombieSpawnerArr2.at(i).spawned = true;
 						zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
-						zombieTimeBetweenSpawn = rand() % 2500 + 1000;
+						std::srand((unsigned int)time(NULL));
+						zombieTimeBetweenSpawn = rand() % 2500 + 500;
 					}
 				}
 
@@ -309,26 +311,26 @@ void Scene2::Update(const float deltaTime) {
 				{
 					int distance = playerPos.x - zombieX;
 					if (distance > 0)
-						zombieX += 1;
+						zombieX += 1 + game->zombieSpawnerArr2.at(i).zombieIncreasedSpeed;
 				}
 				else
 				{
 					int distance = playerPos.x - zombieX;
 					if (distance < 0)
-						zombieX -= 1;
+						zombieX -= 1 + game->zombieSpawnerArr2.at(i).zombieIncreasedSpeed;
 				}
 
 				if (playerPos.y > zombieY)
 				{
 					int distance = playerPos.y - zombieY;
 					if (distance >= 0)
-						zombieY += 1;
+						zombieY += 1 + game->zombieSpawnerArr2.at(i).zombieIncreasedSpeed;
 				}
 				else
 				{
 					int distance = playerPos.y - zombieY;
 					if (distance <= 0)
-						zombieY -= 1;
+						zombieY -= 1 + game->zombieSpawnerArr2.at(i).zombieIncreasedSpeed;
 				}
 
 				//Calculate orientation to player in radians

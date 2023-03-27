@@ -4,12 +4,12 @@
 bool ZombieSpawner::OnCreate()
 {
     std::srand((unsigned int)time(NULL));
-    int zomb = (rand() % 4) + 1;
+    int zomb = (rand() % 2) + 1;
     SDL_Renderer* renderer = game->getRenderer();
     //Default Variables Init
     spawned = false;
     currentRound = game->getRound()->getCurrentRound();
-
+    zombieIncreasedSpeed = 0;
 	if (initZombFlag)
 	{
 		
@@ -54,6 +54,7 @@ SPRINTZOMBIE:
 		}
 		sprintZombCounter--;
 		health.setHealth(75);
+        zombieIncreasedSpeed = 1;
 		break;
 TANKZOMBIE:
 	case 2:
@@ -192,11 +193,6 @@ void ZombieSpawner::setZombieAmount()
 int ZombieSpawner::getZombiesRemaining()
 {
     return game->getRound()->getZombieAmount();
-}
-
-void ZombieSpawner::zombieArrPushBack(ZombieSpawner zombie_)
-{
-    zombieSpawnerArr.push_back(zombie_);
 }
 
 void ZombieSpawner::setZombieGame(GameManager* game_)

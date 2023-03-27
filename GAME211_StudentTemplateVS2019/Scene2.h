@@ -128,6 +128,7 @@ public:
 	void initMapVar();		//This initializes the variables for our map.
 	void renderMap();		//This renders our map
 	void RenderPauseMenu();
+	void RenderDeathScreen();
 
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 	
