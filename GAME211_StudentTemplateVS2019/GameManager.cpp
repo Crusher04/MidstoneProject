@@ -643,6 +643,34 @@ void GameManager::Quit()
     isRunning = false;
 }
 
+void GameManager::Restart()
+{
+    round->Restart();
+
+    //Restart Weapon/Magazine
+    
+    //Clear original magazine
+    bullets.clear();
+    bulletsInMotion.clear();
+
+    //re-initialize magazine
+    for (int i = 0; i < weaponManagement.pistolMagSize; i++)
+    {
+        bullets.push_back(bulletHolder);
+    }
+    weaponManagement.ammoRemaining = weaponManagement.pistolMagSize - 1;
+
+    //Restarting Zombie Spawner
+    zombieSpawnerArr2.clear();
+    zombieArrayInit();
+
+    gamePaused = false;
+    outOfAmmo = false;
+    player->health.setHealth(100);
+    LoadScene(2);
+
+}
+
 
 void GameManager::LoadScene( int i )
 {

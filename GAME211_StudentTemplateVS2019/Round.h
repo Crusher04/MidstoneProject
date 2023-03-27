@@ -26,6 +26,11 @@ public:
 	Round();
 
 	/// <summary>
+	/// Restarts the round class
+	/// </summary>
+	void Restart();
+
+	/// <summary>
 	/// Starts the Game with Round 1 or can be used to restart the round counter(when game restarts)
 	/// </summary>
 	void GameStart();

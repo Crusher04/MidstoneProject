@@ -268,14 +268,18 @@ void Scene2::Update(const float deltaTime) {
 		{
 			for (int i = 0; i < zombieCollArr.size(); i++)
 			{
-				if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
+				if(game->zombieSpawnerArr2.size() != 0)
 				{
-					game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
-					zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
-					game->zombieSpawnerArr2.at(i).spawned = true;
-					zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
-					zombieTimeBetweenSpawn = rand() % 2500 + 1000;
+					if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
+					{
+						game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
+						zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
+						game->zombieSpawnerArr2.at(i).spawned = true;
+						zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
+						zombieTimeBetweenSpawn = rand() % 2500 + 1000;
+					}
 				}
+				
 			}
 		}
 
@@ -550,6 +554,15 @@ void Scene2::HandleEvents(const SDL_Event& event)
 					{
 						std::cout << "MOUSE Pressed Quit \n";
 						game->Quit();
+					}
+
+					if (mouseX >= restartButtonColl.x && mouseX <= (restartButtonColl.x + restartButtonColl.w)
+						&& mouseY >= restartButtonColl.y && mouseY <= (restartButtonColl.y + restartButtonColl.h))
+					{
+						std::cout << "MOUSE Pressed Restart \n";
+						zombieCollArr.clear();
+						zombieInitComplete = false;
+						game->Restart();
 					}
 
 				}
