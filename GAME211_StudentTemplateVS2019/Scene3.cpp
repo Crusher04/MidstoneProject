@@ -59,6 +59,14 @@ bool Scene3::OnCreate() {
 
 	}
 
+	aboutButtonImage = IMG_Load("Assets/UI/Start Menu/aboutUs_btn.png");
+	renderer = game->getRenderer();
+	aboutButtonTexture = SDL_CreateTextureFromSurface(renderer, aboutButtonImage);
+	if (aboutButtonImage == nullptr) {
+		std::cerr << "Can't open the about button image" << std::endl;
+
+	}
+
 
 	return true;
 }
@@ -268,4 +276,46 @@ void Scene3::RenderQuitButton()
 	//RENDER
 	//////////////////////////////////.
 	SDL_RenderCopyEx(renderer, quitButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+}
+
+void Scene3::RenderAboutButton()
+{
+
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	screenX = 700;
+	screenY = 625;
+
+
+	//Get image width and height and adjust it to scale
+	w = aboutButtonImage->w;
+	h = aboutButtonImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w;
+	square.h;
+
+	aboutButtonColl.setCollPosition(screenX, screenY);
+	aboutButtonColl.setCollBounds(w, h);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, aboutButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
 }

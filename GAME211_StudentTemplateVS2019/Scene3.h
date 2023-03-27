@@ -59,9 +59,11 @@ public:
 	void RenderStartMenu();
 	void RenderPlayButton();
 	void RenderQuitButton();
+	void RenderAboutButton();
 
 	Collider playButtonColl;
 	Collider quitButtonColl;
+	Collider aboutButtonColl;
 };
 
 #endif
