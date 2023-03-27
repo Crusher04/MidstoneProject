@@ -3,6 +3,7 @@
 
 #include "MMath.h"
 #include "Scene.h"
+#include "Collider.h"
 
 using namespace MATH;
 class Scene3 : public Scene {
@@ -13,7 +14,29 @@ private:
 	SDL_Renderer* renderer;	// the renderer associated with SDL window 
 	Matrix4 projectionMatrix;	// set in OnCreate()
     Matrix4     inverseProjection;	// set in OnCreate()
+	
+	//Background Image
+	SDL_Surface* backgroundImage;
+	SDL_Texture* backgroundTexture;
 
+	//StartMenuImage
+	SDL_Surface* startMenuImage;
+	SDL_Texture* startMenuTexture;
+	
+	//Play Button
+	SDL_Surface* playButtonImage;
+	SDL_Texture* playButtonTexture;
+
+	//Quit Button
+	SDL_Surface* quitButtonImage;
+	SDL_Texture* quitButtonTexture;
+
+	//About Us Button
+	SDL_Surface* aboutButtonImage;
+	SDL_Texture* aboutButtonTexture;
+
+	int mouseX, mouseY;
+	float screenX, screenY;
 public:
 	// This constructor may be different from what you've seen before
 	// Notice the second parameter, and look in GameManager.cpp
@@ -30,6 +53,12 @@ public:
 	SDL_Window* getWindow() { return window; }
     Matrix4 getProjectionMatrix() { return projectionMatrix; }
 	Matrix4 getInverseMatrix() { return inverseProjection; }
+
+	void RenderStartMenuBackground();
+	void RenderStartMenu();
+	void RenderPlayButton();
+
+	Collider playButtonColl;
 };
 
 #endif

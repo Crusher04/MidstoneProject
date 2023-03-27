@@ -36,6 +36,8 @@ private:
 	class Round	*round;	
 	class ZombieSpawner *zombies;	
 
+	bool isStartMenuActive;
+
 public:
 
 	//Contstructors with onCreate/Destroy

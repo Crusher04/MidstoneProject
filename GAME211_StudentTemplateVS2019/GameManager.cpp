@@ -47,7 +47,8 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-
+    //Start Menu Default
+    isStartMenuActive = true;
 
     /////////////////////////////////
     //Variables init
@@ -211,20 +212,23 @@ void GameManager::handleEvents()
             /////////////////////////////////
             // Reload
             /////////////////////////////////
-
-            if (event.key.keysym.sym == SDLK_r)
+            if (!isStartMenuActive)
             {
-                //RELOADING
-                if (weaponManagement.pistolEnabled && !weaponManagement.reloadStarted)
+                if (event.key.keysym.sym == SDLK_r)
                 {
-                    std::cout << "Reloading\n";
-                    weaponManagement.shotDelayFlag = true;
-                    weaponManagement.reloadStarted = true;
-                    outOfAmmo = false;
-                    Sf.ReloadAudio();
-                } 
+                    //RELOADING
+                    if (weaponManagement.pistolEnabled && !weaponManagement.reloadStarted)
+                    {
+                        std::cout << "Reloading\n";
+                        weaponManagement.shotDelayFlag = true;
+                        weaponManagement.reloadStarted = true;
+                        outOfAmmo = false;
+                        Sf.ReloadAudio();
+                    }
 
+                }
             }
+           
 
             /////////////////////////////////
             // Sprinting
@@ -238,82 +242,85 @@ void GameManager::handleEvents()
             /////////////////////////////////
             // Player Movement
             /////////////////////////////////
-
-            if (event.key.keysym.sym == SDLK_w)
-            {
-                // Start moving player up
-                   
-                if (isSprinting == true)
+            if (!isStartMenuActive)
+            { 
+                if (event.key.keysym.sym == SDLK_w)
                 {
-                    
-                    speed = 5000;
+                    // Start moving player up
 
+                    if (isSprinting == true)
+                    {
+
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceY(-speed);
                 }
-                if (isSprinting == false)
-                {
-
-                    speed = 1000;
-
-                }
-                player->ApplyForceY(-speed);
-            }
-            if (event.key.keysym.sym == SDLK_s)
-            {
-                
-                if (isSprinting == true)
+                if (event.key.keysym.sym == SDLK_s)
                 {
 
-                    speed = 5000;
+                    if (isSprinting == true)
+                    {
+
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceY(speed);
 
                 }
-                if (isSprinting == false)
+                if (event.key.keysym.sym == SDLK_d)
                 {
 
-                    speed = 1000;
 
+                    if (isSprinting == true)
+                    {
+
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceX(speed);
                 }
-                player->ApplyForceY(speed);
-
-            }
-            if (event.key.keysym.sym == SDLK_d)
-            {
-
-                
-                if (isSprinting == true)
+                if (event.key.keysym.sym == SDLK_a)
                 {
 
-                    speed = 5000;
+                    if (isSprinting == true)
+                    {
 
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceX(-speed);
                 }
-                if (isSprinting == false)
-                {
+                if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
+                    event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
-                    speed = 1000;
-
+                    Sf.WalkingAudio(true);
                 }
-                player->ApplyForceX(speed);
-            }
-            if (event.key.keysym.sym == SDLK_a)
-            {
-                
-                if (isSprinting == true)
-                {
 
-                    speed = 5000;
-
-                }
-                if (isSprinting == false)
-                {
-
-                    speed = 1000;
-
-                }
-                player->ApplyForceX(-speed);
-            }
-            if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
-                event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
-                
-                Sf.WalkingAudio(true);
             }
 
 
@@ -374,36 +381,40 @@ void GameManager::handleEvents()
         case SDL_MOUSEBUTTONDOWN:
 
 			/////////////////////////////////
-		   // Shooting
+		    // Shooting
 		   /////////////////////////////////
-
-			if (event.button.button == SDL_BUTTON_LEFT)
+			if (!isStartMenuActive)
 			{
-				if (weaponManagement.pistolEnabled)
+				if (event.button.button == SDL_BUTTON_LEFT)
 				{
-                    if (weaponManagement.ammoRemaining < 0)
-                    {
-                        // Play Empty Magazine sound
-                        Sf.EmptyMag();
-
-                        weaponManagement.ammoRemaining = 0;
-                        outOfAmmo = true;
-                    }
-
-					if (!bullets.at(weaponManagement.ammoRemaining).fired)
+					if (weaponManagement.pistolEnabled)
 					{
-						bullets.at(weaponManagement.ammoRemaining).fired = true;
-                        bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
-                        weaponManagement.ammoRemaining--;
+						if (weaponManagement.ammoRemaining < 0)
+						{
+							// Play Empty Magazine sound
+							Sf.EmptyMag();
 
-                        // Play Pistol Audio
-                        Sf.PistolAudio(true);
-                    }
-                    
+							weaponManagement.ammoRemaining = 0;
+							outOfAmmo = true;
+						}
 
-				}
+						if (!bullets.at(weaponManagement.ammoRemaining).fired)
+						{
+							bullets.at(weaponManagement.ammoRemaining).fired = true;
+							bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
+							weaponManagement.ammoRemaining--;
 
-			}//End of SDL_BUTTON_LEFT
+							// Play Pistol Audio
+							Sf.PistolAudio(true);
+						}
+
+
+					}
+
+				}//End of SDL_BUTTON_LEFT
+			}
+            
+            
 
 			break;
 		}
