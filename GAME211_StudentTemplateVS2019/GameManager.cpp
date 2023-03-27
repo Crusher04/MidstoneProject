@@ -395,8 +395,8 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                 event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
-                 
-                    Sf.WalkingAudio(false);
+				
+				Sf.WalkingAudio(false);
 
                 
 
@@ -431,8 +431,8 @@ void GameManager::handleEvents()
 							bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
 							weaponManagement.ammoRemaining--;
 
-							// Play Pistol Audio
-							Sf.PistolAudio(true);
+                            if (!weaponManagement.reloadStarted)						
+							    Sf.PistolAudio(true);
 						}
 
 

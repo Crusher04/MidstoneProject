@@ -134,6 +134,13 @@ bool Scene2::OnCreate() {
 		std::cerr << "Can't open the menu button image" << std::endl;
 	}
 
+	restartButtonImage = IMG_Load("Assets/UI/Pause Menu/Restart.png");
+	renderer = game->getRenderer();
+	restartButtonTexture = SDL_CreateTextureFromSurface(renderer, restartButtonImage);
+	if (restartButtonImage == nullptr) {
+		std::cerr << "Can't open the restart button image" << std::endl;
+	}
+
 
 	return true;
 }
@@ -521,41 +528,34 @@ void Scene2::HandleEvents(const SDL_Event& event)
 	game->getPlayer()->HandleEvents(event);
 
 	SDL_GetMouseState(&mouseX, &mouseY);
-	std::cout << "Mouse POS (" << mouseX << ", " << mouseY << ")\n";
-	std::cout << "quitButtonColl = (" << quitButtonColl.x << ", " << quitButtonColl.y << ", " << quitButtonColl.w << ", " << quitButtonColl.h << ")\n";
 
 	switch (event.type)
 		case SDL_MOUSEBUTTONDOWN:
 
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
-
-				if (mouseX >= menuButtonColl.x && mouseX <= (menuButtonColl.x + menuButtonColl.w)
-					&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
+				if (game->gamePaused)
 				{
-					std::cout << "Mouse Pressed Menu\n";
-					game->isStartMenuActive = false;
-					game->gamePaused = false;
-					game->LoadScene(3);
-				}
+					if (mouseX >= menuButtonColl.x && mouseX <= (menuButtonColl.x + menuButtonColl.w)
+						&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
+					{
+						std::cout << "Mouse Pressed Menu\n";
+						game->isStartMenuActive = false;
+						game->gamePaused = false;
+						game->LoadScene(3);
+					}
 
-				if (mouseX >= quitButtonColl.x && mouseX <= (quitButtonColl.x + quitButtonColl.w)
-					&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
-				{
-					std::cout << "MOUSE Pressed Quit \n";
-					game->Quit();
-				}
+					if (mouseX >= quitButtonColl.x && mouseX <= (quitButtonColl.x + quitButtonColl.w)
+						&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
+					{
+						std::cout << "MOUSE Pressed Quit \n";
+						game->Quit();
+					}
 
-			}
-	
-			if (mouseX >= menuButtonColl.x && mouseX <= (menuButtonColl.x + menuButtonColl.w)
-				&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
-			{
-				std::cout << "Mouse Pressed Menu\n";
+				}
 				
-			}
 
-		
+			}		
 	
 }
 
@@ -730,6 +730,36 @@ void Scene2::RenderPauseMenu()
 	//RENDER
 	//////////////////////////////////.
 	SDL_RenderCopyEx(renderer, quitButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	//Screen Coords
+	screenX = 780;
+	screenY = 525;
+
+
+	//Get image width and height and adjust it to scale
+	w = restartButtonImage->w;
+	h = restartButtonImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 2;
+	square.h *= 2;
+
+	restartButtonColl.setCollPosition(screenX, screenY);
+	restartButtonColl.setCollBounds(square.w, square.h);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, restartButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
 	
 
 }

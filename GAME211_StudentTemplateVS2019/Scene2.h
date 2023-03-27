@@ -94,6 +94,10 @@ private:
 	SDL_Texture* quitButtonTexture;
 	Collider quitButtonColl;
 
+	SDL_Surface* restartButtonImage;
+	SDL_Texture* restartButtonTexture;
+	Collider restartButtonColl;
+
 	int mouseX, mouseY;
 
 	SDL_Texture* loadImage(const char* textureFile);
