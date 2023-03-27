@@ -145,6 +145,8 @@ public:
 
 	Uint32 GetChangeScene();
 
+	void Quit();
+
 };
 #endif
 

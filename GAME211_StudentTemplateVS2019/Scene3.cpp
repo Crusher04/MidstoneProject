@@ -39,7 +39,7 @@ bool Scene3::OnCreate() {
 	renderer = game->getRenderer();
 	startMenuTexture = SDL_CreateTextureFromSurface(renderer, startMenuImage);
 	if (startMenuImage == nullptr) {
-		std::cerr << "Can't open the startMenuImage image" << std::endl;
+		std::cerr << "Can't open the start menu image" << std::endl;
 
 	}
 
@@ -47,11 +47,18 @@ bool Scene3::OnCreate() {
 	renderer = game->getRenderer();
 	playButtonTexture = SDL_CreateTextureFromSurface(renderer, playButtonImage);
 	if (playButtonImage == nullptr) {
-		std::cerr << "Can't open the startMenuImage image" << std::endl;
+		std::cerr << "Can't open the play button image" << std::endl;
 
 	}
 
-	playButtonPressed = false;
+	quitButtonImage = IMG_Load("Assets/UI/Start Menu/quit_btn.png");
+	renderer = game->getRenderer();
+	quitButtonTexture = SDL_CreateTextureFromSurface(renderer, quitButtonImage);
+	if (quitButtonImage == nullptr) {
+		std::cerr << "Can't open the quit button image" << std::endl;
+
+	}
+
 
 	return true;
 }
@@ -60,20 +67,7 @@ void Scene3::OnDestroy() {}
 
 void Scene3::Update(const float deltaTime) {
 
-	if (playButtonPressed)
-	{
-		
-		/*SDL_Event event2;
-		SDL_memset(&event2, 0, sizeof(event2));
-		event2.type = game->GetChangeScene();
-		event2.user.code = 1;
-		event2.user.data1 = nullptr;
-		event2.user.data2 = nullptr;
-		SDL_PushEvent(&event2);*/
 
-		
-
-	}
 
 }
 
@@ -84,6 +78,8 @@ void Scene3::Render() {
 	RenderStartMenuBackground();
 	RenderStartMenu();
 	RenderPlayButton();
+	RenderQuitButton();
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -100,11 +96,18 @@ void Scene3::HandleEvents(const SDL_Event& event)
 		{
 			if (mouseX >= playButtonColl.x && mouseX <= (playButtonColl.x + playButtonColl.w)
 				&& mouseY >= playButtonColl.y && mouseY <= (playButtonColl.y + playButtonColl.h))
-				std::cout << "MOUSE OVER Button and pressed\n--\n";
+			{
+				std::cout << "MOUSE OVER PLay Button and pressed\n--\n";
+				game->isStartMenuActive = false;
+				game->LoadScene(2);
+			}
 
-			playButtonPressed = true;
-			game->isStartMenuActive = false;
-			game->LoadScene(2);
+			if (mouseX >= quitButtonColl.x && mouseX <= (quitButtonColl.x + quitButtonColl.w)
+				&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
+			{
+				std::cout << "MOUSE Pressed Quit Button\n--\n";
+				game->Quit();
+			}
 			
 		}
 }
@@ -224,7 +227,45 @@ void Scene3::RenderPlayButton()
 	//RENDER
 	//////////////////////////////////.
 	SDL_RenderCopyEx(renderer, playButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-	/*SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
-	SDL_RenderDrawRect(renderer, &square);
-	SDL_RenderDrawRect(renderer, &square);*/
+	
+}
+
+void Scene3::RenderQuitButton()
+{
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	screenX = 700;
+	screenY = 625;
+
+
+	//Get image width and height and adjust it to scale
+	w = quitButtonImage->w;
+	h = quitButtonImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w;
+	square.h;
+
+	quitButtonColl.setCollPosition(screenX, screenY);
+	quitButtonColl.setCollBounds(w, h);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, quitButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
 }

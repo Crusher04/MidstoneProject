@@ -627,6 +627,11 @@ Uint32 GameManager::GetChangeScene()
     return changeSceneEventType;
 }
 
+void GameManager::Quit()
+{
+    isRunning = false;
+}
+
 
 void GameManager::LoadScene( int i )
 {

@@ -37,7 +37,6 @@ private:
 
 	int mouseX, mouseY;
 	float screenX, screenY;
-	bool playButtonPressed;
 
 public:
 	// This constructor may be different from what you've seen before
@@ -59,8 +58,10 @@ public:
 	void RenderStartMenuBackground();
 	void RenderStartMenu();
 	void RenderPlayButton();
+	void RenderQuitButton();
 
 	Collider playButtonColl;
+	Collider quitButtonColl;
 };
 
 #endif
