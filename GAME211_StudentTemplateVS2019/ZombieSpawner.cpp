@@ -4,168 +4,95 @@
 bool ZombieSpawner::OnCreate()
 {
     std::srand((unsigned int)time(NULL));
-    int zomb = (rand() % 3) + 1;
-
+    int zomb = (rand() % 4) + 1;
+    SDL_Renderer* renderer = game->getRenderer();
     //Default Variables Init
     spawned = false;
     currentRound = game->getRound()->getCurrentRound();
 
 	if (initZombFlag)
 	{
-		zombAmount = game->getRound()->getZombieAmount();
 		
-		if (currentRound >= 3 && currentRound <= 5)
+		if (currentRound >= 2 && currentRound <= 5)
 		{
-			sprintZomb += 3;
-			tankZomb += 3;
-			zombAmount -= (tankZomb + sprintZomb);
+            if (sprintZomb == 0)
+                sprintZomb += 3;
+            if (tankZomb == 0)
+                tankZomb += 3;
+
+			sprintZomb *= 1.5;
+			tankZomb *= 1.5;
+            
+			
 		}
 
 		sprintZombCounter = sprintZomb;
 		tankZombCounter = tankZomb;
-		regZombCounter = zombAmount;
+        regZombCounter = game->getRound()->getZombieAmount() - (sprintZomb + tankZomb);
 
 		initZombFlag = false;
 	}
-	
+
 	switch (zomb)
 	{
-	case 1:
+SPRINTZOMBIE:
+	case 1:	
+		//Sprint Zomb
+        if (sprintZombCounter == 0)
+        {
+            if (tankZombCounter == 0)
+                goto REGZOMBIE;
+            else
+                goto TANKZOMBIE;
+        }
 
-		if (regZombCounter > 0)
-		{
-			//Reg Zomb
-			image = IMG_Load("Assets/zombie.png");
-			SDL_Renderer* renderer = game->getRenderer();
-			texture = SDL_CreateTextureFromSurface(renderer, image);
-			if (image == nullptr) {
-				std::cerr << "Can't open the zombie image" << std::endl;
-				return false;
-			}
-			regZombCounter--;
-			health.setHealth(50);
+		image = IMG_Load("Assets/zombieSprinter.png");
+		texture = SDL_CreateTextureFromSurface(renderer, image);
+		if (image == nullptr) {
+			std::cerr << "Can't open the zombieSprinter image" << std::endl;
+			return false;
 		}
-		else if (tankZombCounter > 0)
-		{
-			//Tank Zomb
-			image = IMG_Load("Assets/zombieTank.png");
-			SDL_Renderer* renderer = game->getRenderer();
-			texture = SDL_CreateTextureFromSurface(renderer, image);
-			if (image == nullptr) {
-				std::cerr << "Can't open the zombieTank image" << std::endl;
-				return false;
-			}
-			tankZombCounter--;
-			health.setHealth(125);
-
-		}
-		else if (sprintZombCounter > 0)
-		{
-			//Sprint Zomb
-			image = IMG_Load("Assets/zombieSprinter.png");
-			SDL_Renderer* renderer = game->getRenderer();
-			texture = SDL_CreateTextureFromSurface(renderer, image);
-			if (image == nullptr) {
-				std::cerr << "Can't open the zombieSprinter image" << std::endl;
-				return false;
-			}
-			sprintZombCounter--;
-			health.setHealth(75);
-		}
-		
+		sprintZombCounter--;
+		health.setHealth(75);
 		break;
+TANKZOMBIE:
 	case 2:
+		//Tank Zomb
+        if (tankZombCounter == 0)
+        {
+            if (sprintZombCounter == 0)
+                goto REGZOMBIE;
+            else
+                goto SPRINTZOMBIE;
+        }
 
-		if (sprintZombCounter > 0)
-		{
-			//Sprint Zomb
-			image = IMG_Load("Assets/zombieSprinter.png");
-			SDL_Renderer* renderer = game->getRenderer();
-			texture = SDL_CreateTextureFromSurface(renderer, image);
-			if (image == nullptr) {
-				std::cerr << "Can't open the zombieSprinter image" << std::endl;
-				return false;
-			}
-			sprintZombCounter--;
-			health.setHealth(75);
-
+		image = IMG_Load("Assets/zombieTank.png");
+		texture = SDL_CreateTextureFromSurface(renderer, image);
+		if (image == nullptr) {
+			std::cerr << "Can't open the zombieTank image" << std::endl;
+			return false;
 		}
-		else if (tankZombCounter > 0)
-		{
-			//Tank Zomb
-			image = IMG_Load("Assets/zombieTank.png");
-			SDL_Renderer* renderer = game->getRenderer();
-			texture = SDL_CreateTextureFromSurface(renderer, image);
-			if (image == nullptr) {
-				std::cerr << "Can't open the zombieTank image" << std::endl;
-				return false;
-			}
-			tankZombCounter--;
-			health.setHealth(125);
-
-		}
-		else if (regZombCounter > 0)
-		{
-			//Reg Zomb
-			image = IMG_Load("Assets/zombie.png");
-			SDL_Renderer* renderer = game->getRenderer();
-			texture = SDL_CreateTextureFromSurface(renderer, image);
-			if (image == nullptr) {
-				std::cerr << "Can't open the zombie image" << std::endl;
-				return false;
-			}
-			regZombCounter--;
-			health.setHealth(50);
-
-		}
-
-
+		tankZombCounter--;
+		health.setHealth(125);
 		break;
-	case 3:
-		if (tankZombCounter > 0)
-		{
-			//Tank Zomb
-			image = IMG_Load("Assets/zombieTank.png");
-			SDL_Renderer* renderer = game->getRenderer();
-			texture = SDL_CreateTextureFromSurface(renderer, image);
-			if (image == nullptr) {
-				std::cerr << "Can't open the zombieTank image" << std::endl;
-				return false;
-			}
-			tankZombCounter--;
-			health.setHealth(125);
-
+REGZOMBIE:
+	default:
+        if (regZombCounter == 0)
+        {
+            if (sprintZombCounter == 0)
+                goto TANKZOMBIE;
+            else
+                goto SPRINTZOMBIE;
+        }
+		//Reg Zomb
+		image = IMG_Load("Assets/zombie.png");
+		texture = SDL_CreateTextureFromSurface(renderer, image);
+		if (image == nullptr) {
+			std::cerr << "Can't open the zombie image" << std::endl;
+			return false;
 		}
-		else if (regZombCounter > 0)
-		{
-			//Reg Zomb
-			image = IMG_Load("Assets/zombie.png");
-			SDL_Renderer* renderer = game->getRenderer();
-			texture = SDL_CreateTextureFromSurface(renderer, image);
-			if (image == nullptr) {
-				std::cerr << "Can't open the zombie image" << std::endl;
-				return false;
-			}
-			regZombCounter--;
-			health.setHealth(50);
-
-		}
-		else if (sprintZombCounter > 0)
-		{
-			//Sprint Zomb
-			image = IMG_Load("Assets/zombieSprinter.png");
-			SDL_Renderer* renderer = game->getRenderer();
-			texture = SDL_CreateTextureFromSurface(renderer, image);
-			if (image == nullptr) {
-				std::cerr << "Can't open the zombieSprinter image" << std::endl;
-				return false;
-			}
-			sprintZombCounter--;
-			health.setHealth(75);
-
-
-		}
-		break;
+		health.setHealth(50);
+        regZombCounter--;
 	}
  
     return true;

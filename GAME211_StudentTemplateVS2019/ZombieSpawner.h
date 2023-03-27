@@ -22,10 +22,10 @@ public:
 	
 	//Variables
 	bool spawned, initZombFlag;
-	float orientation;
+	float orientation, zombieSpeed;
 	std::vector<ZombieSpawner> zombieSpawnerArr;
 	class EntityHealth health;
-	int currentRound, zombAmount, regZomb, tankZomb, sprintZomb, spitZomb;
+	int currentRound, regZomb, tankZomb, sprintZomb, spitZomb;
 
 	//Constructors
 	ZombieSpawner() : Body{}

@@ -161,15 +161,15 @@ void Scene2::Update(const float deltaTime) {
 
 	if (game->gamePaused)
 	{
-		
+
 	}
 	else
 	{
 		/////////////////////////////////
-	//Player Updates
-	/////////////////////////////////
+		//Player Updates
+		/////////////////////////////////
 
-	//Update Player
+		//Update Player
 		game->getPlayer()->Update(deltaTime);
 
 		//Set Player Collider locations
@@ -268,7 +268,7 @@ void Scene2::Update(const float deltaTime) {
 		{
 			for (int i = 0; i < zombieCollArr.size(); i++)
 			{
-				if(game->zombieSpawnerArr2.size() != 0)
+				if (game->zombieSpawnerArr2.size() != 0)
 				{
 					if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
 					{
@@ -279,7 +279,7 @@ void Scene2::Update(const float deltaTime) {
 						zombieTimeBetweenSpawn = rand() % 2500 + 1000;
 					}
 				}
-				
+
 			}
 		}
 
