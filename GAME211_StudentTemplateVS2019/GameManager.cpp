@@ -631,8 +631,11 @@ void GameManager::zombieArrayInit()
         zombies2.setPos(Vec3(11000, 11000, 0));
         zombieSpawnerArr2.push_back(zombies2);
     }
+
+    //Set next zombie initilization to be true
     zombies2.initZombFlag = true;
 
+    //Randomize the zombie array
     std::random_shuffle(zombieSpawnerArr2.begin(), zombieSpawnerArr2.end());
 
 }

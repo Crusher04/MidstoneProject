@@ -10,9 +10,11 @@ bool ZombieSpawner::OnCreate()
     spawned = false;
     currentRound = game->getRound()->getCurrentRound();
     zombieIncreasedSpeed = 0;
+    tankSpawned = false;
+
+    //Initialize the amount of variants
 	if (initZombFlag)
-	{
-		
+	{	
 		if (currentRound >= 2 && currentRound <= 5)
 		{
             if (sprintZomb == 0)
@@ -73,6 +75,7 @@ TANKZOMBIE:
 			std::cerr << "Can't open the zombieTank image" << std::endl;
 			return false;
 		}
+        tankSpawned = true;
 		tankZombCounter--;
 		health.setHealth(125);
 		break;
@@ -155,8 +158,18 @@ void ZombieSpawner::Render(float scale)
     /////////////////////////////////
     //Render Saling
     /////////////////////////////////
-    square.w *= scale;
-    square.h *= scale;
+
+    if (tankSpawned)
+    {
+        square.w *= scale * 1.4;
+        square.h *= scale * 1.4;
+    }
+    else
+    {
+        square.w *= scale;
+        square.h *= scale;
+    }
+    
 
     if(orientation == NULL)
         orientation = 10;

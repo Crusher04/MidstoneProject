@@ -780,3 +780,7 @@ void Scene2::RenderPauseMenu()
 	
 
 }
+
+void Scene2::RenderDeathScreen()
+{
+}

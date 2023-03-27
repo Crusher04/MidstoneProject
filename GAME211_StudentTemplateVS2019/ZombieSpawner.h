@@ -21,7 +21,7 @@ protected:
 public:
 	
 	//Variables
-	bool spawned, initZombFlag;
+	bool spawned, initZombFlag, tankSpawned;
 	float orientation, zombieIncreasedSpeed;
 	class EntityHealth health;
 	int currentRound, regZomb, tankZomb, sprintZomb, spitZomb;
