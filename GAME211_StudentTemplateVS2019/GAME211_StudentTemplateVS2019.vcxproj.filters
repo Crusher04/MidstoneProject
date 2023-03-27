@@ -73,6 +73,7 @@
     <ClCompile Include="NumbersUI.cpp">
       <Filter>Class</Filter>
     </ClCompile>
+    <ClCompile Include="Scene3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h">
@@ -156,6 +157,7 @@
     <ClInclude Include="NumbersUI.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="Scene3.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GAME211_StudentTemplateVS2019.rc" />

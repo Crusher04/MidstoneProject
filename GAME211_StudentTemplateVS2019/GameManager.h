@@ -12,6 +12,8 @@
 #include "Bullet.h"
 #include "WeaponManagement.h"
 #include "NumbersUI.h"
+#include "SoundEffect.h"
+#include "Music.h"
 
 class GameManager {
 private:
@@ -34,6 +36,11 @@ private:
 	class Round	*round;	
 	class ZombieSpawner *zombies;	
 
+	
+	
+	//Scene Event Types
+	Uint32 changeSceneEventType;
+
 public:
 
 	//Contstructors with onCreate/Destroy
@@ -42,7 +49,7 @@ public:
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
-
+	bool isStartMenuActive;
 	
 
 	// These might be unfamiliar
@@ -59,22 +66,25 @@ public:
     bool ValidateCurrentScene();
 	bool isMoving;
 
+	//Audio variable
+	SoundEffect Sf;
+	Music Ms;
+
 	//Zombie Spawn Locations
 	std::vector<Vec3> zombieSpawnLocations;
 	Vec3 getZombieSpawnLocations();
 
 	void RenderZombie(float scale = 1.0f);
 	ZombieSpawner getZombie();
-
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
 	bool isSprinting;
+	
 
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
 	
-	//Bullet Variables
 	
 
 	//Weapon Management
@@ -132,6 +142,10 @@ public:
 	Round* getRound() { return round; }
 
 	void zombieArrayInit();
+
+	Uint32 GetChangeScene();
+
+	void Quit();
 
 };
 #endif

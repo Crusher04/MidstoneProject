@@ -36,7 +36,7 @@ bool WeaponManagement::reloading()
 	{
 		isReloading = true;
 		pistolTimer = SDL_GetTicks();
-		pistolTimerDelay = pistolTimer + 2000;
+		pistolTimerDelay = pistolTimer + 1000;
 	}
 	else
 	{

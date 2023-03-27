@@ -1,11 +1,12 @@
 #include "GameManager.h"
 #include "Scene1.h"
 #include "Scene2.h"
+#include "Scene3.h"
 #include "EntityHealth.h"
 #include "EnemyBody.h"
 #include "Scene8.h"
 #include "Round.h"
-#include "SoundEffect.h"
+
 
 
 //GameManager Variables
@@ -46,7 +47,8 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-
+    //Start Menu Default
+    isStartMenuActive = true;
 
     /////////////////////////////////
     //Variables init
@@ -60,7 +62,7 @@ bool GameManager::OnCreate() {
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
 
-    currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+    currentScene = new Scene3(windowPtr->GetSDL_Window(), this);
 
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
@@ -148,6 +150,13 @@ bool GameManager::OnCreate() {
     HealthUI.OnCreate(getRenderer(), false);
     ZombieCounterUI.OnCreate(getRenderer(), true);
 
+    //Event Type defined by user
+    changeSceneEventType = SDL_RegisterEvents(2);
+    if (changeSceneEventType == ((Uint32)-1))
+    {
+        OnDestroy();
+        return false;
+    }
 
 
 	return true;
@@ -202,27 +211,41 @@ void GameManager::handleEvents()
         case SDL_KEYDOWN:
 
             /////////////////////////////////
-            // Quick Exit Program
+            // Quick Exit Program + change scene
             /////////////////////////////////
             if (event.key.keysym.sym == SDLK_ESCAPE)
                 isRunning = false;
-
+            else if (event.type == changeSceneEventType)
+            {
+                currentScene->OnDestroy();
+                delete currentScene;
+                currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+                if (!currentScene->OnCreate())
+                {
+                    OnDestroy();
+                    isRunning = false;
+                }
+            }
             /////////////////////////////////
             // Reload
             /////////////////////////////////
-
-            if (event.key.keysym.sym == SDLK_r)
+            if (!isStartMenuActive)
             {
-                //RELOADING
-                if (weaponManagement.pistolEnabled && !weaponManagement.reloadStarted)
+                if (event.key.keysym.sym == SDLK_r)
                 {
-                    std::cout << "Reloading\n";
-                    weaponManagement.shotDelayFlag = true;
-                    weaponManagement.reloadStarted = true;
-                    outOfAmmo = false;
-                } 
+                    //RELOADING
+                    if (weaponManagement.pistolEnabled && !weaponManagement.reloadStarted)
+                    {
+                        std::cout << "Reloading\n";
+                        weaponManagement.shotDelayFlag = true;
+                        weaponManagement.reloadStarted = true;
+                        outOfAmmo = false;
+                        Sf.ReloadAudio();
+                    }
 
+                }
             }
+           
 
             /////////////////////////////////
             // Sprinting
@@ -236,77 +259,85 @@ void GameManager::handleEvents()
             /////////////////////////////////
             // Player Movement
             /////////////////////////////////
+            if (!isStartMenuActive)
+            { 
+               if (event.key.keysym.sym == SDLK_w)
+                {
+                    // Start moving player up
 
-            if (event.key.keysym.sym == SDLK_w)
-            {
-                // Start moving player up
-           
-                if (isSprinting == true)
+                    if (isSprinting == true)
+                    {
+
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceY(-speed);
+                }
+                if (event.key.keysym.sym == SDLK_s)
                 {
 
-                    speed = 5000;
+                    if (isSprinting == true)
+                    {
+
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceY(speed);
 
                 }
-                if (isSprinting == false)
+                if (event.key.keysym.sym == SDLK_d)
                 {
 
-                    speed = 1000;
 
+                    if (isSprinting == true)
+                    {
+
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceX(speed);
                 }
-                player->ApplyForceY(-speed);
-            }
-            if (event.key.keysym.sym == SDLK_s)
-            {
-                
-                if (isSprinting == true)
+                if (event.key.keysym.sym == SDLK_a)
                 {
 
-                    speed = 5000;
+                    if (isSprinting == true)
+                    {
 
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceX(-speed);
                 }
-                if (isSprinting == false)
-                {
+                if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
+                    event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
-                    speed = 1000;
-
+                    Sf.WalkingAudio(true);
                 }
-                player->ApplyForceY(speed);
 
-            }
-            if (event.key.keysym.sym == SDLK_d)
-            {
-
-                
-                if (isSprinting == true)
-                {
-
-                    speed = 5000;
-
-                }
-                if (isSprinting == false)
-                {
-
-                    speed = 1000;
-
-                }
-                player->ApplyForceX(speed);
-            }
-            if (event.key.keysym.sym == SDLK_a)
-            {
-                
-                if (isSprinting == true)
-                {
-
-                    speed = 5000;
-
-                }
-                if (isSprinting == false)
-                {
-
-                    speed = 1000;
-
-                }
-                player->ApplyForceX(-speed);
             }
 
 
@@ -328,21 +359,37 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_s)
             {
                 player->ApplyForceY(0);
+              
+
             }
             if (event.key.keysym.sym == SDLK_d)
             {
 
                 player->ApplyForceX(0);
+                
+
             }
             if (event.key.keysym.sym == SDLK_a)
             {
 
                 player->ApplyForceX(0);
+                
+
             }
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
                 isSprinting = false;
+
+            }
+            if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
+                event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
+
+                 
+                    Sf.WalkingAudio(false);
+
+                
+
             }
 
 
@@ -351,30 +398,40 @@ void GameManager::handleEvents()
         case SDL_MOUSEBUTTONDOWN:
 
 			/////////////////////////////////
-		   // Shooting
+		    // Shooting
 		   /////////////////////////////////
-
-			if (event.button.button == SDL_BUTTON_LEFT)
+			if (!isStartMenuActive)
 			{
-				if (weaponManagement.pistolEnabled)
+				if (event.button.button == SDL_BUTTON_LEFT)
 				{
-                    if (weaponManagement.ammoRemaining < 0)
-                    {
-                        weaponManagement.ammoRemaining = 0;
-                        outOfAmmo = true;
-                    }
-
-					if (!bullets.at(weaponManagement.ammoRemaining).fired)
+					if (weaponManagement.pistolEnabled)
 					{
-						bullets.at(weaponManagement.ammoRemaining).fired = true;
-                        bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
-                        weaponManagement.ammoRemaining--;
-                    }
-                    
+						if (weaponManagement.ammoRemaining < 0)
+						{
+							// Play Empty Magazine sound
+							Sf.EmptyMag();
 
-				}
+							weaponManagement.ammoRemaining = 0;
+							outOfAmmo = true;
+						}
 
-			}//End of SDL_BUTTON_LEFT
+						if (!bullets.at(weaponManagement.ammoRemaining).fired)
+						{
+							bullets.at(weaponManagement.ammoRemaining).fired = true;
+							bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
+							weaponManagement.ammoRemaining--;
+
+							// Play Pistol Audio
+							Sf.PistolAudio(true);
+						}
+
+
+					}
+
+				}//End of SDL_BUTTON_LEFT
+			}
+            
+            
 
 			break;
 		}
@@ -565,6 +622,17 @@ void GameManager::zombieArrayInit()
     }
 }
 
+Uint32 GameManager::GetChangeScene()
+{
+    return changeSceneEventType;
+}
+
+void GameManager::Quit()
+{
+    isRunning = false;
+}
+
+
 void GameManager::LoadScene( int i )
 {
     // cleanup of current scene before loading another one
@@ -580,6 +648,9 @@ void GameManager::LoadScene( int i )
             break;
         case 2:
             currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+            break;
+        case 3:
+            currentScene = new Scene3(windowPtr->GetSDL_Window(), this);
             break;
         case 4:
             //currentScene = new Scene4(windowPtr->GetSDL_Window(), this);
