@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "Scene1.h"
 #include "Scene2.h"
+#include "Scene3.h"
 #include "EntityHealth.h"
 #include "EnemyBody.h"
 #include "Scene8.h"
@@ -60,7 +61,7 @@ bool GameManager::OnCreate() {
     //DEFAULT SCENE - SHOULD BE USED FOR MAIN MENU
     /////////////////////////////////
 
-    currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+    currentScene = new Scene3(windowPtr->GetSDL_Window(), this);
 
     /////////////////////////////////
     //CREATE THE PLAYER ATTRIBUTES
@@ -241,10 +242,10 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_w)
             {
                 // Start moving player up
-           
+                   
                 if (isSprinting == true)
                 {
-
+                    
                     speed = 5000;
 
                 }
@@ -311,6 +312,7 @@ void GameManager::handleEvents()
             }
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                 event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
+                
                 Sf.WalkingAudio(true);
             }
 
@@ -359,8 +361,10 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                 event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
-                //Stop moving audio
-                Sf.WalkingAudio(false);
+                 
+                    Sf.WalkingAudio(false);
+
+                
 
             }
 
@@ -605,6 +609,9 @@ void GameManager::LoadScene( int i )
             break;
         case 2:
             currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+            break;
+        case 3:
+            currentScene = new Scene3(windowPtr->GetSDL_Window(), this);
             break;
         case 4:
             //currentScene = new Scene4(windowPtr->GetSDL_Window(), this);

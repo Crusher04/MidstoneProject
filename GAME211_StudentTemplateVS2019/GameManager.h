@@ -71,10 +71,10 @@ public:
 
 	void RenderZombie(float scale = 1.0f);
 	ZombieSpawner getZombie();
-
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
 	bool isSprinting;
+	
 
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY

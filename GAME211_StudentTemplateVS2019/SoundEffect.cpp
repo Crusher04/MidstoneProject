@@ -14,12 +14,18 @@ SoundEffect::SoundEffect() : Audio() {
 void SoundEffect::loadAudio()
 {
 	addAudio("Audio/Sound effect/Weapon SFX/game-gun-shot-1662.mp3"); //0
-	//addAudio("C:/Users/nktri/Documents/GitHub/MidstoneProject/GAME211_StudentTemplateVS2019/Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav");
 	addAudio("Audio/Sound effect/Weapon SFX/heavymachinegun-6998.wav"); //1
 	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-83900.wav"); //2
 	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/dirt-hit-slow-83900.wav"); //3
 	addAudio("Audio/Sound effect/Weapon SFX/Empty-gun-sound-72163.wav"); //4
 	addAudio("Audio/Sound effect/Weapon SFX/pistol-cock-6014.wav"); //5
+
+	//New Pistol Audio
+	addAudio("Audio/Sound effect/Weapon SFX/ES_9mm Gun Firing - SFX Producer.wav"); //6
+
+	//Walking SFX
+	addAudio("Audio/Sound effect/WalkingSFX/ES_Footsteps Grass 2 - SFX Producer.wav"); //7
+
 }
 
 void SoundEffect::addAudio(const char* path)
@@ -51,8 +57,9 @@ void SoundEffect::playAudio(const int which) const
 void SoundEffect::PistolAudio(bool fired) const
 {
 	if (fired == true) {
+
 		Mix_Volume(CH_WEAPON, Volume);
-		Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[0], 0);
+		Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[6], 0);
 	}
 	else {
 		Mix_Pause(CH_WEAPON);
@@ -76,7 +83,7 @@ void SoundEffect::WalkingAudio(bool walking)
 	if (walking == true) {
 		if (isWalking == false) {
 			Mix_Volume(CH_PLAYER, Volume);
-			Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[3], -1);
+			Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[7], -1);
 			isWalking = true;
 		}
 	}

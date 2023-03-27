@@ -34,6 +34,7 @@
     <ClCompile Include="Round.cpp" />
     <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene2.cpp" />
+    <ClCompile Include="Scene3.cpp" />
     <ClCompile Include="Scene4.cpp" />
     <ClCompile Include="Scene8.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene1.h" />
     <ClInclude Include="Scene2.h" />
+    <ClInclude Include="Scene3.h" />
     <ClInclude Include="Scene4.h" />
     <ClInclude Include="Scene8.h" />
     <ClInclude Include="SoundEffect.h" />
