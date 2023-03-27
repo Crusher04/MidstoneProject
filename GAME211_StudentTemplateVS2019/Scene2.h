@@ -25,6 +25,7 @@ private:
 	//tree
 	SDL_Texture* treeTexture0;
 	SDL_Texture* treeTexture1;
+	SDL_Texture* treeTexture2;
 
 	//other Texture
 	SDL_Texture* wellTexture;
@@ -34,10 +35,10 @@ private:
 
 
 	//block
-	SDL_Texture* blockTexture0;
+	/*SDL_Texture* blockTexture0;
 	SDL_Texture* blockTexture1;
 	SDL_Texture* blockTexture2;
-	SDL_Texture* blockTexture3;
+	SDL_Texture* blockTexture3;*/
 
 	//rock
 	SDL_Texture* rockTexture0;
@@ -59,6 +60,7 @@ private:
 	//tree
 	SDL_Surface* treeImage0;
 	SDL_Surface* treeImage1;
+	SDL_Surface* treeImage2;
 
 	//block
 	SDL_Surface* blockImage0;
