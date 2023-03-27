@@ -622,7 +622,10 @@ void GameManager::DropEffects()
 
     if (itemManagement.speedBoostDrop == true)
     {
-        speed *= 1.5f;
+        if (speed <= 5000)
+        {
+            speed *= 1.125f;
+        }
     }
 
 

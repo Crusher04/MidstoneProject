@@ -474,7 +474,7 @@ void Scene2::Update(const float deltaTime) {
 		{
 
 			game->bulletDamage = 25;
-
+			game->goldenGunOn = false;
 		}
 
 

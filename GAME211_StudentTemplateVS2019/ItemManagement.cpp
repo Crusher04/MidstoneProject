@@ -180,8 +180,6 @@ void ItemManagement::RandomizeDrops()
 	{
 
 		healthDrop = true;
-		goldenGunDrop = false;
-		speedBoostDrop = false;
 		item = 1;
 	}
 
@@ -189,16 +187,12 @@ void ItemManagement::RandomizeDrops()
 	{
 
 		goldenGunDrop = true;
-		healthDrop = false;
-		speedBoostDrop = false;
 		item = 2;
 	}
 
 	if (item == 3)
 	{
 		speedBoostDrop = true;
-		goldenGunDrop = false;
-		healthDrop = false;
 		item = 3;
 	}
 
@@ -214,6 +208,8 @@ void ItemManagement::Drops()
 
 	if (dropChance >= 0 && dropChance <= 50)
 	{
+		ResetBools();
+
 		//Randomizes which drop it is and spawns that drop
 		RandomizeDrops();
 		itemDrop = true;
