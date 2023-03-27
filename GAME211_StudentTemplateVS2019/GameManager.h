@@ -36,7 +36,10 @@ private:
 	class Round	*round;	
 	class ZombieSpawner *zombies;	
 
-	bool isStartMenuActive;
+	
+	
+	//Scene Event Types
+	Uint32 changeSceneEventType;
 
 public:
 
@@ -46,7 +49,7 @@ public:
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
-
+	bool isStartMenuActive;
 	
 
 	// These might be unfamiliar
@@ -82,7 +85,6 @@ public:
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
 	
-	//Bullet Variables
 	
 
 	//Weapon Management
@@ -140,6 +142,8 @@ public:
 	Round* getRound() { return round; }
 
 	void zombieArrayInit();
+
+	Uint32 GetChangeScene();
 
 };
 #endif

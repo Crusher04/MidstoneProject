@@ -51,6 +51,7 @@ bool Scene3::OnCreate() {
 
 	}
 
+	playButtonPressed = false;
 
 	return true;
 }
@@ -59,7 +60,20 @@ void Scene3::OnDestroy() {}
 
 void Scene3::Update(const float deltaTime) {
 
-	
+	if (playButtonPressed)
+	{
+		
+		/*SDL_Event event2;
+		SDL_memset(&event2, 0, sizeof(event2));
+		event2.type = game->GetChangeScene();
+		event2.user.code = 1;
+		event2.user.data1 = nullptr;
+		event2.user.data2 = nullptr;
+		SDL_PushEvent(&event2);*/
+
+		
+
+	}
 
 }
 
@@ -87,6 +101,11 @@ void Scene3::HandleEvents(const SDL_Event& event)
 			if (mouseX >= playButtonColl.x && mouseX <= (playButtonColl.x + playButtonColl.w)
 				&& mouseY >= playButtonColl.y && mouseY <= (playButtonColl.y + playButtonColl.h))
 				std::cout << "MOUSE OVER Button and pressed\n--\n";
+
+			playButtonPressed = true;
+			game->isStartMenuActive = false;
+			game->LoadScene(2);
+			
 		}
 }
 

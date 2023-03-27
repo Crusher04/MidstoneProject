@@ -37,6 +37,8 @@ private:
 
 	int mouseX, mouseY;
 	float screenX, screenY;
+	bool playButtonPressed;
+
 public:
 	// This constructor may be different from what you've seen before
 	// Notice the second parameter, and look in GameManager.cpp

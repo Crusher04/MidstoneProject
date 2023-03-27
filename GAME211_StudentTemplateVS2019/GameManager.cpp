@@ -150,6 +150,13 @@ bool GameManager::OnCreate() {
     HealthUI.OnCreate(getRenderer(), false);
     ZombieCounterUI.OnCreate(getRenderer(), true);
 
+    //Event Type defined by user
+    changeSceneEventType = SDL_RegisterEvents(2);
+    if (changeSceneEventType == ((Uint32)-1))
+    {
+        OnDestroy();
+        return false;
+    }
 
 
 	return true;
@@ -204,11 +211,21 @@ void GameManager::handleEvents()
         case SDL_KEYDOWN:
 
             /////////////////////////////////
-            // Quick Exit Program
+            // Quick Exit Program + change scene
             /////////////////////////////////
             if (event.key.keysym.sym == SDLK_ESCAPE)
                 isRunning = false;
-
+            else if (event.type == changeSceneEventType)
+            {
+                currentScene->OnDestroy();
+                delete currentScene;
+                currentScene = new Scene2(windowPtr->GetSDL_Window(), this);
+                if (!currentScene->OnCreate())
+                {
+                    OnDestroy();
+                    isRunning = false;
+                }
+            }
             /////////////////////////////////
             // Reload
             /////////////////////////////////
@@ -244,7 +261,7 @@ void GameManager::handleEvents()
             /////////////////////////////////
             if (!isStartMenuActive)
             { 
-                if (event.key.keysym.sym == SDLK_w)
+               if (event.key.keysym.sym == SDLK_w)
                 {
                     // Start moving player up
 
@@ -604,6 +621,12 @@ void GameManager::zombieArrayInit()
         zombieSpawnerArr2.push_back(zombies2);
     }
 }
+
+Uint32 GameManager::GetChangeScene()
+{
+    return changeSceneEventType;
+}
+
 
 void GameManager::LoadScene( int i )
 {
