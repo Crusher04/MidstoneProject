@@ -97,6 +97,9 @@ REGZOMBIE:
 		}
 		health.setHealth(50);
         regZombCounter--;
+        std::srand((unsigned int)time(NULL));
+        float randSpeed = (rand() % 2) + 1;
+
 	}
  
     return true;
