@@ -166,6 +166,64 @@ void Scene2::Update(const float deltaTime) {
 	else
 	{
 		/////////////////////////////////
+		//Mitigates Zombies Stacking up inside each other. 
+		/////////////////////////////////
+
+		for (int i = 0; i < zombieCollArr.size(); i++)
+		{
+			if ((i + 1) <= zombieCollArr.size() - 1)
+			{
+				if (zombieCollArr.at(i).checkCollBox(zombieCollArr.at(i), zombieCollArr.at(i + 1)))
+				{
+					if (game->zombieSpawnerArr2.at(i).getPos().x < game->zombieSpawnerArr2.at(i + 1).getPos().x)
+					{
+						int x, y, z;
+						x = game->zombieSpawnerArr2.at(i).getPos().x;
+						y = game->zombieSpawnerArr2.at(i).getPos().y;
+						z = game->zombieSpawnerArr2.at(i).getPos().z;
+						x -= 5;
+						game->zombieSpawnerArr2.at(i).setPos(Vec3(x, y, z));
+
+					}
+					else if (game->zombieSpawnerArr2.at(i).getPos().x > game->zombieSpawnerArr2.at(i + 1).getPos().x)
+					{
+						int x, y, z;
+						x = game->zombieSpawnerArr2.at(i).getPos().x;
+						y = game->zombieSpawnerArr2.at(i).getPos().y;
+						z = game->zombieSpawnerArr2.at(i).getPos().z;
+						x += 5;
+						game->zombieSpawnerArr2.at(i).setPos(Vec3(x, y, z));
+
+					}
+
+					if (game->zombieSpawnerArr2.at(i).getPos().y < game->zombieSpawnerArr2.at(i + 1).getPos().y)
+					{
+						int x, y, z;
+						x = game->zombieSpawnerArr2.at(i).getPos().x;
+						y = game->zombieSpawnerArr2.at(i).getPos().y;
+						z = game->zombieSpawnerArr2.at(i).getPos().z;
+						y -= 5;
+						game->zombieSpawnerArr2.at(i).setPos(Vec3(x, y, z));
+
+					}
+					else if (game->zombieSpawnerArr2.at(i).getPos().x > game->zombieSpawnerArr2.at(i + 1).getPos().x)
+					{
+						int x, y, z;
+						x = game->zombieSpawnerArr2.at(i).getPos().x;
+						y = game->zombieSpawnerArr2.at(i).getPos().y;
+						z = game->zombieSpawnerArr2.at(i).getPos().z;
+						y += 5;
+						game->zombieSpawnerArr2.at(i).setPos(Vec3(x, y, z));
+
+					}
+				}
+			}
+
+
+		}
+
+
+		/////////////////////////////////
 		//Player Updates
 		/////////////////////////////////
 
@@ -345,6 +403,9 @@ void Scene2::Update(const float deltaTime) {
 			}
 
 		}
+
+
+		
 
 
 		/////////////////////////////////
