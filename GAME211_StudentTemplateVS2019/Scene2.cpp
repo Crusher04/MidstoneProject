@@ -420,9 +420,6 @@ void Scene2::Update(const float deltaTime) {
 		}
 
 
-
-
-
 		/////////////////////////////////
 		//ZOMBIE PATHING
 		/////////////////////////////////
@@ -480,8 +477,25 @@ void Scene2::Update(const float deltaTime) {
 
 		}
 
+		/////////////////////////////////
+		//ZOMBIE Special Attacks
+		/////////////////////////////////
+		for (int i = 0; i < zombieCollArr.size(); i++)
+		{
+			if (game->zombieSpawnerArr2.at(i).tankSpawned)
+			{
+				int zombieX = game->zombieSpawnerArr2.at(i).getPos().x;
+				int zombieY = game->zombieSpawnerArr2.at(i).getPos().y;
+				Vec3 playerPos = game->getPlayer()->getPos();
+				Uint32 distanceX = 0; 
+				distanceX = playerPos.x - distanceX;
+				Uint32 distanceY = 0; 
+				distanceY = playerPos.y - distanceY;
 
-		
+				std::cout << "Player Distance for Tank zombie " << i << ": " << distanceX << ", " << distanceY << std::endl;
+				
+			}
+		}
 
 
 		/////////////////////////////////
