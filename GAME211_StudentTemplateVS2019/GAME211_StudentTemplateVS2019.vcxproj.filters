@@ -75,6 +75,7 @@
     </ClCompile>
     <ClCompile Include="Scene9.cpp" />
     <ClCompile Include="Scene3.cpp">
+    <ClCompile Include="ItemManagement.cpp">
       <Filter>Class</Filter>
     </ClCompile>
   </ItemGroup>
@@ -162,6 +163,7 @@
     </ClInclude>
     <ClInclude Include="Scene9.h" />
     <ClInclude Include="Scene3.h">
+    <ClInclude Include="ItemManagement.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

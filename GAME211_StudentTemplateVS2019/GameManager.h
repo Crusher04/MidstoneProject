@@ -12,6 +12,7 @@
 #include "Bullet.h"
 #include "WeaponManagement.h"
 #include "NumbersUI.h"
+#include "ItemManagement.h"
 #include "SoundEffect.h"
 #include "Music.h"
 
@@ -80,6 +81,8 @@ public:
 	bool isSprinting;
 	
 
+	
+
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
@@ -94,7 +97,22 @@ public:
 	std::vector <Bullet> bulletsInMotion;
 	bool outOfAmmo;
 	
-	
+	//Damage of a bullet
+	int bulletDamage;
+
+
+	///Item Variables
+
+	//Item Management
+	ItemManagement itemManagement;
+	//Item Spawn Location;
+	Vec3 itemSpawnLocation;
+
+	//Bool for if the player is using the golden gun
+	bool goldenGunOn;
+	//Variables for the golden gun timer
+	int goldenGunTimer, goldenGunTimerDelay;
+
 
 	//Round UI
 	NumbersUI RoundUI;
@@ -156,6 +174,20 @@ public:
 	void Quit();
 
 	void Restart();
+	//std::vector <ItemManagement> itemManagement;
+	/// <summary>
+	/// Renders Items
+	/// </summary>
+	void RenderItem();
+
+	/// <summary>
+	/// Applies Item Drop Effect
+	/// </summary>
+	void DropEffects();
+
+	
+	
+
 };
 #endif
 
