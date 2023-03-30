@@ -627,10 +627,10 @@ void GameManager::RenderZombieCountUI()
 
 void GameManager::RenderAmmoUI()
 {
-    if(weaponManagement.ammoRemaining == 0)
-        AmmoAmountUI.Render(getRenderer(), 1.0f, 0, 1060, 980);
-    else
-        AmmoAmountUI.Render(getRenderer(), 1.0f, weaponManagement.ammoRemaining + 1, 1060, 980);
+    if (outOfAmmo)
+        AmmoAmountUI.Render(getRenderer(), 1.0f, 0, 1080, 980);
+    else if(!weaponManagement.shotDelayFlag)
+        AmmoAmountUI.Render(getRenderer(), 1.0f, weaponManagement.ammoRemaining + 1, 1080, 980);
 
 }
 

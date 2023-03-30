@@ -1048,7 +1048,7 @@ void Scene2::RenderHealthBackground()
 
 	//Screen Coords
 	int screenX = 790;
-	int screenY = 980;
+	int screenY = 970;
 
 
 	//Get image width and height and adjust it to scale
@@ -1066,8 +1066,8 @@ void Scene2::RenderHealthBackground()
 	/////////////////////////////////
 	//Render Saling
 	/////////////////////////////////
-	square.w *= 1;
-	square.h *= 1;
+	square.w *= 1.2;
+	square.h *= 1.2;
 
 	/////////////////////////////////
 	//RENDER
@@ -1076,7 +1076,7 @@ void Scene2::RenderHealthBackground()
 
 	//Screen Coords
 	screenX = 980;
-	screenY = 980;
+	screenY = 970;
 
 
 	//Get image width and height and adjust it to scale
@@ -1093,8 +1093,8 @@ void Scene2::RenderHealthBackground()
 	/////////////////////////////////
 	//Render Saling
 	/////////////////////////////////
-	square.w *= 1;
-	square.h *= 1;
+	square.w *= 1.2;
+	square.h *= 1.2;
 
 	/////////////////////////////////
 	//RENDER
@@ -1132,7 +1132,7 @@ void Scene2::RenderHealthBackground()
 
 
 	//Screen Coords
-	screenX = 1010;
+	screenX = 1020;
 	screenY = 990;
 
 
