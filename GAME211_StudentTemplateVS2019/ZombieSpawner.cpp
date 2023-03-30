@@ -10,7 +10,7 @@ bool ZombieSpawner::OnCreate()
     spawned = false;
     currentRound = game->getRound()->getCurrentRound();
     zombieIncreasedSpeed = 0;
-    tankSpawned = false;
+    tankSpawned, sprintZombSpawned = false;
 
     //Initialize the amount of variants
 	if (initZombFlag)
@@ -68,6 +68,8 @@ SPRINTZOMBIE:
 			std::cerr << "Can't open the zombieSprinter image" << std::endl;
 			return false;
 		}
+        sprintZombSpawned = true;
+        tankSpawned = false;
 		sprintZombCounter--;
 		health.setHealth(75);
         zombieIncreasedSpeed = 1;
@@ -90,6 +92,7 @@ TANKZOMBIE:
 			return false;
 		}
         tankSpawned = true;
+        sprintZombSpawned = false;
 		tankZombCounter--;
 		health.setHealth(125);
 		break;
@@ -109,6 +112,9 @@ REGZOMBIE:
 			std::cerr << "Can't open the zombie image" << std::endl;
 			return false;
 		}
+        tankSpawned = false;
+        sprintZombSpawned = false;
+
 		health.setHealth(50);
         regZombCounter--;
         std::srand((unsigned int)time(NULL));
@@ -144,10 +150,6 @@ void ZombieSpawner::Render(float scale)
     square.h = static_cast<int>(h);
 
 
-
-  
-
-
      /////////////////////////////////
      //MOUSE ORIENTATION! 
      /////////////////////////////////
@@ -155,21 +157,7 @@ void ZombieSpawner::Render(float scale)
     square.x = pos.x;
     square.y = pos.y;
     SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
-    //square.x -= (square.w / 2);
-    //square.y -= (square.h / 2);
-
-    //// Convert character orientation from radians to degrees.
-    //float orientationDegrees = orientation * 180.0f / M_PI;
-
-    ////// Calculate Angle Variable
-    //int Delta_x; int Delta_y;
-    //int mouse_x, mouse_y;
-    //SDL_GetMouseState(&mouse_x, &mouse_y);
-
-    //Delta_x = mouse_x - game->getPlayer()->getPos().x;
-    //Delta_y = mouse_y - game->getPlayer()->getPos().y;
-
-    //float angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+   
 
     /////////////////////////////////
     //Render Saling

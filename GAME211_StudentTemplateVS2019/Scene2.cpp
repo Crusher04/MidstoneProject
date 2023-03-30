@@ -346,7 +346,15 @@ void Scene2::Update(const float deltaTime) {
 				if (playerColl.checkCollBox(playerColl, zombieCollArr.at(i)))
 				{
 					std::cout << "\nDamage Taken!";
-					game->getPlayer()->health.takeDamage(12);
+
+					if(game->zombieSpawnerArr2.at(i).sprintZombSpawned)
+						game->getPlayer()->health.takeDamage(10);
+					else if(game->zombieSpawnerArr2.at(i).tankSpawned)
+						game->getPlayer()->health.takeDamage(25);
+					else
+						game->getPlayer()->health.takeDamage(12);
+
+
 					damageTaken = true; //stops the player from taking damage per tick
 					std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
 					timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
