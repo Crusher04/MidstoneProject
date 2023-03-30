@@ -111,6 +111,30 @@ bool Scene2::OnCreate() {
 
 	buildMap();
 
+	//PAUSE MENU IMAGES
+	pauseMenuImage = IMG_Load("Assets/UI/Pause Menu/pause_panel.png");
+	renderer = game->getRenderer();
+	pauseMenuTexture = SDL_CreateTextureFromSurface(renderer, pauseMenuImage);
+	if (pauseMenuImage == nullptr) {
+		std::cerr << "Can't open the pause menu background image" << std::endl;
+
+	}
+
+	quitButtonImage = IMG_Load("Assets/UI/Pause Menu/Quit.png");
+	renderer = game->getRenderer();
+	quitButtonTexture = SDL_CreateTextureFromSurface(renderer, quitButtonImage);
+	if (quitButtonImage == nullptr) {
+		std::cerr << "Can't open the quit button image" << std::endl;
+	}
+
+	menuButtonImage = IMG_Load("Assets/UI/Pause Menu/menu_btn.png");
+	renderer = game->getRenderer();
+	menuButtonTexture = SDL_CreateTextureFromSurface(renderer, menuButtonImage);
+	if (menuButtonImage == nullptr) {
+		std::cerr << "Can't open the menu button image" << std::endl;
+	}
+
+
 	return true;
 }
 
@@ -126,276 +150,261 @@ SDL_Rect Scene2::scale(SDL_Texture* objectTexture, int start_x, int start_y, flo
 void Scene2::OnDestroy() {}
 
 void Scene2::Update(const float deltaTime) {
-	
-	/////////////////////////////////
+
+
+	if (game->gamePaused)
+	{
+		
+	}
+	else
+	{
+		/////////////////////////////////
 	//Player Updates
 	/////////////////////////////////
 
 	//Update Player
-	game->getPlayer()->Update(deltaTime);
-	
-	//Set Player Collider locations
-	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
-	playerColl.setCollBounds(2, 2);
+		game->getPlayer()->Update(deltaTime);
+
+		//Set Player Collider locations
+		playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
+		playerColl.setCollBounds(2, 2);
 
 
-	/////////////////////////////////
-	//Zombie Collision Detection with PLAYER
-	/////////////////////////////////
+		/////////////////////////////////
+		//Zombie Collision Detection with PLAYER
+		/////////////////////////////////
 
-	//Initializes our zombie collider
-	if (zombieCollArr.size() != game->zombieSpawnerArr2.size() && !zombieInitComplete)
-	{
-		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
+		//Initializes our zombie collider
+		if (zombieCollArr.size() != game->zombieSpawnerArr2.size() && !zombieInitComplete)
 		{
-			enemyColl.setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
-			enemyColl.setCollBounds(game->zombieSpawnerArr2.at(i).getImage()->w * 0.18f, game->zombieSpawnerArr2.at(i).getImage()->h * 0.18f);
-			zombieCollArr.push_back(enemyColl);
-		}
-		zombieInitComplete = true; // This is a flag to make sure this loop doesn't run again
-	}
-	
-
-	/* THIS WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY*/
-	if (holdPosX != (int)playerColl.x || holdPosY != (int)playerColl.y)
-	{
-		holdPosX = playerColl.x;
-		holdPosY = playerColl.y;
-
-		//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
-		//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
-
-	}
-	/*** ABOVE WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY ***/
-
-	//Did player recently take damage?
-	if (!damageTaken)
-	{
-		if (enemyColl.passthrough == false)
-		{
-			playerColl.previousPos.x = playerColl.x;
-			playerColl.previousPos.y = playerColl.y;
-			if (playerColl.checkCollBox(playerColl, enemyColl))
+			for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 			{
-				playerColl.setCollPosition(playerColl.previousPos.x, playerColl.previousPos.y);
-				game->getPlayer()->setPos(playerColl.previousPos);
+				enemyColl.setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
+				enemyColl.setCollBounds(game->zombieSpawnerArr2.at(i).getImage()->w * 0.18f, game->zombieSpawnerArr2.at(i).getImage()->h * 0.18f);
+				zombieCollArr.push_back(enemyColl);
+			}
+			zombieInitComplete = true; // This is a flag to make sure this loop doesn't run again
+		}
+
+
+		/* THIS WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY*/
+		if (holdPosX != (int)playerColl.x || holdPosY != (int)playerColl.y)
+		{
+			holdPosX = playerColl.x;
+			holdPosY = playerColl.y;
+
+			//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+			//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
+
+		}
+		/*** ABOVE WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY ***/
+
+		//Did player recently take damage?
+		if (!damageTaken)
+		{
+			if (enemyColl.passthrough == false)
+			{
+				playerColl.previousPos.x = playerColl.x;
+				playerColl.previousPos.y = playerColl.y;
+				if (playerColl.checkCollBox(playerColl, enemyColl))
+				{
+					playerColl.setCollPosition(playerColl.previousPos.x, playerColl.previousPos.y);
+					game->getPlayer()->setPos(playerColl.previousPos);
+				}
+
+			}
+
+
+			for (int i = 0; i < zombieCollArr.size(); i++)
+			{
+				//Check for collision
+				if (playerColl.checkCollBox(playerColl, zombieCollArr.at(i)))
+				{
+					std::cout << "\nDamage Taken!";
+					game->getPlayer()->health.takeDamage(12);
+					damageTaken = true; //stops the player from taking damage per tick
+					std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
+					timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
+				}
 			}
 
 		}
 
-		
+
+		/////////////////////////////////
+		//Zombie Spawning / Round Management
+		/////////////////////////////////
+		if (game->getRound()->getZombieAmount() <= 0)
+		{
+			holdTime = SDL_GetTicks() + 5000;
+			game->getRound()->RoundEnd();
+			roundEnded = true;
+		}
+
+
+		if (holdTime < SDL_GetTicks() && roundEnded)
+		{
+
+			std::cout << "Round " << game->getRound()->getCurrentRound() << " has started!\n ";
+
+			game->zombieSpawnerArr2.clear();
+			zombieCollArr.clear();
+
+			game->zombieArrayInit();
+			zombieInitComplete = false;
+			roundEnded = false;
+		}
+
+
+
+		if (zombieSpawnTime < SDL_GetTicks())
+		{
+			for (int i = 0; i < zombieCollArr.size(); i++)
+			{
+				if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
+				{
+					game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
+					zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
+					game->zombieSpawnerArr2.at(i).spawned = true;
+					zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
+					zombieTimeBetweenSpawn = rand() % 2500 + 1000;
+				}
+			}
+		}
+
+
+
+
+
+		/////////////////////////////////
+		//ZOMBIE PATHING
+		/////////////////////////////////
+
+		//Variables
+		Vec3 playerPos = game->getPlayer()->getPos();		//Player Position
+		int zombieX, zombieY;
+
 		for (int i = 0; i < zombieCollArr.size(); i++)
 		{
-			//Check for collision
-			if (playerColl.checkCollBox(playerColl, zombieCollArr.at(i)))
+			if (game->zombieSpawnerArr2.at(i).health.getHealth() > 0)
 			{
-				std::cout << "\nDamage Taken!";
-				game->getPlayer()->health.takeDamage(12);
-				damageTaken = true; //stops the player from taking damage per tick
-				std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
-				timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
+				//Get zombie position
+
+				zombieX = game->zombieSpawnerArr2.at(i).getPos().x;
+				zombieY = game->zombieSpawnerArr2.at(i).getPos().y;
+
+				//Check where player is and move towards it on X and Y Axis
+				if (playerPos.x > zombieX)
+				{
+					int distance = playerPos.x - zombieX;
+					if (distance > 0)
+						zombieX += 1;
+				}
+				else
+				{
+					int distance = playerPos.x - zombieX;
+					if (distance < 0)
+						zombieX -= 1;
+				}
+
+				if (playerPos.y > zombieY)
+				{
+					int distance = playerPos.y - zombieY;
+					if (distance >= 0)
+						zombieY += 1;
+				}
+				else
+				{
+					int distance = playerPos.y - zombieY;
+					if (distance <= 0)
+						zombieY -= 1;
+				}
+
+				//Calculate orientation to player in radians
+				float radians = atan2(playerPos.y - zombieY, playerPos.x - zombieX);
+
+				//Set orientation towards player in degrees
+				game->zombieSpawnerArr2.at(i).orientation = (radians * 180 / M_PI);
+
+				//Set position for zombie and zombie collider
+				game->zombieSpawnerArr2.at(i).setPos(Vec3(zombieX, zombieY, 0));
+				zombieCollArr.at(i).setCollPosition(zombieX, zombieY);
 			}
+
 		}
-		
-	}
 
 
-	/////////////////////////////////
-	//Zombie Spawning / Round Management
-	/////////////////////////////////
-	if (game->getRound()->getZombieAmount() <= 0)
-	{
-		holdTime = SDL_GetTicks() + 5000;
-		game->getRound()->RoundEnd();
-		roundEnded = true;
-	}
-	
+		/////////////////////////////////
+		//Bullet Management
+		/////////////////////////////////
 
-	if (holdTime < SDL_GetTicks() && roundEnded)
-	{
-
-		std::cout << "Round " << game->getRound()->getCurrentRound() << " has started!\n ";
-
-		game->zombieSpawnerArr2.clear();
-		zombieCollArr.clear();
-
-		game->zombieArrayInit();
-		zombieInitComplete = false;
-		roundEnded = false;
-	}
-		
-
-
-	if (zombieSpawnTime < SDL_GetTicks())
-	{
-		for (int i = 0; i < zombieCollArr.size(); i++)
+		//Managing Reloading
+		if (game->weaponManagement.reloading())
 		{
-			if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
+			//Check for bullets already fired, move them to in motion
+			for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 			{
-				game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
-				zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
-				game->zombieSpawnerArr2.at(i).spawned = true;
-				zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
-				zombieTimeBetweenSpawn = rand() % 2500 + 1000;
+				if (game->bullets.at(i).fired)
+				{
+					game->bulletsInMotion.push_back(game->bullets.at(i));
+					std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
+				}
 			}
+
+			//Clear original magazine
+			game->bullets.clear();
+
+			//re-initialize magazine
+			for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
+			{
+				game->bullets.push_back(game->bulletHolder);
+			}
+			game->weaponManagement.ammoRemaining = game->weaponManagement.pistolMagSize - 1;
+
 		}
-	}
-
-
-	
-
-
-	/////////////////////////////////
-	//ZOMBIE PATHING
-	/////////////////////////////////
-
-	//Variables
-	Vec3 playerPos = game->getPlayer()->getPos();		//Player Position
-	int zombieX, zombieY;									
-
-	for (int i = 0; i < zombieCollArr.size(); i++)
-	{
-		if (game->zombieSpawnerArr2.at(i).health.getHealth() > 0)
+		else
 		{
-			//Get zombie position
-			
-			zombieX = game->zombieSpawnerArr2.at(i).getPos().x;
-			zombieY = game->zombieSpawnerArr2.at(i).getPos().y;
-
-			//Check where player is and move towards it on X and Y Axis
-			if (playerPos.x > zombieX)
-			{
-				int distance = playerPos.x - zombieX;
-				if (distance > 0)
-					zombieX += 1;
-			}
-			else
-			{
-				int distance = playerPos.x - zombieX;
-				if (distance < 0)
-					zombieX -= 1;
-			}
-
-			if (playerPos.y > zombieY)
-			{
-				int distance = playerPos.y - zombieY;
-				if (distance >= 0)
-					zombieY += 1;
-			}
-			else
-			{
-				int distance = playerPos.y - zombieY;
-				if (distance <= 0)
-					zombieY -= 1;
-			}
-
-			//Calculate orientation to player in radians
-			float radians = atan2(playerPos.y - zombieY, playerPos.x - zombieX);
-
-			//Set orientation towards player in degrees
-			game->zombieSpawnerArr2.at(i).orientation = (radians * 180 / M_PI);
-
-			//Set position for zombie and zombie collider
-			game->zombieSpawnerArr2.at(i).setPos(Vec3(zombieX, zombieY, 0));
-			zombieCollArr.at(i).setCollPosition(zombieX, zombieY);
+			game->weaponManagement.shotDelayFlag = false;
 		}
-		
-	}
-	
-	
-	/////////////////////////////////
-	//Bullet Management
-	/////////////////////////////////
 
-	//Managing Reloading
-	if (game->weaponManagement.reloading())
-	{
-		//Check for bullets already fired, move them to in motion
+
+
+		//Managing bullet position and movement
 		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 		{
 			if (game->bullets.at(i).fired)
 			{
-				game->bulletsInMotion.push_back(game->bullets.at(i));
-				std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
-			}
-		}
-
-		//Clear original magazine
-		game->bullets.clear();
-
-		//re-initialize magazine
-		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
-		{
-			game->bullets.push_back(game->bulletHolder);
-		}
-		game->weaponManagement.ammoRemaining = game->weaponManagement.pistolMagSize - 1;
-
-	}
-	else
-	{
-		game->weaponManagement.shotDelayFlag = false;
-	}
-
-
-
-	//Managing bullet position and movement
-	for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
-	{
-		if (game->bullets.at(i).fired)
-		{
-			if (game->bullets.at(i).chamberRelease)
-			{
-				game->bullets.at(i).setPos(Vec3(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, 0));
-			}
-			game->bullets.at(i).Shoot(deltaTime, game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, game->weaponManagement.bulletSpeed);	
-			
-		}
-
-	}
-
-
-	//Update Bullets that are already in motion
-	if (game->bulletsInMotion.size() > 0)
-	{
-		for (int j = 0; j < game->bulletsInMotion.size(); j++)
-			game->bulletsInMotion.at(j).Update(deltaTime);
-	}
-
-
-	//Managing Collision of bullets with zombies
-	for (int i = 0; i < zombieCollArr.size(); i++)
-	{
-		//Check for collisions with bullets 
-		for (int k = 0; k < game->weaponManagement.pistolMagSize; k++)
-		{
-
-			if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, zombieCollArr.at(i)))
-			{
-				std::cout << "Zombie " << i << " hit!\n";
-				game->zombieSpawnerArr2.at(i).health.takeDamage(25);
-				game->bullets.at(k).collider.active = false;
-
-				if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+				if (game->bullets.at(i).chamberRelease)
 				{
-					zombieCollArr.at(i).active = false;
-					game->getRound()->removeAZombie();
+					game->bullets.at(i).setPos(Vec3(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, 0));
 				}
-			}	
+				game->bullets.at(i).Shoot(deltaTime, game->getPlayer()->getPos().x, game->getPlayer()->getPos().y, game->weaponManagement.bulletSpeed);
+
+			}
+
 		}
 
 
-		//Check collisions for bullets in motion (Bullets in motion are bullets still in motion after user reloads)
+		//Update Bullets that are already in motion
 		if (game->bulletsInMotion.size() > 0)
 		{
 			for (int j = 0; j < game->bulletsInMotion.size(); j++)
+				game->bulletsInMotion.at(j).Update(deltaTime);
+		}
+
+
+		//Managing Collision of bullets with zombies
+		for (int i = 0; i < zombieCollArr.size(); i++)
+		{
+			//Check for collisions with bullets 
+			for (int k = 0; k < game->weaponManagement.pistolMagSize; k++)
 			{
-				if (game->bulletsInMotion.at(j).collider.checkCollBox(game->bulletsInMotion.at(j).collider, zombieCollArr.at(i)))
+
+				if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, zombieCollArr.at(i)))
 				{
 					std::cout << "Zombie " << i << " hit!\n";
 					game->zombieSpawnerArr2.at(i).health.takeDamage(25);
-					game->bulletsInMotion.at(j).collider.active = false;
-					game->bulletsInMotion.erase(game->bulletsInMotion.begin() + j);
-					std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
+					game->bullets.at(k).collider.active = false;
 
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 					{
@@ -404,44 +413,66 @@ void Scene2::Update(const float deltaTime) {
 					}
 				}
 			}
-		}
-	}
 
-	/////////////////////////////////
-	//Bullets In Motion Resource Management
-	/////////////////////////////////
-	if (game->bulletsInMotion.size() > 0)
-	{
-		for (int i = 0; i < game->bulletsInMotion.size(); i++)
-		{
-			if (game->bulletsInMotion.at(i).getPos().x > 2000 || game->bulletsInMotion.at(i).getPos().y > 1100 || game->bulletsInMotion.at(i).getPos().x < -10 || game->bulletsInMotion.at(i).getPos().y < -10)
+
+			//Check collisions for bullets in motion (Bullets in motion are bullets still in motion after user reloads)
+			if (game->bulletsInMotion.size() > 0)
 			{
-				game->bulletsInMotion.erase(game->bulletsInMotion.begin() + i);
-				std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
+				for (int j = 0; j < game->bulletsInMotion.size(); j++)
+				{
+					if (game->bulletsInMotion.at(j).collider.checkCollBox(game->bulletsInMotion.at(j).collider, zombieCollArr.at(i)))
+					{
+						std::cout << "Zombie " << i << " hit!\n";
+						game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+						game->bulletsInMotion.at(j).collider.active = false;
+						game->bulletsInMotion.erase(game->bulletsInMotion.begin() + j);
+						std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
 
+						if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+						{
+							zombieCollArr.at(i).active = false;
+							game->getRound()->removeAZombie();
+						}
+					}
+				}
 			}
 		}
+
+		/////////////////////////////////
+		//Bullets In Motion Resource Management
+		/////////////////////////////////
+		if (game->bulletsInMotion.size() > 0)
+		{
+			for (int i = 0; i < game->bulletsInMotion.size(); i++)
+			{
+				if (game->bulletsInMotion.at(i).getPos().x > 2000 || game->bulletsInMotion.at(i).getPos().y > 1100 || game->bulletsInMotion.at(i).getPos().x < -10 || game->bulletsInMotion.at(i).getPos().y < -10)
+				{
+					game->bulletsInMotion.erase(game->bulletsInMotion.begin() + i);
+					std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
+
+				}
+			}
+		}
+
+		/////////////////////////////////
+		//Player Health/Damage Check
+		/////////////////////////////////
+
+		//Checks to see if delay is over so player can take damage again
+		if (SDL_GetTicks() > timeOfDamage)
+		{
+			damageTaken = false;
+		}
+
+		//Cheking Health
+		if (game->getPlayer()->health.getHealth() <= 0)
+		{
+			std::cout << "\n YOU HAVE DIED, GAME OVER";
+			exit(0);
+		}
 	}
-
-	/////////////////////////////////
-	//Player Health/Damage Check
-	/////////////////////////////////
-
-	//Checks to see if delay is over so player can take damage again
-	if (SDL_GetTicks() > timeOfDamage)
-	{
-		damageTaken = false;
-	}
-
-	//Cheking Health
-	if (game->getPlayer()->health.getHealth() <= 0)
-	{
-		std::cout << "\n YOU HAVE DIED, GAME OVER";
-		exit(0);
-	}
-
 	
-}
+}//End of UPDATE
 
 void Scene2::Render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
@@ -475,6 +506,11 @@ void Scene2::Render() {
 
 	game->RenderZombieCountUI();
 
+	if (game->gamePaused)
+	{
+		RenderPauseMenu();
+	}
+
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }
@@ -484,58 +520,51 @@ void Scene2::HandleEvents(const SDL_Event& event)
 	// send events to player as needed
 	game->getPlayer()->HandleEvents(event);
 
+	SDL_GetMouseState(&mouseX, &mouseY);
+	std::cout << "Mouse POS (" << mouseX << ", " << mouseY << ")\n";
+	std::cout << "quitButtonColl = (" << quitButtonColl.x << ", " << quitButtonColl.y << ", " << quitButtonColl.w << ", " << quitButtonColl.h << ")\n";
+
+	switch (event.type)
+		case SDL_MOUSEBUTTONDOWN:
+
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+
+				if (mouseX >= menuButtonColl.x && mouseX <= (menuButtonColl.x + menuButtonColl.w)
+					&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
+				{
+					std::cout << "Mouse Pressed Menu\n";
+					game->isStartMenuActive = false;
+					game->gamePaused = false;
+					game->LoadScene(3);
+				}
+
+				if (mouseX >= quitButtonColl.x && mouseX <= (quitButtonColl.x + quitButtonColl.w)
+					&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
+				{
+					std::cout << "MOUSE Pressed Quit \n";
+					game->Quit();
+				}
+
+			}
+	
+			if (mouseX >= menuButtonColl.x && mouseX <= (menuButtonColl.x + menuButtonColl.w)
+				&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
+			{
+				std::cout << "Mouse Pressed Menu\n";
+				
+			}
+
+		
 	
 }
 
 void Scene2::buildMap()
 {
 
-	bgImage = IMG_Load("Assets/background/bg_green1.png");
-	bgTexture = SDL_CreateTextureFromSurface(renderer, bgImage);
-
-	pathImage = IMG_Load("Assets/background/bg_path.png");
+	pathImage = IMG_Load("Assets/background/image.png");
 	pathTexture = SDL_CreateTextureFromSurface(renderer, pathImage);
 
-	//tree row 1
-	treeImage0 = IMG_Load("Assets/organic/bush1.png");
-	treeTexture0 = SDL_CreateTextureFromSurface(renderer, treeImage0);
-
-	treeImage1 = IMG_Load("Assets/organic/bush.png");
-	treeTexture1 = SDL_CreateTextureFromSurface(renderer, treeImage1);
-
-	//block
-	blockImage0 = IMG_Load("Assets/organic/block1.png");
-	blockTexture0 = SDL_CreateTextureFromSurface(renderer, blockImage0);
-
-	blockImage1 = IMG_Load("Assets/organic/block3.1.png");
-	blockTexture1 = SDL_CreateTextureFromSurface(renderer, blockImage1);
-
-	blockImage2 = IMG_Load("Assets/organic/block3.png");
-	blockTexture2 = SDL_CreateTextureFromSurface(renderer, blockImage2);
-
-	// other
-	wellImage = IMG_Load("Assets/prop/well.png");
-	otherImage0 = IMG_Load("Assets/prop/building1_1.png");
-	otherImage1 = IMG_Load("Assets/prop/building1.png");
-	logImage0 = IMG_Load("Assets/organic/log.png");
-
-	otherTexture0 = SDL_CreateTextureFromSurface(renderer, otherImage0);
-	otherTexture1 = SDL_CreateTextureFromSurface(renderer, otherImage1);
-	wellTexture = SDL_CreateTextureFromSurface(renderer, wellImage);
-	logTexture0 = SDL_CreateTextureFromSurface(renderer, logImage0);
-
-	//rock
-	rockImage0 = IMG_Load("Assets/organic/rock1.png");
-	rockImage1 = IMG_Load("Assets/organic/rock2.png");
-	rockImage2 = IMG_Load("Assets/organic/rock3.png");
-
-	rockTexture0 = SDL_CreateTextureFromSurface(renderer, rockImage0);
-	rockTexture1 = SDL_CreateTextureFromSurface(renderer, rockImage1);
-	rockTexture2 = SDL_CreateTextureFromSurface(renderer, rockImage2);
-
-	//UI
-	/*hbEmptyImage = IMG_Load("Assets/UI/HUD/healthbar/hb_empty.png");
-	hbFullImage = IMG_Load("Assets/UI/HUD/healthbar/hb_full.png");*/
 	zombieIconImage = IMG_Load("Assets/UI/HUD/zombie_counter_icon.png");
 
 	hbEmptyTexture = SDL_CreateTextureFromSurface(renderer, hbEmptyImage);
@@ -548,392 +577,159 @@ void Scene2::buildMap()
 
 void Scene2::initMapVar()
 {
-	/// PHUNG
-	//bg = new Body(Vec3(0.0f, 15.0f, 0.0f)); // background position
-	bgTexture = nullptr;
+
 	pathTexture = nullptr;
 
-	//tree
-	treeTexture0 = nullptr;
-	treeTexture1 = nullptr;
-
-	//block
-	blockTexture0 = nullptr;
-	blockTexture1 = nullptr;
-	blockTexture2 = nullptr;
-	blockTexture3 = nullptr;
-
-	//other
-	wellTexture = nullptr;
-	otherTexture0 = nullptr;
-	otherTexture1 = nullptr;
-	logTexture0 = nullptr;
-
-	//rock
-	rockTexture0 = nullptr;
-	rockTexture1 = nullptr;
-	rockTexture2 = nullptr;
-	rockTexture3 = nullptr;
-
-	//UI
-	hbEmptyTexture = nullptr;
-	hbFullTexture = nullptr;
 	zombieIconTexture = nullptr;
 }
 
 void Scene2::renderMap()
 {
+	//Zombie Rendering///////////////////////////////////////////////////////////////////////////////////
+	
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
 
-	//bg and path
-	Vec3 bg_screenCoords = projectionMatrix * Vec3(0.0f, 15.0f, 0.0f);
-	Vec3 path_screenCoords = projectionMatrix * Vec3(0.0f, 8.0f, 0.0f);
+	//Values for width and height
+	float w, h = 0;
 
-	//// tree row 1
-	Vec3 tree_screenCoords0 = projectionMatrix * Vec3(-1.0f, 14.2f, 0.0f);
-	Vec3 tree_screenCoords1 = projectionMatrix * Vec3(2.0f, 15.3f, 0.0f);
-	Vec3 tree_screenCoords2 = projectionMatrix * Vec3(5.0f, 14.3f, 0.0f);
-	Vec3 tree_screenCoords3 = projectionMatrix * Vec3(9.0f, 15.3f, 0.0f);
-	Vec3 tree_screenCoords4 = projectionMatrix * Vec3(11.5f, 14.0f, 0.0f);
-	Vec3 tree_screenCoords5 = projectionMatrix * Vec3(14.0f, 15.3f, 0.0f);
-	Vec3 tree_screenCoords6 = projectionMatrix * Vec3(19.0f, 16.5f, 0.0f);
-	Vec3 tree_screenCoords7 = projectionMatrix * Vec3(22.0f, 20.2f, 0.0f);
+	//Screen Coords
+	int screenX = 1700;
+	int screenY = 40;
 
-	// tree row 1.1
-	Vec3 tree_screenCoords0_1 = projectionMatrix * Vec3(0.6f, 15.2f, 0.0f);
-	Vec3 tree_screenCoords1_1 = projectionMatrix * Vec3(2.1f, 13.7f, 0.0f);
-	Vec3 tree_screenCoords2_1 = projectionMatrix * Vec3(6.4f, 11.1f, 0.0f);
-	Vec3 tree_screenCoords3_1 = projectionMatrix * Vec3(9.2f, 12.0f, 0.0f);
-	Vec3 tree_screenCoords4_1 = projectionMatrix * Vec3(15.7f, 14.1f, 0.0f);
-	Vec3 tree_screenCoords5_1 = projectionMatrix * Vec3(19.3f, 11.35f, 0.0f);
-	Vec3 tree_screenCoords6_1 = projectionMatrix * Vec3(20.0f, 13.55f, 0.0f);
-	Vec3 tree_screenCoords7_1 = projectionMatrix * Vec3(25.5f, 11.01f, 0.0f);
 
-	// tree row 2
-	Vec3 tree_screenCoords0_2 = projectionMatrix * Vec3(-2.0f, 12.0f, 0.0f);
-	Vec3 tree_screenCoords1_2 = projectionMatrix * Vec3(1.0f, 11.8f, 0.0f);
-	Vec3 tree_screenCoords2_2 = projectionMatrix * Vec3(2.0f, 10.3f, 0.0f);
-	Vec3 tree_screenCoords3_2 = projectionMatrix * Vec3(7.0f, 9.3f, 0.0f);
-	Vec3 tree_screenCoords4_2 = projectionMatrix * Vec3(10.5f, 11.0f, 0.0f);
-	Vec3 tree_screenCoords5_2 = projectionMatrix * Vec3(13.0f, 9.7f, 0.0f);
-	Vec3 tree_screenCoords6_2 = projectionMatrix * Vec3(17.5f, 12.5f, 0.0f);
-	Vec3 tree_screenCoords7_2 = projectionMatrix * Vec3(23.0f, 10.2f, 0.0f);
+	//Get image width and height and adjust it to scale
+	w = zombieIconImage->w;
+	h = zombieIconImage->h;
 
-	// tree row 3
-	Vec3 tree_screenCoords0_3 = projectionMatrix * Vec3(-1.5f, 10.0f, 0.0f);
-	Vec3 tree_screenCoords1_3 = projectionMatrix * Vec3(3.0f, 9.3f, 0.0f);
-	Vec3 tree_screenCoords2_3 = projectionMatrix * Vec3(5.0f, 8.3f, 0.0f);
-	Vec3 tree_screenCoords3_3 = projectionMatrix * Vec3(9.5f, 7.0f, 0.0f);
-	Vec3 tree_screenCoords4_3 = projectionMatrix * Vec3(11.8f, 8.8f, 0.0f);
-	Vec3 tree_screenCoords5_3 = projectionMatrix * Vec3(13.3f, 10.2f, 0.0f);
-	Vec3 tree_screenCoords6_3 = projectionMatrix * Vec3(16.4f, 9.5f, 0.0f);
-	Vec3 tree_screenCoords7_3 = projectionMatrix * Vec3(20.6f, 7.2f, 0.0f);
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
 
-	// tree row 4
-	Vec3 tree_screenCoords0_4 = projectionMatrix * Vec3(-1.5f, 6.0f, 0.0f);
-	Vec3 tree_screenCoords1_4 = projectionMatrix * Vec3(0.0f, 4.3f, 0.0f);
-	Vec3 tree_screenCoords2_4 = projectionMatrix * Vec3(2.5f, 1.3f, 0.0f);
-	Vec3 tree_screenCoords3_4 = projectionMatrix * Vec3(8.2f, 5.0f, 0.0f);
-	Vec3 tree_screenCoords4_4 = projectionMatrix * Vec3(12.5f, 3.8f, 0.0f);
-	Vec3 tree_screenCoords5_4 = projectionMatrix * Vec3(15.0f, 4.7f, 0.0f);
-	Vec3 tree_screenCoords6_4 = projectionMatrix * Vec3(18.25f, 5.5f, 0.0f);
-	Vec3 tree_screenCoords7_4 = projectionMatrix * Vec3(22.8f, 2.2f, 0.0f);
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-	// tree row 5
-	Vec3 tree_screenCoords0_5 = projectionMatrix * Vec3(-1.1f, 0.6f, 0.0f);
-	Vec3 tree_screenCoords1_5 = projectionMatrix * Vec3(2.0f, 2.3f, 0.0f);
-	Vec3 tree_screenCoords2_5 = projectionMatrix * Vec3(4.3f, 0.5f, 0.0f);
-	Vec3 tree_screenCoords3_5 = projectionMatrix * Vec3(6.6f, 1.1f, 0.0f);
-	Vec3 tree_screenCoords4_5 = projectionMatrix * Vec3(9.5f, 0.8f, 0.0f);
-	Vec3 tree_screenCoords5_5 = projectionMatrix * Vec3(11.0f, 2.3f, 0.0f);
-	Vec3 tree_screenCoords6_5 = projectionMatrix * Vec3(14.6f, 1.5f, 0.0f);
-	Vec3 tree_screenCoords7_5 = projectionMatrix * Vec3(17.5f, 0.2f, 0.0f);
-	Vec3 tree_screenCoords8_5 = projectionMatrix * Vec3(18.6f, 1.6f, 0.0f);
-	Vec3 tree_screenCoords9_5 = projectionMatrix * Vec3(21.2f, 2.05f, 0.0f);
-	Vec3 tree_screenCoords10_5 = projectionMatrix * Vec3(23.4f, 0.8f, 0.0f);
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w / 2;
+	square.h / 2;
 
-	//block brown
-	Vec3 block_screenCoords0 = projectionMatrix * Vec3(6.0f, 1.8f, 0.0f);
-	Vec3 block_screenCoords0_1 = projectionMatrix * Vec3(9.5f, 1.8f, 0.0f);
-	Vec3 block_screenCoords0_2 = projectionMatrix * Vec3(12.5f, 1.8f, 0.0f);
-	Vec3 block_screenCoords0_3 = projectionMatrix * Vec3(15.5f, 1.8f, 0.0f);
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, zombieIconTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//block green 
-	Vec3 block_screenCoords1 = projectionMatrix * Vec3(0.0f, 5.0f, 0.0f);
-	Vec3 block_screenCoords2 = projectionMatrix * Vec3(0.0f, 6.7f, 0.0f);
-	Vec3 block_screenCoords3 = projectionMatrix * Vec3(0.0f, 8.4f, 0.0f);
-	Vec3 block_screenCoords4 = projectionMatrix * Vec3(0.0f, 10.1f, 0.0f);
-	Vec3 block_screenCoords5 = projectionMatrix * Vec3(0.0f, 11.8f, 0.0f);
+	Vec3 path_screenCoords = projectionMatrix * Vec3(0.0f, 15.0f, 0.0f);
+	
 
-	//other 
-	Vec3 well_screenCoords = projectionMatrix * Vec3(17.5f, 9.5f, 0.0f);
-	Vec3 other_screenCoords0 = projectionMatrix * Vec3(6.0f, 1.0f, 0.0f);
-	Vec3 other_screenCoords1 = projectionMatrix * Vec3(13.3f, 13.5f, 0.0f);
-	Vec3 log_screenCoords0 = projectionMatrix * Vec3(20.0f, 4.5f, 0.0f);
-
-	//rock
-	Vec3 rock_screenCoords0 = projectionMatrix * Vec3(5.5f, 15.0f, 0.0f);
-	Vec3 rock_screenCoords1 = projectionMatrix * Vec3(18.5f, 13.1f, 0.0f);
-	Vec3 rock_screenCoords2 = projectionMatrix * Vec3(7.5f, 9.5f, 0.0f);
-	Vec3 rock_screenCoords3 = projectionMatrix * Vec3(1.8f, 4.0f, 0.0f);
-	Vec3 rock_screenCoords4 = projectionMatrix * Vec3(12.3f, 18.1f, 0.0f);
-	Vec3 rock_screenCoords5 = projectionMatrix * Vec3(10.5f, 6.5f, 0.0f);
-	Vec3 rock_screenCoords6 = projectionMatrix * Vec3(4.6f, 8.8f, 0.0f);
-	Vec3 rock_screenCoords7 = projectionMatrix * Vec3(10.3f, 12.1f, 0.0f);
-	Vec3 rock_screenCoords8 = projectionMatrix * Vec3(18.3f, 6.2f, 0.0f);
-
-	//UI
-	Vec3 hbEmpty_screenCoords = projectionMatrix * Vec3(2.0f, 14.0f, 0.0f);
-	Vec3 hbFull_screenCoords = projectionMatrix * Vec3(2.0f, 14.0f, 0.0f);
-	Vec3 zombieIcon_screenCoords = projectionMatrix * Vec3(22.0f, 15.0f, 0.0f);
-
-	//------------------------ RENDER IMAGE
-	// tree row 1
-	SDL_Rect dest = scale(bgTexture, bg_screenCoords.x, bg_screenCoords.y, 0.4f, 0.4f);
-	SDL_RenderCopy(renderer, bgTexture, nullptr, &dest);
-
-	dest = scale(pathTexture, path_screenCoords.x, path_screenCoords.y, 0.6f, 0.6f);
+	SDL_Rect dest = scale(pathTexture, path_screenCoords.x, path_screenCoords.y, 1.0f, 1.0f);
 	SDL_RenderCopy(renderer, pathTexture, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords0.x, tree_screenCoords0.y, 0.8f, 0.8f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords1.x, tree_screenCoords1.y, 0.85f, 0.85f); //bush2
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+}
 
-	dest = scale(treeTexture0, tree_screenCoords2.x, tree_screenCoords2.y, 0.9f, 0.9f); //bush0 
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+void Scene2::RenderPauseMenu()
+{
+	
 
-	dest = scale(treeTexture1, tree_screenCoords3.x, tree_screenCoords3.y, 0.85f, 0.85f); //bush
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
 
-	dest = scale(treeTexture0, tree_screenCoords4.x, tree_screenCoords4.y, 0.9f, 0.9f); //bush2
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+	//Values for width and height
+	float w, h = 0;
 
-	dest = scale(treeTexture1, tree_screenCoords5.x, tree_screenCoords5.y, 0.7f, 0.7f); //bush1
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	//Screen Coords
+	int screenX = 600;
+	int screenY = 250;
 
-	dest = scale(treeTexture0, tree_screenCoords6.x, tree_screenCoords6.y, 0.6f, 0.6f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords7.x, tree_screenCoords7.y, 1.0f, 1.0f); //bush
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	//Get image width and height and adjust it to scale
+	w = zombieIconImage->w;
+	h = zombieIconImage->h;
 
-	// tree row 1.1
-	dest = scale(treeTexture0, tree_screenCoords0_1.x, tree_screenCoords0_1.y, 0.7f, 0.7f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
 
-	dest = scale(treeTexture1, tree_screenCoords1_1.x, tree_screenCoords1_1.y, 0.85f, 0.85f); //bush2
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-	dest = scale(treeTexture0, tree_screenCoords2_1.x, tree_screenCoords2_1.y, 0.9f, 0.9f); //bush0 
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 6;
+	square.h *= 6;
 
-	dest = scale(treeTexture1, tree_screenCoords3_1.x, tree_screenCoords3_1.y, 0.85f, 0.85f); //bush
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, pauseMenuTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
 
-	dest = scale(treeTexture0, tree_screenCoords4_1.x, tree_screenCoords4_1.y, 0.9f, 0.9f); //bush2
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords5_1.x, tree_screenCoords5_1.y, 0.6f, 0.6f); //bush1
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	//Screen Coords
+	screenX = 780;
+	screenY = 400;
 
-	dest = scale(treeTexture0, tree_screenCoords6_1.x, tree_screenCoords6_1.y, 0.8f, 0.8f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+	
+	//Get image width and height and adjust it to scale
+	w = menuButtonImage->w;
+	h = menuButtonImage->h;
 
-	dest = scale(treeTexture1, tree_screenCoords7_1.x, tree_screenCoords7_1.y, 1.0f, 1.0f); //bush
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
 
-	//tree row 2
-	dest = scale(treeTexture0, tree_screenCoords0_2.x, tree_screenCoords0_2.y, 0.65f, 0.65f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
 
-	dest = scale(treeTexture1, tree_screenCoords1_2.x, tree_screenCoords1_2.y, 0.85f, 0.85f); //bush2
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 2;
+	square.h *= 2;
 
-	dest = scale(treeTexture0, tree_screenCoords2_2.x, tree_screenCoords2_2.y, 0.9f, 0.9f); //bush0 
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+	menuButtonColl.setCollPosition(screenX, screenY);
+	menuButtonColl.setCollBounds(square.w, square.h);
 
-	dest = scale(treeTexture1, tree_screenCoords3_2.x, tree_screenCoords3_2.y, 0.85f, 0.85f); //bush
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, menuButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
 
-	dest = scale(treeTexture0, tree_screenCoords4_2.x, tree_screenCoords4_2.y, 0.9f, 0.9f); //bush2
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+	//Screen Coords
+	screenX = 780;
+	screenY = 700;
 
-	dest = scale(treeTexture1, tree_screenCoords5_2.x, tree_screenCoords5_2.y, 0.72f, 0.72f); //bush1
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
 
-	dest = scale(treeTexture0, tree_screenCoords6_2.x, tree_screenCoords6_2.y, 0.81f, 0.81f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+	//Get image width and height and adjust it to scale
+	w = quitButtonImage->w;
+	h = quitButtonImage->h;
 
-	dest = scale(treeTexture1, tree_screenCoords7_2.x, tree_screenCoords7_2.y, 0.74f, 0.74f); //bush
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
 
-	//tree row 3
-	dest = scale(treeTexture0, tree_screenCoords0_3.x, tree_screenCoords0_3.y, 0.65f, 0.65f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
 
-	dest = scale(treeTexture1, tree_screenCoords1_3.x, tree_screenCoords1_3.y, 0.85f, 0.85f); //bush2
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 2;
+	square.h *= 2;
 
-	dest = scale(treeTexture0, tree_screenCoords2_3.x, tree_screenCoords2_3.y, 0.9f, 0.9f); //bush0 
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
+	quitButtonColl.setCollPosition(screenX, screenY);
+	quitButtonColl.setCollBounds(square.w, square.h);
 
-	dest = scale(treeTexture1, tree_screenCoords3_3.x, tree_screenCoords3_3.y, 0.85f, 0.85f); //bush
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords4_3.x, tree_screenCoords4_3.y, 0.9f, 0.9f); //bush2
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture1, tree_screenCoords5_3.x, tree_screenCoords5_3.y, 0.73f, 0.73f); //bush1
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords6_3.x, tree_screenCoords6_3.y, 0.62f, 0.62f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture1, tree_screenCoords7_3.x, tree_screenCoords7_3.y, 1.0f, 1.0f); //bush
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
-
-	//tree row 4
-	dest = scale(treeTexture0, tree_screenCoords0_4.x, tree_screenCoords0_4.y, 0.73f, 0.73f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture1, tree_screenCoords1_4.x, tree_screenCoords1_4.y, 0.85f, 0.85f); //bush2
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords2_4.x, tree_screenCoords2_4.y, 0.9f, 0.9f); //bush0 
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords3_4.x, tree_screenCoords3_4.y, 0.85f, 0.85f); //bush
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture1, tree_screenCoords4_4.x, tree_screenCoords4_4.y, 0.9f, 0.9f); //bush2
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords5_4.x, tree_screenCoords5_4.y, 0.66f, 0.66f); //bush1
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture1, tree_screenCoords6_4.x, tree_screenCoords6_4.y, 0.72f, 0.72f); //bush1
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords7_4.x, tree_screenCoords7_4.y, 1.0f, 1.0f); //bush
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	//tree row 5
-	dest = scale(treeTexture0, tree_screenCoords0_5.x, tree_screenCoords0_5.y, 0.73f, 0.73f);
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture1, tree_screenCoords1_5.x, tree_screenCoords1_5.y, 0.85f, 0.85f);
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords2_5.x, tree_screenCoords2_5.y, 0.9f, 0.9f);
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords3_5.x, tree_screenCoords3_5.y, 0.85f, 0.85f);
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture1, tree_screenCoords4_5.x, tree_screenCoords4_5.y, 0.9f, 0.9f);
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords5_5.x, tree_screenCoords5_5.y, 0.66f, 0.66f);
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture1, tree_screenCoords6_5.x, tree_screenCoords6_5.y, 0.72f, 0.72f);
-	SDL_RenderCopy(renderer, treeTexture1, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords7_5.x, tree_screenCoords7_5.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords8_5.x, tree_screenCoords8_5.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords9_5.x, tree_screenCoords9_5.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(treeTexture0, tree_screenCoords10_5.x, tree_screenCoords10_5.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	dest = scale(zombieIconTexture, zombieIcon_screenCoords.x, zombieIcon_screenCoords.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, treeTexture0, nullptr, &dest);
-
-	//block brown
-	/*dest = scale(blockTexture0, block_screenCoords0.x, block_screenCoords0.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture2, nullptr, &dest);
-
-	dest = scale(blockTexture0, block_screenCoords0_1.x, block_screenCoords0_1.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture2, nullptr, &dest);
-
-	dest = scale(blockTexture0, block_screenCoords0_2.x, block_screenCoords0_2.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture2, nullptr, &dest);
-
-	dest = scale(blockTexture0, block_screenCoords0_3.x, block_screenCoords0_3.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture2, nullptr, &dest);*/
-
-	//block green
-	/*dest = scale(blockTexture1, block_screenCoords1.x, block_screenCoords1.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);*/
-
-	dest = scale(blockTexture1, block_screenCoords2.x, block_screenCoords2.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
-
-	dest = scale(blockTexture1, block_screenCoords3.x, block_screenCoords3.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
-
-	dest = scale(blockTexture1, block_screenCoords4.x, block_screenCoords4.y, 1.0f, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);
-
-	/*dest = scale(blockTexture1, block_screenCoords5.x, block_screenCoords5.y, 1.0f);
-	SDL_RenderCopy(renderer, blockTexture1, nullptr, &dest);*/
-
-	//other
-	dest = scale(wellTexture, well_screenCoords.x, well_screenCoords.y, 0.7f, 0.7f); // well
-	SDL_RenderCopy(renderer, wellTexture, nullptr, &dest);
-
-	dest = scale(otherTexture0, other_screenCoords0.x, other_screenCoords0.y, 1.0f, 1.0f); // building
-	SDL_RenderCopy(renderer, otherTexture0, nullptr, &dest);
-
-	dest = scale(otherTexture1, other_screenCoords1.x, other_screenCoords1.y, 1.0f, 1.0f); // building
-	SDL_RenderCopy(renderer, otherTexture1, nullptr, &dest);
-
-	dest = scale(logTexture0, log_screenCoords0.x, log_screenCoords0.y, 0.4f, 0.4f); // log  
-	SDL_RenderCopy(renderer, logTexture0, nullptr, &dest);
-
-	//rock
-	dest = scale(rockTexture0, rock_screenCoords0.x, rock_screenCoords0.y, 0.2f, 0.2f); // rock0
-	SDL_RenderCopy(renderer, rockTexture0, nullptr, &dest);
-
-	dest = scale(rockTexture1, rock_screenCoords1.x, rock_screenCoords1.y, 0.3f, 0.3f); // rock1
-	SDL_RenderCopy(renderer, rockTexture1, nullptr, &dest);
-
-	dest = scale(rockTexture2, rock_screenCoords2.x, rock_screenCoords2.y, 0.2f, 0.2f); // rock2
-	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
-
-	dest = scale(rockTexture2, rock_screenCoords3.x, rock_screenCoords3.y, 0.35f, 0.35f); // rock3
-	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
-
-	dest = scale(rockTexture0, rock_screenCoords4.x, rock_screenCoords4.y, 0.4f, 0.4f); // rock4
-	SDL_RenderCopy(renderer, rockTexture0, nullptr, &dest);
-
-	dest = scale(rockTexture2, rock_screenCoords5.x, rock_screenCoords5.y, 0.4f, 0.4f); // rock5
-	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
-
-	dest = scale(rockTexture2, rock_screenCoords6.x, rock_screenCoords6.y, 0.4f, 0.4f); // rock6
-	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
-
-	dest = scale(rockTexture2, rock_screenCoords7.x, rock_screenCoords7.y, 0.4f, 0.4f); // rock7
-	SDL_RenderCopy(renderer, rockTexture2, nullptr, &dest);
-
-	dest = scale(rockTexture0, rock_screenCoords8.x, rock_screenCoords8.y, 0.4f, 0.4f); // rock8
-	SDL_RenderCopy(renderer, rockTexture0, nullptr, &dest);
-
-	//UI
-	dest = scale(hbEmptyTexture, hbEmpty_screenCoords.x, hbEmpty_screenCoords.y, 1.0f * 1.5f, 1.0f * 1.5f); // hb empty * scale 1.5
-	SDL_RenderCopy(renderer, hbEmptyTexture, nullptr, &dest);
-
-	dest = scale(hbFullTexture, hbFull_screenCoords.x, hbFull_screenCoords.y, 0.5f * 1.5f, 1.0f * 1.5f); // hb half * scale 1.5
-	SDL_RenderCopy(renderer, hbFullTexture, nullptr, &dest);
-
-	dest = scale(zombieIconTexture, zombieIcon_screenCoords.x, zombieIcon_screenCoords.y, 1.2f, 1.2f); // zombie counter icon
-	SDL_RenderCopy(renderer, zombieIconTexture, nullptr, &dest);
-
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, quitButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	
 
 }

@@ -25,6 +25,7 @@ private:
 	//tree
 	SDL_Texture* treeTexture0;
 	SDL_Texture* treeTexture1;
+	SDL_Texture* treeTexture2;
 
 	//other Texture
 	SDL_Texture* wellTexture;
@@ -34,10 +35,10 @@ private:
 
 
 	//block
-	SDL_Texture* blockTexture0;
+	/*SDL_Texture* blockTexture0;
 	SDL_Texture* blockTexture1;
 	SDL_Texture* blockTexture2;
-	SDL_Texture* blockTexture3;
+	SDL_Texture* blockTexture3;*/
 
 	//rock
 	SDL_Texture* rockTexture0;
@@ -59,6 +60,7 @@ private:
 	//tree
 	SDL_Surface* treeImage0;
 	SDL_Surface* treeImage1;
+	SDL_Surface* treeImage2;
 
 	//block
 	SDL_Surface* blockImage0;
@@ -80,6 +82,19 @@ private:
 	SDL_Surface* hbEmptyImage;
 	SDL_Surface* hbFullImage;
 	SDL_Surface* zombieIconImage;
+
+	SDL_Surface* pauseMenuImage;
+	SDL_Texture* pauseMenuTexture;
+
+	SDL_Surface* menuButtonImage;
+	SDL_Texture* menuButtonTexture;
+	Collider menuButtonColl;
+
+	SDL_Surface* quitButtonImage;
+	SDL_Texture* quitButtonTexture;
+	Collider quitButtonColl;
+
+	int mouseX, mouseY;
 
 	SDL_Texture* loadImage(const char* textureFile);
 
@@ -108,6 +123,7 @@ public:
 	void buildMap();		//This runs in OnCreate for the Scene2 to build the map.
 	void initMapVar();		//This initializes the variables for our map.
 	void renderMap();		//This renders our map
+	void RenderPauseMenu();
 
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 	

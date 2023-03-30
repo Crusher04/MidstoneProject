@@ -36,6 +36,11 @@ private:
 	class Round	*round;	
 	class ZombieSpawner *zombies;	
 
+	
+	
+	//Scene Event Types
+	Uint32 changeSceneEventType;
+
 public:
 
 	//Contstructors with onCreate/Destroy
@@ -44,7 +49,7 @@ public:
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
-
+	bool isStartMenuActive;
 	
 
 	// These might be unfamiliar
@@ -71,18 +76,16 @@ public:
 
 	void RenderZombie(float scale = 1.0f);
 	ZombieSpawner getZombie();
-
 	std::vector<ZombieSpawner> zombieSpawnerArr2;
 
 	bool isSprinting;
+	
 
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
 	
-	//Bullet Variables
-	
-
+	bool gamePaused;
 	//Weapon Management
 	WeaponManagement weaponManagement;
 	Bullet bulletHolder;
@@ -138,6 +141,10 @@ public:
 	Round* getRound() { return round; }
 
 	void zombieArrayInit();
+
+	Uint32 GetChangeScene();
+
+	void Quit();
 
 };
 #endif
