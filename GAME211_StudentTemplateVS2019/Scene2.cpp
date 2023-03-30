@@ -515,7 +515,7 @@ void Scene2::Render() {
 
 
 	
-
+	game->RenderItem();
 
 
 	// render the player
@@ -540,7 +540,7 @@ void Scene2::Render() {
 	game->RenderHealthUI();
 
 	game->RenderZombieCountUI();
-	game->RenderItem();
+	
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
 }

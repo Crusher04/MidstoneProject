@@ -155,12 +155,6 @@ void ItemManagement::RenderSpeedBoost(SDL_Renderer* renderer_, float scale, floa
 	//////////////////////////////////.
 	SDL_RenderCopyEx(renderer, speedBoostTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
 
-
-
-
-
-
-
 }
 
 void ItemManagement::RandomizeDrops()
@@ -174,26 +168,26 @@ void ItemManagement::RandomizeDrops()
 	
 	}
 
-	item = (rand() % 3) + 1;
+	item = (rand() % 5) + 1;
 		
-	if (item == 1)
+	if (item == 1 || item == 4)
 	{
 
 		healthDrop = true;
-		item = 1;
+		
 	}
 
 	if (item == 2)
 	{
 
 		goldenGunDrop = true;
-		item = 2;
+	
 	}
 
-	if (item == 3)
+	if (item == 3 || item == 5)
 	{
 		speedBoostDrop = true;
-		item = 3;
+	
 	}
 
 }
@@ -206,7 +200,7 @@ void ItemManagement::Drops()
 	std::srand((unsigned int)time(NULL));
 	dropChance = (rand() % dropPercentage) + 1;
 
-	if (dropChance >= 0 && dropChance <= 50)
+	if (dropChance >= 0 && dropChance <= 21)
 	{
 		ResetBools();
 
@@ -222,7 +216,7 @@ void ItemManagement::Drops()
 		itemPickup = false;
 	}
 
-	if (dropChance >= 49)
+	if (dropChance >= 20)
 	{
 
 		itemDrop = false;

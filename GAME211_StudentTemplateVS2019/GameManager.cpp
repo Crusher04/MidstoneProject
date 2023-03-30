@@ -613,8 +613,8 @@ void GameManager::DropEffects()
 
     if (itemManagement.goldenGunDrop == true)
     {
-        bulletDamage = 150;
-        goldenGunTimer = 13000;
+        bulletDamage = 1000;
+        goldenGunTimer = 26000;
         goldenGunTimerDelay = SDL_GetTicks() + goldenGunTimer;
         goldenGunOn = true;
         itemManagement.goldenGunDrop = false;
