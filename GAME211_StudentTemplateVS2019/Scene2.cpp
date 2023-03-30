@@ -472,7 +472,8 @@ void Scene2::Update(const float deltaTime) {
 		//Bullet Management
 		/////////////////////////////////
 
-		//Managing Reloading
+		///Managing Reloading
+		
 		if (game->weaponManagement.reloading())
 		{
 			//Check for bullets already fired, move them to in motion
@@ -517,6 +518,10 @@ void Scene2::Update(const float deltaTime) {
 			}
 
 		}
+
+			
+
+
 
 
 		//Update Bullets that are already in motion

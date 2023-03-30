@@ -265,7 +265,7 @@ void GameManager::handleEvents()
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
-                isSprinting = true;
+                
             }
 
             /////////////////////////////////
@@ -391,7 +391,7 @@ void GameManager::handleEvents()
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
-                isSprinting = false;
+             
 
             }
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
@@ -439,9 +439,17 @@ void GameManager::handleEvents()
 
 
 					}
+                    else if (!weaponManagement.pistolEnabled)
+                    {
+                        
+
+                    }
+                    
 
 				}//End of SDL_BUTTON_LEFT
 			}
+
+
             
             
 
