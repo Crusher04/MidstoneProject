@@ -105,6 +105,9 @@ public:
 	//ZombieCounterUI
 	NumbersUI ZombieCounterUI;
 
+	//Ammo Amount UI
+	NumbersUI AmmoAmountUI;
+
 	/////////////////////////////////////
 	//ALL FUNCTIONS GO DOWN HERE
 	////////////////////////////////////
@@ -134,6 +137,11 @@ public:
 	/// Renders UI for Zombie Count
 	/// </summary>
 	void RenderZombieCountUI();
+
+	/// <summary>
+	/// Renders UI for Ammo Count
+	/// </summary>
+	void RenderAmmoUI();
 	
 	/// <summary>
 	/// gets the round

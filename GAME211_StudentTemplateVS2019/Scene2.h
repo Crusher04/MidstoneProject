@@ -118,6 +118,20 @@ private:
 	SDL_Surface* deathMenuImage;
 	SDL_Texture* deathMenuTexture;
 
+	//Health & Ammo backround
+	SDL_Surface* healthHUDImage;
+	SDL_Texture* healthHUDTexture;
+
+	SDL_Surface* healthAmmoBGImage;
+	SDL_Texture* healthAmmoBGTexture;
+
+	SDL_Surface* healthAmmoBGDividerImage;
+	SDL_Texture* healthAmmoBGDividerTexture;
+
+	SDL_Surface* ammoHUDImage;
+	SDL_Texture* ammoHUDTexture;
+
+
 	int mouseX, mouseY;
 
 	SDL_Texture* loadImage(const char* textureFile);
@@ -149,7 +163,7 @@ public:
 	void renderMap();		//This renders our map
 	void RenderPauseMenu();
 	void RenderDeathScreen();
-
+	void RenderHealthBackground();
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 	
 	Vec3 updatedGunPos;

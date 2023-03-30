@@ -173,6 +173,36 @@ bool Scene2::OnCreate() {
 	}
 
 
+	//Health Ammo HUD
+	healthAmmoBGImage = IMG_Load("Assets/UI/HUD/healthAmmoBG.png");
+	renderer = game->getRenderer();
+	healthAmmoBGTexture = SDL_CreateTextureFromSurface(renderer, healthAmmoBGImage);
+	if (healthAmmoBGImage == nullptr) {
+		std::cerr << "Can't open the  healh/ammo background image" << std::endl;
+	}
+
+	healthAmmoBGDividerImage = IMG_Load("Assets/UI/HUD/healthAmmoDivider.png");
+	renderer = game->getRenderer();
+	healthAmmoBGDividerTexture = SDL_CreateTextureFromSurface(renderer, healthAmmoBGDividerImage);
+	if (healthAmmoBGDividerImage == nullptr) {
+		std::cerr << "Can't open the  healh/ammo divider image" << std::endl;
+	}
+
+	healthHUDImage = IMG_Load("Assets/UI/HUD/heart.png");
+	renderer = game->getRenderer();
+	healthHUDTexture = SDL_CreateTextureFromSurface(renderer, healthHUDImage);
+	if (healthHUDImage == nullptr) {
+		std::cerr << "Can't open the  healh HUD image" << std::endl;
+	}
+
+	ammoHUDImage = IMG_Load("Assets/UI/HUD/ammo_icon.png");
+	renderer = game->getRenderer();
+	ammoHUDTexture = SDL_CreateTextureFromSurface(renderer, ammoHUDImage);
+	if (ammoHUDImage == nullptr) {
+		std::cerr << "Can't open the  ammo HUD image" << std::endl;
+	}
+
+
 	return true;
 }
 
@@ -605,11 +635,15 @@ void Scene2::Render() {
 	game->RenderOutOfAmmo();
 
 	game->RenderRoundUI();
+	
+	RenderHealthBackground();
 
 	game->RenderHealthUI();
 
-	game->RenderZombieCountUI();
+	game->RenderAmmoUI();
 
+	game->RenderZombieCountUI();
+	
 
 
 	if (game->gamePaused)
@@ -1001,5 +1035,129 @@ void Scene2::RenderDeathScreen()
 	//RENDER
 	//////////////////////////////////.
 	SDL_RenderCopyEx(renderer, deathRestartTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+}
+
+void Scene2::RenderHealthBackground()
+{
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	int screenX = 790;
+	int screenY = 980;
+
+
+	//Get image width and height and adjust it to scale
+	w = healthAmmoBGImage->w;
+	h = healthAmmoBGImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1;
+	square.h *= 1;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, healthAmmoBGTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	//Screen Coords
+	screenX = 980;
+	screenY = 980;
+
+
+	//Get image width and height and adjust it to scale
+	w = healthAmmoBGDividerImage->w;
+	h = healthAmmoBGDividerImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1;
+	square.h *= 1;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, healthAmmoBGDividerTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	
+
+	//Screen Coords
+	screenX = 940;
+	screenY = 1000;
+
+
+	//Get image width and height and adjust it to scale
+	w = healthHUDImage->w;
+	h = healthHUDImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1;
+	square.h *= 1;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, healthHUDTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+
+	//Screen Coords
+	screenX = 1010;
+	screenY = 990;
+
+
+	//Get image width and height and adjust it to scale
+	w = ammoHUDImage->w;
+	h = ammoHUDImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1;
+	square.h *= 1;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, ammoHUDTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
 
 }

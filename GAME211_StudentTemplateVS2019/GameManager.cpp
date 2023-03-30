@@ -150,6 +150,7 @@ bool GameManager::OnCreate() {
     RoundUI.OnCreate(getRenderer(), true);
     HealthUI.OnCreate(getRenderer(), false);
     ZombieCounterUI.OnCreate(getRenderer(), true);
+    AmmoAmountUI.OnCreate(getRenderer(), false);
 
     //Event Type defined by user
     changeSceneEventType = SDL_RegisterEvents(2);
@@ -611,13 +612,26 @@ void GameManager::RenderRoundUI()
 
 void GameManager::RenderHealthUI()
 {
-    HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 40, 980);
+    if(player->health.getHealth() < 100)
+        HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 830, 980);
+    else
+        HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 800, 980);
+
 }
 
 void GameManager::RenderZombieCountUI()
 {
     ZombieCounterUI.Render(getRenderer(), 1.0f, round->getZombieAmount(), 1750, 40);
     
+}
+
+void GameManager::RenderAmmoUI()
+{
+    if(weaponManagement.ammoRemaining == 0)
+        AmmoAmountUI.Render(getRenderer(), 1.0f, 0, 1060, 980);
+    else
+        AmmoAmountUI.Render(getRenderer(), 1.0f, weaponManagement.ammoRemaining + 1, 1060, 980);
+
 }
 
 void GameManager::zombieArrayInit()
