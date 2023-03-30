@@ -558,7 +558,7 @@ void Scene2::Update(const float deltaTime) {
 				if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, zombieCollArr.at(i)))
 				{
 					std::cout << "Zombie " << i << " hit!\n";
-					game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bullets.at(i).bulletDamage);
 					game->bullets.at(k).collider.active = false;
 
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
