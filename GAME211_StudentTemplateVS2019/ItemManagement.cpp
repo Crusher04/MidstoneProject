@@ -200,7 +200,7 @@ void ItemManagement::Drops()
 	std::srand((unsigned int)time(NULL));
 	dropChance = (rand() % dropPercentage) + 1;
 
-	if (dropChance >= 0 && dropChance <= 21)
+	if (dropChance >= 0 && dropChance <= 60)
 	{
 		ResetBools();
 
@@ -216,7 +216,7 @@ void ItemManagement::Drops()
 		itemPickup = false;
 	}
 
-	if (dropChance >= 20)
+	if (dropChance >= 61)
 	{
 
 		itemDrop = false;

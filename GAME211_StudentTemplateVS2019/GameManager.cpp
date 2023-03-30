@@ -199,7 +199,7 @@ void GameManager::Run() {
 /////////////////////////////////
 //Handle Events
 /////////////////////////////////
-void GameManager::handleEvents() 
+void GameManager::handleEvents()
 {
 
     SDL_Event event;
@@ -217,9 +217,9 @@ void GameManager::handleEvents()
         switch (event.type)
         {
 
-       /////////////////////////////////
-       // Quick Exit Program
-       /////////////////////////////////
+            /////////////////////////////////
+            // Quick Exit Program
+            /////////////////////////////////
         case SDL_QUIT:
             isRunning = false;
             break;
@@ -235,8 +235,8 @@ void GameManager::handleEvents()
                     isRunning = false;
                 }
                 else
-                {   
-                    if(!isPlayerDead)
+                {
+                    if (!isPlayerDead)
                         gamePaused = !gamePaused;
                 }
             }
@@ -269,29 +269,27 @@ void GameManager::handleEvents()
                     }
 
                 }
+
+				////////////////////////////////
+		        // Item Pickup 
+		           ////////////////////////////////
+				if (event.key.keysym.sym == SDLK_e)
+				{
+
+					if (itemManagement.itemDrop == true && itemManagement.itemPickup == true)
+					{
+						//Apply Effects of Item Drop
+						DropEffects();
+
+						//Reset all Item Drop bools to false
+						itemManagement.ResetBools();
+					}
+
+				}
+
             }
+
            
-
-
-            ////////////////////////////////
-            // Item Pickup 
-            ////////////////////////////////
-            if (event.key.keysym.sym == SDLK_e)
-            {
-              
-                if (itemManagement.itemDrop == true && itemManagement.itemPickup == true)
-                {
-                    //Apply Effects of Item Drop
-                    DropEffects();
-
-                    //Reset all Item Drop bools to false
-                    itemManagement.ResetBools();
-                }
-
-            }
-
-
-
 
 
             /////////////////////////////////
@@ -300,45 +298,91 @@ void GameManager::handleEvents()
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
-                
+
             }
 
             /////////////////////////////////
             // Player Movement
             /////////////////////////////////
             if (!isStartMenuActive && !gamePaused && !isPlayerDead)
-            { 
-               if (event.key.keysym.sym == SDLK_w)
+            {
+                if (event.key.keysym.sym == SDLK_w)
                 {
                     // Start moving player up
 
-            if (event.key.keysym.sym == SDLK_w)
-            {
-                // Start moving player up
-           
-                player->ApplyForceY(-speed);
-            }
-            if (event.key.keysym.sym == SDLK_s)
-            {
-                
-             
-                player->ApplyForceY(speed);
+                    if (isSprinting == true)
+                    {
 
-            }
-            if (event.key.keysym.sym == SDLK_d)
-            {
+                        speed = 5000;
 
-                player->ApplyForceX(speed);
-            }
-            if (event.key.keysym.sym == SDLK_a)
-            {
-                
-                player->ApplyForceX(-speed);
-            }
-            if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
-                event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
-                Sf.setSoundVolume(10);
-                Sf.WalkingAudio(true);
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceY(-speed);
+                }
+                if (event.key.keysym.sym == SDLK_s)
+                {
+
+                    if (isSprinting == true)
+                    {
+
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceY(speed);
+
+                }
+                if (event.key.keysym.sym == SDLK_d)
+                {
+
+
+                    if (isSprinting == true)
+                    {
+
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceX(speed);
+                }
+                if (event.key.keysym.sym == SDLK_a)
+                {
+
+                    if (isSprinting == true)
+                    {
+
+                        speed = 5000;
+
+                    }
+                    if (isSprinting == false)
+                    {
+
+                        speed = 1000;
+
+                    }
+                    player->ApplyForceX(-speed);
+                }
+                if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
+                    event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
+                    Sf.setSoundVolume(10);
+                    Sf.WalkingAudio(true);
+                }
+
             }
 
 
@@ -360,36 +404,36 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_s)
             {
                 player->ApplyForceY(0);
-              
+
 
             }
             if (event.key.keysym.sym == SDLK_d)
             {
 
                 player->ApplyForceX(0);
-                
+
 
             }
             if (event.key.keysym.sym == SDLK_a)
             {
 
                 player->ApplyForceX(0);
-                
+
 
             }
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
-             
+
 
             }
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                 event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
                 Sf.setSoundVolume(100);
-				Sf.WalkingAudio(false);
+                Sf.WalkingAudio(false);
 
-                
+
 
             }
 
@@ -398,56 +442,56 @@ void GameManager::handleEvents()
 
         case SDL_MOUSEBUTTONDOWN:
 
-			/////////////////////////////////
-		    // Shooting
-		   /////////////////////////////////
-			if (!isStartMenuActive && !gamePaused && !isPlayerDead)
-			{
-				if (event.button.button == SDL_BUTTON_LEFT)
-				{
-					if (weaponManagement.pistolEnabled)
-					{
-						if (weaponManagement.ammoRemaining < 0)
-						{
-							// Play Empty Magazine sound
-							Sf.EmptyMag();
+            /////////////////////////////////
+            // Shooting
+           /////////////////////////////////
+            if (!isStartMenuActive && !gamePaused && !isPlayerDead)
+            {
+                if (event.button.button == SDL_BUTTON_LEFT)
+                {
+                    if (weaponManagement.pistolEnabled)
+                    {
+                        if (weaponManagement.ammoRemaining < 0)
+                        {
+                            // Play Empty Magazine sound
+                            Sf.EmptyMag();
 
-							weaponManagement.ammoRemaining = 0;
-							outOfAmmo = true;
-						}
+                            weaponManagement.ammoRemaining = 0;
+                            outOfAmmo = true;
+                        }
 
-						if (!bullets.at(weaponManagement.ammoRemaining).fired)
-						{
-							bullets.at(weaponManagement.ammoRemaining).fired = true;
-							bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
-							weaponManagement.ammoRemaining--;
+                        if (!bullets.at(weaponManagement.ammoRemaining).fired)
+                        {
+                            bullets.at(weaponManagement.ammoRemaining).fired = true;
+                            bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
+                            weaponManagement.ammoRemaining--;
 
-                            if (!weaponManagement.reloadStarted)						
+                            if (!weaponManagement.reloadStarted)
                             {
                                 Sf.setSoundVolume(100);
                                 Sf.PistolAudio(true);
                             }
-						}
+                        }
 
-
-					}
-                    else if (!weaponManagement.pistolEnabled)
-                    {
-                        
 
                     }
-                    
-
-				}//End of SDL_BUTTON_LEFT
-			}
+                    else if (!weaponManagement.pistolEnabled)
+                    {
 
 
-            
-            
+                    }
 
-			break;
-		}
- 
+
+                }//End of SDL_BUTTON_LEFT
+            }
+
+
+
+
+
+            break;
+        }
+
         currentScene->HandleEvents(event);
     }
 }
