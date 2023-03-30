@@ -17,7 +17,8 @@ protected:
 	int sprintZombCounter;
 	int tankZombCounter;
 	int regZombCounter;
-	
+	int nextRoundUpgrades;
+
 public:
 	
 	//Variables

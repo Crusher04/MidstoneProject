@@ -31,15 +31,31 @@ bool ZombieSpawner::OnCreate()
         {
             sprintZomb += 6;
             tankZomb += 5;
+            zombieIncreasedSpeed += 0.5;
         }
         else if (currentRound == 1)
         {
 
         }
+        else if (currentRound == 10 || nextRoundUpgrades == currentRound)
+        {
+            nextRoundUpgrades = currentRound + 5;
+        }
         else
         {
-            sprintZomb += 5;
-            tankZomb += 5;
+            if(nextRoundUpgrades = currentRound)
+            {
+                sprintZomb += 10;
+                tankZomb += 10;
+                zombieIncreasedSpeed += 1.5;
+            }
+            else
+            {
+                sprintZomb += 7;
+                tankZomb += 7;
+                zombieIncreasedSpeed += 1;
+            }
+
         }
 
 		sprintZombCounter = sprintZomb;
@@ -72,7 +88,7 @@ SPRINTZOMBIE:
         tankSpawned = false;
 		sprintZombCounter--;
 		health.setHealth(75);
-        zombieIncreasedSpeed = 1;
+        zombieIncreasedSpeed += 1;
 		break;
 TANKZOMBIE:
 	case 2:
@@ -98,6 +114,7 @@ TANKZOMBIE:
 		break;
 REGZOMBIE:
 	default:
+        //Check Other Zombies are loaded first
         if (regZombCounter == 0)
         {
             if (sprintZombCounter == 0)
@@ -105,19 +122,22 @@ REGZOMBIE:
             else
                 goto SPRINTZOMBIE;
         }
-		//Reg Zomb
+
+		//Reg Zomb Image
 		image = IMG_Load("Assets/zombie.png");
 		texture = SDL_CreateTextureFromSurface(renderer, image);
 		if (image == nullptr) {
 			std::cerr << "Can't open the zombie image" << std::endl;
 			return false;
 		}
+
+        //Make sure other zombies values are set to false
         tankSpawned = false;
         sprintZombSpawned = false;
 
+        //Set Zombie Health and subtract from counter
 		health.setHealth(50);
         regZombCounter--;
-        std::srand((unsigned int)time(NULL));
 
 	}
  
