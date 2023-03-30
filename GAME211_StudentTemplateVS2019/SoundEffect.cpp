@@ -24,7 +24,7 @@ void SoundEffect::loadAudio()
 	addAudio("Audio/Sound effect/Weapon SFX/ES_9mm Gun Firing - SFX Producer.wav"); //6
 
 	//Walking SFX
-	addAudio("Audio/Sound effect/WalkingSFX/ES_Footsteps Grass 2 - SFX Producer.wav"); //7
+	addAudio("Audio/Sound effect/WalkingSFX/ES_Video Game Footsteps 1 - SFX Producer.wav"); //7
 
 }
 

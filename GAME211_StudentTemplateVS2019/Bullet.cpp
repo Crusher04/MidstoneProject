@@ -27,6 +27,7 @@ void Bullet::OnCreate(SDL_Renderer* renderer_)
 		std::cerr << "Can't open the bullet image" << std::endl;
 
 	}
+	
 }
 
 void Bullet::Render(float scale, float playerX, float playerY)

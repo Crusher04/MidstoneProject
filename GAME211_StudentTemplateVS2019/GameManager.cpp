@@ -346,7 +346,7 @@ void GameManager::handleEvents()
                 }
                 if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                     event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
-
+                    Sf.setSoundVolume(10);
                     Sf.WalkingAudio(true);
                 }
 
@@ -397,7 +397,7 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                 event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
-				
+                Sf.setSoundVolume(100);
 				Sf.WalkingAudio(false);
 
                 
@@ -434,7 +434,10 @@ void GameManager::handleEvents()
 							weaponManagement.ammoRemaining--;
 
                             if (!weaponManagement.reloadStarted)						
-							    Sf.PistolAudio(true);
+                            {
+                                Sf.setSoundVolume(100);
+                                Sf.PistolAudio(true);
+                            }
 						}
 
 
