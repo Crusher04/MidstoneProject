@@ -31,7 +31,7 @@ bool ZombieSpawner::OnCreate()
         {
             sprintZomb += 6;
             tankZomb += 5;
-            zombieIncreasedSpeed += 0.5;
+            zombieIncreasedSpeed += 1;
         }
         else if (currentRound == 1)
         {
@@ -45,15 +45,15 @@ bool ZombieSpawner::OnCreate()
         {
             if(nextRoundUpgrades = currentRound)
             {
-                sprintZomb += 10;
-                tankZomb += 10;
-                zombieIncreasedSpeed += 1.5;
+                sprintZomb += 10 * currentRound;
+                tankZomb += 10 * currentRound;
+                zombieIncreasedSpeed += 3;
             }
             else
             {
-                sprintZomb += 7;
-                tankZomb += 7;
-                zombieIncreasedSpeed += 1;
+                sprintZomb += 7 * currentRound;
+                tankZomb += 7 * currentRound;
+                zombieIncreasedSpeed += 2;
             }
 
         }

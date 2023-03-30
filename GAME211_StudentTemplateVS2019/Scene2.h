@@ -131,8 +131,13 @@ private:
 	SDL_Surface* ammoHUDImage;
 	SDL_Texture* ammoHUDTexture;
 
+	//UI Damage Effect
+	SDL_Surface* playerDamageEffectImage;
+	SDL_Texture* playerDamageEffectTexture;
+
 
 	int mouseX, mouseY;
+	int playerDamageEffectOpacity;
 
 	SDL_Texture* loadImage(const char* textureFile);
 
@@ -164,6 +169,7 @@ public:
 	void RenderPauseMenu();
 	void RenderDeathScreen();
 	void RenderHealthBackground();
+	void RenderUIDamageEffect();
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 	
 	Vec3 updatedGunPos;

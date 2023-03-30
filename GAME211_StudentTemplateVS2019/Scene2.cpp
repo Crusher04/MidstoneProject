@@ -202,6 +202,14 @@ bool Scene2::OnCreate() {
 		std::cerr << "Can't open the  ammo HUD image" << std::endl;
 	}
 
+	//Player damage UI effect
+	playerDamageEffectImage = IMG_Load("Assets/UI/HUD/playerDamaged.png");
+	renderer = game->getRenderer();
+	playerDamageEffectTexture = SDL_CreateTextureFromSurface(renderer, playerDamageEffectImage);
+	if (playerDamageEffectImage == nullptr) {
+		std::cerr << "Can't open the  player damage effect HUD image" << std::endl;
+	}
+	playerDamageEffectOpacity = 0;
 
 	return true;
 }
@@ -354,7 +362,7 @@ void Scene2::Update(const float deltaTime) {
 					else
 						game->getPlayer()->health.takeDamage(12);
 
-
+					
 					damageTaken = true; //stops the player from taking damage per tick
 					std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
 					timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
@@ -404,7 +412,7 @@ void Scene2::Update(const float deltaTime) {
 						game->zombieSpawnerArr2.at(i).spawned = true;
 						zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
 						std::srand((unsigned int)time(NULL));
-						zombieTimeBetweenSpawn = rand() % 2500 + 500;
+						zombieTimeBetweenSpawn = rand() % 2000 + 500;
 					}
 				}
 
@@ -602,6 +610,14 @@ void Scene2::Update(const float deltaTime) {
 		}
 
 		/////////////////////////////////
+		//Player Damage Effect Opacity
+		/////////////////////////////////
+		if (playerDamageEffectOpacity > 0)
+		{
+			playerDamageEffectOpacity -= 5;
+		}
+
+		/////////////////////////////////
 		//Player Health/Damage Check
 		/////////////////////////////////
 
@@ -656,6 +672,11 @@ void Scene2::Render() {
 	game->RenderAmmoUI();
 
 	game->RenderZombieCountUI();
+	
+	if (damageTaken)
+		playerDamageEffectOpacity = 255;
+
+	RenderUIDamageEffect();
 	
 
 
@@ -1173,4 +1194,41 @@ void Scene2::RenderHealthBackground()
 
 
 
+}
+
+void Scene2::RenderUIDamageEffect()
+{
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	int screenX = 0;
+	int screenY = 0;
+
+
+	//Get image width and height and adjust it to scale
+	w = playerDamageEffectImage->w;
+	h = playerDamageEffectImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1;
+	square.h *= 1;
+	
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	SDL_SetTextureAlphaMod(playerDamageEffectTexture, playerDamageEffectOpacity);
+	SDL_RenderCopyEx(renderer, playerDamageEffectTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	
 }
