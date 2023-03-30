@@ -621,7 +621,7 @@ void GameManager::RenderRoundUI()
 void GameManager::RenderHealthUI()
 {
     if(player->health.getHealth() < 100)
-        HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 830, 980);
+        HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 825, 980);
     else
         HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 800, 980);
 
@@ -636,9 +636,9 @@ void GameManager::RenderZombieCountUI()
 void GameManager::RenderAmmoUI()
 {
     if (outOfAmmo)
-        AmmoAmountUI.Render(getRenderer(), 1.0f, 0, 1080, 980);
+        AmmoAmountUI.Render(getRenderer(), 1.0f, 0, 1090, 980);
     else if(!weaponManagement.shotDelayFlag)
-        AmmoAmountUI.Render(getRenderer(), 1.0f, weaponManagement.ammoRemaining + 1, 1080, 980);
+        AmmoAmountUI.Render(getRenderer(), 1.0f, weaponManagement.ammoRemaining + 1, 1090, 980);
 
 }
 
@@ -691,6 +691,8 @@ void GameManager::Restart()
     weaponManagement.ammoRemaining = weaponManagement.pistolMagSize - 1;
 
     //Restarting Zombie Spawner
+    zombies2.sprintZomb = 0;
+    zombies2.tankZomb = 0;
     zombieSpawnerArr2.clear();
     zombieArrayInit();
 
@@ -698,8 +700,7 @@ void GameManager::Restart()
     isPlayerDead = false;
     outOfAmmo = false;
     player->health.setHealth(100);
-    zombies2.sprintZomb = 0;
-    zombies2.tankZomb = 0;
+   
     LoadScene(2);
 
 }
