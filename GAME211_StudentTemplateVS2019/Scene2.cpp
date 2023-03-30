@@ -536,6 +536,7 @@ void Scene2::HandleEvents(const SDL_Event& event)
 					std::cout << "Mouse Pressed Menu\n";
 					game->isStartMenuActive = false;
 					game->gamePaused = false;
+					game->Sf.MenuClick();
 					game->LoadScene(3);
 				}
 

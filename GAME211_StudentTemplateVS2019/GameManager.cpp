@@ -223,6 +223,7 @@ void GameManager::handleEvents()
                 else
                 {
                     gamePaused = !gamePaused;
+                    Sf.MenuOpenClose(); // Play SFX
                 }
             }
             else if (event.type == changeSceneEventType)

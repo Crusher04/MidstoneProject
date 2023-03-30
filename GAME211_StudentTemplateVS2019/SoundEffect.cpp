@@ -4,7 +4,8 @@ enum MyEnum
 {
 	CH_PLAYER,
 	CH_WEAPON,
-	CH_ENEMY
+	CH_ENEMY,
+	CH_MENU
 };
 SoundEffect::SoundEffect() : Audio() { 
 	loadAudio(); 
@@ -26,6 +27,11 @@ void SoundEffect::loadAudio()
 	//Walking SFX
 	addAudio("Audio/Sound effect/WalkingSFX/ES_Footsteps Grass 2 - SFX Producer.wav"); //7
 
+	//Menu open and close SFX
+	addAudio("Audio/Sound effect/Menu SFX/menu-open-close-104314.wav"); //8
+
+	//Menu click
+	addAudio("Audio/Sound effect/Menu SFX/click-button-140881.wav"); //9
 }
 
 void SoundEffect::addAudio(const char* path)
@@ -39,6 +45,13 @@ void SoundEffect::addAudio(const char* path)
 	else {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't init audio %s", Mix_GetError());
 	}
+}
+void SoundEffect::setSoundVolume(int v)
+{
+	int volume;
+	volume = (MIX_MAX_VOLUME * v) / 100;
+	std::cout << "Volume of sound effect " << volume << std::endl;
+	Volume = volume;
 }
 
 void SoundEffect::playAudio(const int which) const
@@ -114,15 +127,18 @@ void SoundEffect::EmptyMag() const
 	Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[4], 0);
 }
 
-void SoundEffect::setSoundVolume(int v)
-{
-	int volume;
-	volume = (MIX_MAX_VOLUME * v) / 100;
-	std::cout << "Volume of sound effect " << volume << std::endl;
-	Volume = volume;
-}
 
 void SoundEffect::ReloadAudio() const
 {
 	Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[5], 0);
+}
+
+void SoundEffect::MenuClick() const
+{
+	Mix_PlayChannel(CH_MENU, mSoundEffectBank[9], 0);
+}
+
+void SoundEffect::MenuOpenClose() const
+{
+	Mix_PlayChannel(CH_MENU, mSoundEffectBank[8], 0);
 }

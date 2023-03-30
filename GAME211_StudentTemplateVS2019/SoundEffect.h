@@ -34,6 +34,12 @@ public:
 
 	//Play Reload sound
 	void ReloadAudio() const;
+
+	//Play Menu click sound
+	void MenuClick() const;
+
+	//Play Menu open and close sound
+	void MenuOpenClose() const;
 private:
 	int Volume;
 	bool isWalking = false;
