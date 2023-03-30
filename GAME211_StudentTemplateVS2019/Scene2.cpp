@@ -142,6 +142,37 @@ bool Scene2::OnCreate() {
 	}
 
 
+	//Death Screen Images
+	deathBannerBackgroundImage = IMG_Load("Assets/UI/death/menu_bg.png");
+	renderer = game->getRenderer();
+	deathBannerBackgroundTexture = SDL_CreateTextureFromSurface(renderer, deathBannerBackgroundImage);
+	if (deathBannerBackgroundImage == nullptr) {
+		std::cerr << "Can't open the death background banner image" << std::endl;
+	}
+
+	deathBannerImage = IMG_Load("Assets/UI/death/defeat.png");
+	renderer = game->getRenderer();
+	deathBannerTexture = SDL_CreateTextureFromSurface(renderer, deathBannerImage);
+	if (deathBannerImage == nullptr) {
+		std::cerr << "Can't open the death banner image" << std::endl;
+	}
+
+	deathMenuImage = IMG_Load("Assets/UI/death/menu_button.png");
+	renderer = game->getRenderer();
+	deathMenuTexture = SDL_CreateTextureFromSurface(renderer, deathMenuImage);
+	if (deathMenuImage == nullptr) {
+		std::cerr << "Can't open the death menu button image" << std::endl;
+	}
+
+
+	deathRestartImage = IMG_Load("Assets/UI/death/playagain_button.png");
+	renderer = game->getRenderer();
+	deathRestartTexture = SDL_CreateTextureFromSurface(renderer, deathRestartImage);
+	if (deathRestartImage == nullptr) {
+		std::cerr << "Can't open the death restart button image" << std::endl;
+	}
+
+
 	return true;
 }
 
@@ -159,7 +190,7 @@ void Scene2::OnDestroy() {}
 void Scene2::Update(const float deltaTime) {
 
 
-	if (game->gamePaused)
+	if (game->gamePaused || game->isPlayerDead)
 	{
 
 	}
@@ -218,7 +249,6 @@ void Scene2::Update(const float deltaTime) {
 					}
 				}
 			}
-
 
 		}
 
@@ -542,7 +572,7 @@ void Scene2::Update(const float deltaTime) {
 		if (game->getPlayer()->health.getHealth() <= 0)
 		{
 			std::cout << "\n YOU HAVE DIED, GAME OVER";
-			exit(0);
+			game->isPlayerDead = true;
 		}
 	}
 	
@@ -580,10 +610,15 @@ void Scene2::Render() {
 
 	game->RenderZombieCountUI();
 
+
+
 	if (game->gamePaused)
 	{
 		RenderPauseMenu();
 	}
+	
+	if (game->isPlayerDead)
+		RenderDeathScreen();
 
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
@@ -601,7 +636,7 @@ void Scene2::HandleEvents(const SDL_Event& event)
 
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
-				if (game->gamePaused)
+				if (game->gamePaused || game->isPlayerDead)
 				{
 					if (mouseX >= menuButtonColl.x && mouseX <= (menuButtonColl.x + menuButtonColl.w)
 						&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
@@ -844,4 +879,127 @@ void Scene2::RenderPauseMenu()
 
 void Scene2::RenderDeathScreen()
 {
+
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	int screenX = 375;
+	int screenY = 250;
+
+
+	//Get image width and height and adjust it to scale
+	w = deathBannerBackgroundImage->w;
+	h = deathBannerBackgroundImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 2;
+	square.h *= 2;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, deathBannerBackgroundTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	//Screen Coords
+	screenX = 750;
+	screenY = 280;
+
+
+	//Get image width and height and adjust it to scale
+	w = deathBannerImage->w;
+	h = deathBannerImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 2;
+	square.h *= 2;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, deathBannerTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	//Screen Coords
+	screenX = 875;
+	screenY = 450;
+
+
+	//Get image width and height and adjust it to scale
+	w = deathMenuImage->w;
+	h = deathMenuImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.7;
+	square.h *= 0.7;
+
+	menuButtonColl.setCollPosition(screenX, screenY);
+	menuButtonColl.setCollBounds(square.w, square.h);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, deathMenuTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	//Screen Coords
+	screenX = 1010;
+	screenY = 450;
+
+
+	//Get image width and height and adjust it to scale
+	w = deathRestartImage->w;
+	h = deathRestartImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.7;
+	square.h *= 0.7;
+
+	restartButtonColl.setCollPosition(screenX, screenY);
+	restartButtonColl.setCollBounds(square.w, square.h);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, deathRestartTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
 }

@@ -83,20 +83,40 @@ private:
 	SDL_Surface* hbFullImage;
 	SDL_Surface* zombieIconImage;
 
+	//Pause Menu
 	SDL_Surface* pauseMenuImage;
 	SDL_Texture* pauseMenuTexture;
 
+	//Menu Button
 	SDL_Surface* menuButtonImage;
 	SDL_Texture* menuButtonTexture;
 	Collider menuButtonColl;
 
+	//Quit Button
 	SDL_Surface* quitButtonImage;
 	SDL_Texture* quitButtonTexture;
 	Collider quitButtonColl;
 
+	//Restart Button
 	SDL_Surface* restartButtonImage;
 	SDL_Texture* restartButtonTexture;
 	Collider restartButtonColl;
+
+	//Death Background
+	SDL_Surface* deathBannerBackgroundImage;
+	SDL_Texture* deathBannerBackgroundTexture;
+	
+	//Defeat Text
+	SDL_Surface* deathBannerImage;
+	SDL_Texture* deathBannerTexture;
+
+	//Death Restart Icon
+	SDL_Surface* deathRestartImage;
+	SDL_Texture* deathRestartTexture;
+
+	//Death Menu Icon
+	SDL_Surface* deathMenuImage;
+	SDL_Texture* deathMenuTexture;
 
 	int mouseX, mouseY;
 

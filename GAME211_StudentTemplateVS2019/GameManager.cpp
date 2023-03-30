@@ -21,7 +21,7 @@ GameManager::GameManager() {
     player = nullptr;
     round = nullptr;
     gamePaused = false;
-    
+    isPlayerDead = false;
 }
 
 bool GameManager::OnCreate() {
@@ -221,8 +221,9 @@ void GameManager::handleEvents()
                     isRunning = false;
                 }
                 else
-                {
-                    gamePaused = !gamePaused;
+                {   
+                    if(!isPlayerDead)
+                        gamePaused = !gamePaused;
                 }
             }
             else if (event.type == changeSceneEventType)
@@ -239,7 +240,7 @@ void GameManager::handleEvents()
             /////////////////////////////////
             // Reload
             /////////////////////////////////
-            if (!isStartMenuActive && !gamePaused)
+            if (!isStartMenuActive && !gamePaused && !isPlayerDead)
             {
                 if (event.key.keysym.sym == SDLK_r)
                 {
@@ -269,7 +270,7 @@ void GameManager::handleEvents()
             /////////////////////////////////
             // Player Movement
             /////////////////////////////////
-            if (!isStartMenuActive && !gamePaused)
+            if (!isStartMenuActive && !gamePaused && !isPlayerDead)
             { 
                if (event.key.keysym.sym == SDLK_w)
                 {
@@ -410,7 +411,7 @@ void GameManager::handleEvents()
 			/////////////////////////////////
 		    // Shooting
 		   /////////////////////////////////
-			if (!isStartMenuActive && !gamePaused)
+			if (!isStartMenuActive && !gamePaused && !isPlayerDead)
 			{
 				if (event.button.button == SDL_BUTTON_LEFT)
 				{
@@ -672,8 +673,11 @@ void GameManager::Restart()
     zombieArrayInit();
 
     gamePaused = false;
+    isPlayerDead = false;
     outOfAmmo = false;
     player->health.setHealth(100);
+    zombies2.sprintZomb = 0;
+    zombies2.tankZomb = 0;
     LoadScene(2);
 
 }

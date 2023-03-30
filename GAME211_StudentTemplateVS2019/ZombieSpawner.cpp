@@ -27,6 +27,20 @@ bool ZombieSpawner::OnCreate()
             
 			
 		}
+        else if (currentRound > 5 && currentRound < 10)
+        {
+            sprintZomb += 6;
+            tankZomb += 5;
+        }
+        else if (currentRound == 1)
+        {
+
+        }
+        else
+        {
+            sprintZomb += 5;
+            tankZomb += 5;
+        }
 
 		sprintZombCounter = sprintZomb;
 		tankZombCounter = tankZomb;

@@ -49,7 +49,7 @@ public:
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
-	bool isStartMenuActive;
+	
 
 	// These might be unfamiliar
 	float getSceneHeight();
@@ -83,8 +83,10 @@ public:
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
-	
+	bool isStartMenuActive;
 	bool gamePaused;
+	bool isPlayerDead;
+
 	//Weapon Management
 	WeaponManagement weaponManagement;
 	Bullet bulletHolder;

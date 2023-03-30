@@ -75,7 +75,7 @@ void PlayerBody::Render( float scale )
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
     Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
-    if(!game->gamePaused)
+    if(!game->gamePaused && !game->isPlayerDead)
         angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
     
     /////////////////////////////////
