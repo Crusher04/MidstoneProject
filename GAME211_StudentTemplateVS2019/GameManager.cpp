@@ -12,7 +12,7 @@
 //GameManager Variables
 ZombieSpawner zombies2;
 Bullet bullet2;
-
+//ItemManagement items;
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -57,6 +57,7 @@ bool GameManager::OnCreate() {
     
     speed = 1000;
     isSprinting = false;
+    bulletDamage = 25;
 
 
     /////////////////////////////////
@@ -118,7 +119,7 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     zombieArrayInit();
 
-    
+
     
 
     /////////////////////////////////
@@ -160,6 +161,18 @@ bool GameManager::OnCreate() {
         return false;
     }
 
+    ////////////////////////////////
+    //Item Initialization
+    ////////////////////////////////
+    
+    //items.onCreate(getRenderer());
+    //for (int i = 0; i < this->round->getZombieAmount(); i++)
+    //{
+   
+    //    itemManagement.push_back(items);
+    //}
+    itemManagement.onCreate(getRenderer());
+
 
 	return true;
 }
@@ -186,7 +199,7 @@ void GameManager::Run() {
 /////////////////////////////////
 //Handle Events
 /////////////////////////////////
-void GameManager::handleEvents() 
+void GameManager::handleEvents()
 {
 
     SDL_Event event;
@@ -204,9 +217,9 @@ void GameManager::handleEvents()
         switch (event.type)
         {
 
-       /////////////////////////////////
-       // Quick Exit Program
-       /////////////////////////////////
+            /////////////////////////////////
+            // Quick Exit Program
+            /////////////////////////////////
         case SDL_QUIT:
             isRunning = false;
             break;
@@ -222,8 +235,8 @@ void GameManager::handleEvents()
                     isRunning = false;
                 }
                 else
-                {   
-                    if(!isPlayerDead)
+                {
+                    if (!isPlayerDead)
                         gamePaused = !gamePaused;
                 }
             }
@@ -256,8 +269,28 @@ void GameManager::handleEvents()
                     }
 
                 }
+
+				////////////////////////////////
+		        // Item Pickup 
+		           ////////////////////////////////
+				if (event.key.keysym.sym == SDLK_e)
+				{
+
+					if (itemManagement.itemDrop == true && itemManagement.itemPickup == true)
+					{
+						//Apply Effects of Item Drop
+						DropEffects();
+
+						//Reset all Item Drop bools to false
+						itemManagement.ResetBools();
+					}
+
+				}
+
             }
+
            
+
 
             /////////////////////////////////
             // Sprinting
@@ -265,15 +298,15 @@ void GameManager::handleEvents()
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
-                
+
             }
 
             /////////////////////////////////
             // Player Movement
             /////////////////////////////////
             if (!isStartMenuActive && !gamePaused && !isPlayerDead)
-            { 
-               if (event.key.keysym.sym == SDLK_w)
+            {
+                if (event.key.keysym.sym == SDLK_w)
                 {
                     // Start moving player up
 
@@ -371,36 +404,36 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_s)
             {
                 player->ApplyForceY(0);
-              
+
 
             }
             if (event.key.keysym.sym == SDLK_d)
             {
 
                 player->ApplyForceX(0);
-                
+
 
             }
             if (event.key.keysym.sym == SDLK_a)
             {
 
                 player->ApplyForceX(0);
-                
+
 
             }
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
-             
+
 
             }
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                 event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
                 Sf.setSoundVolume(100);
-				Sf.WalkingAudio(false);
+                Sf.WalkingAudio(false);
 
-                
+
 
             }
 
@@ -409,56 +442,56 @@ void GameManager::handleEvents()
 
         case SDL_MOUSEBUTTONDOWN:
 
-			/////////////////////////////////
-		    // Shooting
-		   /////////////////////////////////
-			if (!isStartMenuActive && !gamePaused && !isPlayerDead)
-			{
-				if (event.button.button == SDL_BUTTON_LEFT)
-				{
-					if (weaponManagement.pistolEnabled)
-					{
-						if (weaponManagement.ammoRemaining < 0)
-						{
-							// Play Empty Magazine sound
-							Sf.EmptyMag();
+            /////////////////////////////////
+            // Shooting
+           /////////////////////////////////
+            if (!isStartMenuActive && !gamePaused && !isPlayerDead)
+            {
+                if (event.button.button == SDL_BUTTON_LEFT)
+                {
+                    if (weaponManagement.pistolEnabled)
+                    {
+                        if (weaponManagement.ammoRemaining < 0)
+                        {
+                            // Play Empty Magazine sound
+                            Sf.EmptyMag();
 
-							weaponManagement.ammoRemaining = 0;
-							outOfAmmo = true;
-						}
+                            weaponManagement.ammoRemaining = 0;
+                            outOfAmmo = true;
+                        }
 
-						if (!bullets.at(weaponManagement.ammoRemaining).fired)
-						{
-							bullets.at(weaponManagement.ammoRemaining).fired = true;
-							bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
-							weaponManagement.ammoRemaining--;
+                        if (!bullets.at(weaponManagement.ammoRemaining).fired)
+                        {
+                            bullets.at(weaponManagement.ammoRemaining).fired = true;
+                            bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
+                            weaponManagement.ammoRemaining--;
 
-                            if (!weaponManagement.reloadStarted)						
+                            if (!weaponManagement.reloadStarted)
                             {
                                 Sf.setSoundVolume(100);
                                 Sf.PistolAudio(true);
                             }
-						}
+                        }
 
-
-					}
-                    else if (!weaponManagement.pistolEnabled)
-                    {
-                        
 
                     }
-                    
-
-				}//End of SDL_BUTTON_LEFT
-			}
+                    else if (!weaponManagement.pistolEnabled)
+                    {
 
 
-            
-            
+                    }
 
-			break;
-		}
- 
+
+                }//End of SDL_BUTTON_LEFT
+            }
+
+
+
+
+
+            break;
+        }
+
         currentScene->HandleEvents(event);
     }
 }
@@ -501,6 +534,7 @@ void GameManager::RenderPlayer(float scale)
 
 Vec3 GameManager::getZombieSpawnLocations()
 {
+
     //Chooses a location at random...IF you add a location below, increase the first number.
     std::srand((unsigned int)time(NULL));
     int location = (rand() % 17) + 1;
@@ -705,6 +739,56 @@ void GameManager::Restart()
     player->health.setHealth(100);
    
     LoadScene(2);
+}
+void GameManager::RenderItem()
+{
+    if (itemManagement.itemDrop == true && itemManagement.healthDrop == true)
+    {
+        itemManagement.RenderHealth(getRenderer(), 0.50f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+    }
+    
+    if (itemManagement.itemDrop == true && itemManagement.goldenGunDrop == true)
+    {
+        itemManagement.RenderGoldenGun(getRenderer(), 0.95f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+    }
+
+    if (itemManagement.itemDrop == true && itemManagement.speedBoostDrop == true)
+    {
+        itemManagement.RenderSpeedBoost(getRenderer(), 0.45f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+    }
+
+}
+
+void GameManager::DropEffects()
+{
+
+    //Applies an effect depending on which item is dropped
+    //If you want to add more new effects for new item drops, just create another "if" statement for that item drop
+    //Make sure to always set the specific item drop bool to false at the end of each "if" statement
+
+    if (itemManagement.healthDrop == true)
+    {
+        getPlayer()->health.healPlayer(10);
+        itemManagement.healthDrop = false;
+    }
+
+    if (itemManagement.goldenGunDrop == true)
+    {
+        bulletDamage = 1000;
+        goldenGunTimer = 26000;
+        goldenGunTimerDelay = SDL_GetTicks() + goldenGunTimer;
+        goldenGunOn = true;
+        itemManagement.goldenGunDrop = false;
+    }
+
+    if (itemManagement.speedBoostDrop == true)
+    {
+        if (speed <= 5000)
+        {
+            speed *= 1.125f;
+        }
+    }
+
 
 }
 

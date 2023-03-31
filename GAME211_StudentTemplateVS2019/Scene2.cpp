@@ -15,9 +15,10 @@
 
 
 //Collider locations
-Collider playerColl(1000, 8, 1, 3);				//Player collider initilization 
-Collider enemyColl(300, 800, 10, 10);			//zombie collider holder
-std::vector<Collider> zombieCollArr;			//zombie collider vector array
+Collider playerColl(1000, 8, 1, 3);			//Player collider initilization 
+Collider enemyColl(300, 800, 10, 10);		//zombie collider holder
+std::vector<Collider> zombieCollArr;		//zombie collider vector array
+Collider itemDropColl(1000, 1000, 1, 1);    //ItemDrop collider initialization
 
 /***** SCENE VARIABLES *****/
 
@@ -97,6 +98,7 @@ bool Scene2::OnCreate() {
 	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 
+	
 
 	enemyColl.passthrough = false;
 	zombieSpawnTime = 0;
@@ -577,6 +579,14 @@ void Scene2::Update(const float deltaTime) {
 
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 					{
+						//Calling Function to see if an item drops when a zombie is killed 
+					if (game->itemManagement.itemDrop == false)
+					{
+						game->itemManagement.itemPickup = false;
+						game->itemSpawnLocation = game->zombieSpawnerArr2.at(i).getPos();
+						game->itemManagement.Drops();
+
+					}
 						zombieCollArr.at(i).active = false;
 						game->getRound()->removeAZombie();
 					}
@@ -648,6 +658,51 @@ void Scene2::Update(const float deltaTime) {
 			game->isPlayerDead = true;
 		}
 	}
+
+	/////////////////////////////////
+	///Item Drops Management
+	/////////////////////////////////
+
+
+	//Setting the items collision bounds and position
+	if (game->itemManagement.itemDrop == true)
+	{
+
+		itemDropColl.setCollBounds(game->itemManagement.getImage()->w * 0.35, game->itemManagement.getImage()->h * 0.35);
+		itemDropColl.setCollPosition(game->itemSpawnLocation.x, game->itemSpawnLocation.y);
+		
+		//Despawns the item drop after a certain amount of time
+		if (game->itemManagement.dropTimerDelay <= SDL_GetTicks())
+		{
+			game->itemManagement.itemDrop = false;
+		}
+
+	}
+
+	//Checking to see if the player collides with an item
+	if (itemDropColl.checkCollBox(playerColl, itemDropColl))
+	{
+
+		game->itemManagement.itemPickup = true;
+
+	}
+
+
+	//Checking to see if the golden gun drop is active	
+	if (game->goldenGunOn == true)
+	{
+		//Set the bullet damage back to normal if the golden gun timer runs out
+		if (game->goldenGunTimerDelay <= SDL_GetTicks())
+		{
+
+			game->bulletDamage = 25;
+			game->goldenGunOn = false;
+		}
+
+
+	}
+
+
 	
 }//End of UPDATE
 
@@ -662,6 +717,9 @@ void Scene2::Render() {
 	renderMap();
 
 
+	
+	game->RenderItem();
+
 
 	// render the player
 	game->RenderPlayer(1.5f);
@@ -675,6 +733,9 @@ void Scene2::Render() {
 
 	}
 	
+	
+
+
 	game->RenderOutOfAmmo();
 
 	game->RenderRoundUI();

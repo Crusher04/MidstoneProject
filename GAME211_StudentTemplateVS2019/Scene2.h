@@ -170,6 +170,7 @@ public:
 	void RenderDeathScreen();
 	void RenderHealthBackground();
 	void RenderUIDamageEffect();
+	void RenderTrees();
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 	
 	Vec3 updatedGunPos;
