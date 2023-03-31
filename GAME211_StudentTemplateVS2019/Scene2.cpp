@@ -404,6 +404,7 @@ void Scene2::Update(const float deltaTime) {
 				{
 					std::cout << "Zombie " << i << " hit!\n";
 					game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+					game->Sf.ZombiesHit();
 					game->bullets.at(k).collider.active = false;
 
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)

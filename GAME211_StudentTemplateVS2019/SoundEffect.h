@@ -4,6 +4,13 @@
 #include <SDL_mixer.h>
 #include <vector>
 #include "Audio.h"
+enum MyEnum
+{
+	CH_PLAYER,
+	CH_WEAPON,
+	CH_ENEMY,
+	CH_MENU
+};
 class SoundEffect : public Audio
 {
 public:
@@ -32,6 +39,8 @@ public:
 	//Convert SoundEffect volume from percentage
 	void setSoundVolume(int v);
 
+	int ConvertVolume(int v);
+
 	//Play Reload sound
 	void ReloadAudio() const;
 
@@ -40,6 +49,12 @@ public:
 
 	//Play Menu open and close sound
 	void MenuOpenClose() const;
+
+	//Play Zombies hit SFX
+	void ZombiesHit();
+
+	//Change Volume by Channel
+	void ChangeChannelVolume(MyEnum channel, int volume);
 private:
 	int Volume;
 	bool isWalking = false;
