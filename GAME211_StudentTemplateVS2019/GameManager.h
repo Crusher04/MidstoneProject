@@ -12,6 +12,7 @@
 #include "Bullet.h"
 #include "WeaponManagement.h"
 #include "NumbersUI.h"
+#include "ItemManagement.h"
 #include "SoundEffect.h"
 #include "Music.h"
 
@@ -49,7 +50,6 @@ public:
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();
-	bool isStartMenuActive;
 	
 
 	// These might be unfamiliar
@@ -81,11 +81,15 @@ public:
 	bool isSprinting;
 	
 
+	
+
 	/////////////////////////////////////
 	//ALL Variables go down here - MUST BE CATEGORIZED, LABELED AND NAMED PROPERLY
 	////////////////////////////////////
-	
+	bool isStartMenuActive;
 	bool gamePaused;
+	bool isPlayerDead;
+
 	//Weapon Management
 	WeaponManagement weaponManagement;
 	Bullet bulletHolder;
@@ -93,7 +97,22 @@ public:
 	std::vector <Bullet> bulletsInMotion;
 	bool outOfAmmo;
 	
-	
+	//Damage of a bullet
+	int bulletDamage;
+
+
+	///Item Variables
+
+	//Item Management
+	ItemManagement itemManagement;
+	//Item Spawn Location;
+	Vec3 itemSpawnLocation;
+
+	//Bool for if the player is using the golden gun
+	bool goldenGunOn;
+	//Variables for the golden gun timer
+	int goldenGunTimer, goldenGunTimerDelay;
+
 
 	//Round UI
 	NumbersUI RoundUI;
@@ -103,6 +122,9 @@ public:
 
 	//ZombieCounterUI
 	NumbersUI ZombieCounterUI;
+
+	//Ammo Amount UI
+	NumbersUI AmmoAmountUI;
 
 	/////////////////////////////////////
 	//ALL FUNCTIONS GO DOWN HERE
@@ -133,6 +155,11 @@ public:
 	/// Renders UI for Zombie Count
 	/// </summary>
 	void RenderZombieCountUI();
+
+	/// <summary>
+	/// Renders UI for Ammo Count
+	/// </summary>
+	void RenderAmmoUI();
 	
 	/// <summary>
 	/// gets the round
@@ -145,6 +172,21 @@ public:
 	Uint32 GetChangeScene();
 
 	void Quit();
+
+	void Restart();
+	//std::vector <ItemManagement> itemManagement;
+	/// <summary>
+	/// Renders Items
+	/// </summary>
+	void RenderItem();
+
+	/// <summary>
+	/// Applies Item Drop Effect
+	/// </summary>
+	void DropEffects();
+
+	
+	
 
 };
 #endif

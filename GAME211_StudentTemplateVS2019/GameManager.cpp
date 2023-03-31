@@ -7,12 +7,12 @@
 #include "Scene8.h"
 #include "Round.h"
 
-
+#include <algorithm>
 
 //GameManager Variables
 ZombieSpawner zombies2;
 Bullet bullet2;
-
+//ItemManagement items;
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;
@@ -21,7 +21,7 @@ GameManager::GameManager() {
     player = nullptr;
     round = nullptr;
     gamePaused = false;
-    
+    isPlayerDead = false;
 }
 
 bool GameManager::OnCreate() {
@@ -57,6 +57,7 @@ bool GameManager::OnCreate() {
     
     speed = 1000;
     isSprinting = false;
+    bulletDamage = 25;
 
 
     /////////////////////////////////
@@ -118,7 +119,7 @@ bool GameManager::OnCreate() {
     /////////////////////////////////
     zombieArrayInit();
 
-    
+
     
 
     /////////////////////////////////
@@ -150,6 +151,7 @@ bool GameManager::OnCreate() {
     RoundUI.OnCreate(getRenderer(), true);
     HealthUI.OnCreate(getRenderer(), false);
     ZombieCounterUI.OnCreate(getRenderer(), true);
+    AmmoAmountUI.OnCreate(getRenderer(), false);
 
     //Event Type defined by user
     changeSceneEventType = SDL_RegisterEvents(2);
@@ -158,6 +160,18 @@ bool GameManager::OnCreate() {
         OnDestroy();
         return false;
     }
+
+    ////////////////////////////////
+    //Item Initialization
+    ////////////////////////////////
+    
+    //items.onCreate(getRenderer());
+    //for (int i = 0; i < this->round->getZombieAmount(); i++)
+    //{
+   
+    //    itemManagement.push_back(items);
+    //}
+    itemManagement.onCreate(getRenderer());
 
 
 	return true;
@@ -185,7 +199,7 @@ void GameManager::Run() {
 /////////////////////////////////
 //Handle Events
 /////////////////////////////////
-void GameManager::handleEvents() 
+void GameManager::handleEvents()
 {
 
     SDL_Event event;
@@ -203,9 +217,9 @@ void GameManager::handleEvents()
         switch (event.type)
         {
 
-       /////////////////////////////////
-       // Quick Exit Program
-       /////////////////////////////////
+            /////////////////////////////////
+            // Quick Exit Program
+            /////////////////////////////////
         case SDL_QUIT:
             isRunning = false;
             break;
@@ -222,8 +236,9 @@ void GameManager::handleEvents()
                 }
                 else
                 {
-                    gamePaused = !gamePaused;
-                    Sf.MenuOpenClose(); // Play SFX
+                    if (!isPlayerDead)
+                        gamePaused = !gamePaused;
+                        Sf.MenuOpenClose(); // Play SFX
                 }
             }
             else if (event.type == changeSceneEventType)
@@ -240,7 +255,7 @@ void GameManager::handleEvents()
             /////////////////////////////////
             // Reload
             /////////////////////////////////
-            if (!isStartMenuActive && !gamePaused)
+            if (!isStartMenuActive && !gamePaused && !isPlayerDead)
             {
                 if (event.key.keysym.sym == SDLK_r)
                 {
@@ -255,8 +270,28 @@ void GameManager::handleEvents()
                     }
 
                 }
+
+				////////////////////////////////
+		        // Item Pickup 
+		           ////////////////////////////////
+				if (event.key.keysym.sym == SDLK_e)
+				{
+
+					if (itemManagement.itemDrop == true && itemManagement.itemPickup == true)
+					{
+						//Apply Effects of Item Drop
+						DropEffects();
+
+						//Reset all Item Drop bools to false
+						itemManagement.ResetBools();
+					}
+
+				}
+
             }
+
            
+
 
             /////////////////////////////////
             // Sprinting
@@ -264,15 +299,15 @@ void GameManager::handleEvents()
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
-                isSprinting = true;
+
             }
 
             /////////////////////////////////
             // Player Movement
             /////////////////////////////////
-            if (!isStartMenuActive && !gamePaused)
-            { 
-               if (event.key.keysym.sym == SDLK_w)
+            if (!isStartMenuActive && !gamePaused && !isPlayerDead)
+            {
+                if (event.key.keysym.sym == SDLK_w)
                 {
                     // Start moving player up
 
@@ -345,7 +380,7 @@ void GameManager::handleEvents()
                 }
                 if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                     event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
-
+                    Sf.setSoundVolume(10);
                     Sf.WalkingAudio(true);
                 }
 
@@ -370,36 +405,36 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_s)
             {
                 player->ApplyForceY(0);
-              
+
 
             }
             if (event.key.keysym.sym == SDLK_d)
             {
 
                 player->ApplyForceX(0);
-                
+
 
             }
             if (event.key.keysym.sym == SDLK_a)
             {
 
                 player->ApplyForceX(0);
-                
+
 
             }
 
             if (event.key.keysym.sym == SDLK_LSHIFT)
             {
-                isSprinting = false;
+
 
             }
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                 event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
-                 
-                    Sf.WalkingAudio(false);
+                Sf.setSoundVolume(100);
+                Sf.WalkingAudio(false);
 
-                
+
 
             }
 
@@ -408,45 +443,56 @@ void GameManager::handleEvents()
 
         case SDL_MOUSEBUTTONDOWN:
 
-			/////////////////////////////////
-		    // Shooting
-		   /////////////////////////////////
-			if (!isStartMenuActive && !gamePaused)
-			{
-				if (event.button.button == SDL_BUTTON_LEFT)
-				{
-					if (weaponManagement.pistolEnabled)
-					{
-						if (weaponManagement.ammoRemaining < 0)
-						{
-							// Play Empty Magazine sound
-							Sf.EmptyMag();
+            /////////////////////////////////
+            // Shooting
+           /////////////////////////////////
+            if (!isStartMenuActive && !gamePaused && !isPlayerDead)
+            {
+                if (event.button.button == SDL_BUTTON_LEFT)
+                {
+                    if (weaponManagement.pistolEnabled)
+                    {
+                        if (weaponManagement.ammoRemaining < 0)
+                        {
+                            // Play Empty Magazine sound
+                            Sf.EmptyMag();
 
-							weaponManagement.ammoRemaining = 0;
-							outOfAmmo = true;
-						}
+                            weaponManagement.ammoRemaining = 0;
+                            outOfAmmo = true;
+                        }
 
-						if (!bullets.at(weaponManagement.ammoRemaining).fired)
-						{
-							bullets.at(weaponManagement.ammoRemaining).fired = true;
-							bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
-							weaponManagement.ammoRemaining--;
+                        if (!bullets.at(weaponManagement.ammoRemaining).fired)
+                        {
+                            bullets.at(weaponManagement.ammoRemaining).fired = true;
+                            bullets.at(weaponManagement.ammoRemaining).chamberRelease = true;
+                            weaponManagement.ammoRemaining--;
 
-							// Play Pistol Audio
-							Sf.PistolAudio(true);
-						}
+                            if (!weaponManagement.reloadStarted)
+                            {
+                                Sf.setSoundVolume(100);
+                                Sf.PistolAudio(true);
+                            }
+                        }
 
 
-					}
+                    }
+                    else if (!weaponManagement.pistolEnabled)
+                    {
 
-				}//End of SDL_BUTTON_LEFT
-			}
-            
-            
 
-			break;
-		}
- 
+                    }
+
+
+                }//End of SDL_BUTTON_LEFT
+            }
+
+
+
+
+
+            break;
+        }
+
         currentScene->HandleEvents(event);
     }
 }
@@ -489,6 +535,7 @@ void GameManager::RenderPlayer(float scale)
 
 Vec3 GameManager::getZombieSpawnLocations()
 {
+
     //Chooses a location at random...IF you add a location below, increase the first number.
     std::srand((unsigned int)time(NULL));
     int location = (rand() % 17) + 1;
@@ -529,7 +576,7 @@ Vec3 GameManager::getZombieSpawnLocations()
         return Vec3(1908, 729, 0);
         break;
     case 12:
-        return Vec3(1908, 1834, 0);
+        return Vec3(1908, 1100, 0);
         break;
     case 13:
         return Vec3(1300, 16, 0);
@@ -611,7 +658,11 @@ void GameManager::RenderRoundUI()
 
 void GameManager::RenderHealthUI()
 {
-    HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 40, 980);
+    if(player->health.getHealth() < 100)
+        HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 825, 980);
+    else
+        HealthUI.Render(getRenderer(), 1.0f, player->health.getHealth(), 800, 980);
+
 }
 
 void GameManager::RenderZombieCountUI()
@@ -620,18 +671,34 @@ void GameManager::RenderZombieCountUI()
     
 }
 
+void GameManager::RenderAmmoUI()
+{
+    if (outOfAmmo)
+        AmmoAmountUI.Render(getRenderer(), 1.0f, 0, 1090, 980);
+    else if(!weaponManagement.shotDelayFlag)
+        AmmoAmountUI.Render(getRenderer(), 1.0f, weaponManagement.ammoRemaining + 1, 1090, 980);
+
+}
+
 void GameManager::zombieArrayInit()
 {
     //Init Zombie var
     zombies2.setZombieGame(this);
-    zombies2.OnCreate();
 
     //Init Zombie Array
     for (int i = 0; i < this->round->getZombieAmount(); i++)
     {
+        zombies2.OnCreate();
         zombies2.setPos(Vec3(11000, 11000, 0));
         zombieSpawnerArr2.push_back(zombies2);
     }
+
+    //Set next zombie initilization to be true
+    zombies2.initZombFlag = true;
+
+    //Randomize the zombie array
+    std::random_shuffle(zombieSpawnerArr2.begin(), zombieSpawnerArr2.end());
+
 }
 
 Uint32 GameManager::GetChangeScene()
@@ -642,6 +709,88 @@ Uint32 GameManager::GetChangeScene()
 void GameManager::Quit()
 {
     isRunning = false;
+}
+
+void GameManager::Restart()
+{
+    round->Restart();
+
+    //Restart Weapon/Magazine
+    
+    //Clear original magazine
+    bullets.clear();
+    bulletsInMotion.clear();
+
+    //re-initialize magazine
+    for (int i = 0; i < weaponManagement.pistolMagSize; i++)
+    {
+        bullets.push_back(bulletHolder);
+    }
+    weaponManagement.ammoRemaining = weaponManagement.pistolMagSize - 1;
+
+    //Restarting Zombie Spawner
+    zombies2.sprintZomb = 0;
+    zombies2.tankZomb = 0;
+    zombieSpawnerArr2.clear();
+    zombieArrayInit();
+
+    gamePaused = false;
+    isPlayerDead = false;
+    outOfAmmo = false;
+    player->health.setHealth(100);
+   
+    LoadScene(2);
+}
+void GameManager::RenderItem()
+{
+    if (itemManagement.itemDrop == true && itemManagement.healthDrop == true)
+    {
+        itemManagement.RenderHealth(getRenderer(), 0.50f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+    }
+    
+    if (itemManagement.itemDrop == true && itemManagement.goldenGunDrop == true)
+    {
+        itemManagement.RenderGoldenGun(getRenderer(), 0.95f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+    }
+
+    if (itemManagement.itemDrop == true && itemManagement.speedBoostDrop == true)
+    {
+        itemManagement.RenderSpeedBoost(getRenderer(), 0.45f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+    }
+
+}
+
+void GameManager::DropEffects()
+{
+
+    //Applies an effect depending on which item is dropped
+    //If you want to add more new effects for new item drops, just create another "if" statement for that item drop
+    //Make sure to always set the specific item drop bool to false at the end of each "if" statement
+
+    if (itemManagement.healthDrop == true)
+    {
+        getPlayer()->health.healPlayer(10);
+        itemManagement.healthDrop = false;
+    }
+
+    if (itemManagement.goldenGunDrop == true)
+    {
+        bulletDamage = 1000;
+        goldenGunTimer = 26000;
+        goldenGunTimerDelay = SDL_GetTicks() + goldenGunTimer;
+        goldenGunOn = true;
+        itemManagement.goldenGunDrop = false;
+    }
+
+    if (itemManagement.speedBoostDrop == true)
+    {
+        if (speed <= 5000)
+        {
+            speed *= 1.125f;
+        }
+    }
+
+
 }
 
 

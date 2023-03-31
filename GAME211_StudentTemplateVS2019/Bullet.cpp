@@ -14,6 +14,7 @@ Bullet::Bullet()
 	chamberRelease = false;
 	active = true;
 	pushedBack = false;
+	bulletDamage = 25;
 }
 
 void Bullet::OnCreate(SDL_Renderer* renderer_)
@@ -26,6 +27,7 @@ void Bullet::OnCreate(SDL_Renderer* renderer_)
 		std::cerr << "Can't open the bullet image" << std::endl;
 
 	}
+	
 }
 
 void Bullet::Render(float scale, float playerX, float playerY)

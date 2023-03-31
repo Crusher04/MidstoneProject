@@ -15,9 +15,10 @@
 
 
 //Collider locations
-Collider playerColl(1000, 8, 1, 3);				//Player collider initilization 
-Collider enemyColl(300, 800, 10, 10);			//zombie collider holder
-std::vector<Collider> zombieCollArr;			//zombie collider vector array
+Collider playerColl(1000, 8, 1, 3);			//Player collider initilization 
+Collider enemyColl(300, 800, 10, 10);		//zombie collider holder
+std::vector<Collider> zombieCollArr;		//zombie collider vector array
+Collider itemDropColl(1000, 1000, 1, 1);    //ItemDrop collider initialization
 
 /***** SCENE VARIABLES *****/
 
@@ -97,6 +98,7 @@ bool Scene2::OnCreate() {
 	/////////////////////////////////
 	playerColl.setCollPosition(game->getPlayer()->getPos().x, game->getPlayer()->getPos().y);
 
+	
 
 	enemyColl.passthrough = false;
 	zombieSpawnTime = 0;
@@ -134,6 +136,82 @@ bool Scene2::OnCreate() {
 		std::cerr << "Can't open the menu button image" << std::endl;
 	}
 
+	restartButtonImage = IMG_Load("Assets/UI/Pause Menu/Restart.png");
+	renderer = game->getRenderer();
+	restartButtonTexture = SDL_CreateTextureFromSurface(renderer, restartButtonImage);
+	if (restartButtonImage == nullptr) {
+		std::cerr << "Can't open the restart button image" << std::endl;
+	}
+
+
+	//Death Screen Images
+	deathBannerBackgroundImage = IMG_Load("Assets/UI/death/menu_bg.png");
+	renderer = game->getRenderer();
+	deathBannerBackgroundTexture = SDL_CreateTextureFromSurface(renderer, deathBannerBackgroundImage);
+	if (deathBannerBackgroundImage == nullptr) {
+		std::cerr << "Can't open the death background banner image" << std::endl;
+	}
+
+	deathBannerImage = IMG_Load("Assets/UI/death/defeat.png");
+	renderer = game->getRenderer();
+	deathBannerTexture = SDL_CreateTextureFromSurface(renderer, deathBannerImage);
+	if (deathBannerImage == nullptr) {
+		std::cerr << "Can't open the death banner image" << std::endl;
+	}
+
+	deathMenuImage = IMG_Load("Assets/UI/death/menu_button.png");
+	renderer = game->getRenderer();
+	deathMenuTexture = SDL_CreateTextureFromSurface(renderer, deathMenuImage);
+	if (deathMenuImage == nullptr) {
+		std::cerr << "Can't open the death menu button image" << std::endl;
+	}
+
+
+	deathRestartImage = IMG_Load("Assets/UI/death/playagain_button.png");
+	renderer = game->getRenderer();
+	deathRestartTexture = SDL_CreateTextureFromSurface(renderer, deathRestartImage);
+	if (deathRestartImage == nullptr) {
+		std::cerr << "Can't open the death restart button image" << std::endl;
+	}
+
+
+	//Health Ammo HUD
+	healthAmmoBGImage = IMG_Load("Assets/UI/HUD/healthAmmoBG.png");
+	renderer = game->getRenderer();
+	healthAmmoBGTexture = SDL_CreateTextureFromSurface(renderer, healthAmmoBGImage);
+	if (healthAmmoBGImage == nullptr) {
+		std::cerr << "Can't open the  healh/ammo background image" << std::endl;
+	}
+
+	healthAmmoBGDividerImage = IMG_Load("Assets/UI/HUD/healthAmmoDivider.png");
+	renderer = game->getRenderer();
+	healthAmmoBGDividerTexture = SDL_CreateTextureFromSurface(renderer, healthAmmoBGDividerImage);
+	if (healthAmmoBGDividerImage == nullptr) {
+		std::cerr << "Can't open the  healh/ammo divider image" << std::endl;
+	}
+
+	healthHUDImage = IMG_Load("Assets/UI/HUD/heart.png");
+	renderer = game->getRenderer();
+	healthHUDTexture = SDL_CreateTextureFromSurface(renderer, healthHUDImage);
+	if (healthHUDImage == nullptr) {
+		std::cerr << "Can't open the  healh HUD image" << std::endl;
+	}
+
+	ammoHUDImage = IMG_Load("Assets/UI/HUD/ammo_icon.png");
+	renderer = game->getRenderer();
+	ammoHUDTexture = SDL_CreateTextureFromSurface(renderer, ammoHUDImage);
+	if (ammoHUDImage == nullptr) {
+		std::cerr << "Can't open the  ammo HUD image" << std::endl;
+	}
+
+	//Player damage UI effect
+	playerDamageEffectImage = IMG_Load("Assets/UI/HUD/playerDamaged.png");
+	renderer = game->getRenderer();
+	playerDamageEffectTexture = SDL_CreateTextureFromSurface(renderer, playerDamageEffectImage);
+	if (playerDamageEffectImage == nullptr) {
+		std::cerr << "Can't open the  player damage effect HUD image" << std::endl;
+	}
+	playerDamageEffectOpacity = 0;
 
 	return true;
 }
@@ -152,17 +230,74 @@ void Scene2::OnDestroy() {}
 void Scene2::Update(const float deltaTime) {
 
 
-	if (game->gamePaused)
+	if (game->gamePaused || game->isPlayerDead)
 	{
-		
+
 	}
 	else
 	{
 		/////////////////////////////////
-	//Player Updates
-	/////////////////////////////////
+		//Mitigates Zombies Stacking up inside each other. 
+		/////////////////////////////////
 
-	//Update Player
+		for (int i = 0; i < zombieCollArr.size(); i++)
+		{
+			if ((i + 1) <= zombieCollArr.size() - 1)
+			{
+				if (zombieCollArr.at(i).checkCollBox(zombieCollArr.at(i), zombieCollArr.at(i + 1)))
+				{
+					if (game->zombieSpawnerArr2.at(i).getPos().x < game->zombieSpawnerArr2.at(i + 1).getPos().x)
+					{
+						int x, y, z;
+						x = game->zombieSpawnerArr2.at(i).getPos().x;
+						y = game->zombieSpawnerArr2.at(i).getPos().y;
+						z = game->zombieSpawnerArr2.at(i).getPos().z;
+						x -= 5;
+						game->zombieSpawnerArr2.at(i).setPos(Vec3(x, y, z));
+
+					}
+					else if (game->zombieSpawnerArr2.at(i).getPos().x > game->zombieSpawnerArr2.at(i + 1).getPos().x)
+					{
+						int x, y, z;
+						x = game->zombieSpawnerArr2.at(i).getPos().x;
+						y = game->zombieSpawnerArr2.at(i).getPos().y;
+						z = game->zombieSpawnerArr2.at(i).getPos().z;
+						x += 5;
+						game->zombieSpawnerArr2.at(i).setPos(Vec3(x, y, z));
+
+					}
+
+					if (game->zombieSpawnerArr2.at(i).getPos().y < game->zombieSpawnerArr2.at(i + 1).getPos().y)
+					{
+						int x, y, z;
+						x = game->zombieSpawnerArr2.at(i).getPos().x;
+						y = game->zombieSpawnerArr2.at(i).getPos().y;
+						z = game->zombieSpawnerArr2.at(i).getPos().z;
+						y -= 5;
+						game->zombieSpawnerArr2.at(i).setPos(Vec3(x, y, z));
+
+					}
+					else if (game->zombieSpawnerArr2.at(i).getPos().x > game->zombieSpawnerArr2.at(i + 1).getPos().x)
+					{
+						int x, y, z;
+						x = game->zombieSpawnerArr2.at(i).getPos().x;
+						y = game->zombieSpawnerArr2.at(i).getPos().y;
+						z = game->zombieSpawnerArr2.at(i).getPos().z;
+						y += 5;
+						game->zombieSpawnerArr2.at(i).setPos(Vec3(x, y, z));
+
+					}
+				}
+			}
+
+		}
+
+
+		/////////////////////////////////
+		//Player Updates
+		/////////////////////////////////
+
+		//Update Player
 		game->getPlayer()->Update(deltaTime);
 
 		//Set Player Collider locations
@@ -221,7 +356,15 @@ void Scene2::Update(const float deltaTime) {
 				if (playerColl.checkCollBox(playerColl, zombieCollArr.at(i)))
 				{
 					std::cout << "\nDamage Taken!";
-					game->getPlayer()->health.takeDamage(12);
+
+					if(game->zombieSpawnerArr2.at(i).sprintZombSpawned)
+						game->getPlayer()->health.takeDamage(10);
+					else if(game->zombieSpawnerArr2.at(i).tankSpawned)
+						game->getPlayer()->health.takeDamage(25);
+					else
+						game->getPlayer()->health.takeDamage(12);
+
+					
 					damageTaken = true; //stops the player from taking damage per tick
 					std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
 					timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
@@ -261,14 +404,20 @@ void Scene2::Update(const float deltaTime) {
 		{
 			for (int i = 0; i < zombieCollArr.size(); i++)
 			{
-				if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
+				if (game->zombieSpawnerArr2.size() != 0)
 				{
-					game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
-					zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
-					game->zombieSpawnerArr2.at(i).spawned = true;
-					zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
-					zombieTimeBetweenSpawn = rand() % 2500 + 1000;
+
+					if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
+					{
+						game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
+						zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
+						game->zombieSpawnerArr2.at(i).spawned = true;
+						zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
+						std::srand((unsigned int)time(NULL));
+						zombieTimeBetweenSpawn = rand() % 2000 + 500;
+					}
 				}
+
 			}
 		}
 
@@ -298,26 +447,26 @@ void Scene2::Update(const float deltaTime) {
 				{
 					int distance = playerPos.x - zombieX;
 					if (distance > 0)
-						zombieX += 1;
+						zombieX += 1 + game->zombieSpawnerArr2.at(i).zombieIncreasedSpeed;
 				}
 				else
 				{
 					int distance = playerPos.x - zombieX;
 					if (distance < 0)
-						zombieX -= 1;
+						zombieX -= 1 + game->zombieSpawnerArr2.at(i).zombieIncreasedSpeed;
 				}
 
 				if (playerPos.y > zombieY)
 				{
 					int distance = playerPos.y - zombieY;
 					if (distance >= 0)
-						zombieY += 1;
+						zombieY += 1 + game->zombieSpawnerArr2.at(i).zombieIncreasedSpeed;
 				}
 				else
 				{
 					int distance = playerPos.y - zombieY;
 					if (distance <= 0)
-						zombieY -= 1;
+						zombieY -= 1 + game->zombieSpawnerArr2.at(i).zombieIncreasedSpeed;
 				}
 
 				//Calculate orientation to player in radians
@@ -334,11 +483,15 @@ void Scene2::Update(const float deltaTime) {
 		}
 
 
+		
+
+
 		/////////////////////////////////
 		//Bullet Management
 		/////////////////////////////////
 
-		//Managing Reloading
+		///Managing Reloading
+		
 		if (game->weaponManagement.reloading())
 		{
 			//Check for bullets already fired, move them to in motion
@@ -384,6 +537,10 @@ void Scene2::Update(const float deltaTime) {
 
 		}
 
+			
+
+
+
 
 		//Update Bullets that are already in motion
 		if (game->bulletsInMotion.size() > 0)
@@ -403,12 +560,20 @@ void Scene2::Update(const float deltaTime) {
 				if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, zombieCollArr.at(i)))
 				{
 					std::cout << "Zombie " << i << " hit!\n";
-					game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bullets.at(k).bulletDamage);
 					game->Sf.ZombiesHit();
 					game->bullets.at(k).collider.active = false;
 
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 					{
+						//Calling Function to see if an item drops when a zombie is killed 
+					if (game->itemManagement.itemDrop == false)
+					{
+						game->itemManagement.itemPickup = false;
+						game->itemSpawnLocation = game->zombieSpawnerArr2.at(i).getPos();
+						game->itemManagement.Drops();
+
+					}
 						zombieCollArr.at(i).active = false;
 						game->getRound()->removeAZombie();
 					}
@@ -456,6 +621,14 @@ void Scene2::Update(const float deltaTime) {
 		}
 
 		/////////////////////////////////
+		//Player Damage Effect Opacity
+		/////////////////////////////////
+		if (playerDamageEffectOpacity > 0)
+		{
+			playerDamageEffectOpacity -= 5;
+		}
+
+		/////////////////////////////////
 		//Player Health/Damage Check
 		/////////////////////////////////
 
@@ -469,9 +642,54 @@ void Scene2::Update(const float deltaTime) {
 		if (game->getPlayer()->health.getHealth() <= 0)
 		{
 			std::cout << "\n YOU HAVE DIED, GAME OVER";
-			exit(0);
+			game->isPlayerDead = true;
 		}
 	}
+
+	/////////////////////////////////
+	///Item Drops Management
+	/////////////////////////////////
+
+
+	//Setting the items collision bounds and position
+	if (game->itemManagement.itemDrop == true)
+	{
+
+		itemDropColl.setCollBounds(game->itemManagement.getImage()->w * 0.35, game->itemManagement.getImage()->h * 0.35);
+		itemDropColl.setCollPosition(game->itemSpawnLocation.x, game->itemSpawnLocation.y);
+		
+		//Despawns the item drop after a certain amount of time
+		if (game->itemManagement.dropTimerDelay <= SDL_GetTicks())
+		{
+			game->itemManagement.itemDrop = false;
+		}
+
+	}
+
+	//Checking to see if the player collides with an item
+	if (itemDropColl.checkCollBox(playerColl, itemDropColl))
+	{
+
+		game->itemManagement.itemPickup = true;
+
+	}
+
+
+	//Checking to see if the golden gun drop is active	
+	if (game->goldenGunOn == true)
+	{
+		//Set the bullet damage back to normal if the golden gun timer runs out
+		if (game->goldenGunTimerDelay <= SDL_GetTicks())
+		{
+
+			game->bulletDamage = 25;
+			game->goldenGunOn = false;
+		}
+
+
+	}
+
+
 	
 }//End of UPDATE
 
@@ -486,6 +704,9 @@ void Scene2::Render() {
 	renderMap();
 
 
+	
+	game->RenderItem();
+
 
 	// render the player
 	game->RenderPlayer(1.5f);
@@ -499,18 +720,35 @@ void Scene2::Render() {
 
 	}
 	
+	
+
+
 	game->RenderOutOfAmmo();
 
 	game->RenderRoundUI();
+	
+	RenderHealthBackground();
 
 	game->RenderHealthUI();
 
+	game->RenderAmmoUI();
+
 	game->RenderZombieCountUI();
+	
+	if (damageTaken)
+		playerDamageEffectOpacity = 255;
+
+	RenderUIDamageEffect();
+	
+
 
 	if (game->gamePaused)
 	{
 		RenderPauseMenu();
 	}
+	
+	if (game->isPlayerDead)
+		RenderDeathScreen();
 
 	// Present the renderer to the screen
 	SDL_RenderPresent(renderer);
@@ -522,42 +760,47 @@ void Scene2::HandleEvents(const SDL_Event& event)
 	game->getPlayer()->HandleEvents(event);
 
 	SDL_GetMouseState(&mouseX, &mouseY);
-	std::cout << "Mouse POS (" << mouseX << ", " << mouseY << ")\n";
-	std::cout << "quitButtonColl = (" << quitButtonColl.x << ", " << quitButtonColl.y << ", " << quitButtonColl.w << ", " << quitButtonColl.h << ")\n";
 
 	switch (event.type)
 		case SDL_MOUSEBUTTONDOWN:
 
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
-
-				if (mouseX >= menuButtonColl.x && mouseX <= (menuButtonColl.x + menuButtonColl.w)
-					&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
+				if (game->gamePaused || game->isPlayerDead)
 				{
-					std::cout << "Mouse Pressed Menu\n";
-					game->isStartMenuActive = false;
-					game->gamePaused = false;
-					game->Sf.MenuClick();
-					game->LoadScene(3);
-				}
+					if (mouseX >= menuButtonColl.x && mouseX <= (menuButtonColl.x + menuButtonColl.w)
+						&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
+					{
+						std::cout << "Mouse Pressed Menu\n";
+						game->isStartMenuActive = false;
+						game->gamePaused = false;
+						game->Sf.MenuClick();
+						game->LoadScene(3);
+						zombieCollArr.clear();
+						zombieInitComplete = false;
+						game->LoadScene(3);
+					}
 
-				if (mouseX >= quitButtonColl.x && mouseX <= (quitButtonColl.x + quitButtonColl.w)
-					&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
-				{
-					std::cout << "MOUSE Pressed Quit \n";
-					game->Quit();
-				}
+					if (mouseX >= quitButtonColl.x && mouseX <= (quitButtonColl.x + quitButtonColl.w)
+						&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
+					{
+						std::cout << "MOUSE Pressed Quit \n";
+						game->Quit();
+					}
 
-			}
-	
-			if (mouseX >= menuButtonColl.x && mouseX <= (menuButtonColl.x + menuButtonColl.w)
-				&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
-			{
-				std::cout << "Mouse Pressed Menu\n";
+					if (mouseX >= restartButtonColl.x && mouseX <= (restartButtonColl.x + restartButtonColl.w)
+						&& mouseY >= restartButtonColl.y && mouseY <= (restartButtonColl.y + restartButtonColl.h))
+					{
+						std::cout << "MOUSE Pressed Restart \n";
+						zombieCollArr.clear();
+						zombieInitComplete = false;
+						game->Restart();
+					}
+
+				}
 				
-			}
 
-		
+			}		
 	
 }
 
@@ -732,6 +975,324 @@ void Scene2::RenderPauseMenu()
 	//RENDER
 	//////////////////////////////////.
 	SDL_RenderCopyEx(renderer, quitButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	//Screen Coords
+	screenX = 780;
+	screenY = 525;
+
+
+	//Get image width and height and adjust it to scale
+	w = restartButtonImage->w;
+	h = restartButtonImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 2;
+	square.h *= 2;
+
+	restartButtonColl.setCollPosition(screenX, screenY);
+	restartButtonColl.setCollBounds(square.w, square.h);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, restartButtonTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
 	
 
+}
+
+void Scene2::RenderDeathScreen()
+{
+
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	int screenX = 375;
+	int screenY = 250;
+
+
+	//Get image width and height and adjust it to scale
+	w = deathBannerBackgroundImage->w;
+	h = deathBannerBackgroundImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 2;
+	square.h *= 2;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, deathBannerBackgroundTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	//Screen Coords
+	screenX = 750;
+	screenY = 280;
+
+
+	//Get image width and height and adjust it to scale
+	w = deathBannerImage->w;
+	h = deathBannerImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 2;
+	square.h *= 2;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, deathBannerTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	//Screen Coords
+	screenX = 875;
+	screenY = 450;
+
+
+	//Get image width and height and adjust it to scale
+	w = deathMenuImage->w;
+	h = deathMenuImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.7;
+	square.h *= 0.7;
+
+	menuButtonColl.setCollPosition(screenX, screenY);
+	menuButtonColl.setCollBounds(square.w, square.h);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, deathMenuTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	//Screen Coords
+	screenX = 1010;
+	screenY = 450;
+
+
+	//Get image width and height and adjust it to scale
+	w = deathRestartImage->w;
+	h = deathRestartImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.7;
+	square.h *= 0.7;
+
+	restartButtonColl.setCollPosition(screenX, screenY);
+	restartButtonColl.setCollBounds(square.w, square.h);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, deathRestartTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+}
+
+void Scene2::RenderHealthBackground()
+{
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	int screenX = 790;
+	int screenY = 970;
+
+
+	//Get image width and height and adjust it to scale
+	w = healthAmmoBGImage->w;
+	h = healthAmmoBGImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	//SDL_QueryTexture(texture, NULL, NULL, &square.w, &square.h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1.2;
+	square.h *= 1.2;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, healthAmmoBGTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	//Screen Coords
+	screenX = 980;
+	screenY = 970;
+
+
+	//Get image width and height and adjust it to scale
+	w = healthAmmoBGDividerImage->w;
+	h = healthAmmoBGDividerImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1.2;
+	square.h *= 1.2;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, healthAmmoBGDividerTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	
+
+	//Screen Coords
+	screenX = 940;
+	screenY = 1000;
+
+
+	//Get image width and height and adjust it to scale
+	w = healthHUDImage->w;
+	h = healthHUDImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1;
+	square.h *= 1;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, healthHUDTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+
+	//Screen Coords
+	screenX = 1020;
+	screenY = 990;
+
+
+	//Get image width and height and adjust it to scale
+	w = ammoHUDImage->w;
+	h = ammoHUDImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1;
+	square.h *= 1;
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////.
+	SDL_RenderCopyEx(renderer, ammoHUDTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+
+}
+
+void Scene2::RenderUIDamageEffect()
+{
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	int screenX = 0;
+	int screenY = 0;
+
+
+	//Get image width and height and adjust it to scale
+	w = playerDamageEffectImage->w;
+	h = playerDamageEffectImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1;
+	square.h *= 1;
+	
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	SDL_SetTextureAlphaMod(playerDamageEffectTexture, playerDamageEffectOpacity);
+	SDL_RenderCopyEx(renderer, playerDamageEffectTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	
 }

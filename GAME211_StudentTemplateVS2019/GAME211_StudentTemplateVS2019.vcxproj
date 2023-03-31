@@ -25,6 +25,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="EnemyBody.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="ItemManagement.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MMath.cpp" />
     <ClCompile Include="Music.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="EnemyBody.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="ItemManagement.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MMath.h" />
     <ClInclude Include="Music.h" />

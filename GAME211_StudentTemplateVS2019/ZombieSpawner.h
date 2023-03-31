@@ -14,14 +14,24 @@ class ZombieSpawner : public Body
 protected:
 
 	class GameManager* game;
-	
-public:
-		
-	std::vector<ZombieSpawner> zombieSpawnerArr;
+	int sprintZombCounter;
+	int tankZombCounter;
+	int regZombCounter;
+	int nextRoundUpgrades;
 
+public:
+	
+	//Variables
+	bool spawned, initZombFlag, tankSpawned, sprintZombSpawned;
+	float orientation, zombieIncreasedSpeed;
+	class EntityHealth health;
+	int currentRound, regZomb, tankZomb, sprintZomb, spitZomb;
+
+	//Constructors
 	ZombieSpawner() : Body{}
 	{
 		game = nullptr;
+		initZombFlag = true;
 	}
 
 	ZombieSpawner( GameManager* game_) : Body{} ,game{ game_ } {}
@@ -31,19 +41,10 @@ public:
 	void HandleEvents(const SDL_Event& event);
 	void Update(float deltaTime);
 	void setTexture(SDL_Texture* texture_) { texture = texture_; }
-
 	void setZombieAmount();
 	int getZombiesRemaining();
 	void zombieArrPushBack(ZombieSpawner zombie_);
-
 	void setZombieGame(GameManager* game_);
-
-	bool spawned;
-
-	float orientation;
-
-
-	class EntityHealth health;
 
 };
 

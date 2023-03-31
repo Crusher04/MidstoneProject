@@ -139,7 +139,7 @@ void Scene3::HandleEvents(const SDL_Event& event)
 					std::cout << "MOUSE OVER PLay Button and pressed\n--\n";
 					game->isStartMenuActive = false;
 					game->Sf.MenuClick(); //Play sfx
-					game->LoadScene(2);
+					game->Restart();
 				}
 
 				if (mouseX >= quitButtonColl.x && mouseX <= (quitButtonColl.x + quitButtonColl.w)
