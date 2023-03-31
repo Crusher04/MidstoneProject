@@ -703,6 +703,18 @@ void Scene2::Update(const float deltaTime) {
 			game->bulletDamage = 25;
 			game->goldenGunOn = false;
 		}
+	}
+
+	//Checking to see if the golden gun drop is active	
+	if (game->speedBoostOn == true)
+	{
+		//Set the bullet damage back to normal if the golden gun timer runs out
+		if (game->speedBoostTimerDelay <= SDL_GetTicks())
+		{
+
+			game->speed = 1000;
+			game->speedBoostOn = false;
+		}
 
 
 	}

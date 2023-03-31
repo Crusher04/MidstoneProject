@@ -719,10 +719,17 @@ void GameManager::DropEffects()
 
     if (itemManagement.speedBoostDrop == true)
     {
-        if (speed <= 5000)
+    /*    if (speed <= 5000)
         {
             speed *= 1.125f;
-        }
+        }*/
+
+        speed = 3000;
+        speedBoostTimer = 13000;
+        speedBoostTimerDelay = SDL_GetTicks() + speedBoostTimer;
+        speedBoostOn = true;
+
+
         itemManagement.speedBoostDrop = false;
 
     }

@@ -114,6 +114,12 @@ public:
 	int goldenGunTimer, goldenGunTimerDelay;
 
 
+	//Bool for if the player has picked up a speed boost
+	bool speedBoostOn;
+	//Variables for the speed boost timer
+	int speedBoostTimer, speedBoostTimerDelay;
+
+
 	//Round UI
 	NumbersUI RoundUI;
 
