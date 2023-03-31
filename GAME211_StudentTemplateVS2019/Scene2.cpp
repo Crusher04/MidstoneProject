@@ -560,7 +560,7 @@ void Scene2::Update(const float deltaTime) {
 				if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, zombieCollArr.at(i)))
 				{
 					std::cout << "Zombie " << i << " hit!\n";
-					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bullets.at(k).bulletDamage);
+					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bulletDamage);
 					game->bullets.at(k).collider.active = false;
 
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
@@ -588,7 +588,7 @@ void Scene2::Update(const float deltaTime) {
 					if (game->bulletsInMotion.at(j).collider.checkCollBox(game->bulletsInMotion.at(j).collider, zombieCollArr.at(i)))
 					{
 						std::cout << "Zombie " << i << " hit!\n";
-						game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+						game->zombieSpawnerArr2.at(i).health.takeDamage(game->bulletDamage);
 						game->bulletsInMotion.at(j).collider.active = false;
 						game->bulletsInMotion.erase(game->bulletsInMotion.begin() + j);
 						std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
@@ -672,6 +672,25 @@ void Scene2::Update(const float deltaTime) {
 		game->itemManagement.itemPickup = true;
 
 	}
+
+
+
+	if (game->itemManagement.itemDrop == true && game->itemManagement.itemPickup == true)
+	{
+		//Apply Effects of Item Drop
+		game->DropEffects();
+		game->itemManagement.itemDrop = false;
+
+	}
+
+	if (game->itemManagement.itemDrop == false)
+	{
+
+		//Reset all Item Drop bools to false
+		game->itemManagement.ResetBools();
+
+	}
+
 
 
 	//Checking to see if the golden gun drop is active	

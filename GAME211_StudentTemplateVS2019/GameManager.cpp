@@ -165,12 +165,7 @@ bool GameManager::OnCreate() {
     //Item Initialization
     ////////////////////////////////
     
-    //items.onCreate(getRenderer());
-    //for (int i = 0; i < this->round->getZombieAmount(); i++)
-    //{
-   
-    //    itemManagement.push_back(items);
-    //}
+
     itemManagement.onCreate(getRenderer());
 
 
@@ -270,23 +265,6 @@ void GameManager::handleEvents()
 
                 }
 
-				////////////////////////////////
-		        // Item Pickup 
-		           ////////////////////////////////
-				if (event.key.keysym.sym == SDLK_e)
-				{
-
-					if (itemManagement.itemDrop == true && itemManagement.itemPickup == true)
-					{
-						//Apply Effects of Item Drop
-						DropEffects();
-
-						//Reset all Item Drop bools to false
-						itemManagement.ResetBools();
-					}
-
-				}
-
             }
 
            
@@ -309,36 +287,11 @@ void GameManager::handleEvents()
                 if (event.key.keysym.sym == SDLK_w)
                 {
                     // Start moving player up
-
-                    if (isSprinting == true)
-                    {
-
-                        speed = 5000;
-
-                    }
-                    if (isSprinting == false)
-                    {
-
-                        speed = 1000;
-
-                    }
                     player->ApplyForceY(-speed);
                 }
                 if (event.key.keysym.sym == SDLK_s)
                 {
 
-                    if (isSprinting == true)
-                    {
-
-                        speed = 5000;
-
-                    }
-                    if (isSprinting == false)
-                    {
-
-                        speed = 1000;
-
-                    }
                     player->ApplyForceY(speed);
 
                 }
@@ -346,35 +299,13 @@ void GameManager::handleEvents()
                 {
 
 
-                    if (isSprinting == true)
-                    {
-
-                        speed = 5000;
-
-                    }
-                    if (isSprinting == false)
-                    {
-
-                        speed = 1000;
-
-                    }
+        
                     player->ApplyForceX(speed);
                 }
                 if (event.key.keysym.sym == SDLK_a)
                 {
 
-                    if (isSprinting == true)
-                    {
-
-                        speed = 5000;
-
-                    }
-                    if (isSprinting == false)
-                    {
-
-                        speed = 1000;
-
-                    }
+     
                     player->ApplyForceX(-speed);
                 }
                 if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
@@ -769,13 +700,18 @@ void GameManager::DropEffects()
     if (itemManagement.healthDrop == true)
     {
         getPlayer()->health.healPlayer(10);
+        if (getPlayer()->health.getHealth() > 100)
+        {
+            getPlayer()->health.setHealth(100);
+
+        }
         itemManagement.healthDrop = false;
     }
 
     if (itemManagement.goldenGunDrop == true)
     {
         bulletDamage = 1000;
-        goldenGunTimer = 26000;
+        goldenGunTimer = 13000;
         goldenGunTimerDelay = SDL_GetTicks() + goldenGunTimer;
         goldenGunOn = true;
         itemManagement.goldenGunDrop = false;
@@ -787,6 +723,8 @@ void GameManager::DropEffects()
         {
             speed *= 1.125f;
         }
+        itemManagement.speedBoostDrop = false;
+
     }
 
 
