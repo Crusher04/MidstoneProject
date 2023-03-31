@@ -240,11 +240,11 @@ void Scene2::Update(const float deltaTime) {
 		//Mitigates Zombies Stacking up inside each other. 
 		/////////////////////////////////
 
-		for (int i = 0; i < zombieCollArr.size(); i++)
+		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 		{
-			if ((i + 1) <= zombieCollArr.size() - 1)
+			if ((i + 1) <= game->zombieSpawnerArr2.size() - 1)
 			{
-				if (zombieCollArr.at(i).checkCollBox(zombieCollArr.at(i), zombieCollArr.at(i + 1)))
+				if (game->zombieSpawnerArr2.at(i).collider.checkCollBox(game->zombieSpawnerArr2.at(i).collider, game->zombieSpawnerArr2.at(i + 1).collider))
 				{
 					if (game->zombieSpawnerArr2.at(i).getPos().x < game->zombieSpawnerArr2.at(i + 1).getPos().x)
 					{
@@ -294,6 +294,14 @@ void Scene2::Update(const float deltaTime) {
 
 
 		/////////////////////////////////
+		//Zombie POS/Collider Updates
+		/////////////////////////////////
+		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
+		{
+			game->zombieSpawnerArr2.at(i).Update(deltaTime);
+		}
+
+		/////////////////////////////////
 		//Player Updates
 		/////////////////////////////////
 
@@ -308,18 +316,6 @@ void Scene2::Update(const float deltaTime) {
 		/////////////////////////////////
 		//Zombie Collision Detection with PLAYER
 		/////////////////////////////////
-
-		//Initializes our zombie collider
-		if (zombieCollArr.size() != game->zombieSpawnerArr2.size() && !zombieInitComplete)
-		{
-			for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
-			{
-				enemyColl.setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
-				enemyColl.setCollBounds(game->zombieSpawnerArr2.at(i).getImage()->w * 0.18f, game->zombieSpawnerArr2.at(i).getImage()->h * 0.18f);
-				zombieCollArr.push_back(enemyColl);
-			}
-			zombieInitComplete = true; // This is a flag to make sure this loop doesn't run again
-		}
 
 
 		/* THIS WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY*/
@@ -337,23 +333,10 @@ void Scene2::Update(const float deltaTime) {
 		//Did player recently take damage?
 		if (!damageTaken)
 		{
-			if (enemyColl.passthrough == false)
-			{
-				playerColl.previousPos.x = playerColl.x;
-				playerColl.previousPos.y = playerColl.y;
-				if (playerColl.checkCollBox(playerColl, enemyColl))
-				{
-					playerColl.setCollPosition(playerColl.previousPos.x, playerColl.previousPos.y);
-					game->getPlayer()->setPos(playerColl.previousPos);
-				}
-
-			}
-
-
-			for (int i = 0; i < zombieCollArr.size(); i++)
+			for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 			{
 				//Check for collision
-				if (playerColl.checkCollBox(playerColl, zombieCollArr.at(i)))
+				if (playerColl.checkCollBox(playerColl, game->zombieSpawnerArr2.at(i).collider))
 				{
 					std::cout << "\nDamage Taken!";
 
@@ -370,7 +353,6 @@ void Scene2::Update(const float deltaTime) {
 					timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
 				}
 			}
-
 		}
 
 
@@ -391,8 +373,6 @@ void Scene2::Update(const float deltaTime) {
 			std::cout << "Round " << game->getRound()->getCurrentRound() << " has started!\n ";
 
 			game->zombieSpawnerArr2.clear();
-			zombieCollArr.clear();
-
 			game->zombieArrayInit();
 			zombieInitComplete = false;
 			roundEnded = false;
@@ -402,7 +382,7 @@ void Scene2::Update(const float deltaTime) {
 
 		if (zombieSpawnTime < SDL_GetTicks())
 		{
-			for (int i = 0; i < zombieCollArr.size(); i++)
+			for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 			{
 				if (game->zombieSpawnerArr2.size() != 0)
 				{
@@ -410,7 +390,6 @@ void Scene2::Update(const float deltaTime) {
 					if (game->zombieSpawnerArr2.at(i).spawned == false && zombieSpawnTime < SDL_GetTicks())
 					{
 						game->zombieSpawnerArr2.at(i).setPos(game->getZombieSpawnLocations());
-						zombieCollArr.at(i).setCollPosition(game->zombieSpawnerArr2.at(i).getPos().x, game->zombieSpawnerArr2.at(i).getPos().y);
 						game->zombieSpawnerArr2.at(i).spawned = true;
 						zombieSpawnTime = SDL_GetTicks() + zombieTimeBetweenSpawn;
 						std::srand((unsigned int)time(NULL));
@@ -430,7 +409,7 @@ void Scene2::Update(const float deltaTime) {
 		Vec3 playerPos = game->getPlayer()->getPos();		//Player Position
 		int zombieX, zombieY;
 
-		for (int i = 0; i < zombieCollArr.size(); i++)
+		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 		{
 			if (game->zombieSpawnerArr2.at(i).health.getHealth() > 0)
 			{
@@ -474,7 +453,6 @@ void Scene2::Update(const float deltaTime) {
 
 				//Set position for zombie and zombie collider
 				game->zombieSpawnerArr2.at(i).setPos(Vec3(zombieX, zombieY, 0));
-				zombieCollArr.at(i).setCollPosition(zombieX, zombieY);
 			}
 
 		}
@@ -482,7 +460,7 @@ void Scene2::Update(const float deltaTime) {
 		/////////////////////////////////
 		//ZOMBIE Special Attacks
 		/////////////////////////////////
-		for (int i = 0; i < zombieCollArr.size(); i++)
+		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 		{
 			if (game->zombieSpawnerArr2.at(i).tankSpawned)
 			{
@@ -535,7 +513,6 @@ void Scene2::Update(const float deltaTime) {
 		}
 
 
-
 		//Managing bullet position and movement
 		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
 		{
@@ -551,11 +528,6 @@ void Scene2::Update(const float deltaTime) {
 
 		}
 
-			
-
-
-
-
 		//Update Bullets that are already in motion
 		if (game->bulletsInMotion.size() > 0)
 		{
@@ -565,13 +537,13 @@ void Scene2::Update(const float deltaTime) {
 
 
 		//Managing Collision of bullets with zombies
-		for (int i = 0; i < zombieCollArr.size(); i++)
+		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 		{
 			//Check for collisions with bullets 
 			for (int k = 0; k < game->weaponManagement.pistolMagSize; k++)
 			{
 
-				if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, zombieCollArr.at(i)))
+				if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, game->zombieSpawnerArr2.at(i).collider))
 				{
 					std::cout << "Zombie " << i << " hit!\n";
 					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bullets.at(k).bulletDamage);
@@ -580,14 +552,17 @@ void Scene2::Update(const float deltaTime) {
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 					{
 						//Calling Function to see if an item drops when a zombie is killed 
-					if (game->itemManagement.itemDrop == false)
-					{
-						game->itemManagement.itemPickup = false;
-						game->itemSpawnLocation = game->zombieSpawnerArr2.at(i).getPos();
-						game->itemManagement.Drops();
+						if (game->itemManagement.itemDrop == false)
+						{
+							game->itemManagement.itemPickup = false;
+							game->itemSpawnLocation = game->zombieSpawnerArr2.at(i).getPos();
+							game->itemManagement.Drops();
 
-					}
-						zombieCollArr.at(i).active = false;
+						}
+
+						game->zombieSpawnerArr2.at(i).collider.active = false;
+						//game->zombieSpawnerArr2.erase(game->zombieSpawnerArr2.begin() + i);
+						//game->zombieSpawnerArr2.shrink_to_fit();
 						game->getRound()->removeAZombie();
 					}
 				}
@@ -599,7 +574,7 @@ void Scene2::Update(const float deltaTime) {
 			{
 				for (int j = 0; j < game->bulletsInMotion.size(); j++)
 				{
-					if (game->bulletsInMotion.at(j).collider.checkCollBox(game->bulletsInMotion.at(j).collider, zombieCollArr.at(i)))
+					if (game->bulletsInMotion.at(j).collider.checkCollBox(game->bulletsInMotion.at(j).collider, game->zombieSpawnerArr2.at(i).collider))
 					{
 						std::cout << "Zombie " << i << " hit!\n";
 						game->zombieSpawnerArr2.at(i).health.takeDamage(25);
@@ -609,7 +584,7 @@ void Scene2::Update(const float deltaTime) {
 
 						if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 						{
-							zombieCollArr.at(i).active = false;
+							game->zombieSpawnerArr2.at(i).collider.active = false;
 							game->getRound()->removeAZombie();
 						}
 					}

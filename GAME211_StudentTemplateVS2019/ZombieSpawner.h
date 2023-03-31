@@ -7,7 +7,7 @@
 #include "GameManager.h"
 #include <vector>
 #include "EntityHealth.h"
-
+#include "Collider.h"
 
 class ZombieSpawner : public Body
 {
@@ -26,6 +26,7 @@ public:
 	float orientation, zombieIncreasedSpeed;
 	class EntityHealth health;
 	int currentRound, regZomb, tankZomb, sprintZomb, spitZomb;
+	Collider collider;
 
 	//Constructors
 	ZombieSpawner() : Body{}

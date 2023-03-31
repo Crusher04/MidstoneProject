@@ -194,6 +194,7 @@ void ZombieSpawner::Render(float scale)
         square.h *= scale;
     }
     
+    collider.setCollBounds(square.w, square.h);
 
     if(orientation == NULL)
         orientation = 10;
@@ -216,6 +217,7 @@ void ZombieSpawner::Update(float deltaTime)
     // Note that would update velocity too, and rotation motion
 
     Body::Update(deltaTime);
+    collider.setCollPosition(pos.x, pos.y);
 
 }
 
