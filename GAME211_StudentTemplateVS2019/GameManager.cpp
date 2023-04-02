@@ -174,6 +174,17 @@ bool GameManager::OnCreate() {
     itemManagement.onCreate(getRenderer());
 
 
+    ////////////////////////
+    //CHANGE SFX BY CHANNEL
+    ////////////////////////
+    Sf.ChangeChannelVolume(CH_ENEMY, 40);
+    Sf.ChangeChannelVolume(CH_ITEM, 60);
+    Sf.ChangeChannelVolume(CH_MENU, 100);
+    Sf.ChangeChannelVolume(CH_PLAYER, 40);
+    Sf.ChangeChannelVolume(CH_WEAPON, 70);
+
+
+
 	return true;
 }
 
@@ -238,6 +249,7 @@ void GameManager::handleEvents()
                 {
                     if (!isPlayerDead)
                         gamePaused = !gamePaused;
+                        Sf.MenuOpenClose(); // Play SFX
                 }
             }
             else if (event.type == changeSceneEventType)
@@ -379,7 +391,6 @@ void GameManager::handleEvents()
                 }
                 if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                     event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
-                    Sf.setSoundVolume(10);
                     Sf.WalkingAudio(true);
                 }
 
@@ -430,7 +441,6 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                 event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
-                Sf.setSoundVolume(100);
                 Sf.WalkingAudio(false);
 
 
@@ -468,7 +478,6 @@ void GameManager::handleEvents()
 
                             if (!weaponManagement.reloadStarted)
                             {
-                                Sf.setSoundVolume(100);
                                 Sf.PistolAudio(true);
                             }
                         }
@@ -768,12 +777,14 @@ void GameManager::DropEffects()
 
     if (itemManagement.healthDrop == true)
     {
+        Sf.HealthPickup();//play health pickup
         getPlayer()->health.healPlayer(10);
         itemManagement.healthDrop = false;
     }
 
     if (itemManagement.goldenGunDrop == true)
     {
+        Sf.Pickup(); //Play pickup
         bulletDamage = 1000;
         goldenGunTimer = 26000;
         goldenGunTimerDelay = SDL_GetTicks() + goldenGunTimer;
@@ -783,6 +794,7 @@ void GameManager::DropEffects()
 
     if (itemManagement.speedBoostDrop == true)
     {
+        Sf.Pickup(); //Play pickup
         if (speed <= 5000)
         {
             speed *= 1.125f;

@@ -85,7 +85,7 @@ bool Scene3::OnCreate() {
 
 	//Default variable 
 	aboutUSOn = false;
-
+	game->Ms.playAudio(0, 20);
 	return true;
 }
 
@@ -138,6 +138,7 @@ void Scene3::HandleEvents(const SDL_Event& event)
 				{
 					std::cout << "MOUSE OVER PLay Button and pressed\n--\n";
 					game->isStartMenuActive = false;
+					game->Sf.MenuClick(); //Play sfx
 					game->Restart();
 				}
 
@@ -145,6 +146,7 @@ void Scene3::HandleEvents(const SDL_Event& event)
 					&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
 				{
 					std::cout << "MOUSE Pressed Quit Button\n--\n";
+					game->Sf.MenuClick(); //Play SfX
 					game->Quit();
 				}
 
@@ -152,6 +154,7 @@ void Scene3::HandleEvents(const SDL_Event& event)
 					&& mouseY >= aboutButtonColl.y && mouseY <= (aboutButtonColl.y + aboutButtonColl.h))
 				{
 					std::cout << "MOUSE Pressed About Button\n--\n";
+					game->Sf.MenuClick(); //Play SFX
 					aboutUSOn = true;
 				}
 			}
@@ -161,6 +164,7 @@ void Scene3::HandleEvents(const SDL_Event& event)
 					&& mouseY >= backButtonColl.y && mouseY <= (backButtonColl.y + backButtonColl.h))
 				{
 					std::cout << "MOUSE Pressed on back Button\n--\n";
+					game->Sf.MenuClick(); //Play SFX
 					aboutUSOn = false;
 				}
 			}
