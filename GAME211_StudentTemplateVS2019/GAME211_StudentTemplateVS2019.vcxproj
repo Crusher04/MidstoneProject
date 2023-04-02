@@ -25,6 +25,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="EnemyBody.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="ItemManagement.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MMath.cpp" />
     <ClCompile Include="Music.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="Scene3.cpp" />
     <ClCompile Include="Scene4.cpp" />
     <ClCompile Include="Scene8.cpp" />
+    <ClCompile Include="Scene9.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -52,6 +54,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="EnemyBody.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="ItemManagement.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MMath.h" />
     <ClInclude Include="Music.h" />
@@ -66,6 +69,7 @@
     <ClInclude Include="Scene3.h" />
     <ClInclude Include="Scene4.h" />
     <ClInclude Include="Scene8.h" />
+    <ClInclude Include="Scene9.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="Timer.h" />

@@ -35,8 +35,17 @@ private:
 	SDL_Surface* aboutButtonImage;
 	SDL_Texture* aboutButtonTexture;
 
+	//Back Button
+	SDL_Surface* backButtonImage;
+	SDL_Texture* backButtonTexture;
+
+	//Back Button
+	SDL_Surface* aboutUsPageImage;
+	SDL_Texture* aboutUsPageTexture;
+
 	int mouseX, mouseY;
 	float screenX, screenY;
+	bool aboutUSOn;
 
 public:
 	// This constructor may be different from what you've seen before
@@ -60,10 +69,13 @@ public:
 	void RenderPlayButton();
 	void RenderQuitButton();
 	void RenderAboutButton();
+	void RenderBackButton();
+	void RenderAboutUsPage();
 
 	Collider playButtonColl;
 	Collider quitButtonColl;
 	Collider aboutButtonColl;
+	Collider backButtonColl;
 };
 
 #endif

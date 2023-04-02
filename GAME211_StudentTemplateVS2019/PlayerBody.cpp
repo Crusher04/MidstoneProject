@@ -10,7 +10,8 @@ int mouseX, mouseY;
 
 bool PlayerBody::OnCreate()
 {
-    image = IMG_Load( "Assets/player_flamethrower.png" );
+    //image = IMG_Load( "Assets/player_flamethrower.png" );
+    image = IMG_Load("Assets/player_handgun.png");
     SDL_Renderer *renderer = game->getRenderer();
     texture = SDL_CreateTextureFromSurface( renderer, image );
     if (image == nullptr) {
@@ -53,42 +54,6 @@ void PlayerBody::Render( float scale )
    // square.h = static_cast<int>(h) * 25;
 
 
-
-   /* 
-   ////////////
-   //THIS WAS FOR ANIMATION
-   ///////////
-   
-   SDL_Rect d;
-    d.x = 4670;
-    d.y = 0;
-    d.w = 1995;
-    d.h = 413;
-    
-
-
-    Uint32 ticks = SDL_GetTicks();
-    Uint32 speed = ticks / 300;
-    Uint32 sprite = speed % 2;
-
-    if (game->isMoving == true)
-    {
-        d.x *= sprite * 1;
-        d.y = 0;
-        d.w = 335;
-        d.h = 413;
-    }
-    else if (game->isMoving == false)
-    {
-
-        d.x = 1670;
-        d.y = 0;
-        d.w = 1995;
-        d.h = 413;
-
-    }*/
-
-
     /////////////////////////////////
     //MOUSE ORIENTATION! 
     /////////////////////////////////
@@ -110,7 +75,8 @@ void PlayerBody::Render( float scale )
     Delta_x = mouse_x - game->getPlayer()->getPos().x;
     Delta_y = mouse_y - game->getPlayer()->getPos().y;
 
-    angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
+    if(!game->gamePaused && !game->isPlayerDead)
+        angle = (atan2(Delta_y, Delta_x) * 180.0000) / M_PI;
     
     /////////////////////////////////
     //Render Saling
@@ -119,6 +85,7 @@ void PlayerBody::Render( float scale )
     square.h *= scale;
     
     gunLocation = pos;
+
     //gunLocation.x += 400;
     //gunLocation.y += 300;
     /////////////////////////////////

@@ -30,6 +30,7 @@ public:
 	bool active;
 	bool pushedBack;
 	Collider collider;
+	int bulletDamage;
 
 	//Functions
 	Bullet();

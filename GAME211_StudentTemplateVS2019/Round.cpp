@@ -23,6 +23,12 @@
 		zombiesRemaining = zombieStartingAmount;
 	}
 
+	void Round::Restart()
+	{
+		zombiesRemaining = zombieStartingAmount;
+		GameStart();
+	}
+
 	/// <summary>
 	/// Starts the Game with Round 1
 	/// </summary>
