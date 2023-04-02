@@ -29,6 +29,18 @@ void SoundEffect::loadAudio()
 
 	//Zombies hit SFX
 	addAudio("Audio/Sound effect/Enemy SFX/zombie-death-sound.mp3"); //10
+
+	//Player hit SFX
+	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/Player-hit-47201.wav"); //11
+
+	//Health pickup SFX
+	addAudio("Audio/Sound effect/health-pickup-6860.wav"); //12
+
+	//Pickup SFX
+	addAudio("Audio/Sound effect/coin-pickup-98269.wav"); //13
+
+	//Zombie SFX
+	addAudio("Audio/Sound effect/Enemy SFX/zombie-attack-104988.mp3"); //14
 }
 
 void SoundEffect::addAudio(const char* path)
@@ -72,7 +84,6 @@ void SoundEffect::playAudio(const int which) const
 void SoundEffect::PistolAudio(bool fired) const
 {
 	if (fired == true) {
-
 		Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[6], 0);
 	}
 	else {
@@ -109,7 +120,6 @@ void SoundEffect::SprintingAudio(bool sprinting)
 {
 	if (sprinting == true) {
 		if (isSprinting == false) {
-			Mix_Volume(CH_PLAYER, Volume);
 			Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[2], -1);
 			isSprinting = true;
 		}
@@ -143,8 +153,30 @@ void SoundEffect::MenuOpenClose() const
 
 void SoundEffect::ZombiesHit() 
 {
-	Mix_Volume(CH_ENEMY, ConvertVolume(30));
 	Mix_PlayChannel(CH_ENEMY, mSoundEffectBank[10], 0);
+}
+
+void SoundEffect::PlayerHit()
+{
+	Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[11], 0);
+}
+
+void SoundEffect::HealthPickup()
+{
+	Mix_PlayChannel(CH_ITEM, mSoundEffectBank[12], 0);
+}
+
+void SoundEffect::Pickup()
+{
+	Mix_PlayChannel(CH_ITEM, mSoundEffectBank[13], 0);
+}
+
+void SoundEffect::Zombies()
+{
+	if (ZombieTimer <= SDL_GetTicks()) {
+		ZombieTimer = SDL_GetTicks() + 5000;
+		Mix_PlayChannel(CH_ENEMY, mSoundEffectBank[14], 0);
+	}
 }
 
 void SoundEffect::ChangeChannelVolume(MyEnum channel, int volume)
@@ -172,5 +204,12 @@ void SoundEffect::ChangeChannelVolume(MyEnum channel, int volume)
 		Mix_Volume(CH_MENU, ConvertVolume(volume));
 		std::cout << "CH_MENU has set at " << volume << "% volume." << std::endl;
 		break;
+
+
+	case CH_ITEM:
+		Mix_Volume(CH_ITEM, ConvertVolume(volume));
+		std::cout << "CH_ITEM has set at " << volume << "% volume." << std::endl;
+		break;
 	}
 }
+

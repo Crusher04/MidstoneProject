@@ -174,6 +174,17 @@ bool GameManager::OnCreate() {
     itemManagement.onCreate(getRenderer());
 
 
+    ////////////////////////
+    //CHANGE SFX BY CHANNEL
+    ////////////////////////
+    Sf.ChangeChannelVolume(CH_ENEMY, 40);
+    Sf.ChangeChannelVolume(CH_ITEM, 60);
+    Sf.ChangeChannelVolume(CH_MENU, 100);
+    Sf.ChangeChannelVolume(CH_PLAYER, 30);
+    Sf.ChangeChannelVolume(CH_WEAPON, 70);
+
+
+
 	return true;
 }
 
@@ -769,12 +780,14 @@ void GameManager::DropEffects()
 
     if (itemManagement.healthDrop == true)
     {
+        Sf.HealthPickup();//play health pickup
         getPlayer()->health.healPlayer(10);
         itemManagement.healthDrop = false;
     }
 
     if (itemManagement.goldenGunDrop == true)
     {
+        Sf.Pickup(); //Play pickup
         bulletDamage = 1000;
         goldenGunTimer = 26000;
         goldenGunTimerDelay = SDL_GetTicks() + goldenGunTimer;
@@ -784,6 +797,7 @@ void GameManager::DropEffects()
 
     if (itemManagement.speedBoostDrop == true)
     {
+        Sf.Pickup(); //Play pickup
         if (speed <= 5000)
         {
             speed *= 1.125f;

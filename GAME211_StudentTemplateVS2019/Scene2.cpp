@@ -213,6 +213,7 @@ bool Scene2::OnCreate() {
 	}
 	playerDamageEffectOpacity = 0;
 
+	game->Ms.playAudio(1, 5); //Play Music
 	return true;
 }
 
@@ -364,7 +365,7 @@ void Scene2::Update(const float deltaTime) {
 					else
 						game->getPlayer()->health.takeDamage(12);
 
-					
+					game->Sf.PlayerHit();// Play hit SFX
 					damageTaken = true; //stops the player from taking damage per tick
 					std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
 					timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
@@ -384,6 +385,9 @@ void Scene2::Update(const float deltaTime) {
 			roundEnded = true;
 		}
 
+		//Play Zombies sound when the amount of zombies above 0
+		if (game->getRound()->getZombieAmount() > 0)
+			game->Sf.Zombies();
 
 		if (holdTime < SDL_GetTicks() && roundEnded)
 		{
@@ -775,7 +779,6 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						game->isStartMenuActive = false;
 						game->gamePaused = false;
 						game->Sf.MenuClick();
-						game->LoadScene(3);
 						zombieCollArr.clear();
 						zombieInitComplete = false;
 						game->LoadScene(3);
@@ -785,6 +788,7 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
 					{
 						std::cout << "MOUSE Pressed Quit \n";
+						game->Sf.MenuClick();
 						game->Quit();
 					}
 
@@ -794,6 +798,7 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						std::cout << "MOUSE Pressed Restart \n";
 						zombieCollArr.clear();
 						zombieInitComplete = false;
+						game->Sf.MenuClick();
 						game->Restart();
 					}
 

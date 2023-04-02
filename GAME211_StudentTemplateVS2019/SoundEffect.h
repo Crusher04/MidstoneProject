@@ -9,7 +9,8 @@ enum MyEnum
 	CH_PLAYER,
 	CH_WEAPON,
 	CH_ENEMY,
-	CH_MENU
+	CH_MENU,
+	CH_ITEM,
 };
 class SoundEffect : public Audio
 {
@@ -53,10 +54,23 @@ public:
 	//Play Zombies hit SFX
 	void ZombiesHit();
 
+	//Play Player hit SFX
+	void PlayerHit();
+
+	//Play Health Pickup SFX
+	void HealthPickup();
+
+	//Play Pickup SFX
+	void Pickup();
+
+	//Play Zombies
+	void Zombies();
+
 	//Change Volume by Channel
 	void ChangeChannelVolume(MyEnum channel, int volume);
 private:
 	int Volume;
+	float ZombieTimer = SDL_GetTicks();
 	bool isWalking = false;
 	bool isSprinting = false;
 	void loadAudio();
