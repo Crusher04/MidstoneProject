@@ -190,6 +190,7 @@ void ItemManagement::RandomizeDrops()
 	
 	}
 
+
 }
 
 void ItemManagement::Drops()
@@ -209,7 +210,7 @@ void ItemManagement::Drops()
 		itemDrop = true;
 		
 		//Creates a timer so that the drop disappears after a certain amount of time
-		dropTimer = 3000;
+		dropTimer = 6000;
 		dropTimerDelay = SDL_GetTicks() + dropTimer;
 
 		//Sets ItemPickup to false to ensure that the player can only pickup the item when the player is near it 
