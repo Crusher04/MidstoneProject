@@ -64,7 +64,7 @@ int SoundEffect::ConvertVolume(int v)
 {
 	int volume;
 	volume = (MIX_MAX_VOLUME * v) / 100;
-	std::cout << "Volume of sound effect " << volume << std::endl;
+	std::cout << "Volume of sound effect " << v << std::endl;
 	return volume;
 }
 

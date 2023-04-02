@@ -213,7 +213,7 @@ bool Scene2::OnCreate() {
 	}
 	playerDamageEffectOpacity = 0;
 
-	game->Ms.playAudio(1, 5); //Play Music
+	game->Ms.playAudio(1, 10); //Play Music
 	return true;
 }
 

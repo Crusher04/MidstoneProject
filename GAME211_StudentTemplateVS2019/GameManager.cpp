@@ -180,7 +180,7 @@ bool GameManager::OnCreate() {
     Sf.ChangeChannelVolume(CH_ENEMY, 40);
     Sf.ChangeChannelVolume(CH_ITEM, 60);
     Sf.ChangeChannelVolume(CH_MENU, 100);
-    Sf.ChangeChannelVolume(CH_PLAYER, 30);
+    Sf.ChangeChannelVolume(CH_PLAYER, 40);
     Sf.ChangeChannelVolume(CH_WEAPON, 70);
 
 
@@ -391,7 +391,6 @@ void GameManager::handleEvents()
                 }
                 if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                     event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
-                    Sf.setSoundVolume(10);
                     Sf.WalkingAudio(true);
                 }
 
@@ -442,7 +441,6 @@ void GameManager::handleEvents()
             if (event.key.keysym.sym == SDLK_w || event.key.keysym.sym == SDLK_s ||
                 event.key.keysym.sym == SDLK_d || event.key.keysym.sym == SDLK_a) {
 
-                Sf.setSoundVolume(100);
                 Sf.WalkingAudio(false);
 
 
@@ -480,7 +478,6 @@ void GameManager::handleEvents()
 
                             if (!weaponManagement.reloadStarted)
                             {
-                                Sf.setSoundVolume(100);
                                 Sf.PistolAudio(true);
                             }
                         }
