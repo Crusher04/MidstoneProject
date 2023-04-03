@@ -1,11 +1,6 @@
 #include "SoundEffect.h"
 
-enum MyEnum
-{
-	CH_PLAYER,
-	CH_WEAPON,
-	CH_ENEMY
-};
+
 SoundEffect::SoundEffect() : Audio() { 
 	loadAudio(); 
 	setSoundVolume(100);
@@ -26,6 +21,26 @@ void SoundEffect::loadAudio()
 	//Walking SFX
 	addAudio("Audio/Sound effect/WalkingSFX/ES_Video Game Footsteps 1 - SFX Producer.wav"); //7
 
+	//Menu open and close SFX
+	addAudio("Audio/Sound effect/Menu SFX/menu-open-close-104314.wav"); //8
+
+	//Menu click
+	addAudio("Audio/Sound effect/Menu SFX/click-button-140881.wav"); //9
+
+	//Zombies hit SFX
+	addAudio("Audio/Sound effect/Enemy SFX/zombie-death-sound.mp3"); //10
+
+	//Player hit SFX
+	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/Player-hit-47201.wav"); //11
+
+	//Health pickup SFX
+	addAudio("Audio/Sound effect/health-pickup-6860.wav"); //12
+
+	//Pickup SFX
+	addAudio("Audio/Sound effect/coin-pickup-98269.wav"); //13
+
+	//Zombie SFX
+	addAudio("Audio/Sound effect/Enemy SFX/zombie-attack-104988.mp3"); //14
 }
 
 void SoundEffect::addAudio(const char* path)
@@ -39,6 +54,18 @@ void SoundEffect::addAudio(const char* path)
 	else {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't init audio %s", Mix_GetError());
 	}
+}
+void SoundEffect::setSoundVolume(int v)
+{
+	Volume = ConvertVolume(v);
+}
+
+int SoundEffect::ConvertVolume(int v)
+{
+	int volume;
+	volume = (MIX_MAX_VOLUME * v) / 100;
+	std::cout << "Volume of sound effect " << v << std::endl;
+	return volume;
 }
 
 void SoundEffect::playAudio(const int which) const
@@ -57,8 +84,6 @@ void SoundEffect::playAudio(const int which) const
 void SoundEffect::PistolAudio(bool fired) const
 {
 	if (fired == true) {
-
-		Mix_Volume(CH_WEAPON, Volume);
 		Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[6], 0);
 	}
 	else {
@@ -69,7 +94,6 @@ void SoundEffect::PistolAudio(bool fired) const
 void SoundEffect::MachineGunAudio(bool fired) const
 {
 	if (fired == true) {
-		Mix_Volume(CH_WEAPON, Volume);
 		Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[1], -1);
 	}
 	else {
@@ -82,7 +106,6 @@ void SoundEffect::WalkingAudio(bool walking)
 
 	if (walking == true) {
 		if (isWalking == false) {
-			Mix_Volume(CH_PLAYER, Volume);
 			Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[7], -1);
 			isWalking = true;
 		}
@@ -97,7 +120,6 @@ void SoundEffect::SprintingAudio(bool sprinting)
 {
 	if (sprinting == true) {
 		if (isSprinting == false) {
-			Mix_Volume(CH_PLAYER, Volume);
 			Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[2], -1);
 			isSprinting = true;
 		}
@@ -110,19 +132,84 @@ void SoundEffect::SprintingAudio(bool sprinting)
 
 void SoundEffect::EmptyMag() const
 {
-	Mix_Volume(CH_WEAPON, Volume);
 	Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[4], 0);
 }
 
-void SoundEffect::setSoundVolume(int v)
-{
-	int volume;
-	volume = (MIX_MAX_VOLUME * v) / 100;
-	std::cout << "Volume of sound effect " << volume << std::endl;
-	Volume = volume;
-}
 
 void SoundEffect::ReloadAudio() const
 {
 	Mix_PlayChannel(CH_WEAPON, mSoundEffectBank[5], 0);
 }
+
+void SoundEffect::MenuClick() const
+{
+	Mix_PlayChannel(CH_MENU, mSoundEffectBank[9], 0);
+}
+
+void SoundEffect::MenuOpenClose() const
+{
+	Mix_PlayChannel(CH_MENU, mSoundEffectBank[8], 0);
+}
+
+void SoundEffect::ZombiesHit() 
+{
+	Mix_PlayChannel(CH_ENEMY, mSoundEffectBank[10], 0);
+}
+
+void SoundEffect::PlayerHit()
+{
+	Mix_PlayChannel(CH_PLAYER, mSoundEffectBank[11], 0);
+}
+
+void SoundEffect::HealthPickup()
+{
+	Mix_PlayChannel(CH_ITEM, mSoundEffectBank[12], 0);
+}
+
+void SoundEffect::Pickup()
+{
+	Mix_PlayChannel(CH_ITEM, mSoundEffectBank[13], 0);
+}
+
+void SoundEffect::Zombies()
+{
+	if (ZombieTimer <= SDL_GetTicks()) {
+		ZombieTimer = SDL_GetTicks() + 5000;
+		Mix_PlayChannel(CH_ENEMY, mSoundEffectBank[14], 0);
+	}
+}
+
+void SoundEffect::ChangeChannelVolume(MyEnum channel, int volume)
+{
+	switch (channel) {
+	case CH_PLAYER:
+		Mix_Volume(CH_PLAYER, ConvertVolume(volume));
+		std::cout << "CH_PLAYER has set at " << volume << "% volume." << std::endl;
+		break;
+
+
+	case CH_WEAPON:
+		Mix_Volume(CH_WEAPON, ConvertVolume(volume));
+		std::cout << "CH_WEAPON has set at " << volume << "% volume." << std::endl;
+		break;
+
+
+	case CH_ENEMY:
+		Mix_Volume(CH_ENEMY, ConvertVolume(volume));
+		std::cout << "CH_ENEMY has set at " << volume << "% volume." << std::endl;
+		break;
+
+
+	case CH_MENU:
+		Mix_Volume(CH_MENU, ConvertVolume(volume));
+		std::cout << "CH_MENU has set at " << volume << "% volume." << std::endl;
+		break;
+
+
+	case CH_ITEM:
+		Mix_Volume(CH_ITEM, ConvertVolume(volume));
+		std::cout << "CH_ITEM has set at " << volume << "% volume." << std::endl;
+		break;
+	}
+}
+

@@ -213,6 +213,7 @@ bool Scene2::OnCreate() {
 	}
 	playerDamageEffectOpacity = 0;
 
+	game->Ms.playAudio(1, 10); //Play Music
 	return true;
 }
 
@@ -347,7 +348,7 @@ void Scene2::Update(const float deltaTime) {
 					else
 						game->getPlayer()->health.takeDamage(12);
 
-					
+					game->Sf.PlayerHit();// Play hit SFX
 					damageTaken = true; //stops the player from taking damage per tick
 					std::cout << "\nPLAYER HEALTH = " << game->getPlayer()->health.getHealth() << "\n";
 					timeOfDamage = SDL_GetTicks() + damageDelay; // creates a delay so the damage isn't per tick.
@@ -366,6 +367,9 @@ void Scene2::Update(const float deltaTime) {
 			roundEnded = true;
 		}
 
+		//Play Zombies sound when the amount of zombies above 0
+		if (game->getRound()->getZombieAmount() > 0)
+			game->Sf.Zombies();
 
 		if (holdTime < SDL_GetTicks() && roundEnded)
 		{
@@ -547,6 +551,7 @@ void Scene2::Update(const float deltaTime) {
 				{
 					std::cout << "Zombie " << i << " hit!\n";
 					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bullets.at(k).bulletDamage);
+					game->Sf.ZombiesHit();
 					game->bullets.at(k).collider.active = false;
 
 					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
@@ -577,7 +582,7 @@ void Scene2::Update(const float deltaTime) {
 					if (game->bulletsInMotion.at(j).collider.checkCollBox(game->bulletsInMotion.at(j).collider, game->zombieSpawnerArr2.at(i).collider))
 					{
 						std::cout << "Zombie " << i << " hit!\n";
-						game->zombieSpawnerArr2.at(i).health.takeDamage(25);
+						game->zombieSpawnerArr2.at(i).health.takeDamage(game->bulletDamage);
 						game->bulletsInMotion.at(j).collider.active = false;
 						game->bulletsInMotion.erase(game->bulletsInMotion.begin() + j);
 						std::cout << "Bullets In Motion Size: " << game->bulletsInMotion.size() << std::endl;
@@ -663,6 +668,25 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 
+
+	if (game->itemManagement.itemDrop == true && game->itemManagement.itemPickup == true)
+	{
+		//Apply Effects of Item Drop
+		game->DropEffects();
+		game->itemManagement.itemDrop = false;
+
+	}
+
+	if (game->itemManagement.itemDrop == false)
+	{
+
+		//Reset all Item Drop bools to false
+		game->itemManagement.ResetBools();
+
+	}
+
+
+
 	//Checking to see if the golden gun drop is active	
 	if (game->goldenGunOn == true)
 	{
@@ -672,6 +696,18 @@ void Scene2::Update(const float deltaTime) {
 
 			game->bulletDamage = 25;
 			game->goldenGunOn = false;
+		}
+	}
+
+	//Checking to see if the golden gun drop is active	
+	if (game->speedBoostOn == true)
+	{
+		//Set the bullet damage back to normal if the golden gun timer runs out
+		if (game->speedBoostTimerDelay <= SDL_GetTicks())
+		{
+
+			game->speed = 1000;
+			game->speedBoostOn = false;
 		}
 
 
@@ -762,6 +798,7 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						std::cout << "Mouse Pressed Menu\n";
 						game->isStartMenuActive = false;
 						game->gamePaused = false;
+						game->Sf.MenuClick();
 						zombieCollArr.clear();
 						zombieInitComplete = false;
 						game->LoadScene(3);
@@ -771,6 +808,7 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						&& mouseY >= quitButtonColl.y && mouseY <= (quitButtonColl.y + quitButtonColl.h))
 					{
 						std::cout << "MOUSE Pressed Quit \n";
+						game->Sf.MenuClick();
 						game->Quit();
 					}
 
@@ -780,6 +818,7 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						std::cout << "MOUSE Pressed Restart \n";
 						zombieCollArr.clear();
 						zombieInitComplete = false;
+						game->Sf.MenuClick();
 						game->Restart();
 					}
 
