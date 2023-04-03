@@ -174,7 +174,7 @@ bool GameManager::OnCreate() {
     ////////////////////////
     Sf.ChangeChannelVolume(CH_ENEMY, 40);
     Sf.ChangeChannelVolume(CH_ITEM, 60);
-    Sf.ChangeChannelVolume(CH_MENU, 100);
+    Sf.ChangeChannelVolume(CH_MENU, 20);
     Sf.ChangeChannelVolume(CH_PLAYER, 40);
     Sf.ChangeChannelVolume(CH_WEAPON, 70);
 
