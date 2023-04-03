@@ -79,6 +79,9 @@ void ItemManagement::RenderHealth(SDL_Renderer* renderer_, float scale, float pl
 	 
 	 square.x -= 50;
 	 square.y -= 80;
+
+	 collider.setCollBounds(square.w, square.h);
+
 	 /////////////////////////////////
 	 //RENDER
 	 //////////////////////////////////.
@@ -116,6 +119,9 @@ void ItemManagement::RenderGoldenGun(SDL_Renderer* renderer_, float scale, float
 
 	square.x -= 50;
 	square.y -= 80;
+
+	collider.setCollBounds(square.w, square.h);
+
 	/////////////////////////////////
 	//RENDER
 	//////////////////////////////////.
@@ -150,6 +156,9 @@ void ItemManagement::RenderSpeedBoost(SDL_Renderer* renderer_, float scale, floa
 
 	square.x -= 50;
 	square.y -= 80;
+
+	collider.setCollBounds(square.w, square.h);
+
 	/////////////////////////////////
 	//RENDER
 	//////////////////////////////////.

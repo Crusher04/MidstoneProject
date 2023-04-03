@@ -3,10 +3,12 @@
 #include <SDL_image.h>
 #include <iostream>
 #include <SDL_rect.h>
+#include "Collider.h"
 
 /*
-* Programmer:		Abay Sidhu
-* Description:		This class is designed to handle the properties of different item drops
+* Programmer:			Abay Sidhu
+* Programmer Assist:	Ahmed Hammoud
+* Description:			This class is designed to handle the properties of different item drops
 */
 
 
@@ -39,12 +41,10 @@ public:
 	int item;
 	int dropPercentage;
 
-	
 
 	int dropTimer, dropTimerDelay;
 
-
-	class Collider* col;
+	Collider collider;
 
 	//Constructor
 	ItemManagement();

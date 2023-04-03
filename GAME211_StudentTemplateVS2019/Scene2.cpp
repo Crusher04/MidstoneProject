@@ -16,9 +16,7 @@
 
 //Collider locations
 Collider playerColl(1000, 8, 1, 3);			//Player collider initilization 
-Collider enemyColl(300, 800, 10, 10);		//zombie collider holder
-std::vector<Collider> zombieCollArr;		//zombie collider vector array
-Collider itemDropColl(1000, 1000, 1, 1);    //ItemDrop collider initialization
+
 
 /***** SCENE VARIABLES *****/
 
@@ -100,7 +98,6 @@ bool Scene2::OnCreate() {
 
 	
 
-	enemyColl.passthrough = false;
 	zombieSpawnTime = 0;
 	zombieTimeBetweenSpawn = 1500;
 	zombieSelection = 0;
@@ -553,7 +550,7 @@ void Scene2::Update(const float deltaTime) {
 				if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, game->zombieSpawnerArr2.at(i).collider))
 				{
 					std::cout << "Zombie " << i << " hit!\n";
-					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bullets.at(k).bulletDamage);
+					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bulletDamage);
 					game->Sf.ZombiesHit();
 					game->bullets.at(k).collider.active = false;
 
@@ -651,8 +648,7 @@ void Scene2::Update(const float deltaTime) {
 	if (game->itemManagement.itemDrop == true)
 	{
 
-		itemDropColl.setCollBounds(game->itemManagement.getImage()->w * 0.35, game->itemManagement.getImage()->h * 0.35);
-		itemDropColl.setCollPosition(game->itemSpawnLocation.x, game->itemSpawnLocation.y);
+		game->itemManagement.collider.setCollPosition(game->itemSpawnLocation.x, game->itemSpawnLocation.y);
 		
 		//Despawns the item drop after a certain amount of time
 		if (game->itemManagement.dropTimerDelay <= SDL_GetTicks())
@@ -663,13 +659,29 @@ void Scene2::Update(const float deltaTime) {
 	}
 
 	//Checking to see if the player collides with an item
-	if (itemDropColl.checkCollBox(playerColl, itemDropColl))
-	{
 
-		game->itemManagement.itemPickup = true;
+	if (game->itemManagement.healthDrop == true)
+	{
+		if (game->itemManagement.collider.checkCollBox(playerColl, game->itemManagement.collider))
+		{
+			game->itemManagement.itemPickup = true;
+		}
 
 	}
-
+	else if (game->itemManagement.goldenGunDrop == true)
+	{
+		if (game->itemManagement.collider.checkCollBox(playerColl, game->itemManagement.collider))
+		{
+			game->itemManagement.itemPickup = true;
+		}
+	}
+	else if (game->itemManagement.speedBoostDrop == true)
+	{
+		if (game->itemManagement.collider.checkCollBox(playerColl, game->itemManagement.collider))
+		{
+			game->itemManagement.itemPickup = true;
+		}
+	}
 
 
 	if (game->itemManagement.itemDrop == true && game->itemManagement.itemPickup == true)
@@ -802,7 +814,6 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						game->isStartMenuActive = true;
 						game->gamePaused = false;
 						game->Sf.MenuClick();
-						zombieCollArr.clear();
 						zombieInitComplete = false;
 						game->LoadScene(3);
 					}
@@ -819,7 +830,6 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						&& mouseY >= restartButtonColl.y && mouseY <= (restartButtonColl.y + restartButtonColl.h))
 					{
 						std::cout << "MOUSE Pressed Restart \n";
-						zombieCollArr.clear();
 						zombieInitComplete = false;
 						game->Sf.MenuClick();
 						game->Restart();

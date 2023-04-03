@@ -684,17 +684,17 @@ void GameManager::RenderItem()
 {
     if (itemManagement.itemDrop == true && itemManagement.healthDrop == true)
     {
-        itemManagement.RenderHealth(getRenderer(), 0.50f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+        itemManagement.RenderHealth(getRenderer(), 0.8f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
     }
     
     if (itemManagement.itemDrop == true && itemManagement.goldenGunDrop == true)
     {
-        itemManagement.RenderGoldenGun(getRenderer(), 0.95f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+        itemManagement.RenderGoldenGun(getRenderer(), 1, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
     }
 
     if (itemManagement.itemDrop == true && itemManagement.speedBoostDrop == true)
     {
-        itemManagement.RenderSpeedBoost(getRenderer(), 0.45f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
+        itemManagement.RenderSpeedBoost(getRenderer(), 0.8f, itemSpawnLocation.x + 50, itemSpawnLocation.y + 100);
     }
 
 }
