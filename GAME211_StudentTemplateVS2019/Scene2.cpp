@@ -6,7 +6,8 @@
 #include "EnemyBody.h"
 #include <vector>
 #include <iostream>
-
+#include <VMath.h>
+using namespace MATH;
 
 
 ///////////////////////////////////////////
@@ -325,7 +326,7 @@ void Scene2::Update(const float deltaTime) {
 			holdPosX = playerColl.x;
 			holdPosY = playerColl.y;
 
-			//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+			std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
 			//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 		}
@@ -342,11 +343,11 @@ void Scene2::Update(const float deltaTime) {
 					std::cout << "\nDamage Taken!";
 
 					if(game->zombieSpawnerArr2.at(i).sprintZombSpawned)
-						game->getPlayer()->health.takeDamage(10);
+						game->getPlayer()->health.takeDamage(0);
 					else if(game->zombieSpawnerArr2.at(i).tankSpawned)
-						game->getPlayer()->health.takeDamage(25);
+						game->getPlayer()->health.takeDamage(0);
 					else
-						game->getPlayer()->health.takeDamage(12);
+						game->getPlayer()->health.takeDamage(0);
 
 					game->Sf.PlayerHit();// Play hit SFX
 					damageTaken = true; //stops the player from taking damage per tick
@@ -371,6 +372,7 @@ void Scene2::Update(const float deltaTime) {
 		if (game->getRound()->getZombieAmount() > 0)
 			game->Sf.Zombies();
 
+		//Checking for new round start, then reinitializing zombies
 		if (holdTime < SDL_GetTicks() && roundEnded)
 		{
 
@@ -476,7 +478,7 @@ void Scene2::Update(const float deltaTime) {
 				Uint32 distanceY = 0; 
 				distanceY = playerPos.y - distanceY;
 
-				std::cout << "Player Distance for Tank zombie " << i << ": " << distanceX << ", " << distanceY << std::endl;
+				//std::cout << "Player Distance for Tank zombie " << i << ": " << distanceX << ", " << distanceY << std::endl;
 				
 			}
 		}
@@ -761,6 +763,7 @@ void Scene2::Render() {
 	
 	
 
+	RenderTrees();
 
 	game->RenderOutOfAmmo();
 
@@ -845,7 +848,7 @@ void Scene2::HandleEvents(const SDL_Event& event)
 void Scene2::buildMap()
 {
 
-	pathImage = IMG_Load("Assets/background/image.png");
+	pathImage = IMG_Load("Assets/background/bg_forest.png");
 	pathTexture = SDL_CreateTextureFromSurface(renderer, pathImage);
 
 	zombieIconImage = IMG_Load("Assets/UI/HUD/zombie_counter_icon.png");
@@ -854,7 +857,44 @@ void Scene2::buildMap()
 	hbFullTexture = SDL_CreateTextureFromSurface(renderer, hbFullImage);
 	zombieIconTexture = SDL_CreateTextureFromSurface(renderer, zombieIconImage);
 
+	//Tree One
+	treeOneImage = IMG_Load("Assets/organic/tree1.png");
+	renderer = game->getRenderer();
+	treeOneTexture = SDL_CreateTextureFromSurface(renderer, treeOneImage);
+	if (treeOneImage == nullptr) {
+		std::cerr << "Can't open the treeOne image" << std::endl;
 
+	}
+
+	//Tree Two
+	treeTwoImage = IMG_Load("Assets/organic/tree2.png");
+	treeTwoTexture = SDL_CreateTextureFromSurface(renderer, treeTwoImage);
+	if (treeTwoImage == nullptr) {
+		std::cerr << "Can't open the treeTwo image" << std::endl;
+
+	}
+	//Tree Three
+	treeThreeImage = IMG_Load("Assets/organic/tree3.png");
+	treeThreeTexture = SDL_CreateTextureFromSurface(renderer, treeThreeImage);
+	if (treeThreeImage == nullptr) {
+		std::cerr << "Can't open the treeThreeImage" << std::endl;
+
+	}
+	//Tree Four
+	treeFourImage = IMG_Load("Assets/organic/tree4.png");
+	treeFourTexture = SDL_CreateTextureFromSurface(renderer, treeFourImage);
+	if (treeFourImage == nullptr) {
+		std::cerr << "Can't open the treeFourImage" << std::endl;
+
+	}
+
+	//Tree Five
+	treeFiveImage = IMG_Load("Assets/organic/tree8.png");
+	treeFiveTexture = SDL_CreateTextureFromSurface(renderer, treeFiveImage);
+	if (treeFiveImage == nullptr) {
+		std::cerr << "Can't open the treeFiveImage" << std::endl;
+
+	}
 
 }
 
@@ -1333,4 +1373,354 @@ void Scene2::RenderUIDamageEffect()
 	SDL_SetTextureAlphaMod(playerDamageEffectTexture, playerDamageEffectOpacity);
 	SDL_RenderCopyEx(renderer, playerDamageEffectTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
 	
+}
+
+void Scene2::RenderTrees()
+{
+	// square represents the position and dimensions for where to draw the image
+	SDL_Rect square;
+
+	//Values for width and height
+	float w, h = 0;
+
+	//Screen Coords
+	int screenX = 100;
+	int screenY = 200;
+
+	//Initialize tree array
+	for (int i = 0; i < 38; i++)
+	{
+
+		//Random number, check random number
+		std::srand((unsigned int)time(NULL));
+		int location = (rand() % 5) + 1;
+		while(location != 1 && location != 2 && location != 3 && location != 4 && location != 5)
+			location = (rand() % 5) + 1;
+
+		Vec3 treeLoc;
+
+		switch (location) {
+		case 1:
+
+			//Get Image / Texture
+			treeImageArr.push_back(treeOneImage);
+			treeTextureArr.push_back(treeOneTexture);
+			
+			treeLoc = getTreeLocation();
+
+			//Screen Coords
+			screenX = treeLoc.x;
+			screenY = treeLoc.y;
+
+			//Get image width and height and adjust it to scale
+			w = treeOneImage->w;
+			h = treeOneImage->h;
+
+			//Create Square
+			square.x = static_cast<int>(screenX);
+			square.y = static_cast<int>(screenY);
+			square.w = static_cast<int>(w);
+			square.h = static_cast<int>(h);
+
+			/////////////////////////////////
+			//Render Saling
+			/////////////////////////////////
+			square.w *= 0.7f;
+			square.h *= 0.7f;
+
+			//Tree Collider
+			//Collider
+			treeColl.setCollBounds((square.w - 20), (square.h - 20));
+			treeColl.setCollPosition(screenX, screenY);
+			treeCollArr.push_back(treeColl);
+
+			break;
+		case 2:
+			treeImageArr.push_back(treeTwoImage);
+			treeTextureArr.push_back(treeTwoTexture);
+			
+			treeLoc = getTreeLocation();
+
+			//Screen Coords
+			screenX = treeLoc.x;
+			screenY = treeLoc.y;
+
+			//Get image width and height and adjust it to scale
+			w = treeTwoImage->w;
+			h = treeTwoImage->h;
+
+			//Create Square
+			square.x = static_cast<int>(screenX);
+			square.y = static_cast<int>(screenY);
+			square.w = static_cast<int>(w);
+			square.h = static_cast<int>(h);
+
+			/////////////////////////////////
+			//Render Saling
+			/////////////////////////////////
+			square.w *= 0.7f;
+			square.h *= 0.7f;
+
+			//Tree Collider
+			//Collider
+			treeColl.setCollBounds((square.w - 20), (square.h - 20));
+			treeColl.setCollPosition(screenX, screenY);
+			treeCollArr.push_back(treeColl);
+
+
+			break;
+		case 3:
+			treeImageArr.push_back(treeThreeImage);
+			treeTextureArr.push_back(treeThreeTexture);
+
+			treeLoc = getTreeLocation();
+
+			//Screen Coords
+			screenX = treeLoc.x;
+			screenY = treeLoc.y;
+
+			//Get image width and height and adjust it to scale
+			w = treeThreeImage->w;
+			h = treeThreeImage->h;
+
+			//Create Square
+			square.x = static_cast<int>(screenX);
+			square.y = static_cast<int>(screenY);
+			square.w = static_cast<int>(w);
+			square.h = static_cast<int>(h);
+
+			/////////////////////////////////
+			//Render Saling
+			/////////////////////////////////
+			square.w *= 0.7f;
+			square.h *= 0.7f;
+
+			//Tree Collider
+			//Collider
+			treeColl.setCollBounds((square.w - 20), (square.h - 20));
+			treeColl.setCollPosition(screenX, screenY);
+			treeCollArr.push_back(treeColl);
+
+			break;
+		case 4:
+			treeImageArr.push_back(treeFourImage);
+			treeTextureArr.push_back(treeFourTexture);
+
+			treeLoc = getTreeLocation();
+
+			//Screen Coords
+			screenX = treeLoc.x;
+			screenY = treeLoc.y;
+
+			//Get image width and height and adjust it to scale
+			w = treeFourImage->w;
+			h = treeFourImage->h;
+
+			//Create Square
+			square.x = static_cast<int>(screenX);
+			square.y = static_cast<int>(screenY);
+			square.w = static_cast<int>(w);
+			square.h = static_cast<int>(h);
+
+			/////////////////////////////////
+			//Render Saling
+			/////////////////////////////////
+			square.w *= 0.7f;
+			square.h *= 0.7f;
+
+			//Tree Collider
+			//Collider
+			treeColl.setCollBounds((square.w - 20), (square.h - 20));
+			treeColl.setCollPosition(screenX, screenY);
+			treeCollArr.push_back(treeColl);
+
+			break;
+		case 5:
+			treeImageArr.push_back(treeFiveImage);
+			treeTextureArr.push_back(treeFiveTexture);
+
+			treeLoc = getTreeLocation();
+
+			//Screen Coords
+			screenX = treeLoc.x;
+			screenY = treeLoc.y;
+
+			//Get image width and height and adjust it to scale
+			w = treeFiveImage->w;
+			h = treeFiveImage->h;
+
+			//Create Square
+			square.x = static_cast<int>(screenX);
+			square.y = static_cast<int>(screenY);
+			square.w = static_cast<int>(w);
+			square.h = static_cast<int>(h);
+
+			/////////////////////////////////
+			//Render Saling
+			/////////////////////////////////
+			square.w *= 0.7f;
+			square.h *= 0.7f;
+
+			//Tree Collider
+			//Collider
+			treeColl.setCollBounds((square.w - 20), (square.h - 20));
+			treeColl.setCollPosition(screenX, screenY);
+			treeCollArr.push_back(treeColl);
+
+			break;
+
+		}
+	}
+
+		
+
+	
+	/*if(playerColl.checkCollBox(playerColl, treeOneColl))
+		SDL_SetTextureAlphaMod(treeOneTexture, 122);
+	else
+		SDL_SetTextureAlphaMod(treeOneTexture, 255);*/
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////	
+
+	for(int i = 0; i < treeTextureArr.size(); i++)
+	{
+		square.x = treeCollArr.at(i).x;
+		square.y = treeCollArr.at(i).y;
+		square.w = treeImageArr.at(i)->w;
+		square.h = treeImageArr.at(i)->h;
+		square.w *= 0.7f;
+		square.h *= 0.7f;
+
+		SDL_RenderCopyEx(renderer, treeTextureArr.at(i), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	}
+}
+
+Vec3 Scene2::getTreeLocation()
+{
+	if (treeLocCounter == NULL)
+		treeLocCounter = 1;
+	else
+		treeLocCounter++;
+
+	switch (treeLocCounter) {
+	case 1:
+		return Vec3(100, 200, 0);
+		break;
+	case 2:
+		return Vec3(150, 200, 0);
+		break;
+	case 3:
+		return Vec3(125, 250, 0);
+		break;
+	case 4:
+		return Vec3(900, 55, 0);
+		treeLocCounter++;
+		break;
+	case 5:
+		return Vec3(900, 100, 0);
+		break;
+	case 6:
+		return Vec3(1110, 40, 0);
+		break;
+	case 7:
+		return Vec3(1300, 65, 0);
+		break;
+	case 8:
+		return Vec3(1450, 335, 0);
+		break;
+	case 9:
+		return Vec3(1220, 521, 0);
+		break;
+	case 10:
+		return Vec3(1392, 723, 0);
+		break;
+	case 11:
+		return Vec3(1635, 564, 0);
+		break;
+	case 12:
+		return Vec3(1792, 293, 0);
+		break;
+	case 13:
+		return Vec3(1793, 370, 0);
+		break;
+	case 14:
+		return Vec3(1853, 467, 0);
+		break;
+	case 15:
+		return Vec3(1579, 311, 0);
+		break;
+	case 16:
+		return Vec3(1435, 256, 0);
+		break;
+	case 17:
+		return Vec3(1790, 750, 0);
+		break;
+	case 18:
+		return Vec3(1699, 944, 0);
+		break;
+	case 19:
+		return Vec3(1384, 967, 0);
+		break;
+	case 20:
+		return Vec3(1272, 850, 0);
+		break;
+	case 21:
+		return Vec3(1167, 931, 0);
+		break;
+	case 22:
+		return Vec3(1044, 839, 0);
+		break;
+	case 23:
+		return Vec3(961, 859, 0);
+		break;
+	case 24:
+		return Vec3(897, 859, 0);
+		break;
+	case 25:
+		return Vec3(672, 1043, 0);
+		break;
+	case 26:
+		return Vec3(568, 1043, 0);
+		break;
+	case 27:
+		return Vec3(472, 1043, 0);
+		break;
+	case 28:
+		return Vec3(336, 1043, 0);
+		break;
+	case 29:
+		return Vec3(230, 1043, 0);
+		break;
+	case 30:
+		return Vec3(59, 1047, 0);
+		break;
+	case 31:
+		return Vec3(59, 859, 0);
+		break;
+	case 32:
+		return Vec3(257, 551, 0);
+		break;
+	case 33:
+		return Vec3(120, 443, 0);
+		break;
+	case 34:
+		return Vec3(530, 412, 0);
+		break;
+	case 35:
+		return Vec3(601, 324, 0);
+		break;
+	case 36:
+		return Vec3(692, 433, 0);
+		break;
+	case 37:
+		return Vec3(1005, 300, 0);
+		break;
+	case 38:
+		return Vec3(978, 601, 0);
+		break;
+
+	}
+
 }

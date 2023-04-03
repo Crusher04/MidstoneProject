@@ -57,27 +57,6 @@ private:
 	SDL_Surface* bgImage;
 	SDL_Surface* pathImage;
 
-	//tree
-	SDL_Surface* treeImage0;
-	SDL_Surface* treeImage1;
-	SDL_Surface* treeImage2;
-
-	//block
-	SDL_Surface* blockImage0;
-	SDL_Surface* blockImage1;
-	SDL_Surface* blockImage2;
-
-	//other
-	SDL_Surface* wellImage;
-	SDL_Surface* otherImage0;
-	SDL_Surface* otherImage1;
-	SDL_Surface* logImage0;
-
-	//rock
-	SDL_Surface* rockImage0;
-	SDL_Surface* rockImage1;
-	SDL_Surface* rockImage2;
-
 	//UI
 	SDL_Surface* hbEmptyImage;
 	SDL_Surface* hbFullImage;
@@ -134,6 +113,30 @@ private:
 	//UI Damage Effect
 	SDL_Surface* playerDamageEffectImage;
 	SDL_Texture* playerDamageEffectTexture;
+	
+	//Tree Images and Vars
+	SDL_Surface* treeOneImage;
+	SDL_Texture* treeOneTexture;
+	
+	SDL_Surface* treeTwoImage;
+	SDL_Texture* treeTwoTexture;
+
+	SDL_Surface* treeThreeImage;
+	SDL_Texture* treeThreeTexture;
+
+	SDL_Surface* treeFourImage;
+	SDL_Texture* treeFourTexture;
+	
+	SDL_Surface* treeFiveImage;
+	SDL_Texture* treeFiveTexture;
+
+	Collider treeColl;
+
+	std::vector<SDL_Surface*> treeImageArr;
+	std::vector<SDL_Texture*> treeTextureArr;
+	std::vector<Collider> treeCollArr;
+
+	int treeLocCounter;
 
 
 	int mouseX, mouseY;
@@ -171,6 +174,7 @@ public:
 	void RenderHealthBackground();
 	void RenderUIDamageEffect();
 	void RenderTrees();
+	Vec3 getTreeLocation();
 
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 	
