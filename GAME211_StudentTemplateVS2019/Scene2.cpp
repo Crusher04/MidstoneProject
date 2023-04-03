@@ -213,7 +213,10 @@ bool Scene2::OnCreate() {
 	}
 	playerDamageEffectOpacity = 0;
 
-	game->Ms.playAudio(1, 10); //Play Music
+
+	//Play Audio
+	game->Ms.playAudio(0, 5); //Play Music
+
 	return true;
 }
 
@@ -796,7 +799,7 @@ void Scene2::HandleEvents(const SDL_Event& event)
 						&& mouseY >= menuButtonColl.y && mouseY <= (menuButtonColl.y + menuButtonColl.h))
 					{
 						std::cout << "Mouse Pressed Menu\n";
-						game->isStartMenuActive = false;
+						game->isStartMenuActive = true;
 						game->gamePaused = false;
 						game->Sf.MenuClick();
 						zombieCollArr.clear();

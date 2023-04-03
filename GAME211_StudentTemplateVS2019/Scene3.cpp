@@ -85,7 +85,7 @@ bool Scene3::OnCreate() {
 
 	//Default variable 
 	aboutUSOn = false;
-	game->Ms.playAudio(0, 20);
+	game->Ms.playAudio(1, 10);
 	return true;
 }
 

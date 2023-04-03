@@ -25,10 +25,10 @@ void SoundEffect::loadAudio()
 	addAudio("Audio/Sound effect/Menu SFX/menu-open-close-104314.wav"); //8
 
 	//Menu click
-	addAudio("Audio/Sound effect/Menu SFX/click-button-140881.wav"); //9
+	addAudio("Audio/Sound effect/ES_Button Push 4 - SFX Producer.wav"); //9
 
 	//Zombies hit SFX
-	addAudio("Audio/Sound effect/Enemy SFX/zombie-death-sound.mp3"); //10
+	addAudio("Audio/Sound effect/Enemy SFX/ES_Bullet Impact Flesh 1 - SFX Producer.wav"); //10
 
 	//Player hit SFX
 	addAudio("Audio/Sound effect/Weapon SFX/HitSFX/Player-hit-47201.wav"); //11
@@ -41,6 +41,11 @@ void SoundEffect::loadAudio()
 
 	//Zombie SFX
 	addAudio("Audio/Sound effect/Enemy SFX/zombie-attack-104988.mp3"); //14
+
+	//More Zombies Hit SFX
+	addAudio("Audio/Sound effect/Enemy SFX/ES_Bullet Impact Flesh 5 - SFX Producer.wav"); //15
+	addAudio("Audio/Sound effect/Enemy SFX/ES_Bullet Impact Flesh 4 - SFX Producer.wav"); //16
+
 }
 
 void SoundEffect::addAudio(const char* path)
@@ -153,7 +158,12 @@ void SoundEffect::MenuOpenClose() const
 
 void SoundEffect::ZombiesHit() 
 {
-	Mix_PlayChannel(CH_ENEMY, mSoundEffectBank[10], 0);
+	std::srand((unsigned int)time(NULL));
+	int location = (rand() % 15) + 1;
+	while(location != 10 && location != 16 && location != 15)
+		location = (rand() % 15) + 10;
+
+	Mix_PlayChannel(CH_ENEMY, mSoundEffectBank[location], 0);
 }
 
 void SoundEffect::PlayerHit()
@@ -173,10 +183,10 @@ void SoundEffect::Pickup()
 
 void SoundEffect::Zombies()
 {
-	if (ZombieTimer <= SDL_GetTicks()) {
+	/*if (ZombieTimer <= SDL_GetTicks()) {
 		ZombieTimer = SDL_GetTicks() + 5000;
 		Mix_PlayChannel(CH_ENEMY, mSoundEffectBank[14], 0);
-	}
+	}*/
 }
 
 void SoundEffect::ChangeChannelVolume(MyEnum channel, int volume)

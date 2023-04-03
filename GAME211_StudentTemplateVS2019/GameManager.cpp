@@ -172,13 +172,11 @@ bool GameManager::OnCreate() {
     ////////////////////////
     //CHANGE SFX BY CHANNEL
     ////////////////////////
-    Sf.ChangeChannelVolume(CH_ENEMY, 40);
+    Sf.ChangeChannelVolume(CH_ENEMY, 20);
     Sf.ChangeChannelVolume(CH_ITEM, 60);
     Sf.ChangeChannelVolume(CH_MENU, 20);
-    Sf.ChangeChannelVolume(CH_PLAYER, 40);
-    Sf.ChangeChannelVolume(CH_WEAPON, 70);
-
-
+    Sf.ChangeChannelVolume(CH_PLAYER, 20);
+    Sf.ChangeChannelVolume(CH_WEAPON, 50);
 
 	return true;
 }
@@ -409,7 +407,9 @@ void GameManager::handleEvents()
 
                             if (!weaponManagement.reloadStarted)
                             {
+                                //Sf.PistolAudio(true);
                                 Sf.PistolAudio(true);
+                                
                             }
                         }
 
@@ -753,7 +753,8 @@ void GameManager::LoadScene( int i )
 
     currentScene->OnDestroy();
     delete currentScene;
- 
+    Ms.Play_Pause();
+
     switch ( i )
     {
         case 1:

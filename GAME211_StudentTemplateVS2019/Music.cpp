@@ -53,6 +53,6 @@ int Music::setMusicVolume(int v)
 
 void Music::loadAudio()
 {
-	addAudio("Audio/BackGround Music/Menu music/awaken-136824.mp3");//0
-	addAudio("Audio/BackGround Music/In-game music/attack-133580.mp3");//1
+	addAudio("Audio/BackGround Music/Menu music/ES_As Light Returns - Walt Adams.mp3");//0
+	addAudio("Audio/BackGround Music/Menu music/ES_Quiet Waters - Walt Adams.mp3");//1
 }

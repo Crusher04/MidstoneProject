@@ -4,6 +4,7 @@
 #include <SDL_mixer.h>
 #include <vector>
 #include "Audio.h"
+
 class Music : public Audio
 {
 public:
