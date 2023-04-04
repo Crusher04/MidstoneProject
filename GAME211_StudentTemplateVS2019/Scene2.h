@@ -131,13 +131,10 @@ private:
 	SDL_Texture* treeFiveTexture;
 
 	Collider treeColl;
-
-	std::vector<SDL_Surface*> treeImageArr;
-	std::vector<SDL_Texture*> treeTextureArr;
 	std::vector<Collider> treeCollArr;
+	std::vector<SDL_Texture*> treeTextureArr;
 
 	int treeLocCounter;
-
 
 	int mouseX, mouseY;
 	int playerDamageEffectOpacity;

@@ -326,7 +326,7 @@ void Scene2::Update(const float deltaTime) {
 			holdPosX = playerColl.x;
 			holdPosY = playerColl.y;
 
-			std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
+			//std::cout << "Player Rect = (" << playerColl.x << ", " << playerColl.y << "," << playerColl.x + playerColl.w << ", " << playerColl.y + playerColl.h << ")\n";
 			//std::cout << "Zombie Pos X = (" << enemyColl.x <<  "," << enemyColl.y << "," << enemyColl.x + enemyColl.w << ", " << enemyColl.y + enemyColl.h << ")\n";
 
 		}
@@ -343,11 +343,11 @@ void Scene2::Update(const float deltaTime) {
 					std::cout << "\nDamage Taken!";
 
 					if(game->zombieSpawnerArr2.at(i).sprintZombSpawned)
-						game->getPlayer()->health.takeDamage(0);
+						game->getPlayer()->health.takeDamage(12);
 					else if(game->zombieSpawnerArr2.at(i).tankSpawned)
-						game->getPlayer()->health.takeDamage(0);
+						game->getPlayer()->health.takeDamage(25);
 					else
-						game->getPlayer()->health.takeDamage(0);
+						game->getPlayer()->health.takeDamage(7);
 
 					game->Sf.PlayerHit();// Play hit SFX
 					damageTaken = true; //stops the player from taking damage per tick
@@ -900,6 +900,7 @@ void Scene2::buildMap()
 
 void Scene2::initMapVar()
 {
+	treeLocCounter = 0;
 
 	pathTexture = nullptr;
 
@@ -1377,6 +1378,7 @@ void Scene2::RenderUIDamageEffect()
 
 void Scene2::RenderTrees()
 {
+	/* TREE ONE */
 	// square represents the position and dimensions for where to draw the image
 	SDL_Rect square;
 
@@ -1386,341 +1388,1503 @@ void Scene2::RenderTrees()
 	//Screen Coords
 	int screenX = 100;
 	int screenY = 200;
-
-	//Initialize tree array
-	for (int i = 0; i < 38; i++)
-	{
-
-		//Random number, check random number
-		std::srand((unsigned int)time(NULL));
-		int location = (rand() % 5) + 1;
-		while(location != 1 && location != 2 && location != 3 && location != 4 && location != 5)
-			location = (rand() % 5) + 1;
-
-		Vec3 treeLoc;
-
-		switch (location) {
-		case 1:
-
-			//Get Image / Texture
-			treeImageArr.push_back(treeOneImage);
-			treeTextureArr.push_back(treeOneTexture);
-			
-			treeLoc = getTreeLocation();
-
-			//Screen Coords
-			screenX = treeLoc.x;
-			screenY = treeLoc.y;
-
-			//Get image width and height and adjust it to scale
-			w = treeOneImage->w;
-			h = treeOneImage->h;
-
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
-
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= 0.7f;
-			square.h *= 0.7f;
-
-			//Tree Collider
-			//Collider
-			treeColl.setCollBounds((square.w - 20), (square.h - 20));
-			treeColl.setCollPosition(screenX, screenY);
-			treeCollArr.push_back(treeColl);
-
-			break;
-		case 2:
-			treeImageArr.push_back(treeTwoImage);
-			treeTextureArr.push_back(treeTwoTexture);
-			
-			treeLoc = getTreeLocation();
-
-			//Screen Coords
-			screenX = treeLoc.x;
-			screenY = treeLoc.y;
-
-			//Get image width and height and adjust it to scale
-			w = treeTwoImage->w;
-			h = treeTwoImage->h;
-
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
-
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= 0.7f;
-			square.h *= 0.7f;
-
-			//Tree Collider
-			//Collider
-			treeColl.setCollBounds((square.w - 20), (square.h - 20));
-			treeColl.setCollPosition(screenX, screenY);
-			treeCollArr.push_back(treeColl);
-
-
-			break;
-		case 3:
-			treeImageArr.push_back(treeThreeImage);
-			treeTextureArr.push_back(treeThreeTexture);
-
-			treeLoc = getTreeLocation();
-
-			//Screen Coords
-			screenX = treeLoc.x;
-			screenY = treeLoc.y;
-
-			//Get image width and height and adjust it to scale
-			w = treeThreeImage->w;
-			h = treeThreeImage->h;
-
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
-
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= 0.7f;
-			square.h *= 0.7f;
-
-			//Tree Collider
-			//Collider
-			treeColl.setCollBounds((square.w - 20), (square.h - 20));
-			treeColl.setCollPosition(screenX, screenY);
-			treeCollArr.push_back(treeColl);
-
-			break;
-		case 4:
-			treeImageArr.push_back(treeFourImage);
-			treeTextureArr.push_back(treeFourTexture);
-
-			treeLoc = getTreeLocation();
-
-			//Screen Coords
-			screenX = treeLoc.x;
-			screenY = treeLoc.y;
-
-			//Get image width and height and adjust it to scale
-			w = treeFourImage->w;
-			h = treeFourImage->h;
-
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
-
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= 0.7f;
-			square.h *= 0.7f;
-
-			//Tree Collider
-			//Collider
-			treeColl.setCollBounds((square.w - 20), (square.h - 20));
-			treeColl.setCollPosition(screenX, screenY);
-			treeCollArr.push_back(treeColl);
-
-			break;
-		case 5:
-			treeImageArr.push_back(treeFiveImage);
-			treeTextureArr.push_back(treeFiveTexture);
-
-			treeLoc = getTreeLocation();
-
-			//Screen Coords
-			screenX = treeLoc.x;
-			screenY = treeLoc.y;
-
-			//Get image width and height and adjust it to scale
-			w = treeFiveImage->w;
-			h = treeFiveImage->h;
-
-			//Create Square
-			square.x = static_cast<int>(screenX);
-			square.y = static_cast<int>(screenY);
-			square.w = static_cast<int>(w);
-			square.h = static_cast<int>(h);
-
-			/////////////////////////////////
-			//Render Saling
-			/////////////////////////////////
-			square.w *= 0.7f;
-			square.h *= 0.7f;
-
-			//Tree Collider
-			//Collider
-			treeColl.setCollBounds((square.w - 20), (square.h - 20));
-			treeColl.setCollPosition(screenX, screenY);
-			treeCollArr.push_back(treeColl);
-
-			break;
-
-		}
-	}
-
-		
-
 	
-	/*if(playerColl.checkCollBox(playerColl, treeOneColl))
-		SDL_SetTextureAlphaMod(treeOneTexture, 122);
-	else
-		SDL_SetTextureAlphaMod(treeOneTexture, 255);*/
+
+	//Get image width and height and adjust it to scale
+	w = treeFiveImage->w;
+	h = treeFiveImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 1;
+	square.h *= 1;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w, square.h);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
 
 	/////////////////////////////////
 	//RENDER
-	//////////////////////////////////	
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFiveTexture);
 
-	for(int i = 0; i < treeTextureArr.size(); i++)
-	{
-		square.x = treeCollArr.at(i).x;
-		square.y = treeCollArr.at(i).y;
-		square.w = treeImageArr.at(i)->w;
-		square.h = treeImageArr.at(i)->h;
-		square.w *= 0.7f;
-		square.h *= 0.7f;
-
-		SDL_RenderCopyEx(renderer, treeTextureArr.at(i), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
-	}
-}
-
-Vec3 Scene2::getTreeLocation()
-{
-	if (treeLocCounter == NULL)
-		treeLocCounter = 1;
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(0)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(0), 122);
 	else
-		treeLocCounter++;
+		SDL_SetTextureAlphaMod(treeTextureArr.at(0), 255);
 
-	switch (treeLocCounter) {
-	case 1:
-		return Vec3(100, 200, 0);
-		break;
-	case 2:
-		return Vec3(150, 200, 0);
-		break;
-	case 3:
-		return Vec3(125, 250, 0);
-		break;
-	case 4:
-		return Vec3(900, 55, 0);
-		treeLocCounter++;
-		break;
-	case 5:
-		return Vec3(900, 100, 0);
-		break;
-	case 6:
-		return Vec3(1110, 40, 0);
-		break;
-	case 7:
-		return Vec3(1300, 65, 0);
-		break;
-	case 8:
-		return Vec3(1450, 335, 0);
-		break;
-	case 9:
-		return Vec3(1220, 521, 0);
-		break;
-	case 10:
-		return Vec3(1392, 723, 0);
-		break;
-	case 11:
-		return Vec3(1635, 564, 0);
-		break;
-	case 12:
-		return Vec3(1792, 293, 0);
-		break;
-	case 13:
-		return Vec3(1793, 370, 0);
-		break;
-	case 14:
-		return Vec3(1853, 467, 0);
-		break;
-	case 15:
-		return Vec3(1579, 311, 0);
-		break;
-	case 16:
-		return Vec3(1435, 256, 0);
-		break;
-	case 17:
-		return Vec3(1790, 750, 0);
-		break;
-	case 18:
-		return Vec3(1699, 944, 0);
-		break;
-	case 19:
-		return Vec3(1384, 967, 0);
-		break;
-	case 20:
-		return Vec3(1272, 850, 0);
-		break;
-	case 21:
-		return Vec3(1167, 931, 0);
-		break;
-	case 22:
-		return Vec3(1044, 839, 0);
-		break;
-	case 23:
-		return Vec3(961, 859, 0);
-		break;
-	case 24:
-		return Vec3(897, 859, 0);
-		break;
-	case 25:
-		return Vec3(672, 1043, 0);
-		break;
-	case 26:
-		return Vec3(568, 1043, 0);
-		break;
-	case 27:
-		return Vec3(472, 1043, 0);
-		break;
-	case 28:
-		return Vec3(336, 1043, 0);
-		break;
-	case 29:
-		return Vec3(230, 1043, 0);
-		break;
-	case 30:
-		return Vec3(59, 1047, 0);
-		break;
-	case 31:
-		return Vec3(59, 859, 0);
-		break;
-	case 32:
-		return Vec3(257, 551, 0);
-		break;
-	case 33:
-		return Vec3(120, 443, 0);
-		break;
-	case 34:
-		return Vec3(530, 412, 0);
-		break;
-	case 35:
-		return Vec3(601, 324, 0);
-		break;
-	case 36:
-		return Vec3(692, 433, 0);
-		break;
-	case 37:
-		return Vec3(1005, 300, 0);
-		break;
-	case 38:
-		return Vec3(978, 601, 0);
-		break;
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(0), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	
+	/* TREE TWO */
+	//Screen Coords
+	screenX = 300;
+	screenY = 225;
 
-	}
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.6f;
+	square.h *= 0.6f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w-25, square.h-25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(1)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(1), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(1), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(1), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE THREE */
+	//Screen Coords
+	screenX = 50;
+	screenY = 300;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFiveImage->w;
+	h = treeFiveImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.8f;
+	square.h *= 0.8f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFiveTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(2)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(2), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(2), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(2), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE Four */
+	//Screen Coords
+	screenX = 50;
+	screenY = -50;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeThreeImage->w;
+	h = treeThreeImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.9f;
+	square.h *= 0.9f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeThreeTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(3)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(3), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(3), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(3), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE Five */
+	//Screen Coords
+	screenX = 250;
+	screenY = -50;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeThreeImage->w;
+	h = treeThreeImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.9f;
+	square.h *= 0.9f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeThreeTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(4)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(4), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(4), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(4), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE Six */
+	//Screen Coords
+	screenX = 450;
+	screenY = -50;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeThreeImage->w;
+	h = treeThreeImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.9f;
+	square.h *= 0.9f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeThreeTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(5)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(5), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(5), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(5), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE Seven */
+	//Screen Coords
+	screenX = 700;
+	screenY = -50;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeThreeImage->w;
+	h = treeThreeImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.9f;
+	square.h *= 0.9f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeThreeTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(6)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(6), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(6), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(6), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 8 */
+	//Screen Coords
+	screenX = 450;
+	screenY = 150;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.9f;
+	square.h *= 0.9f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(7)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(7), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(7), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(7), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+
+	/* TREE 9 */
+	//Screen Coords
+	screenX = 680;
+	screenY = 150;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.6f;
+	square.h *= 0.6f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(8)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(8), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(8), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(8), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 10 */
+	//Screen Coords
+	screenX = 680;
+	screenY = 250;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(9)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(9), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(9), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(9), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 11 */
+	//Screen Coords
+	screenX = 680;
+	screenY = 350;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(10)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(10), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(10), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(10), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 12 */
+	//Screen Coords
+	screenX = 680;
+	screenY = 450;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(11)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(11), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(11), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(11), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 13 */
+	//Screen Coords
+	screenX = 500;
+	screenY = 450;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(12)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(12), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(12), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(12), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 14 */
+	//Screen Coords
+	screenX = 320;
+	screenY = 450;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(13)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(13), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(13), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(13), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 15 */
+	//Screen Coords
+	screenX = 320;
+	screenY = 525;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(14)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(14), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(14), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(14), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+	
+	/* TREE 16 */
+	//Screen Coords
+	screenX = 500;
+	screenY = 525;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(15)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(15), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(15), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(15), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 17 */
+	//Screen Coords
+	screenX = 680;
+	screenY = 525;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(16)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(16), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(16), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(16), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 18 */
+	//Screen Coords
+	screenX = 425;
+	screenY = 700;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeTwoImage->w;
+	h = treeTwoImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.7f;
+	square.h *= 0.7f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeTwoTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(17)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(17), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(17), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(17), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 19 */
+	//Screen Coords
+	screenX = 550;
+	screenY = 700;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeTwoImage->w;
+	h = treeTwoImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.7f;
+	square.h *= 0.7f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeTwoTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(18)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(18), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(18), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(18), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 20 */
+	//Screen Coords
+	screenX = 480;
+	screenY = 800;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeTwoImage->w;
+	h = treeTwoImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.7f;
+	square.h *= 0.7f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeTwoTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(19)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(19), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(19), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(19), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 21 */
+	//Screen Coords
+	screenX = 480;
+	screenY = 980;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFiveImage->w;
+	h = treeFiveImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.9f;
+	square.h *= 0.9f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFiveTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(20)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(20), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(20), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(20), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+
+	/* TREE 22 */
+	//Screen Coords
+	screenX = 850;
+	screenY = 980;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFiveImage->w;
+	h = treeFiveImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.9f;
+	square.h *= 0.9f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFiveTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(21)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(21), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(21), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(21), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+
+	/* TREE 23 */
+	//Screen Coords
+	screenX = 1600;
+	screenY = 980;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFiveImage->w;
+	h = treeFiveImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.9f;
+	square.h *= 0.9f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFiveTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(22)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(22), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(22), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(22), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 24 */
+	//Screen Coords
+	screenX = 680;
+	screenY = 625;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(23)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(23), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(23), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(23), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 25 */
+	//Screen Coords
+	screenX = 680;
+	screenY = 725;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.5f;
+	square.h *= 0.5f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(24)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(24), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(24), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(24), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 26 */
+	//Screen Coords
+	screenX = 680;
+	screenY = 825;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeOneImage->w;
+	h = treeOneImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.6f;
+	square.h *= 0.6f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeOneTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(25)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(25), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(25), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(25), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 27 */
+	//Screen Coords
+	screenX = 900;
+	screenY = 480;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFiveImage->w;
+	h = treeFiveImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.9f;
+	square.h *= 0.9f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFiveTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(26)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(26), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(26), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(26), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 28 */
+	//Screen Coords
+	screenX = 1000;
+	screenY = 480;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFiveImage->w;
+	h = treeFiveImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.6f;
+	square.h *= 0.6f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFiveTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(27)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(27), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(27), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(27), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 29 */
+	//Screen Coords
+	screenX = 850;
+	screenY = 500;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFiveImage->w;
+	h = treeFiveImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.6f;
+	square.h *= 0.6f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFiveTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(28)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(28), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(28), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(28), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 30 */
+	//Screen Coords
+	screenX = 1500;
+	screenY = 500;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFourImage->w;
+	h = treeFourImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.8f;
+	square.h *= 0.8f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFourTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(29)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(29), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(29), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(29), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 30 */
+	//Screen Coords
+	screenX = 1500;
+	screenY = 600;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFourImage->w;
+	h = treeFourImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.8f;
+	square.h *= 0.8f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFourTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(30)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(30), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(30), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(30), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 32 */
+	//Screen Coords
+	screenX = 1450;
+	screenY = 560;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeFourImage->w;
+	h = treeFourImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.8f;
+	square.h *= 0.8f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeFourTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(31)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(31), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(31), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(31), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+	/* TREE 33 */
+	//Screen Coords
+	screenX = 1750;
+	screenY = 250;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeTwoImage->w;
+	h = treeTwoImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.8f;
+	square.h *= 0.8f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeTwoTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(32)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(32), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(32), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(32), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 34 */
+	//Screen Coords
+	screenX = 1500;
+	screenY = 100;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeTwoImage->w;
+	h = treeTwoImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.8f;
+	square.h *= 0.8f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeTwoTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(33)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(33), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(33), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(33), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+	/* TREE 35 */
+	//Screen Coords
+	screenX = 1350;
+	screenY = 200;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeTwoImage->w;
+	h = treeTwoImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.8f;
+	square.h *= 0.8f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeTwoTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(34)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(34), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(34), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(34), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+
+	/* TREE 36 */
+	//Screen Coords
+	screenX = 1200;
+	screenY = 25;
+
+
+	//Get image width and height and adjust it to scale
+	w = treeTwoImage->w;
+	h = treeTwoImage->h;
+
+	//Create Square
+	square.x = static_cast<int>(screenX);
+	square.y = static_cast<int>(screenY);
+	square.w = static_cast<int>(w);
+	square.h = static_cast<int>(h);
+
+	/////////////////////////////////
+	//Render Saling
+	/////////////////////////////////
+	square.w *= 0.8f;
+	square.h *= 0.8f;
+
+	/////////////////////////////////
+	//Collider
+	/////////////////////////////////
+	treeColl.setCollBounds(square.w - 25, square.h - 25);
+	treeColl.setCollPosition(square.x, square.y);
+	treeCollArr.push_back(treeColl);
+
+	/////////////////////////////////
+	//RENDER
+	//////////////////////////////////
+	treeTextureArr.push_back(treeTwoTexture);
+
+	if (playerColl.checkCollBox(playerColl, treeCollArr.at(35)))
+		SDL_SetTextureAlphaMod(treeTextureArr.at(35), 122);
+	else
+		SDL_SetTextureAlphaMod(treeTextureArr.at(35), 255);
+
+	SDL_RenderCopyEx(renderer, treeTextureArr.at(35), nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+
+
+
 
 }
