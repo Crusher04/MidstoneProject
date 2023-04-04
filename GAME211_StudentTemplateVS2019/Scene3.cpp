@@ -1,3 +1,7 @@
+/*
+* Created By:		Ahmed Hammoud
+*/
+
 #include "Scene3.h"
 #include "VMath.h"
 #include <iostream>

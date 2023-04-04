@@ -6,13 +6,12 @@
 #include "EnemyBody.h"
 #include "Scene8.h"
 #include "Round.h"
-
 #include <algorithm>
 
 //GameManager Variables
 ZombieSpawner zombies2;
 Bullet bullet2;
-//ItemManagement items;
+
 GameManager::GameManager() {
 	windowPtr = nullptr;
 	timer = nullptr;

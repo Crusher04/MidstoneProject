@@ -520,7 +520,7 @@ void Scene2::Update(const float deltaTime) {
 
 
 		//Managing bullet position and movement
-		for (int i = 0; i < game->weaponManagement.pistolMagSize; i++)
+		for (int i = 0; i < game->bullets.size(); i++)
 		{
 			if (game->bullets.at(i).fired)
 			{
@@ -568,8 +568,6 @@ void Scene2::Update(const float deltaTime) {
 						}
 
 						game->zombieSpawnerArr2.at(i).collider.active = false;
-						//game->zombieSpawnerArr2.erase(game->zombieSpawnerArr2.begin() + i);
-						//game->zombieSpawnerArr2.shrink_to_fit();
 						game->getRound()->removeAZombie();
 					}
 				}

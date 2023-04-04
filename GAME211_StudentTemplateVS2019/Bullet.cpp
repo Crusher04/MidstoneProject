@@ -1,3 +1,7 @@
+/*
+* Created By:		Ahmed Hammoud
+*/
+
 #include "Bullet.h"
 
 Bullet::Bullet()

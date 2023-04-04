@@ -173,10 +173,19 @@ public:
 	/// <returns></returns>
 	Round* getRound() { return round; }
 
+	/// <summary>
+	/// Initializes Zombies Array
+	/// </summary>
 	void zombieArrayInit();
 
+	/// <summary>
+	/// Returns scene number
+	/// </summary>
 	Uint32 GetChangeScene();
 
+	/// <summary>
+	/// Quits the game
+	/// </summary>
 	void Quit();
 
 	void Restart();

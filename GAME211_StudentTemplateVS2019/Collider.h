@@ -14,7 +14,6 @@ using namespace MATH;
 #pragma once
 class Collider
 {
-protected:
 public:
 	//Variables to collect the bounds of the box + position of object needing the collider
 	float x, y, w, h;
