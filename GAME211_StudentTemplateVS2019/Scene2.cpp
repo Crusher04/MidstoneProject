@@ -320,7 +320,7 @@ void Scene2::Update(const float deltaTime) {
 		/////////////////////////////////
 
 
-		/* THIS WAS FOR PRINTING PLAYER LOCATION || TESTING ONLY*/
+		/* THIS WAS FOR PRINTING PLAYER/ZOMBIE LOCATION || TESTING ONLY*/
 		if (holdPosX != (int)playerColl.x || holdPosY != (int)playerColl.y)
 		{
 			holdPosX = playerColl.x;
@@ -464,7 +464,7 @@ void Scene2::Update(const float deltaTime) {
 		}
 
 		/////////////////////////////////
-		//ZOMBIE Special Attacks
+		//ZOMBIE Special Attacks *NOT IMPLEMENTED*
 		/////////////////////////////////
 		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 		{
@@ -546,29 +546,31 @@ void Scene2::Update(const float deltaTime) {
 		for (int i = 0; i < game->zombieSpawnerArr2.size(); i++)
 		{
 			//Check for collisions with bullets 
-			for (int k = 0; k < game->weaponManagement.pistolMagSize; k++)
+			for (int k = 0; k < game->bullets.size(); k++)
 			{
-
-				if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, game->zombieSpawnerArr2.at(i).collider))
+				if(game->bullets.at(k).fired)
 				{
-					std::cout << "Zombie " << i << " hit!\n";
-					game->zombieSpawnerArr2.at(i).health.takeDamage(game->bulletDamage);
-					game->Sf.ZombiesHit();
-					game->bullets.at(k).collider.active = false;
-
-					if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
+					if (game->bullets.at(k).collider.checkCollBox(game->bullets.at(k).collider, game->zombieSpawnerArr2.at(i).collider))
 					{
-						//Calling Function to see if an item drops when a zombie is killed 
-						if (game->itemManagement.itemDrop == false)
+						std::cout << "Zombie " << i << " hit!\n";
+						game->zombieSpawnerArr2.at(i).health.takeDamage(game->bulletDamage);
+						game->Sf.ZombiesHit();
+						game->bullets.at(k).collider.active = false;
+
+						if (game->zombieSpawnerArr2.at(i).health.getHealth() <= 0)
 						{
-							game->itemManagement.itemPickup = false;
-							game->itemSpawnLocation = game->zombieSpawnerArr2.at(i).getPos();
-							game->itemManagement.Drops();
+							//Calling Function to see if an item drops when a zombie is killed 
+							if (game->itemManagement.itemDrop == false)
+							{
+								game->itemManagement.itemPickup = false;
+								game->itemSpawnLocation = game->zombieSpawnerArr2.at(i).getPos();
+								game->itemManagement.Drops();
 
+							}
+
+							game->zombieSpawnerArr2.at(i).collider.active = false;
+							game->getRound()->removeAZombie();
 						}
-
-						game->zombieSpawnerArr2.at(i).collider.active = false;
-						game->getRound()->removeAZombie();
 					}
 				}
 			}
