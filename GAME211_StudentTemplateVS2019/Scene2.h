@@ -19,42 +19,14 @@ private:
 /// </summary>
 
 	// TEXTURE
-	SDL_Texture* bgTexture;
 	SDL_Texture* pathTexture;
-
-	//tree
-	SDL_Texture* treeTexture0;
-	SDL_Texture* treeTexture1;
-	SDL_Texture* treeTexture2;
-
-	//other Texture
-	SDL_Texture* wellTexture;
-	SDL_Texture* otherTexture0;
-	SDL_Texture* otherTexture1;
-	SDL_Texture* logTexture0;
-
-
-	//block
-	/*SDL_Texture* blockTexture0;
-	SDL_Texture* blockTexture1;
-	SDL_Texture* blockTexture2;
-	SDL_Texture* blockTexture3;*/
-
-	//rock
-	SDL_Texture* rockTexture0;
-	SDL_Texture* rockTexture1;
-	SDL_Texture* rockTexture2;
-	SDL_Texture* rockTexture3;
 
 	//UI
 	SDL_Texture* hbEmptyTexture;
 	SDL_Texture* hbFullTexture;
 	SDL_Texture* zombieIconTexture;
 
-	//_____________________________________IMAGE
-	Body* bg;
-
-	SDL_Surface* bgImage;
+	//IMAGE
 	SDL_Surface* pathImage;
 
 	//UI
@@ -139,8 +111,6 @@ private:
 	int mouseX, mouseY;
 	int playerDamageEffectOpacity;
 
-	SDL_Texture* loadImage(const char* textureFile);
-
 	//PHUNG
 	SDL_Rect scale(SDL_Texture* objectTexture,
 		int start_x = 0, int start_y = 0, float scaleX = 1.0f, float scaleY = 1.0f);
@@ -171,7 +141,6 @@ public:
 	void RenderHealthBackground();
 	void RenderUIDamageEffect();
 	void RenderTrees();
-	Vec3 getTreeLocation();
 
 	//Variables - ADD HERE WITH DESCRIPTION!! 
 	
