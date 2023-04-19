@@ -72,8 +72,7 @@ bool Collider::checkCollBox(Collider player, Collider object)
 		r2.x = object.x + object.w;
 		r2.y = object.y + object.h;
 
-
-
+		//Check Collisions
 		if (l1.x > r2.x)
 		{
 			return false;
@@ -108,8 +107,7 @@ bool Collider::checkCollBox(Collider player, Collider object)
 			}
 		}
 	}
-	
-	
+		
 	//if all else fails, not overlapping
 	return false;
 }
